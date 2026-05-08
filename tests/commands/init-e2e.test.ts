@@ -55,6 +55,18 @@ describe("lh init — LH core artifacts", () => {
     expect(state.schema).toBe("leanharness-state");
   });
 
+  it("config.yml includes features.commit and build.session_budget", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir });
+    spy.mockRestore();
+
+    const config = await fs.readFile(path.join(tmpDir, ".lh", "config.yml"), "utf-8");
+    expect(config).toContain("features:");
+    expect(config).toContain("commit: false");
+    expect(config).toContain("build:");
+    expect(config).toContain("session_budget: 15");
+  });
+
   it("creates memory files", async () => {
     const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     await runInitCommand({ cwd: tmpDir });
@@ -86,6 +98,30 @@ describe("lh init — LH core artifacts", () => {
     const config = await fs.readFile(path.join(tmpDir, ".lh", "config.yml"), "utf-8");
     expect(config).toContain("version:");
     expect(config).not.toBe("# custom config\n");
+  });
+
+  it("creates .lh/.gitignore with solo-first defaults", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir });
+    spy.mockRestore();
+
+    const gitignore = await fs.readFile(path.join(tmpDir, ".lh", ".gitignore"), "utf-8");
+    expect(gitignore).toContain("/features/");
+    expect(gitignore).toContain("/state.json");
+    expect(gitignore).toContain("/memory/cave.md");
+    expect(gitignore).toContain("config.local.yml");
+  });
+
+  it("creates .lh/.gitignore without features/ when team=true", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir, team: true });
+    spy.mockRestore();
+
+    const gitignore = await fs.readFile(path.join(tmpDir, ".lh", ".gitignore"), "utf-8");
+    expect(gitignore).not.toContain("/features/");
+    expect(gitignore).not.toContain("/state.json");
+    expect(gitignore).toContain("/memory/cave.md");
+    expect(gitignore).toContain("config.local.yml");
   });
 });
 

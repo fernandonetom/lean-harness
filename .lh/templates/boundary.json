@@ -15,5 +15,6 @@
   },
   "risk_gates_triggered": [],
   "escalations": [],
+  "closureGaps": [],
   "locked": false
 }

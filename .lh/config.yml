@@ -95,3 +95,9 @@ adapters:
     skills_dir: .claude/skills
     hooks_enabled: true
     settings_file: .claude/settings.json
+
+# Code graph index for import-aware discovery and cross-feature knowledge
+graph:
+  enabled: true
+  index_path: .lh/graph           # where import-graph.json and symbol-graph.json live
+  auto_update: true               # update graph automatically before discovery runs

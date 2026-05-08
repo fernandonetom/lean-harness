@@ -15,7 +15,9 @@ import { runCheckCommand } from "./commands/check.js";
 import { runCompressCommand } from "./commands/compress.js";
 import { runCaveBusCommand } from "./commands/cavebus.js";
 import { runMemoryCommand } from "./commands/memory.js";
+import { runGraphCommand } from "./commands/graph.js";
 import { runUpdateCommand } from "./commands/update.js";
+import { runMcpServer } from "./adapters/mcp-server.js";
 import { runCompletionCommand } from "./commands/completion.js";
 import { runWatchCommand } from "./commands/watch.js";
 import { getVersion } from "./core/version.js";
@@ -41,6 +43,7 @@ export interface ParsedArgs {
     yes: boolean;
     fix: boolean;
     global: boolean;
+    team: boolean;
   };
   options: {
     title: string | null;
@@ -82,7 +85,7 @@ export function parseArgs(argv: string[]): ParsedArgs {
   const result: ParsedArgs = {
     command: null,
     positional: [],
-    flags: { help: false, version: false, json: false, force: false, all: false, print: false, dryRun: false, fromSpec: false, next: false, run: false, noRun: false, strict: false, validate: false, yes: false, fix: false, global: false },
+    flags: { help: false, version: false, json: false, force: false, all: false, print: false, dryRun: false, fromSpec: false, next: false, run: false, noRun: false, strict: false, validate: false, yes: false, fix: false, global: false, team: false },
     options: {
       title: null, cwd: null, id: null, depth: null, maxFiles: null,
       task: null, output: null, maxBytes: null, allowedTools: null,
@@ -147,6 +150,8 @@ export function parseArgs(argv: string[]): ParsedArgs {
       result.flags.fix = true;
     } else if (arg === "--global") {
       result.flags.global = true;
+    } else if (arg === "--team") {
+      result.flags.team = true;
     } else if (arg.startsWith("--") && arg.includes("=")) {
       const eqIdx = arg.indexOf("=");
       const key = arg.slice(0, eqIdx);
@@ -251,6 +256,7 @@ Commands:
   compress <feature>            Generate compact CaveBus summaries from feature artifacts
   cavebus <feature>             Inspect and validate a feature's CaveBus log
   memory [show|clear|status]    Manage LeanHarness memory files
+  graph <build|update|inspect|clear> Manage the LeanHarness code graph index
   update                        Refresh LH-managed files (preserves user config)
   watch <feature>               Watch boundary files and re-run verification on change
   completion [bash|zsh|fish]     Generate shell tab completion script
@@ -301,6 +307,7 @@ Options:
   --validate                    Show validation details for CaveBus log
   --fix                          Auto-fix issues found by doctor
   --global                       Install skills/agents to user-level directories
+  --team                        Use team mode: feature artifacts are committed (default: solo)
   -y, --yes                     Skip interactive prompts (use defaults)
   -h, --help                    Show help
   -v, --version                 Show version
@@ -325,7 +332,7 @@ export async function runCli(argv: string[]): Promise<void> {
 
   switch (args.command) {
     case "init":
-      await runInitCommand({ cwd, force: args.flags.force, json: args.flags.json, host: args.options.host ?? undefined, yes: args.flags.yes, global: args.flags.global });
+      await runInitCommand({ cwd, force: args.flags.force, json: args.flags.json, host: args.options.host ?? undefined, yes: args.flags.yes, global: args.flags.global, team: args.flags.team });
       break;
     case "status":
       await runStatusCommand({ cwd, json: args.flags.json });
@@ -494,6 +501,13 @@ export async function runCli(argv: string[]): Promise<void> {
         json: args.flags.json,
       });
       break;
+    case "graph":
+      await runGraphCommand({
+        cwd,
+        subcommand: args.positional[0] ?? "inspect",
+        json: args.flags.json,
+      });
+      break;
     case "update":
       await runUpdateCommand({
         cwd,
@@ -513,6 +527,9 @@ export async function runCli(argv: string[]): Promise<void> {
       break;
     case "doctor":
       await runDoctorCommand({ cwd, json: args.flags.json, fix: args.flags.fix });
+      break;
+    case "mcp-server":
+      await runMcpServer(cwd);
       break;
     case "completion":
       await runCompletionCommand({ shell: args.positional[0] ?? "" });

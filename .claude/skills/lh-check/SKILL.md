@@ -147,4 +147,28 @@ Every `/lh-check` run must end with:
 - **Risk gate status** — Resolved, pending, or not triggered
 - **Blocking issues** — Unresolved problems preventing pass
 - **Result path** — Path to `result.md`
-- **Recommended next action** — What the user should do next
+- **NEXT SESSION block** — End every `/lh-check` response with one of:
+
+If verdict is `pass`:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  DONE — <feature-id> passed verification
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+If verdict is `needs-fix`:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  NEXT SESSION — Needs fix
+  Paste this to continue:
+
+  /lh-build <feature-id> --fix-review
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+If verdict is `blocked`:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  BLOCKED — <feature-id> — resolve issues above before continuing
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```

@@ -115,6 +115,14 @@ export interface HarnessConfigLogging {
   log_level?: string;
 }
 
+export interface HarnessConfigFeatures {
+  commit?: boolean;
+}
+
+export interface HarnessConfigBuild {
+  session_budget?: number;
+}
+
 export interface HarnessConfigAdapter {
   skills_dir?: string;
   hooks_enabled?: boolean;
@@ -136,6 +144,8 @@ export interface HarnessConfig {
   models?: HarnessConfigModels;
   memory?: HarnessConfigMemory;
   logging?: HarnessConfigLogging;
+  features?: HarnessConfigFeatures;
+  build?: HarnessConfigBuild;
   adapters?: Record<string, HarnessConfigAdapter>;
 }
 

@@ -12,7 +12,7 @@ import type { ChangedFile, BoundaryReview } from "./changed-files.js";
 import { detectChangedFiles, reviewBoundaryCompliance, isImplementationPath } from "./changed-files.js";
 import type { ReviewSummary } from "./review.js";
 import { analyzeReviewEvidence } from "./review.js";
-import { appendMemory, loadConfigForMemory } from "../memory/index.js";
+import { appendMemory, loadConfigForMemory, appendKnowledge } from "../memory/index.js";
 
 export interface VerificationEvent {
   timestamp?: string;
@@ -272,6 +272,22 @@ export async function runCheck(options: RunCheckOptions): Promise<CheckResult> {
           featureId: entry.id,
         }, memConfig);
       }
+
+      const knowledgeFiles = changedFiles
+        .filter(f => f.changeType !== "deleted" && f.inBoundary === "in")
+        .map(f => f.path);
+
+      await appendKnowledge(root, {
+        kind: "convention",
+        title: `${entry.id} — ${entry.title} (verified)`,
+        body: [
+          `Feature ${entry.id} passed verification.`,
+          knowledgeFiles.length > 0 ? `Changed files: ${knowledgeFiles.slice(0, 8).join(", ")}` : null,
+          passedCmds.length > 0 ? `Verification commands passed: ${passedCmds.join(", ")}` : null,
+        ].filter(Boolean).join("\n"),
+        featureId: entry.id,
+        files: knowledgeFiles,
+      });
     }
 
     const decisionContent = `${entry.id} — verdict: ${verdict}`;

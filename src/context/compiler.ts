@@ -16,6 +16,7 @@ import {
   readBoundedFileExcerpts,
 } from "./task-context.js";
 import type { ParsedTask } from "./task-context.js";
+import { queryKnowledge, renderKnowledgeSection, type KnowledgeNode } from "../graph/knowledge-graph.js";
 
 export interface CompileTaskContextOptions {
   root: string;
@@ -55,6 +56,7 @@ export interface RenderTaskPromptInput {
   priorTaskSummaries: Array<{ path: string; content: string }>;
   fileExcerpts: Array<{ path: string; content: string; truncated: boolean; bytes: number }>;
   missingFiles: string[];
+  knowledgeNodes?: KnowledgeNode[] | undefined;
   protectedTokens: ProtectedToken[];
   maxBytes: number;
 }
@@ -87,6 +89,13 @@ export async function compileTaskContext(
   }
 
   const relevantPaths = extractRelevantFilePaths(task, artifacts.boundary, includeFiles);
+
+  let knowledgeNodes: KnowledgeNode[] = [];
+  try {
+    knowledgeNodes = await queryKnowledge(root, relevantPaths);
+  } catch (err) {
+    warnings.push(`Knowledge graph query failed (best-effort): ${String(err)}`);
+  }
 
   const fileExcerpts = await readBoundedFileExcerpts(root, relevantPaths, {
     maxBytesPerFile: 8000,
@@ -129,6 +138,7 @@ export async function compileTaskContext(
     priorTaskSummaries: artifacts.priorTaskSummaries,
     fileExcerpts,
     missingFiles,
+    knowledgeNodes,
     protectedTokens,
     maxBytes,
   });
@@ -245,7 +255,7 @@ export function renderTaskPrompt(input: RenderTaskPromptInput): string {
   if (input.cavebus) {
     sections.push({
       label: "cavebus",
-      priority: 6,
+      priority: 8,
       content: `## CaveBus Handoff\n\n${truncateSection(input.cavebus, 2000)}`,
     });
   }
@@ -256,6 +266,14 @@ export function renderTaskPrompt(input: RenderTaskPromptInput): string {
       label: "memory",
       priority: 7,
       content: renderMemorySection(memoryEntries as Array<[string, string]>),
+    });
+  }
+
+  if (input.knowledgeNodes && input.knowledgeNodes.length > 0) {
+    sections.push({
+      label: "knowledge",
+      priority: 6,
+      content: `## Related Knowledge\n\n${truncateSection(renderKnowledgeSection(input.knowledgeNodes), 3000)}`,
     });
   }
 

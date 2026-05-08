@@ -123,6 +123,16 @@ logging:
   write_cavebus: true
   log_level: info
 
+features:
+  # solo-first default: feature work is not committed to the repo.
+  # Set to true for team workflows where specs and plans are shared artifacts.
+  commit: false
+
+build:
+  # Maximum complexity weight per session wave.
+  # lh-plan groups tasks into waves that stay under this budget.
+  session_budget: 15
+
 adapters:
   claude-cli:
     skills_dir: .claude/skills

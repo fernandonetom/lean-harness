@@ -6,7 +6,7 @@ import {
   createDefaultConfigYaml,
   createDefaultMemoryFile,
 } from "../core/config.js";
-import { harnessPath, featuresDir, memoryDir, templatesDir, policiesDir, protocolsDir, configPath, statePath, opencodePath, opencodeConfigPath, opencodeAgentsDir, opencodePluginsDir, opencodePluginPath, opencodeGuardrailPluginPath } from "../core/paths.js";
+import { harnessPath, featuresDir, memoryDir, templatesDir, policiesDir, protocolsDir, configPath, statePath, harnessGitignorePath, opencodePath, opencodeConfigPath, opencodeAgentsDir, opencodePluginsDir, opencodePluginPath, opencodeGuardrailPluginPath } from "../core/paths.js";
 import { createLogger, printJson } from "../core/logger.js";
 import { installClaudeCodePack } from "./init-claude-code.js";
 import { promptSelect, promptConfirm } from "../core/prompt.js";
@@ -20,6 +20,7 @@ export interface InitOptions {
   host?: string | undefined;
   yes?: boolean;
   global?: boolean;
+  team?: boolean;
 }
 
 interface InitResult {
@@ -31,7 +32,7 @@ interface InitResult {
 const VALID_HOSTS = new Set<string>(["claude-code", "opencode", "all"]);
 
 export async function runInitCommand(options: InitOptions): Promise<void> {
-  const { cwd, force = false, json = false, host, yes = false, global: isGlobal = false } = options;
+  const { cwd, force = false, json = false, host, yes = false, global: isGlobal = false, team = false } = options;
   const log = createLogger({ json });
   const overwrite = force;
 
@@ -106,6 +107,11 @@ export async function runInitCommand(options: InitOptions): Promise<void> {
       label: ".lh/memory/cave.md",
       path: harnessPath(cwd, "memory", "cave.md"),
       content: createDefaultMemoryFile("CaveBus Memory"),
+    },
+    {
+      label: ".lh/.gitignore",
+      path: harnessGitignorePath(cwd),
+      content: createLhGitignore(team),
     },
   ];
 
@@ -191,6 +197,34 @@ export async function runInitCommand(options: InitOptions): Promise<void> {
 
   log.info("");
   log.success("LeanHarness initialized.");
+}
+
+function createLhGitignore(team: boolean): string {
+  if (team) {
+    return `# LeanHarness — team mode
+# Feature artifacts are committed and shared with the team.
+
+# Runtime log (session-local, never commit)
+/memory/cave.md
+
+# Local config overrides (personal, never commit)
+config.local.yml
+`;
+  }
+  return `# LeanHarness — solo mode (default)
+# Feature work is personal and not committed to the repo.
+# To share feature artifacts with your team, set features.commit: true
+# in .lh/config.yml and re-run: lh init --force --team
+
+/features/
+/state.json
+
+# Runtime log (session-local, never commit)
+/memory/cave.md
+
+# Local config overrides (personal, never commit)
+config.local.yml
+`;
 }
 
 interface PackResult {

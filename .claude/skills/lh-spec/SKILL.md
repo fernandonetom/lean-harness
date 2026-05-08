@@ -108,4 +108,13 @@ Every `/lh-spec` run must end with:
 - **Acceptance criteria summary** — List of AC IDs and short descriptions
 - **Assumptions made** — Explicit assumptions recorded in the spec
 - **Clarifying questions** — If any remain unanswered
-- **Recommended next command** — `/lh-discover <feature-id>`
+- **NEXT SESSION block** — End every `/lh-spec` response with:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  NEXT SESSION — Spec complete
+  Paste this to continue:
+
+  /lh-discover <feature-id>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```

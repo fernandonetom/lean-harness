@@ -65,9 +65,43 @@ risk_gates:
     - public_api_break
     - broad_refactor
     - security_sensitive_change
+
+features:
+  commit: false   # default: solo-first (gitignored)
+  # commit: true  # team mode: feature artifacts are committed
+
+build:
+  session_budget: 15   # default: 15 weight units per wave
 ```
 
 See `.lh/config.yml` in the repository for the full annotated default.
+
+### `features`
+
+Controls whether feature artifacts (specs, discovery, plans, tasks) are tracked by git.
+
+```yaml
+features:
+  commit: false   # default: solo-first (gitignored)
+  # commit: true  # team mode: feature artifacts are committed
+```
+
+When `commit: false` (default), `lh init` writes `.lh/.gitignore` excluding `/features/` and `/state.json`. This keeps personal WIP out of client repos.
+
+When `commit: true`, run `lh init --force --team` to regenerate `.lh/.gitignore` without those exclusions. Feature specs and plans then become shared team artifacts, visible in code review.
+
+### `build`
+
+Controls session wave sizing for the build phase.
+
+```yaml
+build:
+  session_budget: 15   # default: 15 weight units per wave
+```
+
+`lh-plan` groups tasks into waves that stay under this budget. A higher budget fits more tasks per session; a lower budget creates smaller, more focused sessions. Useful for features where context window pressure is a concern.
+
+Task weights: 1 = trivial, 2 = small, 3 = mid-size, 5 = complex/risky.
 
 ## `.lh/state.json`
 

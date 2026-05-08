@@ -45,6 +45,10 @@ export function configPath(root: string): string {
   return harnessPath(root, "config.yml");
 }
 
+export function harnessGitignorePath(root: string): string {
+  return harnessPath(root, ".gitignore");
+}
+
 export function toPosixPath(value: string): string {
   return value.split(path.sep).join("/");
 }

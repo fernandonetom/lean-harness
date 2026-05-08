@@ -120,4 +120,13 @@ Every `/lh-discover` run must end with:
 - **Risk gates** — Triggered risk gates
 - **Unknowns** — Unresolved questions about the codebase
 - **Boundary path** — Path to `boundary.json`
-- **Recommended next command** — `/lh-plan <feature-id>`
+- **NEXT SESSION block** — End every `/lh-discover` response with:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  NEXT SESSION — Discovery complete
+  Paste this to continue:
+
+  /lh-plan <feature-id>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```

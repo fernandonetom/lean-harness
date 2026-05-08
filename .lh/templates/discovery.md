@@ -44,3 +44,10 @@ _Not yet analyzed._
 <!-- Items from discovery.escalate_on that were triggered -->
 
 _None triggered._
+
+## Closure Gaps
+
+<!-- Files imported by touch files but not currently in the boundary.
+     These were detected by graphBoundaryClose() during discovery. -->
+
+_None detected. (Only populated when import graph is available and closure gaps exist.)_

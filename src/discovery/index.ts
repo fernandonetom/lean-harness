@@ -19,6 +19,9 @@ import {
   type BoundaryJson,
   type DiscoveryRenderInput,
 } from "./boundary.js";
+import { ensureGraphBuilt } from "../graph/index.js";
+import type { LHImportGraph } from "../graph/import-graph.js";
+import { applyGraphScoring } from "./graph-scorer.js";
 
 export type { DiscoveryDepth } from "../core/types.js";
 
@@ -95,6 +98,8 @@ export async function runDiscovery(options: RunDiscoveryOptions): Promise<Discov
 
   const depthNum = parseInt(depth.slice(1), 10);
 
+  let importGraph: LHImportGraph | null = null;
+
   if (depthNum >= 1) {
     const searchMaxResults = depthNum >= 4 ? 120 : depthNum >= 3 ? 100 : 80;
     search = await searchRelevantFiles(root, keywords, {
@@ -114,6 +119,19 @@ export async function runDiscovery(options: RunDiscoveryOptions): Promise<Discov
       search.candidates.sort((a, b) => b.score - a.score);
       search.candidates = search.candidates.slice(0, searchMaxResults);
       search.notes.push(...importResult.notes);
+
+      try {
+        const builtGraph = await ensureGraphBuilt(root);
+        importGraph = builtGraph.importGraph;
+      } catch {
+        // graph build is best-effort; discovery proceeds without it
+      }
+
+      if (importGraph) {
+        const scoredResult = applyGraphScoring(search.candidates, importGraph);
+        search.candidates = scoredResult.candidates;
+        search.notes.push(...scoredResult.notes);
+      }
     }
   } else {
     search = { candidates: [], scannedFiles: 0, skippedFiles: 0, notes: ["D0: no file search performed."] };
@@ -137,6 +155,7 @@ export async function runDiscovery(options: RunDiscoveryOptions): Promise<Discov
     tests,
     hints,
     maxFiles,
+    importGraph,
   });
 
   const warnings: string[] = [];

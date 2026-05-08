@@ -3,6 +3,8 @@ import type { PackageDetection } from "./package-detector.js";
 import type { SearchResult, CandidateFile } from "./search.js";
 import type { TestDetection } from "./test-detector.js";
 import type { DiscoveryDepth, Confidence, CompactConfidence } from "../core/types.js";
+import type { LHImportGraph } from "../graph/import-graph.js";
+import { graphBoundaryClose } from "../graph/import-graph.js";
 
 export interface BoundaryBuildInput {
   featureId: string;
@@ -14,6 +16,7 @@ export interface BoundaryBuildInput {
   tests: TestDetection;
   hints: string[];
   maxFiles: number;
+  importGraph?: LHImportGraph | null | undefined;
 }
 
 export interface BoundaryFileEntry {
@@ -52,6 +55,11 @@ export interface BoundaryJson {
   unknowns: string[];
   doNotTouch: string[];
   protectedTokens: string[];
+  closureGaps: Array<{
+    path: string;
+    requiredBy: string[];
+    reason: string;
+  }>;
   lastUpdated: string;
 }
 
@@ -183,7 +191,7 @@ export function buildBoundary(input: BoundaryBuildInput): BoundaryJson {
   const {
     featureId, featureTitle, depth,
     project, packageInfo, search, tests,
-    hints, maxFiles,
+    hints, maxFiles, importGraph,
   } = input;
 
   const touchFiles: BoundaryFileEntry[] = [];
@@ -300,6 +308,11 @@ export function buildBoundary(input: BoundaryBuildInput): BoundaryJson {
     confidence = "medium";
   }
 
+  const touchFilePaths = touchFiles.map((f) => f.path);
+  const closureGaps = importGraph
+    ? graphBoundaryClose(importGraph, touchFilePaths)
+    : [];
+
   return {
     featureId,
     featureTitle,
@@ -316,6 +329,7 @@ export function buildBoundary(input: BoundaryBuildInput): BoundaryJson {
     unknowns,
     doNotTouch: DO_NOT_TOUCH,
     protectedTokens,
+    closureGaps,
     lastUpdated: new Date().toISOString(),
   };
 }
@@ -467,6 +481,21 @@ export function renderDiscoveryMarkdown(input: DiscoveryRenderInput): string {
   } else {
     for (const r of boundary.riskGates) {
       lines.push(`- ${r.name}: ${r.reason}`);
+    }
+  }
+  lines.push("");
+
+  lines.push("## Closure Gaps");
+  lines.push("");
+  if (!boundary.closureGaps || boundary.closureGaps.length === 0) {
+    lines.push("_No closure gaps detected._");
+  } else {
+    lines.push("These files are imported by touch files but are not in the boundary:");
+    lines.push("");
+    lines.push("| Path | Required By |");
+    lines.push("|---|---|");
+    for (const gap of boundary.closureGaps) {
+      lines.push(`| ${gap.path} | ${gap.requiredBy.join(", ")} |`);
     }
   }
   lines.push("");

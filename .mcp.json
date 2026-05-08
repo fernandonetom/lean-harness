@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "leanharness": {
+      "command": "lh",
+      "args": ["mcp-server"],
+      "env": {}
+    }
+  }
+}
