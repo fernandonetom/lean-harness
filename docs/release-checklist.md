@@ -8,9 +8,9 @@ This checklist covers the steps to validate, package, and publish a LeanHarness 
 
 - [ ] All features planned for this release are complete
 - [ ] No known blocking bugs
-- [ ] Version number updated in `package.json`
+- [ ] A changeset file exists for each releasable change (`.changeset/*.md`)
 - [ ] `src/core/version.ts` resolves the package version correctly
-- [ ] `CHANGELOG.md` updated with changes under the new version heading
+- [ ] `NPM_TOKEN` secret is configured in GitHub repository secrets
 
 ## Local validation
 
@@ -89,15 +89,11 @@ LeanHarness uses semantic versioning once releases begin:
 
 ## Changelog
 
-Update `CHANGELOG.md`:
-
-1. Move items from `[Unreleased]` to the new version section
-2. Add the release date
-3. Categorize changes: Added, Changed, Fixed, Security
+`CHANGELOG.md` is managed automatically by Changesets during the release PR flow.
 
 ## Git checklist
 
-Review the state before tagging:
+Review the state before creating a release PR:
 
 ```bash
 git status --short
@@ -107,13 +103,7 @@ git log --oneline -5
 
 - [ ] Working directory clean
 - [ ] All changes committed
-- [ ] Commit message follows convention: `release: vX.Y.Z`
-
-Create a tag (manually, when ready):
-
-```bash
-git tag vX.Y.Z
-```
+- [ ] Changeset files are included in merged PRs
 
 Do not use `git push --force`.
 
@@ -127,13 +117,14 @@ npm run release:check
 
 This runs build, typecheck, test, and pack dry-run in sequence.
 
-When ready to publish:
+Publishing is automated by `.github/workflows/release.yml` through `changesets/action`:
 
-```bash
-npm publish --access public
-```
-
-Run only when you intentionally publish a release. This is a manual step — do not automate it without explicit approval.
+1. Pushes to `main` create or update a "Version Packages" release PR.
+2. Merging that release PR automatically:
+   - bumps package version(s),
+   - creates git tag(s),
+   - creates GitHub Release entries,
+   - publishes to npm using `NPM_TOKEN`.
 
 ## Post-release checks
 
@@ -141,8 +132,8 @@ After publishing:
 
 - [ ] `npm info @feneto/lh` shows correct version
 - [ ] `npx @feneto/lh --help` works
-- [ ] `CHANGELOG.md` has the release date filled in
-- [ ] Git tag pushed to remote
+- [ ] `CHANGELOG.md` includes the generated release entry
+- [ ] Git tag was created automatically on the release commit
 
 ## Rollback notes
 

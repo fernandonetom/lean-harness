@@ -152,6 +152,20 @@ node dist/index.js doctor
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and contribution guidelines.
 
+## Releasing
+
+LeanHarness uses [Changesets](https://github.com/changesets/changesets) for automated releases:
+
+1. Add a changeset in your feature PR:
+   ```bash
+   npm run changeset
+   ```
+2. Merge PRs to `main`.
+3. GitHub Actions opens/updates a "Version Packages" release PR.
+4. Merge that release PR to automatically create tag(s), GitHub Release notes, and publish to npm.
+
+Repository maintainers must configure the `NPM_TOKEN` GitHub Actions secret for publishing.
+
 ## Safety model
 
 LeanHarness guardrails are best-effort safety measures, not a security sandbox:
