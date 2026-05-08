@@ -1,0 +1,65 @@
+{
+  "name": "leanharness",
+  "version": "0.1.0",
+  "description": "AI harness framework for brownfield feature work with on-demand discovery, bounded context, multi-host adapters, CaveBus summaries, and verification evidence.",
+  "type": "module",
+  "bin": {
+    "lh": "./dist/index.js"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./types": "./dist/core/types.js",
+    "./adapters": "./dist/adapters/types.js",
+    "./plugins": "./dist/plugins/types.js",
+    "./config": "./dist/core/resolved-config.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "docs",
+    "examples",
+    ".lh/templates",
+    ".lh/protocols",
+    ".lh/policies"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "start": "node dist/index.js",
+    "dev": "tsc -p tsconfig.json --watch",
+    "doctor": "node dist/index.js doctor",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "prepack": "npm run build && npm run typecheck && npm test",
+    "pack:dry-run": "npm pack --dry-run",
+    "release:check": "npm run build && npm run typecheck && npm test && npm run pack:dry-run"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ai",
+    "agents",
+    "coding-agent",
+    "claude-code",
+    "opencode",
+    "brownfield",
+    "specification",
+    "verification",
+    "cli",
+    "harness",
+    "on-demand-discovery",
+    "bounded-context",
+    "cavebus",
+    "multi-host"
+  ],
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "typescript": "^5.0.0",
+    "vitest": "^3.2.1"
+  }
+}

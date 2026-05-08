@@ -1,0 +1,12 @@
+{
+  "version": "0.1",
+  "initialized_at": null,
+  "active_feature": null,
+  "features": {},
+  "last_event_id": 0,
+  "session": {
+    "started_at": null,
+    "host": null,
+    "adapter": null
+  }
+}

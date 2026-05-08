@@ -1,0 +1,141 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "read": "allow",
+    "list": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "bash": {
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "npm test*": "allow",
+      "npm run test*": "allow",
+      "npm run lint*": "allow",
+      "npm run typecheck*": "allow",
+      "pnpm test*": "allow",
+      "pnpm lint*": "allow",
+      "pnpm typecheck*": "allow",
+      "yarn test*": "allow",
+      "yarn lint*": "allow",
+      "bun test*": "allow",
+      "pytest*": "allow",
+      "go test*": "allow",
+      "cargo test*": "allow",
+      "rm -rf*": "deny",
+      "cat .env*": "deny",
+      "printenv*": "deny",
+      "env": "deny"
+    }
+  },
+  "agent": {
+    "lh-scout": {
+      "description": "LeanHarness targeted brownfield discovery agent. Reads and searches the project to find relevant files, tests, commands, constraints, risks, and change-boundary candidates without editing code.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "ls*": "allow",
+          "find*": "allow",
+          "grep*": "allow",
+          "rg*": "allow"
+        },
+        "webfetch": "deny"
+      }
+    },
+    "lh-builder": {
+      "description": "LeanHarness bounded implementation agent. Implements assigned tasks from compiled LeanHarness context while staying inside the approved change boundary.",
+      "mode": "primary",
+      "permission": {
+        "bash": {
+          "npm test*": "allow",
+          "npm run test*": "allow",
+          "npm run lint*": "allow",
+          "npm run typecheck*": "allow",
+          "pnpm test*": "allow",
+          "pnpm lint*": "allow",
+          "pnpm typecheck*": "allow",
+          "yarn test*": "allow",
+          "yarn lint*": "allow",
+          "bun test*": "allow",
+          "pytest*": "allow",
+          "go test*": "allow",
+          "cargo test*": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "rm -rf*": "deny"
+        }
+      }
+    },
+    "lh-reviewer": {
+      "description": "LeanHarness read-only review agent. Reviews implementation changes against spec, tasks, boundary, risk gates, tests, and verification evidence.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "npm test*": "allow",
+          "pnpm test*": "allow",
+          "yarn test*": "allow",
+          "bun test*": "allow",
+          "pytest*": "allow",
+          "go test*": "allow",
+          "cargo test*": "allow"
+        },
+        "webfetch": "deny"
+      }
+    },
+    "lh-verifier": {
+      "description": "LeanHarness final verification agent. Checks acceptance criteria, changed files, command evidence, boundary compliance, review findings, and risk gates before a feature can be marked done.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "git status*": "allow",
+          "git diff*": "allow",
+          "npm test*": "allow",
+          "npm run test*": "allow",
+          "npm run lint*": "allow",
+          "npm run typecheck*": "allow",
+          "pnpm test*": "allow",
+          "pnpm lint*": "allow",
+          "pnpm typecheck*": "allow",
+          "yarn test*": "allow",
+          "yarn lint*": "allow",
+          "bun test*": "allow",
+          "pytest*": "allow",
+          "go test*": "allow",
+          "cargo test*": "allow",
+          "rm -rf*": "deny"
+        },
+        "webfetch": "deny"
+      }
+    },
+    "lh-compressor": {
+      "description": "LeanHarness CaveBus compression agent. Converts verbose feature notes into compact CaveBus summaries while preserving protected tokens exactly.",
+      "mode": "subagent",
+      "permission": {
+        "bash": {
+          "git status*": "allow",
+          "git diff*": "allow"
+        },
+        "webfetch": "deny"
+      }
+    }
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true
+  },
+  "instructions": [
+    "CLAUDE.md",
+    "README.md",
+    "docs/*.md",
+    ".lh/memory/*.md"
+  ]
+}

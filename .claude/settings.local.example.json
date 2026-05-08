@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [],
+    "ask": [],
+    "deny": []
+  },
+  "env": {}
+}

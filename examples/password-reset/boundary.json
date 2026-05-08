@@ -1,0 +1,73 @@
+{
+  "featureId": "F001",
+  "featureTitle": "Password reset",
+  "status": "discovered",
+  "confidence": "medium",
+  "discoveryDepth": "D2",
+  "touchFiles": [
+    "src/auth/reset-token.ts",
+    "src/auth/password.ts",
+    "tests/auth/reset-token.test.ts"
+  ],
+  "readOnlyFiles": [
+    "src/auth/session.ts",
+    "src/email/send.ts",
+    "tests/auth/password.test.ts"
+  ],
+  "relevantTests": [
+    "tests/auth/password.test.ts",
+    "tests/auth/reset-token.test.ts"
+  ],
+  "commands": [
+    "npm test",
+    "npm run typecheck"
+  ],
+  "allowedEditGlobs": [
+    "src/auth/reset-token.ts",
+    "src/auth/password.ts",
+    "tests/auth/reset-token.test.ts"
+  ],
+  "blockedEditGlobs": [
+    "src/auth/session.ts",
+    ".env",
+    ".env.*"
+  ],
+  "riskGates": [
+    {
+      "gate": "security_sensitive_change",
+      "status": "triggered",
+      "notes": "Password reset tokens require cryptographic randomness and timing-safe comparison."
+    },
+    {
+      "gate": "auth_rewrite",
+      "status": "unresolved",
+      "notes": "Spec preserves existing auth. Discovery confirms no rewrite needed. Gate left unresolved as a reminder to verify during check."
+    }
+  ],
+  "unknowns": [
+    "Token storage mechanism (in-memory vs database)",
+    "Login page route structure for new endpoint"
+  ],
+  "doNotTouch": [
+    "src/auth/session.ts",
+    "database/migrations/"
+  ],
+  "protectedTokens": [
+    "src/auth/password.ts",
+    "src/auth/session.ts",
+    "src/auth/reset-token.ts",
+    "src/email/send.ts",
+    "tests/auth/password.test.ts",
+    "tests/auth/reset-token.test.ts",
+    "hashPassword",
+    "validatePassword",
+    "sendEmail",
+    "F001",
+    "AC1",
+    "AC2",
+    "AC3",
+    "AC4",
+    "AC5"
+  ],
+  "lastUpdated": "EXAMPLE"
+}

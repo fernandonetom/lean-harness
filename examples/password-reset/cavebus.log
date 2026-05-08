@@ -1,0 +1,69 @@
+2026-01-01T00:00:00Z user -> lh-cli | REQ
+F001 password reset. preserve existing auth. use existing email sender.
+AC: request flow, single-use token, safe failure, existing policy, no auth rewrite.
+---
+
+2026-01-01T00:01:00Z lh-cli -> discover-agent | DISC
+F001 discovery D2. target: src/auth/password.ts, src/auth/session.ts, src/email/send.ts.
+find: reset token infra missing. need new src/auth/reset-token.ts.
+session.ts read-only. password.ts has hashPassword, validatePassword — reuse.
+sendEmail in src/email/send.ts — reuse.
+risk: security_sensitive_change triggered. auth_rewrite not triggered.
+---
+
+2026-01-01T00:02:00Z discover-agent -> lh-cli | BOUNDARY
+F001 boundary locked. touch: src/auth/reset-token.ts, src/auth/password.ts, tests/auth/reset-token.test.ts.
+read-only: src/auth/session.ts, src/email/send.ts, tests/auth/password.test.ts.
+blocked: src/auth/session.ts, .env, .env.*.
+risk gates: security_sensitive_change (triggered), auth_rewrite (unresolved — verify during check).
+unknowns: token storage mechanism, login page route structure.
+---
+
+2026-01-01T00:03:00Z lh-cli -> build-agent | PLAN
+F001 planned. 5 tasks, 4 slices.
+T01: reset token service (AC2, AC3). T02: request flow (AC1). T03: completion flow (AC4).
+T04: focused tests + negative cases (AC3, AC5). T05: final verification (all AC).
+deps: T02->T01, T03->T01, T04->T01+T02+T03, T05->T04.
+crypto.randomBytes for tokens. crypto.timingSafeEqual for comparison.
+---
+
+2026-01-01T00:04:00Z lh-cli -> build-agent | TASK
+F001 T01 compiled. goal: add reset token creation + consumption.
+files: src/auth/reset-token.ts (create), tests/auth/reset-token.test.ts (create).
+context: src/auth/password.ts (read-only), src/auth/session.ts (read-only).
+verify: npm test -- tests/auth/reset-token.test.ts.
+risk: security_sensitive_change.
+---
+
+2026-01-01T00:05:00Z build-agent -> lh-cli | SUM
+F001 T01 summary. token service designed. createResetToken, consumeResetToken, isTokenValid exported.
+uses crypto.randomBytes (32 bytes hex). 1hr expiry. single-use flag.
+timing-safe compare via crypto.timingSafeEqual.
+tests: creation, expiration, single-use, invalid token.
+no changes to src/auth/session.ts. boundary respected.
+---
+
+2026-01-01T00:10:00Z verify-agent -> lh-cli | VERIFY
+F001 check complete. verdict: needs-fix.
+AC2 passed (design evidence). AC3 passed (design evidence). AC5 passed (boundary + no session change).
+AC1 pending (no execution evidence). AC4 pending (no execution evidence).
+reason: static example — no agent invoked, no test output.
+boundary: clean. risk gates: addressed.
+unresolved: AC1, AC4 need implementation + test run.
+---
+
+2026-01-01T00:11:00Z lh-cli -> * | NOTE
+F001 static example complete. demonstrates Specify -> Discover -> Plan -> Build -> Check -> Compress.
+needs-fix is correct for dry-run / static evidence. pass requires execution evidence.
+no files modified in real repo. all artifacts are illustrative.
+---
+
+# LH-COMPRESS-BEGIN source:all mode:full generated:EXAMPLE
+F001 password-reset. 5 tasks. verdict: needs-fix.
+touch: src/auth/reset-token.ts, src/auth/password.ts, tests/auth/reset-token.test.ts.
+read-only: src/auth/session.ts, src/email/send.ts.
+risk: security_sensitive_change (addressed), auth_rewrite (not needed).
+AC2,AC3,AC5 passed (design). AC1,AC4 pending (no execution).
+tokens: createResetToken, consumeResetToken, isTokenValid, hashPassword, validatePassword, sendEmail.
+next: implement T01-T05, re-run lh check F001.
+# LH-COMPRESS-END

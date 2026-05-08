@@ -1,0 +1,16 @@
+{"timestamp":"2026-01-01T00:00:00.000Z","source":"lh-cli","event":"feature.created","featureId":"F001","feature":"F001-password-reset","status":"draft"}
+{"timestamp":"2026-01-01T00:00:30.000Z","source":"lh-cli","event":"feature.specified","featureId":"F001","feature":"F001-password-reset","status":"specified","acceptanceCriteria":5}
+{"timestamp":"2026-01-01T00:01:00.000Z","source":"lh-cli","event":"discovery.started","featureId":"F001","feature":"F001-password-reset","depth":"D2"}
+{"timestamp":"2026-01-01T00:01:30.000Z","source":"lh-cli","event":"discovery.file.found","featureId":"F001","path":"src/auth/password.ts","role":"touch","confidence":"medium"}
+{"timestamp":"2026-01-01T00:01:31.000Z","source":"lh-cli","event":"discovery.file.found","featureId":"F001","path":"src/auth/session.ts","role":"read-only","confidence":"high"}
+{"timestamp":"2026-01-01T00:01:32.000Z","source":"lh-cli","event":"discovery.file.found","featureId":"F001","path":"src/email/send.ts","role":"read-only","confidence":"high"}
+{"timestamp":"2026-01-01T00:01:45.000Z","source":"lh-cli","event":"risk.gate.triggered","featureId":"F001","gate":"security_sensitive_change","notes":"Password reset tokens require cryptographic safety"}
+{"timestamp":"2026-01-01T00:02:00.000Z","source":"lh-cli","event":"feature.discovered","featureId":"F001","feature":"F001-password-reset","depth":"D2","confidence":"medium"}
+{"timestamp":"2026-01-01T00:03:00.000Z","source":"lh-cli","event":"feature.planned","featureId":"F001","feature":"F001-password-reset","status":"planned","tasks":5}
+{"timestamp":"2026-01-01T00:04:00.000Z","source":"lh-cli","event":"task.compiled","featureId":"F001","taskId":"T01","expectedFiles":["src/auth/reset-token.ts","tests/auth/reset-token.test.ts"]}
+{"timestamp":"2026-01-01T00:05:00.000Z","source":"lh-cli","event":"build.started","featureId":"F001","host":"claude-code","dryRun":true}
+{"timestamp":"2026-01-01T00:05:01.000Z","source":"lh-cli","event":"build.dryrun.complete","featureId":"F001","host":"claude-code","tasks":5,"status":"dry-run"}
+{"timestamp":"2026-01-01T00:10:00.000Z","source":"lh-cli","event":"check.started","featureId":"F001","feature":"F001-password-reset"}
+{"timestamp":"2026-01-01T00:10:30.000Z","source":"lh-cli","event":"check.completed","featureId":"F001","feature":"F001-password-reset","verdict":"needs-fix","verified":3,"pending":2,"failed":0}
+{"timestamp":"2026-01-01T00:11:00.000Z","source":"lh-cli","event":"compress.started","featureId":"F001","feature":"F001-password-reset","mode":"full"}
+{"timestamp":"2026-01-01T00:11:10.000Z","source":"lh-cli","event":"compress.completed","featureId":"F001","feature":"F001-password-reset","mode":"full","status":"dry-run"}

@@ -1,0 +1,19 @@
+{
+  "feature_id": "{{FEATURE_ID}}",
+  "feature_title": "{{FEATURE_TITLE}}",
+  "discovery_depth": "{{DISCOVERY_DEPTH}}",
+  "files": {
+    "modify": [],
+    "create": [],
+    "delete": []
+  },
+  "test_files": [],
+  "config_files": [],
+  "dependencies": {
+    "internal": [],
+    "external": []
+  },
+  "risk_gates_triggered": [],
+  "escalations": [],
+  "locked": false
+}

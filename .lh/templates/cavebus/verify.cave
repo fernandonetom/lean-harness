@@ -1,0 +1,22 @@
+# CaveBus Verification Template
+# Preserve all protected tokens exactly: paths, commands, symbols, IDs, errors.
+# pass is not allowed without evidence. Every AC must have a status and evidence.
+# Never mark pass if any AC is fail or not-checked.
+
+VERIFY {{FEATURE_ID}} verdict:{{pass|needs-fix|blocked}}
+ac:
+- {{AC_ID}} status:{{pass|fail|partial|not-checked}} evidence:{{EVIDENCE}}
+cmd:
+- {{COMMAND}} result:{{pass|fail|skipped|not-run}} evidence:{{EVIDENCE}}
+chg:
+- {{PATH}} type:{{created|modified|deleted|renamed}} boundary:{{in|out|unknown}}
+boundary:
+- status:{{pass|fail|partial|unknown}} note:{{NOTE}}
+risk:
+- {{RISK_GATE}} status:{{resolved|unresolved|approved|not-triggered}}
+review:
+- verdict:{{pass|needs-fix|blocked}} evidence:{{EVIDENCE}}
+miss:
+- {{MISSING_EVIDENCE}}
+next:
+- {{NEXT_ACTION}}
