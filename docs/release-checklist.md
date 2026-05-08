@@ -9,7 +9,7 @@ This checklist covers the steps to validate, package, and publish a LeanHarness 
 - [ ] All features planned for this release are complete
 - [ ] No known blocking bugs
 - [ ] Version number updated in `package.json`
-- [ ] Version number updated in `src/cli.ts` (VERSION constant)
+- [ ] `src/core/version.ts` resolves the package version correctly
 - [ ] `CHANGELOG.md` updated with changes under the new version heading
 
 ## Local validation
@@ -139,8 +139,8 @@ Run only when you intentionally publish a release. This is a manual step — do 
 
 After publishing:
 
-- [ ] `npm info leanharness` shows correct version
-- [ ] `npx leanharness --help` works (if published globally)
+- [ ] `npm info @feneto/lh` shows correct version
+- [ ] `npx @feneto/lh --help` works
 - [ ] `CHANGELOG.md` has the release date filled in
 - [ ] Git tag pushed to remote
 
@@ -150,6 +150,6 @@ If a published release has a critical issue:
 
 1. Fix the issue in a new patch version
 2. Publish the patch: `npm publish --access public`
-3. Deprecate the broken version: `npm deprecate leanharness@X.Y.Z "critical issue, use X.Y.Z+1"`
+3. Deprecate the broken version: `npm deprecate @feneto/lh@X.Y.Z "critical issue, use X.Y.Z+1"`
 
 Do not unpublish unless absolutely necessary. npm unpublish has a 72-hour window and breaks downstream consumers.

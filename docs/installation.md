@@ -36,7 +36,7 @@ npm link
 lh --help
 ```
 
-Once published, installation may use `npm install -g leanharness`. Until then, use local development install or `npm link`.
+Once published, installation may use `npm install -g @feneto/lh`. Until then, use local development install or `npm link`.
 
 ## Initialize a project
 

@@ -14,6 +14,14 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/), and t
 
 ### Security
 
+## [1.0.0] - 2026-05-08
+
+### Changed
+
+- First stable release published as npm package `@feneto/lh`
+- Release CI now validates tag/version alignment before publish
+- Release CI now runs `npm run release:check` as the publish gate
+
 ## [0.1.0] - 2026-05-07
 
 ### Added

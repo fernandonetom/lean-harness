@@ -4,7 +4,7 @@ AI harness framework for brownfield feature work with on-demand discovery, bound
 
 ## Status
 
-**v0.1.0 — dogfooding-ready.** The core workflow is implemented with a deterministic CLI, two agent host adapters (Claude Code, OpenCode), guardrail layers, and a test suite. Intended for local dogfooding and careful brownfield feature work. Not production-stable.
+**v1.0.0 — first stable release.** The core workflow is implemented with a deterministic CLI, two agent host adapters (Claude Code, OpenCode), guardrail layers, and a test suite.
 
 ## What it does
 
@@ -89,7 +89,7 @@ lh cavebus F001 --validate
 
 - `lh build` without `--dry-run` invokes an external agent host. Always dry-run first.
 - `lh check` is the completion gate. Do not mark work done without a passing check.
-- v0.1 is dogfooding-ready. Use dry-runs before invoking real agent hosts.
+- Use dry-runs before invoking real agent hosts.
 
 ## Agent hosts
 

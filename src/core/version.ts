@@ -13,7 +13,9 @@ export function getVersion(): string {
     try {
       const raw = readFileSync(join(d, "package.json"), "utf-8");
       const pkg = JSON.parse(raw) as { name?: string; version?: string };
-      if (pkg.name === "leanharness" && pkg.version) {
+      // Accept legacy and scoped package names so CLI version lookup
+      // keeps working after publication/renames.
+      if ((pkg.name === "leanharness" || pkg.name === "@feneto/lh") && pkg.version) {
         cached = pkg.version;
         return cached;
       }
