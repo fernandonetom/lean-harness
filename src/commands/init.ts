@@ -6,9 +6,10 @@ import {
   createDefaultConfigYaml,
   createDefaultMemoryFile,
 } from "../core/config.js";
-import { harnessPath, featuresDir, memoryDir, templatesDir, policiesDir, protocolsDir, configPath, statePath, harnessGitignorePath, opencodePath, opencodeConfigPath, opencodeAgentsDir, opencodePluginsDir, opencodePluginPath, opencodeGuardrailPluginPath } from "../core/paths.js";
+import { harnessPath, featuresDir, memoryDir, templatesDir, policiesDir, protocolsDir, configPath, statePath, harnessGitignorePath, opencodePath, opencodeConfigPath, opencodeAgentsDir, opencodePluginsDir, opencodeCommandsDir, opencodePluginPath, opencodeGuardrailPluginPath } from "../core/paths.js";
 import { createLogger, printJson } from "../core/logger.js";
 import { installClaudeCodePack } from "./init-claude-code.js";
+import { createOpenCodeCommandFiles } from "./load-opencode-commands.js";
 import { promptSelect, promptConfirm } from "../core/prompt.js";
 
 export type InitHost = "claude-code" | "opencode" | "all";
@@ -291,6 +292,33 @@ async function installOpenCodePack(
     }
   }
 
+  const cmdDir = opencodeCommandsDir(cwd);
+  const cmdDirExisted = fs.existsSync(cmdDir);
+  await ensureDir(cmdDir);
+  result.directories[".opencode/commands"] = cmdDirExisted ? "existed" : "created";
+  if (!json) {
+    log.info(cmdDirExisted ? "  .opencode/commands/ (exists)" : "  .opencode/commands/ (created)");
+  }
+
+  const commandFiles = createOpenCodeCommandFiles();
+  for (const cf of commandFiles) {
+    const cmdPath = opencodePath(cwd, "commands", cf.filename);
+    const cmdExists = await fileExists(cmdPath);
+    if (cmdExists && !force) {
+      result.files[`.opencode/commands/${cf.filename}`] = "skipped";
+      result.warnings.push(`OpenCode command template already exists and was not overwritten: .opencode/commands/${cf.filename}. Use --force to refresh LeanHarness-managed OpenCode commands.`);
+      if (!json) {
+        log.info(`  .opencode/commands/${cf.filename} (exists, skipped)`);
+      }
+    } else {
+      const status = await writeTextFile(cmdPath, cf.content, { overwrite: force });
+      result.files[`.opencode/commands/${cf.filename}`] = status;
+      if (!json) {
+        log.info(status === "created" ? `  .opencode/commands/${cf.filename} (created)` : `  .opencode/commands/${cf.filename} (updated)`);
+      }
+    }
+  }
+
   // --- plugins ---
   const plugDir = opencodePluginsDir(cwd);
   const plugDirExisted = fs.existsSync(plugDir);
@@ -411,6 +439,30 @@ function mergeOpenCodeConfig(
 
   if (!result["instructions"]) {
     result["instructions"] = lhConfig["instructions"];
+  }
+
+  const existingCommands = (result["command"] ?? {}) as Record<string, unknown>;
+  const lhCommands = (lhConfig["command"] ?? {}) as Record<string, unknown>;
+  const mergedCommands = { ...existingCommands };
+
+  for (const [name, lhValue] of Object.entries(lhCommands)) {
+    if (!name.startsWith("lh-")) continue;
+    const existingCmd = mergedCommands[name];
+    const needsTemplateRepair =
+      existingCmd !== undefined &&
+      typeof existingCmd === "object" &&
+      existingCmd !== null &&
+      typeof (existingCmd as Record<string, unknown>)["template"] !== "string";
+
+    if (force || !(name in mergedCommands) || needsTemplateRepair) {
+      mergedCommands[name] = lhValue;
+    } else if (name in mergedCommands) {
+      warnings.push(`OpenCode command config already exists in opencode.json: ${name}. Use --force to update LeanHarness command entries.`);
+    }
+  }
+
+  if (Object.keys(mergedCommands).length > 0) {
+    result["command"] = mergedCommands;
   }
 
   return result;
@@ -592,6 +644,43 @@ function createOpenCodeConfigObject(): Record<string, unknown> {
       "docs/*.md",
       ".lh/memory/*.md",
     ],
+    "command": {
+      "lh-spec": {
+        "description": "Create or update a LeanHarness feature specification",
+        "agent": "lh-builder",
+        "template": ".opencode/commands/lh-spec.md",
+      },
+      "lh-discover": {
+        "description": "Perform LeanHarness on-demand discovery for a feature",
+        "agent": "lh-scout",
+        "template": ".opencode/commands/lh-discover.md",
+      },
+      "lh-plan": {
+        "description": "Create a LeanHarness implementation plan and task list",
+        "agent": "lh-builder",
+        "template": ".opencode/commands/lh-plan.md",
+      },
+      "lh-build": {
+        "description": "Execute LeanHarness feature tasks with bounded context",
+        "agent": "lh-builder",
+        "template": ".opencode/commands/lh-build.md",
+      },
+      "lh-check": {
+        "description": "Verify a LeanHarness feature against acceptance criteria",
+        "agent": "lh-verifier",
+        "template": ".opencode/commands/lh-check.md",
+      },
+      "lh-status": {
+        "description": "Inspect LeanHarness feature state and summarize current work",
+        "agent": "lh-builder",
+        "template": ".opencode/commands/lh-status.md",
+      },
+      "lh-do": {
+        "description": "Run the full LeanHarness workflow end-to-end",
+        "agent": "lh-builder",
+        "template": ".opencode/commands/lh-do.md",
+      },
+    },
   };
 }
 

@@ -3,6 +3,26 @@ import type { AgentAdapter, AgentDetection, AgentRunInput, AgentRunResult } from
 
 export type ClaudeCodeRunOptions = AgentRunInput;
 
+function killClaudeProcess(proc: ReturnType<typeof spawn>, signal: NodeJS.Signals): void {
+  if (!proc.pid) return;
+
+  // On POSIX, kill the whole process group so wrapper scripts cannot leave children running.
+  if (process.platform !== "win32") {
+    try {
+      process.kill(-proc.pid, signal);
+      return;
+    } catch {
+      // Fall back to direct child kill below.
+    }
+  }
+
+  try {
+    proc.kill(signal);
+  } catch {
+    // Process already exited.
+  }
+}
+
 export function buildClaudeCodeArgs(input: AgentRunInput): string[] {
   const args: string[] = [];
 
@@ -123,6 +143,7 @@ export async function runClaudeCode(input: ClaudeCodeRunOptions): Promise<AgentR
     const proc = spawn(cmd, args, {
       stdio: ["ignore", "pipe", "pipe"],
       cwd: input.root,
+      detached: process.platform !== "win32",
     });
 
     let stdout = "";
@@ -134,9 +155,9 @@ export async function runClaudeCode(input: ClaudeCodeRunOptions): Promise<AgentR
     // Timeout enforcement
     const timer = setTimeout(() => {
       timedOut = true;
-      proc.kill("SIGTERM");
+      killClaudeProcess(proc, "SIGTERM");
       setTimeout(() => {
-        try { proc.kill("SIGKILL"); } catch { /* already dead */ }
+        killClaudeProcess(proc, "SIGKILL");
       }, 5000);
     }, input.timeout ?? 1_800_000);
 
@@ -144,15 +165,15 @@ export async function runClaudeCode(input: ClaudeCodeRunOptions): Promise<AgentR
     if (input.signal) {
       input.signal.addEventListener("abort", () => {
         aborted = true;
-        proc.kill("SIGTERM");
+        killClaudeProcess(proc, "SIGTERM");
         setTimeout(() => {
-          try { proc.kill("SIGKILL"); } catch { /* already dead */ }
+          killClaudeProcess(proc, "SIGKILL");
         }, 5000);
       }, { once: true });
     }
 
     // Signal forwarding
-    const forwardSignal = (sig: NodeJS.Signals) => { try { proc.kill(sig); } catch { /* already dead */ } };
+    const forwardSignal = (sig: NodeJS.Signals) => { killClaudeProcess(proc, sig); };
     process.on("SIGINT", forwardSignal);
     process.on("SIGTERM", forwardSignal);
 

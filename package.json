@@ -25,7 +25,7 @@
     ".lh/policies"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && cp -r src/commands/opencode-command-bundles dist/commands/opencode-command-bundles",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "start": "node dist/index.js",
     "dev": "tsc -p tsconfig.json --watch",

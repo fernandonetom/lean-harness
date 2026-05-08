@@ -1,0 +1,3497 @@
+{
+  "version": "1",
+  "builtAt": "2026-05-08T15:30:30.111Z",
+  "rootDir": "/home/fernando/Documentos/projetos/pessoal/lean-harness",
+  "nodeCount": 182,
+  "edgeCount": 406,
+  "nodes": {
+    ".github/workflows/ci.yml": {
+      "path": ".github/workflows/ci.yml",
+      "kind": "config",
+      "symbols": [],
+      "size": 476,
+      "lastModified": "2026-05-08T14:20:49.332Z",
+      "importCount": 0
+    },
+    ".github/workflows/release.yml": {
+      "path": ".github/workflows/release.yml",
+      "kind": "config",
+      "symbols": [],
+      "size": 562,
+      "lastModified": "2026-05-08T14:20:49.332Z",
+      "importCount": 0
+    },
+    ".mcp.json": {
+      "path": ".mcp.json",
+      "kind": "config",
+      "symbols": [],
+      "size": 122,
+      "lastModified": "2026-05-08T15:24:16.935Z",
+      "importCount": 0
+    },
+    "CHANGELOG.md": {
+      "path": "CHANGELOG.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 2689,
+      "lastModified": "2026-05-08T14:20:49.334Z",
+      "importCount": 0
+    },
+    "CLAUDE.md": {
+      "path": "CLAUDE.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 4147,
+      "lastModified": "2026-05-08T14:20:49.334Z",
+      "importCount": 0
+    },
+    "CONTRIBUTING.md": {
+      "path": "CONTRIBUTING.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 5907,
+      "lastModified": "2026-05-08T14:20:49.335Z",
+      "importCount": 0
+    },
+    "README.md": {
+      "path": "README.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 5579,
+      "lastModified": "2026-05-08T14:20:49.335Z",
+      "importCount": 0
+    },
+    "docs/api-stability.md": {
+      "path": "docs/api-stability.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 9820,
+      "lastModified": "2026-05-08T14:20:49.335Z",
+      "importCount": 0
+    },
+    "docs/cavebus.md": {
+      "path": "docs/cavebus.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 21116,
+      "lastModified": "2026-05-08T14:20:49.335Z",
+      "importCount": 0
+    },
+    "docs/commands.md": {
+      "path": "docs/commands.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 13153,
+      "lastModified": "2026-05-08T14:20:49.335Z",
+      "importCount": 0
+    },
+    "docs/configuration.md": {
+      "path": "docs/configuration.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 6800,
+      "lastModified": "2026-05-08T15:26:21.691Z",
+      "importCount": 0
+    },
+    "docs/cookbook.md": {
+      "path": "docs/cookbook.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 5845,
+      "lastModified": "2026-05-08T14:20:49.335Z",
+      "importCount": 0
+    },
+    "docs/docs/architecture.md": {
+      "path": "docs/docs/architecture.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 14459,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/docs/glossary.md": {
+      "path": "docs/docs/glossary.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 5644,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/docs/principles.md": {
+      "path": "docs/docs/principles.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 5552,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/docs/vision.md": {
+      "path": "docs/docs/vision.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 5068,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/docs/workflow.md": {
+      "path": "docs/docs/workflow.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 11400,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/dogfooding.md": {
+      "path": "docs/dogfooding.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 6954,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/examples/password-reset.md": {
+      "path": "docs/examples/password-reset.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 7236,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/host-adapters.md": {
+      "path": "docs/host-adapters.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 5225,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/hosts/README.md": {
+      "path": "docs/hosts/README.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 4235,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/hosts/claude-code.md": {
+      "path": "docs/hosts/claude-code.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 5600,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/hosts/opencode.md": {
+      "path": "docs/hosts/opencode.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 5567,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/installation.md": {
+      "path": "docs/installation.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 3266,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/migration.md": {
+      "path": "docs/migration.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 4188,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/release-checklist.md": {
+      "path": "docs/release-checklist.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 3724,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/roadmap.md": {
+      "path": "docs/roadmap.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 2948,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/security.md": {
+      "path": "docs/security.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 5992,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "docs/superpowers/plans/2026-05-08-developer-experience-improvements.md": {
+      "path": "docs/superpowers/plans/2026-05-08-developer-experience-improvements.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 28306,
+      "lastModified": "2026-05-08T14:57:26.098Z",
+      "importCount": 0
+    },
+    "docs/superpowers/specs/2026-05-08-developer-experience-improvements-design.md": {
+      "path": "docs/superpowers/specs/2026-05-08-developer-experience-improvements-design.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 8461,
+      "lastModified": "2026-05-08T14:49:04.358Z",
+      "importCount": 0
+    },
+    "docs/troubleshooting.md": {
+      "path": "docs/troubleshooting.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 7116,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "examples/password-reset/README.md": {
+      "path": "examples/password-reset/README.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 4365,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "examples/password-reset/boundary.json": {
+      "path": "examples/password-reset/boundary.json",
+      "kind": "config",
+      "symbols": [],
+      "size": 1729,
+      "lastModified": "2026-05-08T14:20:49.336Z",
+      "importCount": 0
+    },
+    "examples/password-reset/checks.md": {
+      "path": "examples/password-reset/checks.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 4730,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 0
+    },
+    "examples/password-reset/claude-code-flow.md": {
+      "path": "examples/password-reset/claude-code-flow.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 4995,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 0
+    },
+    "examples/password-reset/discovery.md": {
+      "path": "examples/password-reset/discovery.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 4417,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 0
+    },
+    "examples/password-reset/opencode-flow.md": {
+      "path": "examples/password-reset/opencode-flow.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 5915,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 0
+    },
+    "examples/password-reset/plan.md": {
+      "path": "examples/password-reset/plan.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 3279,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 0
+    },
+    "examples/password-reset/result.md": {
+      "path": "examples/password-reset/result.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 3960,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 0
+    },
+    "examples/password-reset/spec.md": {
+      "path": "examples/password-reset/spec.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 3253,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 0
+    },
+    "examples/password-reset/tasks.md": {
+      "path": "examples/password-reset/tasks.md",
+      "kind": "docs",
+      "symbols": [],
+      "size": 4045,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 0
+    },
+    "opencode.json": {
+      "path": "opencode.json",
+      "kind": "config",
+      "symbols": [],
+      "size": 4273,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 0
+    },
+    "package-lock.json": {
+      "path": "package-lock.json",
+      "kind": "config",
+      "symbols": [],
+      "size": 52691,
+      "lastModified": "2026-05-08T14:21:40.465Z",
+      "importCount": 0
+    },
+    "package.json": {
+      "path": "package.json",
+      "kind": "config",
+      "symbols": [],
+      "size": 1654,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 0
+    },
+    "src/adapters/claude-code.ts": {
+      "path": "src/adapters/claude-code.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 5658,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 3
+    },
+    "src/adapters/mcp-server.ts": {
+      "path": "src/adapters/mcp-server.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 6451,
+      "lastModified": "2026-05-08T15:24:49.941Z",
+      "importCount": 1
+    },
+    "src/adapters/opencode.ts": {
+      "path": "src/adapters/opencode.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 5920,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 2
+    },
+    "src/adapters/registry.ts": {
+      "path": "src/adapters/registry.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 1940,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 5
+    },
+    "src/adapters/types.ts": {
+      "path": "src/adapters/types.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 1678,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 11
+    },
+    "src/cavebus/compress.ts": {
+      "path": "src/cavebus/compress.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 30551,
+      "lastModified": "2026-05-08T14:20:49.337Z",
+      "importCount": 3
+    },
+    "src/cavebus/index.ts": {
+      "path": "src/cavebus/index.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 2815,
+      "lastModified": "2026-05-08T14:20:49.338Z",
+      "importCount": 1
+    },
+    "src/cavebus/protected.ts": {
+      "path": "src/cavebus/protected.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 7658,
+      "lastModified": "2026-05-08T14:20:49.338Z",
+      "importCount": 3
+    },
+    "src/cavebus/schema.ts": {
+      "path": "src/cavebus/schema.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 2246,
+      "lastModified": "2026-05-08T14:20:49.338Z",
+      "importCount": 5
+    },
+    "src/cavebus/validate.ts": {
+      "path": "src/cavebus/validate.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 9010,
+      "lastModified": "2026-05-08T14:20:49.338Z",
+      "importCount": 4
+    },
+    "src/cli.ts": {
+      "path": "src/cli.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 22226,
+      "lastModified": "2026-05-08T15:26:21.691Z",
+      "importCount": 3
+    },
+    "src/commands/archive.ts": {
+      "path": "src/commands/archive.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 948,
+      "lastModified": "2026-05-08T14:20:49.338Z",
+      "importCount": 2
+    },
+    "src/commands/build.ts": {
+      "path": "src/commands/build.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 5758,
+      "lastModified": "2026-05-08T14:20:49.338Z",
+      "importCount": 4
+    },
+    "src/commands/cavebus.ts": {
+      "path": "src/commands/cavebus.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 4483,
+      "lastModified": "2026-05-08T14:20:49.338Z",
+      "importCount": 1
+    },
+    "src/commands/check.ts": {
+      "path": "src/commands/check.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 4924,
+      "lastModified": "2026-05-08T14:20:49.338Z",
+      "importCount": 6
+    },
+    "src/commands/compile-task.ts": {
+      "path": "src/commands/compile-task.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 2679,
+      "lastModified": "2026-05-08T14:20:49.338Z",
+      "importCount": 1
+    },
+    "src/commands/completion.ts": {
+      "path": "src/commands/completion.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 6569,
+      "lastModified": "2026-05-08T14:20:49.338Z",
+      "importCount": 2
+    },
+    "src/commands/compress.ts": {
+      "path": "src/commands/compress.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 7052,
+      "lastModified": "2026-05-08T14:20:49.338Z",
+      "importCount": 1
+    },
+    "src/commands/discover.ts": {
+      "path": "src/commands/discover.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 4023,
+      "lastModified": "2026-05-08T14:20:49.338Z",
+      "importCount": 6
+    },
+    "src/commands/doctor.ts": {
+      "path": "src/commands/doctor.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 19142,
+      "lastModified": "2026-05-08T14:20:49.338Z",
+      "importCount": 2
+    },
+    "src/commands/graph.ts": {
+      "path": "src/commands/graph.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 3669,
+      "lastModified": "2026-05-08T15:14:10.301Z",
+      "importCount": 1
+    },
+    "src/commands/init-claude-code.ts": {
+      "path": "src/commands/init-claude-code.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 109426,
+      "lastModified": "2026-05-08T14:20:49.339Z",
+      "importCount": 1
+    },
+    "src/commands/init.ts": {
+      "path": "src/commands/init.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 56611,
+      "lastModified": "2026-05-08T15:26:21.692Z",
+      "importCount": 10
+    },
+    "src/commands/list.ts": {
+      "path": "src/commands/list.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 1568,
+      "lastModified": "2026-05-08T14:20:49.339Z",
+      "importCount": 2
+    },
+    "src/commands/memory.ts": {
+      "path": "src/commands/memory.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 3597,
+      "lastModified": "2026-05-08T14:20:49.339Z",
+      "importCount": 2
+    },
+    "src/commands/new.ts": {
+      "path": "src/commands/new.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 1804,
+      "lastModified": "2026-05-08T14:20:49.339Z",
+      "importCount": 1
+    },
+    "src/commands/plan.ts": {
+      "path": "src/commands/plan.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 3650,
+      "lastModified": "2026-05-08T14:20:49.339Z",
+      "importCount": 4
+    },
+    "src/commands/run-task.ts": {
+      "path": "src/commands/run-task.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 11315,
+      "lastModified": "2026-05-08T14:20:49.339Z",
+      "importCount": 1
+    },
+    "src/commands/show.ts": {
+      "path": "src/commands/show.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 1368,
+      "lastModified": "2026-05-08T14:20:49.339Z",
+      "importCount": 2
+    },
+    "src/commands/spec.ts": {
+      "path": "src/commands/spec.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 1791,
+      "lastModified": "2026-05-08T14:20:49.339Z",
+      "importCount": 6
+    },
+    "src/commands/status.ts": {
+      "path": "src/commands/status.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 14870,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 1
+    },
+    "src/commands/update.ts": {
+      "path": "src/commands/update.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 3014,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 2
+    },
+    "src/commands/watch.ts": {
+      "path": "src/commands/watch.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 4571,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 2
+    },
+    "src/context/compiler.ts": {
+      "path": "src/context/compiler.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 18138,
+      "lastModified": "2026-05-08T15:26:21.692Z",
+      "importCount": 3
+    },
+    "src/context/protected-tokens.ts": {
+      "path": "src/context/protected-tokens.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 5489,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 2
+    },
+    "src/context/task-context.ts": {
+      "path": "src/context/task-context.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 9036,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 3
+    },
+    "src/core/colors.ts": {
+      "path": "src/core/colors.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 1659,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 3
+    },
+    "src/core/config.ts": {
+      "path": "src/core/config.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 15468,
+      "lastModified": "2026-05-08T15:26:21.692Z",
+      "importCount": 7
+    },
+    "src/core/errors.ts": {
+      "path": "src/core/errors.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 509,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 34
+    },
+    "src/core/features.ts": {
+      "path": "src/core/features.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 15493,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 18
+    },
+    "src/core/fs.ts": {
+      "path": "src/core/fs.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 2726,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 35
+    },
+    "src/core/logger.ts": {
+      "path": "src/core/logger.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 1123,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 22
+    },
+    "src/core/paths.ts": {
+      "path": "src/core/paths.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 2816,
+      "lastModified": "2026-05-08T15:26:21.692Z",
+      "importCount": 30
+    },
+    "src/core/prompt.ts": {
+      "path": "src/core/prompt.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 2755,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 2
+    },
+    "src/core/resolved-config.ts": {
+      "path": "src/core/resolved-config.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 4303,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 7
+    },
+    "src/core/risk-gates.ts": {
+      "path": "src/core/risk-gates.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 5454,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 1
+    },
+    "src/core/spinner.ts": {
+      "path": "src/core/spinner.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 1937,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 1
+    },
+    "src/core/state.ts": {
+      "path": "src/core/state.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 4080,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 13
+    },
+    "src/core/templates.ts": {
+      "path": "src/core/templates.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 1145,
+      "lastModified": "2026-05-08T14:20:49.340Z",
+      "importCount": 2
+    },
+    "src/core/types.ts": {
+      "path": "src/core/types.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 7799,
+      "lastModified": "2026-05-08T15:26:21.692Z",
+      "importCount": 15
+    },
+    "src/core/version.ts": {
+      "path": "src/core/version.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 759,
+      "lastModified": "2026-05-08T14:20:49.341Z",
+      "importCount": 2
+    },
+    "src/discovery/boundary.ts": {
+      "path": "src/discovery/boundary.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 16641,
+      "lastModified": "2026-05-08T15:26:21.693Z",
+      "importCount": 4
+    },
+    "src/discovery/graph-scorer.ts": {
+      "path": "src/discovery/graph-scorer.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 2516,
+      "lastModified": "2026-05-08T14:30:45.933Z",
+      "importCount": 1
+    },
+    "src/discovery/import-resolver.ts": {
+      "path": "src/discovery/import-resolver.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 5266,
+      "lastModified": "2026-05-08T14:20:49.341Z",
+      "importCount": 3
+    },
+    "src/discovery/index.ts": {
+      "path": "src/discovery/index.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 11507,
+      "lastModified": "2026-05-08T15:26:21.693Z",
+      "importCount": 3
+    },
+    "src/discovery/package-detector.ts": {
+      "path": "src/discovery/package-detector.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 4909,
+      "lastModified": "2026-05-08T14:20:49.341Z",
+      "importCount": 4
+    },
+    "src/discovery/project-detector.ts": {
+      "path": "src/discovery/project-detector.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 4908,
+      "lastModified": "2026-05-08T14:20:49.341Z",
+      "importCount": 4
+    },
+    "src/discovery/search.ts": {
+      "path": "src/discovery/search.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 9585,
+      "lastModified": "2026-05-08T14:20:49.341Z",
+      "importCount": 8
+    },
+    "src/discovery/test-detector.ts": {
+      "path": "src/discovery/test-detector.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 4255,
+      "lastModified": "2026-05-08T14:20:49.341Z",
+      "importCount": 3
+    },
+    "src/graph/import-graph.ts": {
+      "path": "src/graph/import-graph.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 11353,
+      "lastModified": "2026-05-08T14:29:19.247Z",
+      "importCount": 6
+    },
+    "src/graph/index.ts": {
+      "path": "src/graph/index.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 2967,
+      "lastModified": "2026-05-08T14:30:21.845Z",
+      "importCount": 2
+    },
+    "src/graph/knowledge-graph.ts": {
+      "path": "src/graph/knowledge-graph.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 3817,
+      "lastModified": "2026-05-08T15:01:37.457Z",
+      "importCount": 4
+    },
+    "src/graph/symbol-graph.ts": {
+      "path": "src/graph/symbol-graph.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 5864,
+      "lastModified": "2026-05-08T14:29:45.205Z",
+      "importCount": 3
+    },
+    "src/index.ts": {
+      "path": "src/index.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 586,
+      "lastModified": "2026-05-08T14:20:49.341Z",
+      "importCount": 0
+    },
+    "src/memory/index.ts": {
+      "path": "src/memory/index.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 6114,
+      "lastModified": "2026-05-08T15:26:21.693Z",
+      "importCount": 5
+    },
+    "src/planning/acceptance.ts": {
+      "path": "src/planning/acceptance.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 7665,
+      "lastModified": "2026-05-08T14:20:49.341Z",
+      "importCount": 7
+    },
+    "src/planning/index.ts": {
+      "path": "src/planning/index.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 6465,
+      "lastModified": "2026-05-08T14:20:49.341Z",
+      "importCount": 2
+    },
+    "src/planning/plan-renderer.ts": {
+      "path": "src/planning/plan-renderer.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 8488,
+      "lastModified": "2026-05-08T14:20:49.341Z",
+      "importCount": 2
+    },
+    "src/planning/task-generator.ts": {
+      "path": "src/planning/task-generator.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 24159,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 4
+    },
+    "src/plugins/loader.ts": {
+      "path": "src/plugins/loader.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 2516,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 2
+    },
+    "src/plugins/registry.ts": {
+      "path": "src/plugins/registry.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 1659,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 1
+    },
+    "src/plugins/types.ts": {
+      "path": "src/plugins/types.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 953,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 3
+    },
+    "src/verification/acceptance.ts": {
+      "path": "src/verification/acceptance.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 6286,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 1
+    },
+    "src/verification/changed-files.ts": {
+      "path": "src/verification/changed-files.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 9434,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 2
+    },
+    "src/verification/commands.ts": {
+      "path": "src/verification/commands.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 12896,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 2
+    },
+    "src/verification/index.ts": {
+      "path": "src/verification/index.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 23963,
+      "lastModified": "2026-05-08T15:26:21.693Z",
+      "importCount": 6
+    },
+    "src/verification/review.ts": {
+      "path": "src/verification/review.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 4360,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 1
+    },
+    "tests/adapters/claude-code.test.ts": {
+      "path": "tests/adapters/claude-code.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 3496,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 0
+    },
+    "tests/adapters/opencode.test.ts": {
+      "path": "tests/adapters/opencode.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 2445,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 0
+    },
+    "tests/adapters/registry.test.ts": {
+      "path": "tests/adapters/registry.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 1737,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 0
+    },
+    "tests/cavebus/compress.test.ts": {
+      "path": "tests/cavebus/compress.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 2292,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 0
+    },
+    "tests/cavebus/protected.test.ts": {
+      "path": "tests/cavebus/protected.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 3257,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 0
+    },
+    "tests/cavebus/schema.test.ts": {
+      "path": "tests/cavebus/schema.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 2175,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 0
+    },
+    "tests/cavebus/validate.test.ts": {
+      "path": "tests/cavebus/validate.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 3553,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 0
+    },
+    "tests/cli/cli-parser.test.ts": {
+      "path": "tests/cli/cli-parser.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 2511,
+      "lastModified": "2026-05-08T14:20:49.342Z",
+      "importCount": 0
+    },
+    "tests/commands/completion.test.ts": {
+      "path": "tests/commands/completion.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 2661,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/commands/doctor.test.ts": {
+      "path": "tests/commands/doctor.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 5180,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/commands/init-e2e.test.ts": {
+      "path": "tests/commands/init-e2e.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 10601,
+      "lastModified": "2026-05-08T15:26:21.693Z",
+      "importCount": 0
+    },
+    "tests/commands/init-global.test.ts": {
+      "path": "tests/commands/init-global.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 4438,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/commands/memory.test.ts": {
+      "path": "tests/commands/memory.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 4353,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/commands/update.test.ts": {
+      "path": "tests/commands/update.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 3510,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/commands/watch.test.ts": {
+      "path": "tests/commands/watch.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 2591,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/context/compiler.test.ts": {
+      "path": "tests/context/compiler.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 3486,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/context/protected-tokens.test.ts": {
+      "path": "tests/context/protected-tokens.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 4483,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/core/colors.test.ts": {
+      "path": "tests/core/colors.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 2567,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/core/config.test.ts": {
+      "path": "tests/core/config.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 10035,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/core/errors.test.ts": {
+      "path": "tests/core/errors.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 1149,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/core/features.test.ts": {
+      "path": "tests/core/features.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 12803,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/core/fs.test.ts": {
+      "path": "tests/core/fs.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 7861,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/core/logger.test.ts": {
+      "path": "tests/core/logger.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 2573,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/core/paths.test.ts": {
+      "path": "tests/core/paths.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 6196,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/core/prompt.test.ts": {
+      "path": "tests/core/prompt.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 3244,
+      "lastModified": "2026-05-08T14:20:49.343Z",
+      "importCount": 0
+    },
+    "tests/core/resolved-config.test.ts": {
+      "path": "tests/core/resolved-config.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 5567,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/core/risk-gates.test.ts": {
+      "path": "tests/core/risk-gates.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 4702,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/core/spinner.test.ts": {
+      "path": "tests/core/spinner.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 1232,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/core/state.test.ts": {
+      "path": "tests/core/state.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 9390,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/core/templates.test.ts": {
+      "path": "tests/core/templates.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 4891,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/discovery/boundary.test.ts": {
+      "path": "tests/discovery/boundary.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 11167,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/discovery/discovery-flow.test.ts": {
+      "path": "tests/discovery/discovery-flow.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 7282,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/discovery/import-resolver.test.ts": {
+      "path": "tests/discovery/import-resolver.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 10686,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/discovery/project-detector.test.ts": {
+      "path": "tests/discovery/project-detector.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 5689,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/discovery/search.test.ts": {
+      "path": "tests/discovery/search.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 5401,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/e2e/helpers.ts": {
+      "path": "tests/e2e/helpers.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 1054,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 5
+    },
+    "tests/e2e/workflow.test.ts": {
+      "path": "tests/e2e/workflow.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 6767,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/fixtures/sample-project/package.json": {
+      "path": "tests/fixtures/sample-project/package.json",
+      "kind": "config",
+      "symbols": [],
+      "size": 274,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/fixtures/sample-project/src/auth/password.ts": {
+      "path": "tests/fixtures/sample-project/src/auth/password.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 303,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 1
+    },
+    "tests/fixtures/sample-project/src/auth/session.ts": {
+      "path": "tests/fixtures/sample-project/src/auth/session.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 371,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/fixtures/sample-project/src/email/send.ts": {
+      "path": "tests/fixtures/sample-project/src/email/send.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 151,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/fixtures/sample-project/tests/auth/password.test.ts": {
+      "path": "tests/fixtures/sample-project/tests/auth/password.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 316,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/helpers/assertions.ts": {
+      "path": "tests/helpers/assertions.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 410,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/helpers/cli.ts": {
+      "path": "tests/helpers/cli.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 1235,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/helpers/fixture.ts": {
+      "path": "tests/helpers/fixture.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 4024,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 4
+    },
+    "tests/helpers/workspace.ts": {
+      "path": "tests/helpers/workspace.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 1070,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 12
+    },
+    "tests/memory/memory.test.ts": {
+      "path": "tests/memory/memory.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 6297,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/planning/acceptance.test.ts": {
+      "path": "tests/planning/acceptance.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 5864,
+      "lastModified": "2026-05-08T14:20:49.344Z",
+      "importCount": 0
+    },
+    "tests/planning/plan-renderer.test.ts": {
+      "path": "tests/planning/plan-renderer.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 5570,
+      "lastModified": "2026-05-08T14:20:49.345Z",
+      "importCount": 0
+    },
+    "tests/planning/planning-flow.test.ts": {
+      "path": "tests/planning/planning-flow.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 6549,
+      "lastModified": "2026-05-08T14:20:49.345Z",
+      "importCount": 0
+    },
+    "tests/planning/task-generator.test.ts": {
+      "path": "tests/planning/task-generator.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 10182,
+      "lastModified": "2026-05-08T14:20:49.345Z",
+      "importCount": 0
+    },
+    "tests/plugins/loader.test.ts": {
+      "path": "tests/plugins/loader.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 4200,
+      "lastModified": "2026-05-08T14:20:49.345Z",
+      "importCount": 0
+    },
+    "tests/plugins/registry.test.ts": {
+      "path": "tests/plugins/registry.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 3085,
+      "lastModified": "2026-05-08T14:20:49.345Z",
+      "importCount": 0
+    },
+    "tests/stress/concurrency.test.ts": {
+      "path": "tests/stress/concurrency.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 7112,
+      "lastModified": "2026-05-08T14:20:49.345Z",
+      "importCount": 0
+    },
+    "tests/stress/corruption.test.ts": {
+      "path": "tests/stress/corruption.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 7172,
+      "lastModified": "2026-05-08T14:20:49.345Z",
+      "importCount": 0
+    },
+    "tests/stress/scale.test.ts": {
+      "path": "tests/stress/scale.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 7583,
+      "lastModified": "2026-05-08T14:20:49.345Z",
+      "importCount": 0
+    },
+    "tests/stress/workflow.test.ts": {
+      "path": "tests/stress/workflow.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 6627,
+      "lastModified": "2026-05-08T14:20:49.345Z",
+      "importCount": 0
+    },
+    "tests/verification/check-flow.test.ts": {
+      "path": "tests/verification/check-flow.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 428,
+      "lastModified": "2026-05-08T14:20:49.345Z",
+      "importCount": 0
+    },
+    "tests/verification/commands.test.ts": {
+      "path": "tests/verification/commands.test.ts",
+      "kind": "test",
+      "symbols": [],
+      "size": 3344,
+      "lastModified": "2026-05-08T14:20:49.345Z",
+      "importCount": 0
+    },
+    "tsconfig.json": {
+      "path": "tsconfig.json",
+      "kind": "config",
+      "symbols": [],
+      "size": 507,
+      "lastModified": "2026-05-08T14:20:49.345Z",
+      "importCount": 0
+    },
+    "vitest.config.ts": {
+      "path": "vitest.config.ts",
+      "kind": "source",
+      "symbols": [],
+      "size": 412,
+      "lastModified": "2026-05-08T14:20:49.345Z",
+      "importCount": 0
+    }
+  },
+  "edges": [
+    {
+      "from": "src/adapters/claude-code.ts",
+      "to": "src/adapters/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/adapters/mcp-server.ts",
+      "to": "src/graph/import-graph.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/adapters/mcp-server.ts",
+      "to": "src/graph/symbol-graph.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/adapters/mcp-server.ts",
+      "to": "src/graph/knowledge-graph.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/adapters/opencode.ts",
+      "to": "src/adapters/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/adapters/registry.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/adapters/registry.ts",
+      "to": "src/adapters/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/adapters/registry.ts",
+      "to": "src/adapters/claude-code.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/adapters/registry.ts",
+      "to": "src/adapters/opencode.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/compress.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/compress.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/compress.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/compress.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/compress.ts",
+      "to": "src/cavebus/schema.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/compress.ts",
+      "to": "src/cavebus/protected.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/compress.ts",
+      "to": "src/cavebus/validate.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/index.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/index.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/index.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/index.ts",
+      "to": "src/cavebus/schema.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/index.ts",
+      "to": "src/cavebus/protected.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/index.ts",
+      "to": "src/cavebus/validate.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/index.ts",
+      "to": "src/cavebus/compress.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cavebus/validate.ts",
+      "to": "src/cavebus/schema.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/init.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/status.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/new.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/spec.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/list.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/show.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/archive.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/doctor.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/discover.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/compile-task.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/run-task.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/plan.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/build.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/check.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/compress.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/cavebus.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/memory.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/graph.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/update.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/adapters/mcp-server.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/completion.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/commands/watch.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/core/version.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/cli.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/archive.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/archive.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/archive.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/build.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/build.ts",
+      "to": "src/adapters/registry.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/build.ts",
+      "to": "src/adapters/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/build.ts",
+      "to": "src/core/resolved-config.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/build.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/cavebus.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/cavebus.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/cavebus.ts",
+      "to": "src/cavebus/schema.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/cavebus.ts",
+      "to": "src/cavebus/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/check.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/check.ts",
+      "to": "src/verification/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/check.ts",
+      "to": "src/core/resolved-config.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/check.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/compile-task.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/compile-task.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/compile-task.ts",
+      "to": "src/context/compiler.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/completion.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/compress.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/compress.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/compress.ts",
+      "to": "src/cavebus/compress.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/compress.ts",
+      "to": "src/core/resolved-config.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/compress.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/compress.ts",
+      "to": "src/memory/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/discover.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/discover.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/discover.ts",
+      "to": "src/discovery/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/discover.ts",
+      "to": "src/core/resolved-config.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/discover.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/doctor.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/doctor.ts",
+      "to": "src/core/config.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/doctor.ts",
+      "to": "src/core/state.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/doctor.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/doctor.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/doctor.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/doctor.ts",
+      "to": "src/adapters/registry.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/doctor.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/doctor.ts",
+      "to": "src/adapters/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/graph.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/graph.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/graph.ts",
+      "to": "src/graph/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/graph.ts",
+      "to": "src/graph/import-graph.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/graph.ts",
+      "to": "src/graph/symbol-graph.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/init-claude-code.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/init-claude-code.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/init-claude-code.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/init.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/init.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/init.ts",
+      "to": "src/core/config.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/init.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/init.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/init.ts",
+      "to": "src/commands/init-claude-code.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/init.ts",
+      "to": "src/core/prompt.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/list.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/list.ts",
+      "to": "src/core/state.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/list.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/memory.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/memory.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/memory.ts",
+      "to": "src/memory/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/new.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/new.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/new.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/plan.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/plan.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/plan.ts",
+      "to": "src/planning/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/run-task.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/run-task.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/run-task.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/run-task.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/run-task.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/run-task.ts",
+      "to": "src/core/state.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/run-task.ts",
+      "to": "src/context/compiler.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/run-task.ts",
+      "to": "src/adapters/registry.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/run-task.ts",
+      "to": "src/core/resolved-config.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/run-task.ts",
+      "to": "src/adapters/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/show.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/show.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/show.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/spec.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/spec.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/spec.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/status.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/status.ts",
+      "to": "src/core/config.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/status.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/status.ts",
+      "to": "src/core/state.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/status.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/status.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/status.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/status.ts",
+      "to": "src/context/task-context.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/status.ts",
+      "to": "src/adapters/registry.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/status.ts",
+      "to": "src/adapters/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/status.ts",
+      "to": "src/cavebus/validate.ts",
+      "kind": "dynamic"
+    },
+    {
+      "from": "src/commands/update.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/update.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/update.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/update.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/update.ts",
+      "to": "src/core/version.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/update.ts",
+      "to": "src/commands/init.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/watch.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/watch.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/watch.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/watch.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/watch.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/watch.ts",
+      "to": "src/discovery/boundary.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/commands/watch.ts",
+      "to": "src/commands/check.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/context/compiler.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/context/compiler.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/context/compiler.ts",
+      "to": "src/core/state.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/context/compiler.ts",
+      "to": "src/context/protected-tokens.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/context/compiler.ts",
+      "to": "src/context/task-context.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/context/compiler.ts",
+      "to": "src/graph/knowledge-graph.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/context/task-context.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/context/task-context.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/context/task-context.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/context/task-context.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/config.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/config.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/config.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/features.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/features.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/features.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/features.ts",
+      "to": "src/core/templates.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/features.ts",
+      "to": "src/core/state.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/features.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/logger.ts",
+      "to": "src/core/colors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/prompt.ts",
+      "to": "src/core/colors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/resolved-config.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/resolved-config.ts",
+      "to": "src/core/config.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/risk-gates.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/risk-gates.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/risk-gates.ts",
+      "to": "src/core/resolved-config.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/state.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/state.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/state.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/templates.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/core/templates.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/boundary.ts",
+      "to": "src/discovery/project-detector.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/boundary.ts",
+      "to": "src/discovery/package-detector.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/boundary.ts",
+      "to": "src/discovery/search.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/boundary.ts",
+      "to": "src/discovery/test-detector.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/boundary.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/boundary.ts",
+      "to": "src/graph/import-graph.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/graph-scorer.ts",
+      "to": "src/discovery/search.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/graph-scorer.ts",
+      "to": "src/graph/import-graph.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/import-resolver.ts",
+      "to": "src/discovery/search.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/core/state.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/memory/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/discovery/project-detector.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/discovery/package-detector.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/discovery/test-detector.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/discovery/search.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/discovery/import-resolver.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/discovery/boundary.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/graph/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/graph/import-graph.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/index.ts",
+      "to": "src/discovery/graph-scorer.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/package-detector.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/project-detector.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/test-detector.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/discovery/test-detector.ts",
+      "to": "src/discovery/package-detector.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/graph/import-graph.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/graph/import-graph.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/graph/index.ts",
+      "to": "src/graph/import-graph.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/graph/index.ts",
+      "to": "src/graph/symbol-graph.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/graph/index.ts",
+      "to": "src/graph/knowledge-graph.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/graph/index.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/graph/index.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/graph/knowledge-graph.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/graph/knowledge-graph.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/graph/symbol-graph.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/graph/symbol-graph.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/index.ts",
+      "to": "src/cli.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/index.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/memory/index.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/memory/index.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/memory/index.ts",
+      "to": "src/core/config.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/memory/index.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/memory/index.ts",
+      "to": "src/graph/knowledge-graph.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/planning/index.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/planning/index.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/planning/index.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/planning/index.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/planning/index.ts",
+      "to": "src/core/state.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/planning/index.ts",
+      "to": "src/planning/acceptance.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/planning/index.ts",
+      "to": "src/planning/task-generator.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/planning/index.ts",
+      "to": "src/planning/plan-renderer.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/planning/plan-renderer.ts",
+      "to": "src/planning/acceptance.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/planning/plan-renderer.ts",
+      "to": "src/planning/task-generator.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/planning/task-generator.ts",
+      "to": "src/planning/acceptance.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/plugins/loader.ts",
+      "to": "src/plugins/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/plugins/loader.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/plugins/registry.ts",
+      "to": "src/plugins/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/plugins/registry.ts",
+      "to": "src/plugins/loader.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/plugins/types.ts",
+      "to": "src/adapters/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/verification/acceptance.ts",
+      "to": "src/verification/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/verification/acceptance.ts",
+      "to": "src/planning/acceptance.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/verification/changed-files.ts",
+      "to": "src/verification/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/verification/index.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/verification/index.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/verification/index.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/verification/index.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/verification/index.ts",
+      "to": "src/core/state.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/verification/index.ts",
+      "to": "src/verification/acceptance.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/verification/index.ts",
+      "to": "src/verification/commands.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/verification/index.ts",
+      "to": "src/verification/changed-files.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/verification/index.ts",
+      "to": "src/verification/review.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/verification/index.ts",
+      "to": "src/memory/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "src/verification/review.ts",
+      "to": "src/verification/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/adapters/claude-code.test.ts",
+      "to": "src/adapters/claude-code.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/adapters/claude-code.test.ts",
+      "to": "src/adapters/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/adapters/opencode.test.ts",
+      "to": "src/adapters/opencode.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/adapters/opencode.test.ts",
+      "to": "src/adapters/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/adapters/registry.test.ts",
+      "to": "src/adapters/registry.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/cavebus/compress.test.ts",
+      "to": "src/cavebus/compress.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/cavebus/protected.test.ts",
+      "to": "src/cavebus/protected.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/cavebus/schema.test.ts",
+      "to": "src/cavebus/schema.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/cavebus/validate.test.ts",
+      "to": "src/cavebus/validate.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/cli/cli-parser.test.ts",
+      "to": "src/cli.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/completion.test.ts",
+      "to": "src/commands/completion.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/completion.test.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/doctor.test.ts",
+      "to": "src/commands/doctor.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/doctor.test.ts",
+      "to": "tests/helpers/workspace.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/doctor.test.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/doctor.test.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/init-e2e.test.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/init-e2e.test.ts",
+      "to": "src/commands/init.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/init-global.test.ts",
+      "to": "src/commands/init.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/init-global.test.ts",
+      "to": "tests/helpers/workspace.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/memory.test.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/memory.test.ts",
+      "to": "src/commands/memory.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/update.test.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/update.test.ts",
+      "to": "src/commands/update.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/update.test.ts",
+      "to": "src/commands/init.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/watch.test.ts",
+      "to": "src/commands/watch.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/commands/watch.test.ts",
+      "to": "src/discovery/boundary.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/context/compiler.test.ts",
+      "to": "src/context/compiler.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/context/compiler.test.ts",
+      "to": "src/context/task-context.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/context/protected-tokens.test.ts",
+      "to": "src/context/protected-tokens.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/colors.test.ts",
+      "to": "src/core/colors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/config.test.ts",
+      "to": "src/core/config.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/config.test.ts",
+      "to": "tests/helpers/workspace.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/errors.test.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/features.test.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/features.test.ts",
+      "to": "tests/helpers/workspace.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/features.test.ts",
+      "to": "src/core/state.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/features.test.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/fs.test.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/fs.test.ts",
+      "to": "tests/helpers/workspace.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/logger.test.ts",
+      "to": "src/core/logger.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/paths.test.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/prompt.test.ts",
+      "to": "src/core/prompt.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/resolved-config.test.ts",
+      "to": "src/core/resolved-config.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/resolved-config.test.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/risk-gates.test.ts",
+      "to": "src/core/risk-gates.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/spinner.test.ts",
+      "to": "src/core/spinner.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/state.test.ts",
+      "to": "src/core/state.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/state.test.ts",
+      "to": "tests/helpers/workspace.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/state.test.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/state.test.ts",
+      "to": "src/core/paths.ts",
+      "kind": "dynamic"
+    },
+    {
+      "from": "tests/core/templates.test.ts",
+      "to": "src/core/templates.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/templates.test.ts",
+      "to": "tests/helpers/workspace.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/templates.test.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/core/templates.test.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/boundary.test.ts",
+      "to": "src/discovery/boundary.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/boundary.test.ts",
+      "to": "src/discovery/project-detector.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/boundary.test.ts",
+      "to": "src/discovery/package-detector.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/boundary.test.ts",
+      "to": "src/discovery/search.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/boundary.test.ts",
+      "to": "src/discovery/test-detector.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/discovery-flow.test.ts",
+      "to": "src/discovery/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/discovery-flow.test.ts",
+      "to": "tests/helpers/workspace.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/discovery-flow.test.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/discovery-flow.test.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/import-resolver.test.ts",
+      "to": "src/discovery/import-resolver.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/import-resolver.test.ts",
+      "to": "src/discovery/search.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/import-resolver.test.ts",
+      "to": "tests/helpers/workspace.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/project-detector.test.ts",
+      "to": "src/discovery/project-detector.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/project-detector.test.ts",
+      "to": "tests/helpers/workspace.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/search.test.ts",
+      "to": "src/discovery/search.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/discovery/search.test.ts",
+      "to": "tests/helpers/workspace.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/e2e/workflow.test.ts",
+      "to": "tests/e2e/helpers.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/e2e/workflow.test.ts",
+      "to": "src/commands/init.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/e2e/workflow.test.ts",
+      "to": "src/commands/spec.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/e2e/workflow.test.ts",
+      "to": "src/commands/discover.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/e2e/workflow.test.ts",
+      "to": "src/commands/plan.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/e2e/workflow.test.ts",
+      "to": "src/commands/build.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/e2e/workflow.test.ts",
+      "to": "src/commands/check.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/e2e/workflow.test.ts",
+      "to": "src/commands/list.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/e2e/workflow.test.ts",
+      "to": "src/commands/show.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/e2e/workflow.test.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/fixtures/sample-project/tests/auth/password.test.ts",
+      "to": "tests/fixtures/sample-project/src/auth/password.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/helpers/cli.ts",
+      "to": "src/cli.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/helpers/cli.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/helpers/fixture.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/helpers/workspace.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/helpers/workspace.ts",
+      "to": "src/core/paths.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/helpers/workspace.ts",
+      "to": "src/core/config.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/memory/memory.test.ts",
+      "to": "src/memory/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/acceptance.test.ts",
+      "to": "src/planning/acceptance.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/acceptance.test.ts",
+      "to": "tests/helpers/fixture.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/plan-renderer.test.ts",
+      "to": "src/planning/plan-renderer.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/plan-renderer.test.ts",
+      "to": "src/planning/acceptance.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/plan-renderer.test.ts",
+      "to": "src/planning/task-generator.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/plan-renderer.test.ts",
+      "to": "tests/helpers/fixture.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/planning-flow.test.ts",
+      "to": "src/planning/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/planning-flow.test.ts",
+      "to": "tests/helpers/workspace.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/planning-flow.test.ts",
+      "to": "src/core/features.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/planning-flow.test.ts",
+      "to": "src/discovery/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/planning-flow.test.ts",
+      "to": "src/core/fs.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/planning-flow.test.ts",
+      "to": "tests/helpers/fixture.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/task-generator.test.ts",
+      "to": "src/planning/task-generator.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/task-generator.test.ts",
+      "to": "src/planning/acceptance.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/planning/task-generator.test.ts",
+      "to": "tests/helpers/fixture.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/plugins/loader.test.ts",
+      "to": "src/plugins/loader.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/plugins/registry.test.ts",
+      "to": "src/plugins/registry.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/plugins/registry.test.ts",
+      "to": "src/plugins/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/concurrency.test.ts",
+      "to": "tests/e2e/helpers.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/concurrency.test.ts",
+      "to": "src/commands/init.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/concurrency.test.ts",
+      "to": "src/commands/spec.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/concurrency.test.ts",
+      "to": "src/commands/discover.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/concurrency.test.ts",
+      "to": "src/commands/plan.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/concurrency.test.ts",
+      "to": "src/commands/build.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/concurrency.test.ts",
+      "to": "src/commands/check.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/concurrency.test.ts",
+      "to": "src/core/state.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/concurrency.test.ts",
+      "to": "src/core/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/corruption.test.ts",
+      "to": "tests/e2e/helpers.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/corruption.test.ts",
+      "to": "src/commands/init.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/corruption.test.ts",
+      "to": "src/commands/spec.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/corruption.test.ts",
+      "to": "src/commands/discover.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/corruption.test.ts",
+      "to": "src/commands/check.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/corruption.test.ts",
+      "to": "src/core/state.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/corruption.test.ts",
+      "to": "src/verification/changed-files.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/corruption.test.ts",
+      "to": "src/verification/index.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/scale.test.ts",
+      "to": "tests/e2e/helpers.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/scale.test.ts",
+      "to": "src/commands/init.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/scale.test.ts",
+      "to": "src/commands/spec.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/scale.test.ts",
+      "to": "src/commands/discover.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/scale.test.ts",
+      "to": "src/discovery/search.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/scale.test.ts",
+      "to": "src/discovery/import-resolver.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/workflow.test.ts",
+      "to": "tests/e2e/helpers.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/workflow.test.ts",
+      "to": "src/commands/init.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/workflow.test.ts",
+      "to": "src/commands/spec.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/workflow.test.ts",
+      "to": "src/commands/discover.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/workflow.test.ts",
+      "to": "src/commands/plan.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/workflow.test.ts",
+      "to": "src/commands/build.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/workflow.test.ts",
+      "to": "src/commands/check.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/workflow.test.ts",
+      "to": "src/core/errors.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/workflow.test.ts",
+      "to": "src/adapters/claude-code.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/workflow.test.ts",
+      "to": "src/adapters/types.ts",
+      "kind": "import"
+    },
+    {
+      "from": "tests/stress/workflow.test.ts",
+      "to": "src/commands/archive.ts",
+      "kind": "dynamic"
+    },
+    {
+      "from": "tests/verification/check-flow.test.ts",
+      "to": "src/verification/index.ts",
+      "kind": "dynamic"
+    },
+    {
+      "from": "tests/verification/commands.test.ts",
+      "to": "src/verification/commands.ts",
+      "kind": "import"
+    }
+  ]
+}

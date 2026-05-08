@@ -73,6 +73,10 @@ export function opencodePluginsDir(root: string): string {
   return opencodePath(root, "plugins");
 }
 
+export function opencodeCommandsDir(root: string): string {
+  return opencodePath(root, "commands");
+}
+
 export function opencodePluginPath(root: string, ...segments: string[]): string {
   return path.resolve(root, OPENCODE_DIR, "plugins", ...segments);
 }

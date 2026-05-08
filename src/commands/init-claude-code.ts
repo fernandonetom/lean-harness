@@ -329,7 +329,7 @@ function mergeClaudeCodeSettings(
 // Content generators
 // ---------------------------------------------------------------------------
 
-function createClaudeCodeSettingsObject(): Record<string, unknown> {
+export function createClaudeCodeSettingsObject(): Record<string, unknown> {
   return {
     permissions: {
       allow: [

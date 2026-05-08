@@ -1,0 +1,5875 @@
+{
+  "builtAt": "2026-05-08T15:30:30.245Z",
+  "rootDir": "/home/fernando/Documentos/projetos/pessoal/lean-harness",
+  "symbols": {
+    "src/adapters/claude-code.ts": [
+      {
+        "name": "buildClaudeCodeArgs",
+        "kind": "function",
+        "filePath": "src/adapters/claude-code.ts",
+        "line": 6
+      },
+      {
+        "name": "detectClaudeCode",
+        "kind": "function",
+        "filePath": "src/adapters/claude-code.ts",
+        "line": 27
+      },
+      {
+        "name": "runClaudeCode",
+        "kind": "function",
+        "filePath": "src/adapters/claude-code.ts",
+        "line": 79
+      },
+      {
+        "name": "claudeCodeAdapter",
+        "kind": "const",
+        "filePath": "src/adapters/claude-code.ts",
+        "line": 221
+      },
+      {
+        "name": "ClaudeCodeRunOptions",
+        "kind": "type",
+        "filePath": "src/adapters/claude-code.ts",
+        "line": 4
+      }
+    ],
+    "src/adapters/mcp-server.ts": [
+      {
+        "name": "send",
+        "kind": "function",
+        "filePath": "src/adapters/mcp-server.ts",
+        "line": 60
+      },
+      {
+        "name": "errorResponse",
+        "kind": "function",
+        "filePath": "src/adapters/mcp-server.ts",
+        "line": 64
+      },
+      {
+        "name": "runMcpServer",
+        "kind": "function",
+        "filePath": "src/adapters/mcp-server.ts",
+        "line": 68
+      },
+      {
+        "name": "callTool",
+        "kind": "function",
+        "filePath": "src/adapters/mcp-server.ts",
+        "line": 129
+      },
+      {
+        "name": "SERVER_INFO",
+        "kind": "const",
+        "filePath": "src/adapters/mcp-server.ts",
+        "line": 8
+      },
+      {
+        "name": "TOOLS",
+        "kind": "const",
+        "filePath": "src/adapters/mcp-server.ts",
+        "line": 10
+      }
+    ],
+    "src/adapters/opencode.ts": [
+      {
+        "name": "buildOpenCodeArgs",
+        "kind": "function",
+        "filePath": "src/adapters/opencode.ts",
+        "line": 6
+      },
+      {
+        "name": "detectOpenCode",
+        "kind": "function",
+        "filePath": "src/adapters/opencode.ts",
+        "line": 36
+      },
+      {
+        "name": "runOpenCode",
+        "kind": "function",
+        "filePath": "src/adapters/opencode.ts",
+        "line": 92
+      },
+      {
+        "name": "opencodeAdapter",
+        "kind": "const",
+        "filePath": "src/adapters/opencode.ts",
+        "line": 234
+      },
+      {
+        "name": "OpenCodeRunOptions",
+        "kind": "type",
+        "filePath": "src/adapters/opencode.ts",
+        "line": 4
+      }
+    ],
+    "src/adapters/registry.ts": [
+      {
+        "name": "normalizeAgentHost",
+        "kind": "function",
+        "filePath": "src/adapters/registry.ts",
+        "line": 21
+      },
+      {
+        "name": "getAgentAdapter",
+        "kind": "function",
+        "filePath": "src/adapters/registry.ts",
+        "line": 35
+      },
+      {
+        "name": "listAgentHosts",
+        "kind": "function",
+        "filePath": "src/adapters/registry.ts",
+        "line": 44
+      },
+      {
+        "name": "detectAgentHost",
+        "kind": "function",
+        "filePath": "src/adapters/registry.ts",
+        "line": 48
+      },
+      {
+        "name": "detectAllAgentHosts",
+        "kind": "function",
+        "filePath": "src/adapters/registry.ts",
+        "line": 57
+      },
+      {
+        "name": "DEFAULT_AGENT_HOST",
+        "kind": "const",
+        "filePath": "src/adapters/registry.ts",
+        "line": 6
+      },
+      {
+        "name": "HOST_ALIASES",
+        "kind": "const",
+        "filePath": "src/adapters/registry.ts",
+        "line": 8
+      },
+      {
+        "name": "ADAPTERS",
+        "kind": "const",
+        "filePath": "src/adapters/registry.ts",
+        "line": 16
+      }
+    ],
+    "src/adapters/types.ts": [
+      {
+        "name": "AgentDetection",
+        "kind": "interface",
+        "filePath": "src/adapters/types.ts",
+        "line": 3
+      },
+      {
+        "name": "AgentRunInput",
+        "kind": "interface",
+        "filePath": "src/adapters/types.ts",
+        "line": 11
+      },
+      {
+        "name": "AgentRunResult",
+        "kind": "interface",
+        "filePath": "src/adapters/types.ts",
+        "line": 42
+      },
+      {
+        "name": "AgentAdapter",
+        "kind": "interface",
+        "filePath": "src/adapters/types.ts",
+        "line": 60
+      },
+      {
+        "name": "AgentHost",
+        "kind": "type",
+        "filePath": "src/adapters/types.ts",
+        "line": 1
+      }
+    ],
+    "src/cavebus/compress.ts": [
+      {
+        "name": "CompressionInput",
+        "kind": "interface",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 21
+      },
+      {
+        "name": "CompressedMessage",
+        "kind": "interface",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 28
+      },
+      {
+        "name": "CompressionResult",
+        "kind": "interface",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 36
+      },
+      {
+        "name": "normalizeCompressionMode",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 57
+      },
+      {
+        "name": "normalizeCompressionSource",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 63
+      },
+      {
+        "name": "compressFeatureArtifacts",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 69
+      },
+      {
+        "name": "renderManagedCompressionBlock",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 173
+      },
+      {
+        "name": "replaceManagedCompressionBlock",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 186
+      },
+      {
+        "name": "appendManagedCompressionBlock",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 223
+      },
+      {
+        "name": "compressSpec",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 234
+      },
+      {
+        "name": "compressDiscovery",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 314
+      },
+      {
+        "name": "compressPlan",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 471
+      },
+      {
+        "name": "compressTasks",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 641
+      },
+      {
+        "name": "compressBuild",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 655
+      },
+      {
+        "name": "compressCheck",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 775
+      },
+      {
+        "name": "compressMemory",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 864
+      },
+      {
+        "name": "extractSection",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 928
+      },
+      {
+        "name": "extractBullets",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 940
+      },
+      {
+        "name": "extractArrayField",
+        "kind": "function",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 955
+      },
+      {
+        "name": "VALID_MODES",
+        "kind": "const",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 54
+      },
+      {
+        "name": "VALID_SOURCES",
+        "kind": "const",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 55
+      },
+      {
+        "name": "MANAGED_END_RE",
+        "kind": "const",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 228
+      },
+      {
+        "name": "CompressionMode",
+        "kind": "type",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 10
+      },
+      {
+        "name": "CompressionSource",
+        "kind": "type",
+        "filePath": "src/cavebus/compress.ts",
+        "line": 12
+      }
+    ],
+    "src/cavebus/index.ts": [
+      {
+        "name": "CaveBusInspectionResult",
+        "kind": "interface",
+        "filePath": "src/cavebus/index.ts",
+        "line": 15
+      },
+      {
+        "name": "inspectCaveBusLog",
+        "kind": "function",
+        "filePath": "src/cavebus/index.ts",
+        "line": 27
+      }
+    ],
+    "src/cavebus/protected.ts": [
+      {
+        "name": "CaveBusProtectedToken",
+        "kind": "interface",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 26
+      },
+      {
+        "name": "ProtectedTokenCheck",
+        "kind": "interface",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 32
+      },
+      {
+        "name": "containsSecretLikeValue",
+        "kind": "function",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 81
+      },
+      {
+        "name": "redactSecrets",
+        "kind": "function",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 85
+      },
+      {
+        "name": "looksLikePath",
+        "kind": "function",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 100
+      },
+      {
+        "name": "looksLikeCommand",
+        "kind": "function",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 115
+      },
+      {
+        "name": "extractCaveBusProtectedTokens",
+        "kind": "function",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 127
+      },
+      {
+        "name": "mergeCaveBusProtectedTokens",
+        "kind": "function",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 208
+      },
+      {
+        "name": "checkProtectedTokensPreserved",
+        "kind": "function",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 224
+      },
+      {
+        "name": "renderProtectedTokensCompact",
+        "kind": "function",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 261
+      },
+      {
+        "name": "FEATURE_ID_RE",
+        "kind": "const",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 39
+      },
+      {
+        "name": "TASK_ID_RE",
+        "kind": "const",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 40
+      },
+      {
+        "name": "AC_ID_RE",
+        "kind": "const",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 41
+      },
+      {
+        "name": "ENV_VAR_RE",
+        "kind": "const",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 42
+      },
+      {
+        "name": "URL_RE",
+        "kind": "const",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 43
+      },
+      {
+        "name": "COMMIT_HASH_RE",
+        "kind": "const",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 44
+      },
+      {
+        "name": "PATH_EXTENSIONS",
+        "kind": "const",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 46
+      },
+      {
+        "name": "KNOWN_RISK_GATES",
+        "kind": "const",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 55
+      },
+      {
+        "name": "ENV_LIKE_WORDS",
+        "kind": "const",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 64
+      },
+      {
+        "name": "SECRET_PATTERNS",
+        "kind": "const",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 70
+      },
+      {
+        "name": "CaveBusProtectedTokenKind",
+        "kind": "type",
+        "filePath": "src/cavebus/protected.ts",
+        "line": 1
+      }
+    ],
+    "src/cavebus/schema.ts": [
+      {
+        "name": "CaveBusMessage",
+        "kind": "interface",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 52
+      },
+      {
+        "name": "CaveBusValidationIssue",
+        "kind": "interface",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 64
+      },
+      {
+        "name": "CaveBusValidationResult",
+        "kind": "interface",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 71
+      },
+      {
+        "name": "CaveBusStats",
+        "kind": "interface",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 78
+      },
+      {
+        "name": "isCaveBusMessageType",
+        "kind": "function",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 89
+      },
+      {
+        "name": "normalizeCaveBusType",
+        "kind": "function",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 93
+      },
+      {
+        "name": "isStatusValue",
+        "kind": "function",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 100
+      },
+      {
+        "name": "isConfidenceValue",
+        "kind": "function",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 104
+      },
+      {
+        "name": "CAVEBUS_MESSAGE_TYPES",
+        "kind": "const",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 1
+      },
+      {
+        "name": "CAVEBUS_STATUS_VALUES",
+        "kind": "const",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 20
+      },
+      {
+        "name": "CAVEBUS_CONFIDENCE_VALUES",
+        "kind": "const",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 41
+      },
+      {
+        "name": "CAVEBUS_DISCOVERY_DEPTHS",
+        "kind": "const",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 50
+      },
+      {
+        "name": "messageTypeSet",
+        "kind": "const",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 85
+      },
+      {
+        "name": "statusSet",
+        "kind": "const",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 86
+      },
+      {
+        "name": "confidenceSet",
+        "kind": "const",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 87
+      },
+      {
+        "name": "CaveBusMessageType",
+        "kind": "type",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 18
+      },
+      {
+        "name": "CaveBusStatus",
+        "kind": "type",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 39
+      },
+      {
+        "name": "CaveBusConfidence",
+        "kind": "type",
+        "filePath": "src/cavebus/schema.ts",
+        "line": 48
+      }
+    ],
+    "src/cavebus/validate.ts": [
+      {
+        "name": "ParseCaveBusOptions",
+        "kind": "interface",
+        "filePath": "src/cavebus/validate.ts",
+        "line": 15
+      },
+      {
+        "name": "parseCaveBusLog",
+        "kind": "function",
+        "filePath": "src/cavebus/validate.ts",
+        "line": 23
+      },
+      {
+        "name": "validateCaveBusLog",
+        "kind": "function",
+        "filePath": "src/cavebus/validate.ts",
+        "line": 98
+      },
+      {
+        "name": "validateCaveBusMessage",
+        "kind": "function",
+        "filePath": "src/cavebus/validate.ts",
+        "line": 147
+      },
+      {
+        "name": "computeCaveBusStats",
+        "kind": "function",
+        "filePath": "src/cavebus/validate.ts",
+        "line": 283
+      },
+      {
+        "name": "filterCaveBusMessages",
+        "kind": "function",
+        "filePath": "src/cavebus/validate.ts",
+        "line": 308
+      },
+      {
+        "name": "extractFeatureId",
+        "kind": "function",
+        "filePath": "src/cavebus/validate.ts",
+        "line": 325
+      },
+      {
+        "name": "extractTaskId",
+        "kind": "function",
+        "filePath": "src/cavebus/validate.ts",
+        "line": 330
+      },
+      {
+        "name": "MESSAGE_TYPE_RE",
+        "kind": "const",
+        "filePath": "src/cavebus/validate.ts",
+        "line": 19
+      },
+      {
+        "name": "MANAGED_BEGIN_RE",
+        "kind": "const",
+        "filePath": "src/cavebus/validate.ts",
+        "line": 20
+      },
+      {
+        "name": "MANAGED_END_RE",
+        "kind": "const",
+        "filePath": "src/cavebus/validate.ts",
+        "line": 21
+      }
+    ],
+    "src/cli.ts": [
+      {
+        "name": "ParsedArgs",
+        "kind": "interface",
+        "filePath": "src/cli.ts",
+        "line": 26
+      },
+      {
+        "name": "parseArgs",
+        "kind": "function",
+        "filePath": "src/cli.ts",
+        "line": 84
+      },
+      {
+        "name": "applyStringFlag",
+        "kind": "function",
+        "filePath": "src/cli.ts",
+        "line": 192
+      },
+      {
+        "name": "applyRepeatedFlag",
+        "kind": "function",
+        "filePath": "src/cli.ts",
+        "line": 224
+      },
+      {
+        "name": "printHelp",
+        "kind": "function",
+        "filePath": "src/cli.ts",
+        "line": 234
+      },
+      {
+        "name": "runCli",
+        "kind": "function",
+        "filePath": "src/cli.ts",
+        "line": 319
+      },
+      {
+        "name": "parseOutputFormat",
+        "kind": "function",
+        "filePath": "src/cli.ts",
+        "line": 542
+      },
+      {
+        "name": "parseOpenCodeFormat",
+        "kind": "function",
+        "filePath": "src/cli.ts",
+        "line": 548
+      }
+    ],
+    "src/commands/archive.ts": [
+      {
+        "name": "ArchiveOptions",
+        "kind": "interface",
+        "filePath": "src/commands/archive.ts",
+        "line": 5
+      },
+      {
+        "name": "runArchiveCommand",
+        "kind": "function",
+        "filePath": "src/commands/archive.ts",
+        "line": 11
+      }
+    ],
+    "src/commands/build.ts": [
+      {
+        "name": "BuildOptions",
+        "kind": "interface",
+        "filePath": "src/commands/build.ts",
+        "line": 8
+      },
+      {
+        "name": "runBuildCommand",
+        "kind": "function",
+        "filePath": "src/commands/build.ts",
+        "line": 35
+      }
+    ],
+    "src/commands/cavebus.ts": [
+      {
+        "name": "CaveBusOptions",
+        "kind": "interface",
+        "filePath": "src/commands/cavebus.ts",
+        "line": 7
+      },
+      {
+        "name": "runCaveBusCommand",
+        "kind": "function",
+        "filePath": "src/commands/cavebus.ts",
+        "line": 17
+      }
+    ],
+    "src/commands/check.ts": [
+      {
+        "name": "CheckOptions",
+        "kind": "interface",
+        "filePath": "src/commands/check.ts",
+        "line": 7
+      },
+      {
+        "name": "runCheckCommand",
+        "kind": "function",
+        "filePath": "src/commands/check.ts",
+        "line": 19
+      }
+    ],
+    "src/commands/compile-task.ts": [
+      {
+        "name": "CompileTaskOptions",
+        "kind": "interface",
+        "filePath": "src/commands/compile-task.ts",
+        "line": 5
+      },
+      {
+        "name": "runCompileTaskCommand",
+        "kind": "function",
+        "filePath": "src/commands/compile-task.ts",
+        "line": 16
+      }
+    ],
+    "src/commands/completion.ts": [
+      {
+        "name": "CompletionOptions",
+        "kind": "interface",
+        "filePath": "src/commands/completion.ts",
+        "line": 5
+      },
+      {
+        "name": "runCompletionCommand",
+        "kind": "function",
+        "filePath": "src/commands/completion.ts",
+        "line": 31
+      },
+      {
+        "name": "generateCompletion",
+        "kind": "function",
+        "filePath": "src/commands/completion.ts",
+        "line": 42
+      },
+      {
+        "name": "generateBash",
+        "kind": "function",
+        "filePath": "src/commands/completion.ts",
+        "line": 50
+      },
+      {
+        "name": "generateZsh",
+        "kind": "function",
+        "filePath": "src/commands/completion.ts",
+        "line": 119
+      },
+      {
+        "name": "generateFish",
+        "kind": "function",
+        "filePath": "src/commands/completion.ts",
+        "line": 174
+      },
+      {
+        "name": "getCommandDescription",
+        "kind": "function",
+        "filePath": "src/commands/completion.ts",
+        "line": 208
+      },
+      {
+        "name": "COMMANDS",
+        "kind": "const",
+        "filePath": "src/commands/completion.ts",
+        "line": 9
+      },
+      {
+        "name": "GLOBAL_FLAGS",
+        "kind": "const",
+        "filePath": "src/commands/completion.ts",
+        "line": 16
+      },
+      {
+        "name": "VALID_SHELLS",
+        "kind": "const",
+        "filePath": "src/commands/completion.ts",
+        "line": 29
+      },
+      {
+        "name": "CompletionShell",
+        "kind": "type",
+        "filePath": "src/commands/completion.ts",
+        "line": 3
+      }
+    ],
+    "src/commands/compress.ts": [
+      {
+        "name": "CompressOptions",
+        "kind": "interface",
+        "filePath": "src/commands/compress.ts",
+        "line": 17
+      },
+      {
+        "name": "runCompressCommand",
+        "kind": "function",
+        "filePath": "src/commands/compress.ts",
+        "line": 28
+      },
+      {
+        "name": "resolveOutputPath",
+        "kind": "function",
+        "filePath": "src/commands/compress.ts",
+        "line": 216
+      }
+    ],
+    "src/commands/discover.ts": [
+      {
+        "name": "DiscoverOptions",
+        "kind": "interface",
+        "filePath": "src/commands/discover.ts",
+        "line": 7
+      },
+      {
+        "name": "runDiscoverCommand",
+        "kind": "function",
+        "filePath": "src/commands/discover.ts",
+        "line": 16
+      }
+    ],
+    "src/commands/doctor.ts": [
+      {
+        "name": "DoctorOptions",
+        "kind": "interface",
+        "filePath": "src/commands/doctor.ts",
+        "line": 11
+      },
+      {
+        "name": "DoctorFix",
+        "kind": "interface",
+        "filePath": "src/commands/doctor.ts",
+        "line": 17
+      },
+      {
+        "name": "DoctorResult",
+        "kind": "interface",
+        "filePath": "src/commands/doctor.ts",
+        "line": 23
+      },
+      {
+        "name": "runDoctorCommand",
+        "kind": "function",
+        "filePath": "src/commands/doctor.ts",
+        "line": 33
+      },
+      {
+        "name": "applyFixes",
+        "kind": "function",
+        "filePath": "src/commands/doctor.ts",
+        "line": 470
+      },
+      {
+        "name": "FIXABLE_DIRS",
+        "kind": "const",
+        "filePath": "src/commands/doctor.ts",
+        "line": 464
+      }
+    ],
+    "src/commands/graph.ts": [
+      {
+        "name": "GraphOptions",
+        "kind": "interface",
+        "filePath": "src/commands/graph.ts",
+        "line": 12
+      },
+      {
+        "name": "runGraphCommand",
+        "kind": "function",
+        "filePath": "src/commands/graph.ts",
+        "line": 18
+      }
+    ],
+    "src/commands/init-claude-code.ts": [
+      {
+        "name": "ClaudePackResult",
+        "kind": "interface",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 5
+      },
+      {
+        "name": "SettingsInstallResult",
+        "kind": "interface",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 177
+      },
+      {
+        "name": "FileEntry",
+        "kind": "interface",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 590
+      },
+      {
+        "name": "SkillEntry",
+        "kind": "interface",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 605
+      },
+      {
+        "name": "installClaudeCodePack",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 11
+      },
+      {
+        "name": "installClaudeCodeSettings",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 182
+      },
+      {
+        "name": "mergeClaudeCodeSettings",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 218
+      },
+      {
+        "name": "createClaudeCodeSettingsObject",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 332
+      },
+      {
+        "name": "createSettingsLocalExample",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 453
+      },
+      {
+        "name": "createClaudeCodeReadme",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 465
+      },
+      {
+        "name": "createHooksConfig",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 513
+      },
+      {
+        "name": "createClaudeCodeAgentFiles",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 595
+      },
+      {
+        "name": "createClaudeCodeSkillFiles",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 610
+      },
+      {
+        "name": "createClaudeCodeHookScripts",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 622
+      },
+      {
+        "name": "createCCAgentScout",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 636
+      },
+      {
+        "name": "createCCAgentBuilder",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 793
+      },
+      {
+        "name": "createCCAgentReviewer",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 949
+      },
+      {
+        "name": "createCCAgentVerifier",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 1114
+      },
+      {
+        "name": "createCCAgentCompressor",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 1284
+      },
+      {
+        "name": "createCCSkillDo",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 1520
+      },
+      {
+        "name": "createCCSkillSpec",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 1644
+      },
+      {
+        "name": "createCCSkillDiscover",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 1759
+      },
+      {
+        "name": "createCCSkillPlan",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 1886
+      },
+      {
+        "name": "createCCSkillBuild",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2012
+      },
+      {
+        "name": "createCCSkillCheck",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2192
+      },
+      {
+        "name": "createCCSkillStatus",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2346
+      },
+      {
+        "name": "createHookShared",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2447
+      },
+      {
+        "name": "readStdinJson",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2456
+      },
+      {
+        "name": "projectRoot",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2473
+      },
+      {
+        "name": "toPosixPath",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2477
+      },
+      {
+        "name": "normalizeRelativePath",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2484
+      },
+      {
+        "name": "readJsonFile",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2507
+      },
+      {
+        "name": "writeJsonFile",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2516
+      },
+      {
+        "name": "appendJsonl",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2526
+      },
+      {
+        "name": "ensureDir",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2536
+      },
+      {
+        "name": "loadState",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2544
+      },
+      {
+        "name": "findActiveFeature",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2559
+      },
+      {
+        "name": "listFeatureDirs",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2577
+      },
+      {
+        "name": "resolveFeatureDir",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2589
+      },
+      {
+        "name": "dirExists",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2609
+      },
+      {
+        "name": "loadBoundary",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2615
+      },
+      {
+        "name": "extractToolPaths",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2625
+      },
+      {
+        "name": "extractCommand",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2673
+      },
+      {
+        "name": "isHarnessBootstrapPath",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2695
+      },
+      {
+        "name": "matchesPattern",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2713
+      },
+      {
+        "name": "matchesAnyPattern",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2752
+      },
+      {
+        "name": "classifyCommand",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2797
+      },
+      {
+        "name": "classifyPathRisk",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2853
+      },
+      {
+        "name": "isPathInsideBoundary",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2867
+      },
+      {
+        "name": "preToolDecision",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2941
+      },
+      {
+        "name": "postToolBlock",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2951
+      },
+      {
+        "name": "stopBlock",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2961
+      },
+      {
+        "name": "nowIso",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2970
+      },
+      {
+        "name": "safeString",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2974
+      },
+      {
+        "name": "createHookPreToolUse",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3012
+      },
+      {
+        "name": "main",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3018
+      },
+      {
+        "name": "handleBash",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3033
+      },
+      {
+        "name": "handleFileEdit",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3053
+      },
+      {
+        "name": "createHookPostToolUse",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3115
+      },
+      {
+        "name": "createHookSessionEnd",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3224
+      },
+      {
+        "name": "handleSessionEnd",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3247
+      },
+      {
+        "name": "handleStop",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3269
+      },
+      {
+        "name": "getFeatureStatus",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3335
+      },
+      {
+        "name": "loadRecentEvents",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3349
+      },
+      {
+        "name": "hasTaskSummaries",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3370
+      },
+      {
+        "name": "hasVerificationEvidence",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3380
+      },
+      {
+        "name": "hasRecentUnresolvedFailure",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3387
+      },
+      {
+        "name": "checksShowPass",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3404
+      },
+      {
+        "name": "fileExists",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3415
+      },
+      {
+        "name": "createClaudeCodePolicyYaml",
+        "kind": "function",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3427
+      },
+      {
+        "name": "fs",
+        "kind": "const",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2451
+      },
+      {
+        "name": "path",
+        "kind": "const",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2452
+      },
+      {
+        "name": "BOOTSTRAP_PREFIXES",
+        "kind": "const",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2681
+      },
+      {
+        "name": "BOOTSTRAP_EXACT",
+        "kind": "const",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2687
+      },
+      {
+        "name": "BUILTIN_DENY",
+        "kind": "const",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2762
+      },
+      {
+        "name": "BUILTIN_SAFE",
+        "kind": "const",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2787
+      },
+      {
+        "name": "RISK_GATE_PATHS",
+        "kind": "const",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 2827
+      },
+      {
+        "name": "shared",
+        "kind": "const",
+        "filePath": "src/commands/init-claude-code.ts",
+        "line": 3016
+      }
+    ],
+    "src/commands/init.ts": [
+      {
+        "name": "InitOptions",
+        "kind": "interface",
+        "filePath": "src/commands/init.ts",
+        "line": 16
+      },
+      {
+        "name": "InitResult",
+        "kind": "interface",
+        "filePath": "src/commands/init.ts",
+        "line": 26
+      },
+      {
+        "name": "PackResult",
+        "kind": "interface",
+        "filePath": "src/commands/init.ts",
+        "line": 230
+      },
+      {
+        "name": "ConfigInstallResult",
+        "kind": "interface",
+        "filePath": "src/commands/init.ts",
+        "line": 334
+      },
+      {
+        "name": "AgentFileEntry",
+        "kind": "interface",
+        "filePath": "src/commands/init.ts",
+        "line": 636
+      },
+      {
+        "name": "PluginFileEntry",
+        "kind": "interface",
+        "filePath": "src/commands/init.ts",
+        "line": 901
+      },
+      {
+        "name": "runInitCommand",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 34
+      },
+      {
+        "name": "createLhGitignore",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 202
+      },
+      {
+        "name": "installOpenCodePack",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 236
+      },
+      {
+        "name": "installOpenCodeConfig",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 339
+      },
+      {
+        "name": "mergeOpenCodeConfig",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 375
+      },
+      {
+        "name": "createOpenCodeConfigObject",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 419
+      },
+      {
+        "name": "createOpenCodeReadme",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 598
+      },
+      {
+        "name": "createOpenCodeAgentFiles",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 641
+      },
+      {
+        "name": "createAgentScout",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 651
+      },
+      {
+        "name": "createAgentBuilder",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 706
+      },
+      {
+        "name": "createAgentReviewer",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 782
+      },
+      {
+        "name": "createAgentVerifier",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 839
+      },
+      {
+        "name": "createOpenCodePluginFiles",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 906
+      },
+      {
+        "name": "createPluginShared",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 913
+      },
+      {
+        "name": "projectRoot",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 917
+      },
+      {
+        "name": "nowIso",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 925
+      },
+      {
+        "name": "safeString",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 927
+      },
+      {
+        "name": "readJsonFile",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 933
+      },
+      {
+        "name": "writeJsonFile",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 937
+      },
+      {
+        "name": "appendJsonl",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 941
+      },
+      {
+        "name": "appendText",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 945
+      },
+      {
+        "name": "ensureDir",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 949
+      },
+      {
+        "name": "toPosixPath",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 951
+      },
+      {
+        "name": "normalizeRelativePath",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 956
+      },
+      {
+        "name": "listFeatureDirs",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 968
+      },
+      {
+        "name": "loadState",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 972
+      },
+      {
+        "name": "findActiveFeature",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 978
+      },
+      {
+        "name": "resolveFeatureDir",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 987
+      },
+      {
+        "name": "loadBoundary",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 996
+      },
+      {
+        "name": "extractToolName",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1002
+      },
+      {
+        "name": "extractToolArgs",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1010
+      },
+      {
+        "name": "extractCommand",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1016
+      },
+      {
+        "name": "extractPaths",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1023
+      },
+      {
+        "name": "isHarnessBootstrapPath",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1036
+      },
+      {
+        "name": "isSecretPath",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1046
+      },
+      {
+        "name": "redactSecrets",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1049
+      },
+      {
+        "name": "matchesPattern",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1051
+      },
+      {
+        "name": "matchesAnyPattern",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1067
+      },
+      {
+        "name": "classifyCommand",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1095
+      },
+      {
+        "name": "classifyPathRisk",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1109
+      },
+      {
+        "name": "isPathInsideBoundary",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1115
+      },
+      {
+        "name": "boundarySummary",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1127
+      },
+      {
+        "name": "riskGateSummary",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1128
+      },
+      {
+        "name": "eventLogPath",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1130
+      },
+      {
+        "name": "cavebusLogPath",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1131
+      },
+      {
+        "name": "logPluginEvent",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1133
+      },
+      {
+        "name": "appendCaveBusNote",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1134
+      },
+      {
+        "name": "findActiveTask",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1136
+      },
+      {
+        "name": "makeBlockError",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1142
+      },
+      {
+        "name": "createPluginGuardrails",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1146
+      },
+      {
+        "name": "getFeatureContext",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1170
+      },
+      {
+        "name": "featureLabel",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1178
+      },
+      {
+        "name": "isShellTool",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1179
+      },
+      {
+        "name": "isReadTool",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1180
+      },
+      {
+        "name": "isEditTool",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1181
+      },
+      {
+        "name": "handleBefore",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1183
+      },
+      {
+        "name": "handleAfter",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1225
+      },
+      {
+        "name": "handleEvent",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1234
+      },
+      {
+        "name": "createOpenCodePolicyYaml",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1250
+      },
+      {
+        "name": "installGlobalPack",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1377
+      },
+      {
+        "name": "createGlobalConfigYaml",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1435
+      },
+      {
+        "name": "createGlobalClaudeSkill",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1460
+      },
+      {
+        "name": "createGlobalOpenCodeAgent",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1476
+      },
+      {
+        "name": "createAgentCompressor",
+        "kind": "function",
+        "filePath": "src/commands/init.ts",
+        "line": 1493
+      },
+      {
+        "name": "VALID_HOSTS",
+        "kind": "const",
+        "filePath": "src/commands/init.ts",
+        "line": 32
+      },
+      {
+        "name": "BOOTSTRAP_PREFIXES",
+        "kind": "const",
+        "filePath": "src/commands/init.ts",
+        "line": 1033
+      },
+      {
+        "name": "BOOTSTRAP_EXACT",
+        "kind": "const",
+        "filePath": "src/commands/init.ts",
+        "line": 1034
+      },
+      {
+        "name": "SECRET_PATH_PATTERNS",
+        "kind": "const",
+        "filePath": "src/commands/init.ts",
+        "line": 1045
+      },
+      {
+        "name": "REDACT_PATTERNS",
+        "kind": "const",
+        "filePath": "src/commands/init.ts",
+        "line": 1048
+      },
+      {
+        "name": "BUILTIN_DENY",
+        "kind": "const",
+        "filePath": "src/commands/init.ts",
+        "line": 1069
+      },
+      {
+        "name": "BUILTIN_RISKY",
+        "kind": "const",
+        "filePath": "src/commands/init.ts",
+        "line": 1082
+      },
+      {
+        "name": "BUILTIN_SAFE",
+        "kind": "const",
+        "filePath": "src/commands/init.ts",
+        "line": 1093
+      },
+      {
+        "name": "RISK_GATE_PATHS",
+        "kind": "const",
+        "filePath": "src/commands/init.ts",
+        "line": 1104
+      },
+      {
+        "name": "LeanHarnessGuardrails",
+        "kind": "const",
+        "filePath": "src/commands/init.ts",
+        "line": 1154
+      },
+      {
+        "name": "InitHost",
+        "kind": "type",
+        "filePath": "src/commands/init.ts",
+        "line": 14
+      }
+    ],
+    "src/commands/list.ts": [
+      {
+        "name": "ListOptions",
+        "kind": "interface",
+        "filePath": "src/commands/list.ts",
+        "line": 5
+      },
+      {
+        "name": "runListCommand",
+        "kind": "function",
+        "filePath": "src/commands/list.ts",
+        "line": 11
+      }
+    ],
+    "src/commands/memory.ts": [
+      {
+        "name": "MemoryCommandOptions",
+        "kind": "interface",
+        "filePath": "src/commands/memory.ts",
+        "line": 11
+      },
+      {
+        "name": "runMemoryCommand",
+        "kind": "function",
+        "filePath": "src/commands/memory.ts",
+        "line": 21
+      },
+      {
+        "name": "handleShow",
+        "kind": "function",
+        "filePath": "src/commands/memory.ts",
+        "line": 48
+      },
+      {
+        "name": "handleClear",
+        "kind": "function",
+        "filePath": "src/commands/memory.ts",
+        "line": 82
+      },
+      {
+        "name": "handleStatus",
+        "kind": "function",
+        "filePath": "src/commands/memory.ts",
+        "line": 107
+      },
+      {
+        "name": "VALID_KINDS",
+        "kind": "const",
+        "filePath": "src/commands/memory.ts",
+        "line": 18
+      },
+      {
+        "name": "VALID_SUBCOMMANDS",
+        "kind": "const",
+        "filePath": "src/commands/memory.ts",
+        "line": 19
+      }
+    ],
+    "src/commands/new.ts": [
+      {
+        "name": "NewOptions",
+        "kind": "interface",
+        "filePath": "src/commands/new.ts",
+        "line": 5
+      },
+      {
+        "name": "runNewCommand",
+        "kind": "function",
+        "filePath": "src/commands/new.ts",
+        "line": 14
+      }
+    ],
+    "src/commands/plan.ts": [
+      {
+        "name": "PlanOptions",
+        "kind": "interface",
+        "filePath": "src/commands/plan.ts",
+        "line": 6
+      },
+      {
+        "name": "runPlanCommand",
+        "kind": "function",
+        "filePath": "src/commands/plan.ts",
+        "line": 18
+      },
+      {
+        "name": "VALID_TASK_SIZES",
+        "kind": "const",
+        "filePath": "src/commands/plan.ts",
+        "line": 16
+      }
+    ],
+    "src/commands/run-task.ts": [
+      {
+        "name": "RunTaskOptions",
+        "kind": "interface",
+        "filePath": "src/commands/run-task.ts",
+        "line": 13
+      },
+      {
+        "name": "runRunTaskCommand",
+        "kind": "function",
+        "filePath": "src/commands/run-task.ts",
+        "line": 33
+      },
+      {
+        "name": "resolveResultExtension",
+        "kind": "function",
+        "filePath": "src/commands/run-task.ts",
+        "line": 262
+      },
+      {
+        "name": "renderCavebusRunSummary",
+        "kind": "function",
+        "filePath": "src/commands/run-task.ts",
+        "line": 274
+      },
+      {
+        "name": "appendDryRunEvent",
+        "kind": "function",
+        "filePath": "src/commands/run-task.ts",
+        "line": 304
+      },
+      {
+        "name": "appendLine",
+        "kind": "function",
+        "filePath": "src/commands/run-task.ts",
+        "line": 325
+      },
+      {
+        "name": "appendText",
+        "kind": "function",
+        "filePath": "src/commands/run-task.ts",
+        "line": 332
+      }
+    ],
+    "src/commands/show.ts": [
+      {
+        "name": "ShowOptions",
+        "kind": "interface",
+        "filePath": "src/commands/show.ts",
+        "line": 5
+      },
+      {
+        "name": "runShowCommand",
+        "kind": "function",
+        "filePath": "src/commands/show.ts",
+        "line": 11
+      }
+    ],
+    "src/commands/spec.ts": [
+      {
+        "name": "SpecOptions",
+        "kind": "interface",
+        "filePath": "src/commands/spec.ts",
+        "line": 5
+      },
+      {
+        "name": "runSpecCommand",
+        "kind": "function",
+        "filePath": "src/commands/spec.ts",
+        "line": 14
+      }
+    ],
+    "src/commands/status.ts": [
+      {
+        "name": "StatusOptions",
+        "kind": "interface",
+        "filePath": "src/commands/status.ts",
+        "line": 27
+      },
+      {
+        "name": "runStatusCommand",
+        "kind": "function",
+        "filePath": "src/commands/status.ts",
+        "line": 32
+      },
+      {
+        "name": "determineStatusNextAction",
+        "kind": "function",
+        "filePath": "src/commands/status.ts",
+        "line": 337
+      }
+    ],
+    "src/commands/update.ts": [
+      {
+        "name": "UpdateOptions",
+        "kind": "interface",
+        "filePath": "src/commands/update.ts",
+        "line": 9
+      },
+      {
+        "name": "UpdateResult",
+        "kind": "interface",
+        "filePath": "src/commands/update.ts",
+        "line": 15
+      },
+      {
+        "name": "runUpdateCommand",
+        "kind": "function",
+        "filePath": "src/commands/update.ts",
+        "line": 23
+      },
+      {
+        "name": "detectInstalledHost",
+        "kind": "function",
+        "filePath": "src/commands/update.ts",
+        "line": 97
+      }
+    ],
+    "src/commands/watch.ts": [
+      {
+        "name": "WatchOptions",
+        "kind": "interface",
+        "filePath": "src/commands/watch.ts",
+        "line": 12
+      },
+      {
+        "name": "WatchSession",
+        "kind": "interface",
+        "filePath": "src/commands/watch.ts",
+        "line": 22
+      },
+      {
+        "name": "StartWatchOptions",
+        "kind": "interface",
+        "filePath": "src/commands/watch.ts",
+        "line": 116
+      },
+      {
+        "name": "runWatchCommand",
+        "kind": "function",
+        "filePath": "src/commands/watch.ts",
+        "line": 26
+      },
+      {
+        "name": "collectWatchPaths",
+        "kind": "function",
+        "filePath": "src/commands/watch.ts",
+        "line": 98
+      },
+      {
+        "name": "startWatch",
+        "kind": "function",
+        "filePath": "src/commands/watch.ts",
+        "line": 124
+      }
+    ],
+    "src/context/compiler.ts": [
+      {
+        "name": "CompileTaskContextOptions",
+        "kind": "interface",
+        "filePath": "src/context/compiler.ts",
+        "line": 21
+      },
+      {
+        "name": "CompiledTaskContext",
+        "kind": "interface",
+        "filePath": "src/context/compiler.ts",
+        "line": 30
+      },
+      {
+        "name": "RenderTaskPromptInput",
+        "kind": "interface",
+        "filePath": "src/context/compiler.ts",
+        "line": 45
+      },
+      {
+        "name": "compileTaskContext",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 64
+      },
+      {
+        "name": "renderTaskPrompt",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 196
+      },
+      {
+        "name": "renderHeader",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 317
+      },
+      {
+        "name": "renderFeatureSection",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 337
+      },
+      {
+        "name": "renderTaskSection",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 345
+      },
+      {
+        "name": "renderBoundarySection",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 383
+      },
+      {
+        "name": "renderPriorSummaries",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 450
+      },
+      {
+        "name": "renderMemorySection",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 463
+      },
+      {
+        "name": "renderFileExcerpts",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 476
+      },
+      {
+        "name": "renderMissingFiles",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 496
+      },
+      {
+        "name": "renderRequiredOutput",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 508
+      },
+      {
+        "name": "renderCavebusTaskHandoff",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 519
+      },
+      {
+        "name": "truncateSection",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 560
+      },
+      {
+        "name": "truncateByPriority",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 565
+      },
+      {
+        "name": "appendLine",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 586
+      },
+      {
+        "name": "appendText",
+        "kind": "function",
+        "filePath": "src/context/compiler.ts",
+        "line": 593
+      }
+    ],
+    "src/context/protected-tokens.ts": [
+      {
+        "name": "ProtectedToken",
+        "kind": "interface",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 26
+      },
+      {
+        "name": "looksLikePath",
+        "kind": "function",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 62
+      },
+      {
+        "name": "looksLikeCommand",
+        "kind": "function",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 74
+      },
+      {
+        "name": "extractProtectedTokens",
+        "kind": "function",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 86
+      },
+      {
+        "name": "mergeProtectedTokens",
+        "kind": "function",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 167
+      },
+      {
+        "name": "renderProtectedTokenSection",
+        "kind": "function",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 183
+      },
+      {
+        "name": "FEATURE_ID_RE",
+        "kind": "const",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 32
+      },
+      {
+        "name": "TASK_ID_RE",
+        "kind": "const",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 33
+      },
+      {
+        "name": "AC_ID_RE",
+        "kind": "const",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 34
+      },
+      {
+        "name": "ENV_VAR_RE",
+        "kind": "const",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 35
+      },
+      {
+        "name": "URL_RE",
+        "kind": "const",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 36
+      },
+      {
+        "name": "COMMIT_HASH_RE",
+        "kind": "const",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 37
+      },
+      {
+        "name": "PATH_EXTENSIONS",
+        "kind": "const",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 39
+      },
+      {
+        "name": "KNOWN_RISK_GATES",
+        "kind": "const",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 48
+      },
+      {
+        "name": "ENV_LIKE_WORDS",
+        "kind": "const",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 57
+      },
+      {
+        "name": "ProtectedTokenKind",
+        "kind": "type",
+        "filePath": "src/context/protected-tokens.ts",
+        "line": 1
+      }
+    ],
+    "src/context/task-context.ts": [
+      {
+        "name": "ParsedTask",
+        "kind": "interface",
+        "filePath": "src/context/task-context.ts",
+        "line": 8
+      },
+      {
+        "name": "FeatureContextArtifacts",
+        "kind": "interface",
+        "filePath": "src/context/task-context.ts",
+        "line": 25
+      },
+      {
+        "name": "loadFeatureContextArtifacts",
+        "kind": "function",
+        "filePath": "src/context/task-context.ts",
+        "line": 36
+      },
+      {
+        "name": "parseTasksMarkdown",
+        "kind": "function",
+        "filePath": "src/context/task-context.ts",
+        "line": 87
+      },
+      {
+        "name": "parseTaskBlock",
+        "kind": "function",
+        "filePath": "src/context/task-context.ts",
+        "line": 118
+      },
+      {
+        "name": "applyField",
+        "kind": "function",
+        "filePath": "src/context/task-context.ts",
+        "line": 167
+      },
+      {
+        "name": "findTask",
+        "kind": "function",
+        "filePath": "src/context/task-context.ts",
+        "line": 207
+      },
+      {
+        "name": "extractRelevantFilePaths",
+        "kind": "function",
+        "filePath": "src/context/task-context.ts",
+        "line": 212
+      },
+      {
+        "name": "readBoundedFileExcerpts",
+        "kind": "function",
+        "filePath": "src/context/task-context.ts",
+        "line": 266
+      },
+      {
+        "name": "BINARY_EXTENSIONS",
+        "kind": "const",
+        "filePath": "src/context/task-context.ts",
+        "line": 256
+      }
+    ],
+    "src/core/colors.ts": [
+      {
+        "name": "Colors",
+        "kind": "interface",
+        "filePath": "src/core/colors.ts",
+        "line": 1
+      },
+      {
+        "name": "shouldUseColor",
+        "kind": "function",
+        "filePath": "src/core/colors.ts",
+        "line": 13
+      },
+      {
+        "name": "ansi",
+        "kind": "function",
+        "filePath": "src/core/colors.ts",
+        "line": 26
+      },
+      {
+        "name": "createColors",
+        "kind": "function",
+        "filePath": "src/core/colors.ts",
+        "line": 32
+      },
+      {
+        "name": "stripAnsi",
+        "kind": "function",
+        "filePath": "src/core/colors.ts",
+        "line": 62
+      },
+      {
+        "name": "identity",
+        "kind": "const",
+        "filePath": "src/core/colors.ts",
+        "line": 30
+      }
+    ],
+    "src/core/config.ts": [
+      {
+        "name": "ParseResult",
+        "kind": "interface",
+        "filePath": "src/core/config.ts",
+        "line": 180
+      },
+      {
+        "name": "loadHarnessConfig",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 5
+      },
+      {
+        "name": "loadHarnessState",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 16
+      },
+      {
+        "name": "saveHarnessState",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 23
+      },
+      {
+        "name": "createDefaultState",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 32
+      },
+      {
+        "name": "createDefaultConfigYaml",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 45
+      },
+      {
+        "name": "createDefaultMemoryFile",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 144
+      },
+      {
+        "name": "normalizeState",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 151
+      },
+      {
+        "name": "getIndent",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 186
+      },
+      {
+        "name": "stripComment",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 196
+      },
+      {
+        "name": "parseScalar",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 216
+      },
+      {
+        "name": "parseFlowSequence",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 233
+      },
+      {
+        "name": "parseInlineValue",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 268
+      },
+      {
+        "name": "parseMapping",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 280
+      },
+      {
+        "name": "parseSequence",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 376
+      },
+      {
+        "name": "parseMinimalYaml",
+        "kind": "function",
+        "filePath": "src/core/config.ts",
+        "line": 505
+      }
+    ],
+    "src/core/errors.ts": [
+      {
+        "name": "CLIError",
+        "kind": "class",
+        "filePath": "src/core/errors.ts",
+        "line": 1
+      },
+      {
+        "name": "ConfigError",
+        "kind": "class",
+        "filePath": "src/core/errors.ts",
+        "line": 11
+      },
+      {
+        "name": "FeatureNotFoundError",
+        "kind": "class",
+        "filePath": "src/core/errors.ts",
+        "line": 15
+      }
+    ],
+    "src/core/features.ts": [
+      {
+        "name": "CreateFeatureOptions",
+        "kind": "interface",
+        "filePath": "src/core/features.ts",
+        "line": 26
+      },
+      {
+        "name": "CreatedFeature",
+        "kind": "interface",
+        "filePath": "src/core/features.ts",
+        "line": 34
+      },
+      {
+        "name": "createFeature",
+        "kind": "function",
+        "filePath": "src/core/features.ts",
+        "line": 127
+      },
+      {
+        "name": "listFeatures",
+        "kind": "function",
+        "filePath": "src/core/features.ts",
+        "line": 264
+      },
+      {
+        "name": "findFeature",
+        "kind": "function",
+        "filePath": "src/core/features.ts",
+        "line": 309
+      },
+      {
+        "name": "requireFeature",
+        "kind": "function",
+        "filePath": "src/core/features.ts",
+        "line": 330
+      },
+      {
+        "name": "readFeatureSummary",
+        "kind": "function",
+        "filePath": "src/core/features.ts",
+        "line": 345
+      },
+      {
+        "name": "archiveFeature",
+        "kind": "function",
+        "filePath": "src/core/features.ts",
+        "line": 396
+      },
+      {
+        "name": "deriveFeatureTitle",
+        "kind": "function",
+        "filePath": "src/core/features.ts",
+        "line": 456
+      },
+      {
+        "name": "slugify",
+        "kind": "function",
+        "filePath": "src/core/features.ts",
+        "line": 477
+      },
+      {
+        "name": "formatFeatureId",
+        "kind": "function",
+        "filePath": "src/core/features.ts",
+        "line": 492
+      },
+      {
+        "name": "parseFeatureNumber",
+        "kind": "function",
+        "filePath": "src/core/features.ts",
+        "line": 496
+      },
+      {
+        "name": "isValidFeatureId",
+        "kind": "function",
+        "filePath": "src/core/features.ts",
+        "line": 502
+      },
+      {
+        "name": "extractFeatureId",
+        "kind": "function",
+        "filePath": "src/core/features.ts",
+        "line": 510
+      },
+      {
+        "name": "determineNextAction",
+        "kind": "function",
+        "filePath": "src/core/features.ts",
+        "line": 515
+      },
+      {
+        "name": "renderSpec",
+        "kind": "function",
+        "filePath": "src/core/features.ts",
+        "line": 534
+      },
+      {
+        "name": "EXPECTED_ARTIFACTS",
+        "kind": "const",
+        "filePath": "src/core/features.ts",
+        "line": 50
+      },
+      {
+        "name": "FALLBACK_SPEC_TEMPLATE",
+        "kind": "const",
+        "filePath": "src/core/features.ts",
+        "line": 68
+      }
+    ],
+    "src/core/fs.ts": [
+      {
+        "name": "pathExists",
+        "kind": "function",
+        "filePath": "src/core/fs.ts",
+        "line": 5
+      },
+      {
+        "name": "fileExists",
+        "kind": "function",
+        "filePath": "src/core/fs.ts",
+        "line": 14
+      },
+      {
+        "name": "dirExists",
+        "kind": "function",
+        "filePath": "src/core/fs.ts",
+        "line": 23
+      },
+      {
+        "name": "ensureDir",
+        "kind": "function",
+        "filePath": "src/core/fs.ts",
+        "line": 32
+      },
+      {
+        "name": "readTextFile",
+        "kind": "function",
+        "filePath": "src/core/fs.ts",
+        "line": 36
+      },
+      {
+        "name": "writeTextFile",
+        "kind": "function",
+        "filePath": "src/core/fs.ts",
+        "line": 45
+      },
+      {
+        "name": "readJsonFile",
+        "kind": "function",
+        "filePath": "src/core/fs.ts",
+        "line": 58
+      },
+      {
+        "name": "writeJsonFile",
+        "kind": "function",
+        "filePath": "src/core/fs.ts",
+        "line": 69
+      },
+      {
+        "name": "listDirs",
+        "kind": "function",
+        "filePath": "src/core/fs.ts",
+        "line": 78
+      },
+      {
+        "name": "listFiles",
+        "kind": "function",
+        "filePath": "src/core/fs.ts",
+        "line": 88
+      },
+      {
+        "name": "isNodeError",
+        "kind": "function",
+        "filePath": "src/core/fs.ts",
+        "line": 98
+      }
+    ],
+    "src/core/logger.ts": [
+      {
+        "name": "Logger",
+        "kind": "interface",
+        "filePath": "src/core/logger.ts",
+        "line": 3
+      },
+      {
+        "name": "createLogger",
+        "kind": "function",
+        "filePath": "src/core/logger.ts",
+        "line": 12
+      },
+      {
+        "name": "printJson",
+        "kind": "function",
+        "filePath": "src/core/logger.ts",
+        "line": 36
+      }
+    ],
+    "src/core/paths.ts": [
+      {
+        "name": "resolveProjectPath",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 8
+      },
+      {
+        "name": "harnessPath",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 12
+      },
+      {
+        "name": "claudePath",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 16
+      },
+      {
+        "name": "featuresDir",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 20
+      },
+      {
+        "name": "templatesDir",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 24
+      },
+      {
+        "name": "memoryDir",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 28
+      },
+      {
+        "name": "policiesDir",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 32
+      },
+      {
+        "name": "protocolsDir",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 36
+      },
+      {
+        "name": "statePath",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 40
+      },
+      {
+        "name": "configPath",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 44
+      },
+      {
+        "name": "harnessGitignorePath",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 48
+      },
+      {
+        "name": "toPosixPath",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 52
+      },
+      {
+        "name": "relativeToRoot",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 56
+      },
+      {
+        "name": "opencodePath",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 60
+      },
+      {
+        "name": "opencodeConfigPath",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 64
+      },
+      {
+        "name": "opencodeAgentsDir",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 68
+      },
+      {
+        "name": "opencodePluginsDir",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 72
+      },
+      {
+        "name": "opencodePluginPath",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 76
+      },
+      {
+        "name": "opencodeGuardrailPluginPath",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 80
+      },
+      {
+        "name": "claudeSkillsDir",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 84
+      },
+      {
+        "name": "claudeAgentsDir",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 88
+      },
+      {
+        "name": "claudeHooksDir",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 92
+      },
+      {
+        "name": "claudeSettingsPath",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 96
+      },
+      {
+        "name": "scriptsHooksDir",
+        "kind": "function",
+        "filePath": "src/core/paths.ts",
+        "line": 100
+      },
+      {
+        "name": "HARNESS_DIR",
+        "kind": "const",
+        "filePath": "src/core/paths.ts",
+        "line": 3
+      },
+      {
+        "name": "CLAUDE_DIR",
+        "kind": "const",
+        "filePath": "src/core/paths.ts",
+        "line": 4
+      },
+      {
+        "name": "OPENCODE_DIR",
+        "kind": "const",
+        "filePath": "src/core/paths.ts",
+        "line": 5
+      },
+      {
+        "name": "OPENCODE_CONFIG_FILE",
+        "kind": "const",
+        "filePath": "src/core/paths.ts",
+        "line": 6
+      }
+    ],
+    "src/core/prompt.ts": [
+      {
+        "name": "PromptOptions",
+        "kind": "interface",
+        "filePath": "src/core/prompt.ts",
+        "line": 4
+      },
+      {
+        "name": "createRl",
+        "kind": "function",
+        "filePath": "src/core/prompt.ts",
+        "line": 10
+      },
+      {
+        "name": "promptConfirm",
+        "kind": "function",
+        "filePath": "src/core/prompt.ts",
+        "line": 17
+      },
+      {
+        "name": "promptSelect",
+        "kind": "function",
+        "filePath": "src/core/prompt.ts",
+        "line": 39
+      },
+      {
+        "name": "promptText",
+        "kind": "function",
+        "filePath": "src/core/prompt.ts",
+        "line": 76
+      }
+    ],
+    "src/core/resolved-config.ts": [
+      {
+        "name": "ResolvedConfig",
+        "kind": "interface",
+        "filePath": "src/core/resolved-config.ts",
+        "line": 9
+      },
+      {
+        "name": "CLIOverrides",
+        "kind": "interface",
+        "filePath": "src/core/resolved-config.ts",
+        "line": 35
+      },
+      {
+        "name": "resolveConfig",
+        "kind": "function",
+        "filePath": "src/core/resolved-config.ts",
+        "line": 48
+      },
+      {
+        "name": "loadResolvedConfig",
+        "kind": "function",
+        "filePath": "src/core/resolved-config.ts",
+        "line": 87
+      },
+      {
+        "name": "resolveHost",
+        "kind": "function",
+        "filePath": "src/core/resolved-config.ts",
+        "line": 95
+      },
+      {
+        "name": "resolveDepth",
+        "kind": "function",
+        "filePath": "src/core/resolved-config.ts",
+        "line": 107
+      },
+      {
+        "name": "resolveMaxFiles",
+        "kind": "function",
+        "filePath": "src/core/resolved-config.ts",
+        "line": 122
+      },
+      {
+        "name": "resolveCompressionMode",
+        "kind": "function",
+        "filePath": "src/core/resolved-config.ts",
+        "line": 132
+      },
+      {
+        "name": "VALID_HOSTS",
+        "kind": "const",
+        "filePath": "src/core/resolved-config.ts",
+        "line": 44
+      },
+      {
+        "name": "VALID_DEPTHS",
+        "kind": "const",
+        "filePath": "src/core/resolved-config.ts",
+        "line": 45
+      },
+      {
+        "name": "VALID_MODES",
+        "kind": "const",
+        "filePath": "src/core/resolved-config.ts",
+        "line": 46
+      }
+    ],
+    "src/core/risk-gates.ts": [
+      {
+        "name": "RiskGateMatch",
+        "kind": "interface",
+        "filePath": "src/core/risk-gates.ts",
+        "line": 6
+      },
+      {
+        "name": "RiskApproval",
+        "kind": "interface",
+        "filePath": "src/core/risk-gates.ts",
+        "line": 12
+      },
+      {
+        "name": "RiskApprovalsFile",
+        "kind": "interface",
+        "filePath": "src/core/risk-gates.ts",
+        "line": 18
+      },
+      {
+        "name": "RiskGateResult",
+        "kind": "interface",
+        "filePath": "src/core/risk-gates.ts",
+        "line": 22
+      },
+      {
+        "name": "RiskGateEnforcementResult",
+        "kind": "interface",
+        "filePath": "src/core/risk-gates.ts",
+        "line": 29
+      },
+      {
+        "name": "checkRiskGates",
+        "kind": "function",
+        "filePath": "src/core/risk-gates.ts",
+        "line": 56
+      },
+      {
+        "name": "deduplicateMatches",
+        "kind": "function",
+        "filePath": "src/core/risk-gates.ts",
+        "line": 99
+      },
+      {
+        "name": "loadApprovals",
+        "kind": "function",
+        "filePath": "src/core/risk-gates.ts",
+        "line": 109
+      },
+      {
+        "name": "saveApproval",
+        "kind": "function",
+        "filePath": "src/core/risk-gates.ts",
+        "line": 119
+      },
+      {
+        "name": "enforceRiskGates",
+        "kind": "function",
+        "filePath": "src/core/risk-gates.ts",
+        "line": 140
+      },
+      {
+        "name": "GATE_FILE_PATTERNS",
+        "kind": "const",
+        "filePath": "src/core/risk-gates.ts",
+        "line": 36
+      },
+      {
+        "name": "GATE_NOTE_PATTERNS",
+        "kind": "const",
+        "filePath": "src/core/risk-gates.ts",
+        "line": 46
+      }
+    ],
+    "src/core/spinner.ts": [
+      {
+        "name": "Spinner",
+        "kind": "interface",
+        "filePath": "src/core/spinner.ts",
+        "line": 4
+      },
+      {
+        "name": "createSpinner",
+        "kind": "function",
+        "filePath": "src/core/spinner.ts",
+        "line": 11
+      },
+      {
+        "name": "withSpinner",
+        "kind": "function",
+        "filePath": "src/core/spinner.ts",
+        "line": 66
+      },
+      {
+        "name": "FRAMES",
+        "kind": "const",
+        "filePath": "src/core/spinner.ts",
+        "line": 1
+      },
+      {
+        "name": "INTERVAL_MS",
+        "kind": "const",
+        "filePath": "src/core/spinner.ts",
+        "line": 2
+      }
+    ],
+    "src/core/state.ts": [
+      {
+        "name": "nowIso",
+        "kind": "function",
+        "filePath": "src/core/state.ts",
+        "line": 5
+      },
+      {
+        "name": "loadState",
+        "kind": "function",
+        "filePath": "src/core/state.ts",
+        "line": 9
+      },
+      {
+        "name": "saveState",
+        "kind": "function",
+        "filePath": "src/core/state.ts",
+        "line": 16
+      },
+      {
+        "name": "normalizeState",
+        "kind": "function",
+        "filePath": "src/core/state.ts",
+        "line": 22
+      },
+      {
+        "name": "getNextFeatureNumber",
+        "kind": "function",
+        "filePath": "src/core/state.ts",
+        "line": 74
+      },
+      {
+        "name": "setNextFeatureNumberFromFeatures",
+        "kind": "function",
+        "filePath": "src/core/state.ts",
+        "line": 78
+      },
+      {
+        "name": "upsertFeatureEntry",
+        "kind": "function",
+        "filePath": "src/core/state.ts",
+        "line": 88
+      },
+      {
+        "name": "removeFeatureEntry",
+        "kind": "function",
+        "filePath": "src/core/state.ts",
+        "line": 99
+      },
+      {
+        "name": "setActiveFeature",
+        "kind": "function",
+        "filePath": "src/core/state.ts",
+        "line": 106
+      },
+      {
+        "name": "createDefaultState",
+        "kind": "function",
+        "filePath": "src/core/state.ts",
+        "line": 111
+      },
+      {
+        "name": "parseFeatureNumberFromId",
+        "kind": "function",
+        "filePath": "src/core/state.ts",
+        "line": 124
+      }
+    ],
+    "src/core/templates.ts": [
+      {
+        "name": "renderTemplate",
+        "kind": "function",
+        "filePath": "src/core/templates.ts",
+        "line": 6
+      },
+      {
+        "name": "loadTemplate",
+        "kind": "function",
+        "filePath": "src/core/templates.ts",
+        "line": 13
+      },
+      {
+        "name": "renderNamedTemplate",
+        "kind": "function",
+        "filePath": "src/core/templates.ts",
+        "line": 19
+      },
+      {
+        "name": "ensureFinalNewline",
+        "kind": "function",
+        "filePath": "src/core/templates.ts",
+        "line": 33
+      },
+      {
+        "name": "TemplateValues",
+        "kind": "type",
+        "filePath": "src/core/templates.ts",
+        "line": 4
+      }
+    ],
+    "src/core/types.ts": [
+      {
+        "name": "HostSupportSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 17
+      },
+      {
+        "name": "HarnessState",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 22
+      },
+      {
+        "name": "FeatureIndexEntry",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 32
+      },
+      {
+        "name": "HarnessConfigProject",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 42
+      },
+      {
+        "name": "HarnessConfigHost",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 47
+      },
+      {
+        "name": "HarnessConfigWorkflow",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 52
+      },
+      {
+        "name": "HarnessConfigArtifacts",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 60
+      },
+      {
+        "name": "HarnessConfigDiscovery",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 69
+      },
+      {
+        "name": "HarnessConfigContext",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 75
+      },
+      {
+        "name": "HarnessConfigCompression",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 81
+      },
+      {
+        "name": "HarnessConfigVerification",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 87
+      },
+      {
+        "name": "HarnessConfigRiskGates",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 93
+      },
+      {
+        "name": "HarnessConfigMemory",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 97
+      },
+      {
+        "name": "HarnessConfigModels",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 106
+      },
+      {
+        "name": "HarnessConfigLogging",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 111
+      },
+      {
+        "name": "HarnessConfigFeatures",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 118
+      },
+      {
+        "name": "HarnessConfigBuild",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 122
+      },
+      {
+        "name": "HarnessConfigAdapter",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 126
+      },
+      {
+        "name": "HarnessConfig",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 133
+      },
+      {
+        "name": "FeatureArtifactStatus",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 152
+      },
+      {
+        "name": "FeatureSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 159
+      },
+      {
+        "name": "CommandResult",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 172
+      },
+      {
+        "name": "CommandContext",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 178
+      },
+      {
+        "name": "DoctorCheck",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 183
+      },
+      {
+        "name": "DiscoveryArtifactSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 193
+      },
+      {
+        "name": "TaskContextArtifactSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 202
+      },
+      {
+        "name": "PlanningArtifactSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 210
+      },
+      {
+        "name": "PlannedTaskSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 220
+      },
+      {
+        "name": "TaskRunSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 229
+      },
+      {
+        "name": "CheckArtifactSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 246
+      },
+      {
+        "name": "CheckRunSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 253
+      },
+      {
+        "name": "CaveBusArtifactSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 278
+      },
+      {
+        "name": "CompressionRunSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 286
+      },
+      {
+        "name": "BuildArtifactSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 296
+      },
+      {
+        "name": "OpenCodePluginSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 305
+      },
+      {
+        "name": "OpenCodeIntegrationSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 312
+      },
+      {
+        "name": "BuildTaskRunSummary",
+        "kind": "interface",
+        "filePath": "src/core/types.ts",
+        "line": 327
+      },
+      {
+        "name": "FeatureStatus",
+        "kind": "type",
+        "filePath": "src/core/types.ts",
+        "line": 1
+      },
+      {
+        "name": "VerificationVerdict",
+        "kind": "type",
+        "filePath": "src/core/types.ts",
+        "line": 13
+      },
+      {
+        "name": "SupportedAgentHost",
+        "kind": "type",
+        "filePath": "src/core/types.ts",
+        "line": 15
+      },
+      {
+        "name": "DiscoveryDepth",
+        "kind": "type",
+        "filePath": "src/core/types.ts",
+        "line": 189
+      },
+      {
+        "name": "Confidence",
+        "kind": "type",
+        "filePath": "src/core/types.ts",
+        "line": 190
+      },
+      {
+        "name": "CompactConfidence",
+        "kind": "type",
+        "filePath": "src/core/types.ts",
+        "line": 191
+      },
+      {
+        "name": "PlanStatus",
+        "kind": "type",
+        "filePath": "src/core/types.ts",
+        "line": 208
+      },
+      {
+        "name": "BuildRunStatus",
+        "kind": "type",
+        "filePath": "src/core/types.ts",
+        "line": 240
+      },
+      {
+        "name": "CheckVerdict",
+        "kind": "type",
+        "filePath": "src/core/types.ts",
+        "line": 242
+      },
+      {
+        "name": "AcceptanceCheckStatus",
+        "kind": "type",
+        "filePath": "src/core/types.ts",
+        "line": 243
+      },
+      {
+        "name": "VerificationCommandStatus",
+        "kind": "type",
+        "filePath": "src/core/types.ts",
+        "line": 244
+      },
+      {
+        "name": "CompressionMode",
+        "kind": "type",
+        "filePath": "src/core/types.ts",
+        "line": 275
+      },
+      {
+        "name": "CompressionSource",
+        "kind": "type",
+        "filePath": "src/core/types.ts",
+        "line": 276
+      }
+    ],
+    "src/core/version.ts": [
+      {
+        "name": "getVersion",
+        "kind": "function",
+        "filePath": "src/core/version.ts",
+        "line": 7
+      },
+      {
+        "name": "cached",
+        "kind": "const",
+        "filePath": "src/core/version.ts",
+        "line": 5
+      }
+    ],
+    "src/discovery/boundary.ts": [
+      {
+        "name": "BoundaryBuildInput",
+        "kind": "interface",
+        "filePath": "src/discovery/boundary.ts",
+        "line": 9
+      },
+      {
+        "name": "BoundaryFileEntry",
+        "kind": "interface",
+        "filePath": "src/discovery/boundary.ts",
+        "line": 22
+      },
+      {
+        "name": "BoundaryJson",
+        "kind": "interface",
+        "filePath": "src/discovery/boundary.ts",
+        "line": 28
+      },
+      {
+        "name": "DiscoveryRenderInput",
+        "kind": "interface",
+        "filePath": "src/discovery/boundary.ts",
+        "line": 66
+      },
+      {
+        "name": "RiskGateRule",
+        "kind": "interface",
+        "filePath": "src/discovery/boundary.ts",
+        "line": 107
+      },
+      {
+        "name": "compactConf",
+        "kind": "function",
+        "filePath": "src/discovery/boundary.ts",
+        "line": 146
+      },
+      {
+        "name": "medToFull",
+        "kind": "function",
+        "filePath": "src/discovery/boundary.ts",
+        "line": 151
+      },
+      {
+        "name": "detectRiskGates",
+        "kind": "function",
+        "filePath": "src/discovery/boundary.ts",
+        "line": 156
+      },
+      {
+        "name": "buildBoundary",
+        "kind": "function",
+        "filePath": "src/discovery/boundary.ts",
+        "line": 190
+      },
+      {
+        "name": "renderDiscoveryMarkdown",
+        "kind": "function",
+        "filePath": "src/discovery/boundary.ts",
+        "line": 337
+      },
+      {
+        "name": "renderDiscoveryCavebus",
+        "kind": "function",
+        "filePath": "src/discovery/boundary.ts",
+        "line": 539
+      },
+      {
+        "name": "BLOCKED_GLOBS",
+        "kind": "const",
+        "filePath": "src/discovery/boundary.ts",
+        "line": 81
+      },
+      {
+        "name": "DO_NOT_TOUCH",
+        "kind": "const",
+        "filePath": "src/discovery/boundary.ts",
+        "line": 97
+      },
+      {
+        "name": "RISK_GATE_RULES",
+        "kind": "const",
+        "filePath": "src/discovery/boundary.ts",
+        "line": 113
+      }
+    ],
+    "src/discovery/graph-scorer.ts": [
+      {
+        "name": "GraphScoreBoost",
+        "kind": "interface",
+        "filePath": "src/discovery/graph-scorer.ts",
+        "line": 5
+      },
+      {
+        "name": "GraphScoredResult",
+        "kind": "interface",
+        "filePath": "src/discovery/graph-scorer.ts",
+        "line": 12
+      },
+      {
+        "name": "applyGraphScoring",
+        "kind": "function",
+        "filePath": "src/discovery/graph-scorer.ts",
+        "line": 18
+      }
+    ],
+    "src/discovery/import-resolver.ts": [
+      {
+        "name": "ImportChainOptions",
+        "kind": "interface",
+        "filePath": "src/discovery/import-resolver.ts",
+        "line": 6
+      },
+      {
+        "name": "ImportChainResult",
+        "kind": "interface",
+        "filePath": "src/discovery/import-resolver.ts",
+        "line": 11
+      },
+      {
+        "name": "parseImports",
+        "kind": "function",
+        "filePath": "src/discovery/import-resolver.ts",
+        "line": 32
+      },
+      {
+        "name": "resolveImportPath",
+        "kind": "function",
+        "filePath": "src/discovery/import-resolver.ts",
+        "line": 49
+      },
+      {
+        "name": "resolveImportChain",
+        "kind": "function",
+        "filePath": "src/discovery/import-resolver.ts",
+        "line": 78
+      },
+      {
+        "name": "IMPORT_PATTERNS",
+        "kind": "const",
+        "filePath": "src/discovery/import-resolver.ts",
+        "line": 18
+      },
+      {
+        "name": "EXTENSION_CANDIDATES",
+        "kind": "const",
+        "filePath": "src/discovery/import-resolver.ts",
+        "line": 23
+      },
+      {
+        "name": "INDEX_CANDIDATES",
+        "kind": "const",
+        "filePath": "src/discovery/import-resolver.ts",
+        "line": 25
+      }
+    ],
+    "src/discovery/index.ts": [
+      {
+        "name": "RunDiscoveryOptions",
+        "kind": "interface",
+        "filePath": "src/discovery/index.ts",
+        "line": 28
+      },
+      {
+        "name": "DiscoveryResult",
+        "kind": "interface",
+        "filePath": "src/discovery/index.ts",
+        "line": 36
+      },
+      {
+        "name": "ParsedSpec",
+        "kind": "interface",
+        "filePath": "src/discovery/index.ts",
+        "line": 289
+      },
+      {
+        "name": "parseDiscoveryDepth",
+        "kind": "function",
+        "filePath": "src/discovery/index.ts",
+        "line": 58
+      },
+      {
+        "name": "runDiscovery",
+        "kind": "function",
+        "filePath": "src/discovery/index.ts",
+        "line": 67
+      },
+      {
+        "name": "parseSpec",
+        "kind": "function",
+        "filePath": "src/discovery/index.ts",
+        "line": 298
+      },
+      {
+        "name": "extractSection",
+        "kind": "function",
+        "filePath": "src/discovery/index.ts",
+        "line": 343
+      },
+      {
+        "name": "escapeRegex",
+        "kind": "function",
+        "filePath": "src/discovery/index.ts",
+        "line": 355
+      },
+      {
+        "name": "VALID_DEPTHS",
+        "kind": "const",
+        "filePath": "src/discovery/index.ts",
+        "line": 56
+      }
+    ],
+    "src/discovery/package-detector.ts": [
+      {
+        "name": "DetectedCommand",
+        "kind": "interface",
+        "filePath": "src/discovery/package-detector.ts",
+        "line": 4
+      },
+      {
+        "name": "PackageDetection",
+        "kind": "interface",
+        "filePath": "src/discovery/package-detector.ts",
+        "line": 11
+      },
+      {
+        "name": "PackageJson",
+        "kind": "interface",
+        "filePath": "src/discovery/package-detector.ts",
+        "line": 20
+      },
+      {
+        "name": "detectPackage",
+        "kind": "function",
+        "filePath": "src/discovery/package-detector.ts",
+        "line": 35
+      },
+      {
+        "name": "detectNodePackage",
+        "kind": "function",
+        "filePath": "src/discovery/package-detector.ts",
+        "line": 57
+      },
+      {
+        "name": "detectNonNodeCommands",
+        "kind": "function",
+        "filePath": "src/discovery/package-detector.ts",
+        "line": 108
+      },
+      {
+        "name": "LOCKFILE_PRIORITY",
+        "kind": "const",
+        "filePath": "src/discovery/package-detector.ts",
+        "line": 26
+      },
+      {
+        "name": "USEFUL_SCRIPTS",
+        "kind": "const",
+        "filePath": "src/discovery/package-detector.ts",
+        "line": 33
+      }
+    ],
+    "src/discovery/project-detector.ts": [
+      {
+        "name": "ProjectDetection",
+        "kind": "interface",
+        "filePath": "src/discovery/project-detector.ts",
+        "line": 5
+      },
+      {
+        "name": "detectProject",
+        "kind": "function",
+        "filePath": "src/discovery/project-detector.ts",
+        "line": 84
+      },
+      {
+        "name": "LOCKFILE_TO_PM",
+        "kind": "const",
+        "filePath": "src/discovery/project-detector.ts",
+        "line": 17
+      },
+      {
+        "name": "LANGUAGE_INDICATORS",
+        "kind": "const",
+        "filePath": "src/discovery/project-detector.ts",
+        "line": 24
+      },
+      {
+        "name": "LANGUAGE_EXTENSIONS",
+        "kind": "const",
+        "filePath": "src/discovery/project-detector.ts",
+        "line": 41
+      },
+      {
+        "name": "FRAMEWORK_INDICATORS",
+        "kind": "const",
+        "filePath": "src/discovery/project-detector.ts",
+        "line": 46
+      },
+      {
+        "name": "COMMON_SOURCE_DIRS",
+        "kind": "const",
+        "filePath": "src/discovery/project-detector.ts",
+        "line": 62
+      },
+      {
+        "name": "COMMON_TEST_DIRS",
+        "kind": "const",
+        "filePath": "src/discovery/project-detector.ts",
+        "line": 68
+      },
+      {
+        "name": "CONFIG_FILES",
+        "kind": "const",
+        "filePath": "src/discovery/project-detector.ts",
+        "line": 72
+      }
+    ],
+    "src/discovery/search.ts": [
+      {
+        "name": "SearchOptions",
+        "kind": "interface",
+        "filePath": "src/discovery/search.ts",
+        "line": 5
+      },
+      {
+        "name": "CandidateFile",
+        "kind": "interface",
+        "filePath": "src/discovery/search.ts",
+        "line": 12
+      },
+      {
+        "name": "SearchResult",
+        "kind": "interface",
+        "filePath": "src/discovery/search.ts",
+        "line": 21
+      },
+      {
+        "name": "extractKeywords",
+        "kind": "function",
+        "filePath": "src/discovery/search.ts",
+        "line": 99
+      },
+      {
+        "name": "searchRelevantFiles",
+        "kind": "function",
+        "filePath": "src/discovery/search.ts",
+        "line": 127
+      },
+      {
+        "name": "classifyFileKind",
+        "kind": "function",
+        "filePath": "src/discovery/search.ts",
+        "line": 232
+      },
+      {
+        "name": "scoreFile",
+        "kind": "function",
+        "filePath": "src/discovery/search.ts",
+        "line": 244
+      },
+      {
+        "name": "scoreContent",
+        "kind": "function",
+        "filePath": "src/discovery/search.ts",
+        "line": 304
+      },
+      {
+        "name": "SYNONYM_MAP",
+        "kind": "const",
+        "filePath": "src/discovery/search.ts",
+        "line": 28
+      },
+      {
+        "name": "STOP_WORDS",
+        "kind": "const",
+        "filePath": "src/discovery/search.ts",
+        "line": 37
+      },
+      {
+        "name": "SKIP_DIRS",
+        "kind": "const",
+        "filePath": "src/discovery/search.ts",
+        "line": 54
+      },
+      {
+        "name": "BINARY_EXTENSIONS",
+        "kind": "const",
+        "filePath": "src/discovery/search.ts",
+        "line": 62
+      },
+      {
+        "name": "SOURCE_EXTENSIONS",
+        "kind": "const",
+        "filePath": "src/discovery/search.ts",
+        "line": 72
+      },
+      {
+        "name": "CONFIG_EXTENSIONS",
+        "kind": "const",
+        "filePath": "src/discovery/search.ts",
+        "line": 79
+      },
+      {
+        "name": "DOC_EXTENSIONS",
+        "kind": "const",
+        "filePath": "src/discovery/search.ts",
+        "line": 84
+      },
+      {
+        "name": "TEST_PATTERNS",
+        "kind": "const",
+        "filePath": "src/discovery/search.ts",
+        "line": 88
+      },
+      {
+        "name": "MAX_WALK_ENTRIES",
+        "kind": "const",
+        "filePath": "src/discovery/search.ts",
+        "line": 97
+      }
+    ],
+    "src/discovery/test-detector.ts": [
+      {
+        "name": "CandidateFile",
+        "kind": "interface",
+        "filePath": "src/discovery/test-detector.ts",
+        "line": 7
+      },
+      {
+        "name": "TestDetection",
+        "kind": "interface",
+        "filePath": "src/discovery/test-detector.ts",
+        "line": 16
+      },
+      {
+        "name": "detectTests",
+        "kind": "function",
+        "filePath": "src/discovery/test-detector.ts",
+        "line": 51
+      },
+      {
+        "name": "scoreTestFile",
+        "kind": "function",
+        "filePath": "src/discovery/test-detector.ts",
+        "line": 130
+      },
+      {
+        "name": "TEST_FILE_PATTERNS",
+        "kind": "const",
+        "filePath": "src/discovery/test-detector.ts",
+        "line": 23
+      },
+      {
+        "name": "TEST_DIR_NAMES",
+        "kind": "const",
+        "filePath": "src/discovery/test-detector.ts",
+        "line": 38
+      },
+      {
+        "name": "SKIP_DIRS",
+        "kind": "const",
+        "filePath": "src/discovery/test-detector.ts",
+        "line": 42
+      },
+      {
+        "name": "MAX_WALK_ENTRIES",
+        "kind": "const",
+        "filePath": "src/discovery/test-detector.ts",
+        "line": 49
+      }
+    ],
+    "src/graph/import-graph.ts": [
+      {
+        "name": "GraphNode",
+        "kind": "interface",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 6
+      },
+      {
+        "name": "GraphEdge",
+        "kind": "interface",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 15
+      },
+      {
+        "name": "LHImportGraph",
+        "kind": "interface",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 22
+      },
+      {
+        "name": "GraphNeighborhoodResult",
+        "kind": "interface",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 32
+      },
+      {
+        "name": "ParsedImport",
+        "kind": "interface",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 307
+      },
+      {
+        "name": "graphPath",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 57
+      },
+      {
+        "name": "loadImportGraph",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 61
+      },
+      {
+        "name": "saveImportGraph",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 65
+      },
+      {
+        "name": "buildImportGraph",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 71
+      },
+      {
+        "name": "updateImportGraph",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 114
+      },
+      {
+        "name": "graphForward",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 185
+      },
+      {
+        "name": "graphReverse",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 193
+      },
+      {
+        "name": "graphNeighborhood",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 201
+      },
+      {
+        "name": "graphBoundaryClose",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 223
+      },
+      {
+        "name": "walkDir",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 253
+      },
+      {
+        "name": "classifyFile",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 297
+      },
+      {
+        "name": "extractImports",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 312
+      },
+      {
+        "name": "resolveImport",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 338
+      },
+      {
+        "name": "buildCandidates",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 356
+      },
+      {
+        "name": "bfsTraverse",
+        "kind": "function",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 372
+      },
+      {
+        "name": "GRAPH_FILE",
+        "kind": "const",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 37
+      },
+      {
+        "name": "GRAPH_VERSION",
+        "kind": "const",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 38
+      },
+      {
+        "name": "SKIP_DIRS",
+        "kind": "const",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 40
+      },
+      {
+        "name": "SOURCE_EXTS",
+        "kind": "const",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 46
+      },
+      {
+        "name": "TEST_PATTERNS",
+        "kind": "const",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 47
+      },
+      {
+        "name": "CONFIG_PATTERNS",
+        "kind": "const",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 48
+      },
+      {
+        "name": "IMPORT_PATTERNS",
+        "kind": "const",
+        "filePath": "src/graph/import-graph.ts",
+        "line": 50
+      }
+    ],
+    "src/graph/index.ts": [
+      {
+        "name": "GraphBuildResult",
+        "kind": "interface",
+        "filePath": "src/graph/index.ts",
+        "line": 56
+      },
+      {
+        "name": "ensureGraphBuilt",
+        "kind": "function",
+        "filePath": "src/graph/index.ts",
+        "line": 67
+      }
+    ],
+    "src/graph/knowledge-graph.ts": [
+      {
+        "name": "KnowledgeNode",
+        "kind": "interface",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 14
+      },
+      {
+        "name": "KnowledgeEdge",
+        "kind": "interface",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 24
+      },
+      {
+        "name": "LHKnowledgeGraph",
+        "kind": "interface",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 30
+      },
+      {
+        "name": "knowledgeGraphPath",
+        "kind": "function",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 40
+      },
+      {
+        "name": "loadKnowledgeGraph",
+        "kind": "function",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 44
+      },
+      {
+        "name": "saveKnowledgeGraph",
+        "kind": "function",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 50
+      },
+      {
+        "name": "appendKnowledge",
+        "kind": "function",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 57
+      },
+      {
+        "name": "linkKnowledge",
+        "kind": "function",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 75
+      },
+      {
+        "name": "queryKnowledge",
+        "kind": "function",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 92
+      },
+      {
+        "name": "queryKnowledgeByFeature",
+        "kind": "function",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 110
+      },
+      {
+        "name": "renderKnowledgeSection",
+        "kind": "function",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 118
+      },
+      {
+        "name": "generateNodeId",
+        "kind": "function",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 130
+      },
+      {
+        "name": "KNOWLEDGE_GRAPH_FILE",
+        "kind": "const",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 37
+      },
+      {
+        "name": "KNOWLEDGE_VERSION",
+        "kind": "const",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 38
+      },
+      {
+        "name": "KnowledgeKind",
+        "kind": "type",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 5
+      },
+      {
+        "name": "KnowledgeEdgeKind",
+        "kind": "type",
+        "filePath": "src/graph/knowledge-graph.ts",
+        "line": 7
+      }
+    ],
+    "src/graph/symbol-graph.ts": [
+      {
+        "name": "SymbolNode",
+        "kind": "interface",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 5
+      },
+      {
+        "name": "SymbolEdge",
+        "kind": "interface",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 12
+      },
+      {
+        "name": "LHSymbolGraph",
+        "kind": "interface",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 18
+      },
+      {
+        "name": "symbolGraphPath",
+        "kind": "function",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 47
+      },
+      {
+        "name": "loadSymbolGraph",
+        "kind": "function",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 51
+      },
+      {
+        "name": "saveSymbolGraph",
+        "kind": "function",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 55
+      },
+      {
+        "name": "buildSymbolGraph",
+        "kind": "function",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 61
+      },
+      {
+        "name": "findSymbol",
+        "kind": "function",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 93
+      },
+      {
+        "name": "findImplementors",
+        "kind": "function",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 105
+      },
+      {
+        "name": "findSubclasses",
+        "kind": "function",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 118
+      },
+      {
+        "name": "symbolsInFiles",
+        "kind": "function",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 131
+      },
+      {
+        "name": "extractSymbols",
+        "kind": "function",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 140
+      },
+      {
+        "name": "extractRelationships",
+        "kind": "function",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 162
+      },
+      {
+        "name": "countLines",
+        "kind": "function",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 189
+      },
+      {
+        "name": "SYMBOL_GRAPH_FILE",
+        "kind": "const",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 33
+      },
+      {
+        "name": "SYMBOL_PATTERNS",
+        "kind": "const",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 35
+      },
+      {
+        "name": "IMPLEMENTS_PATTERN",
+        "kind": "const",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 44
+      },
+      {
+        "name": "EXTENDS_PATTERN",
+        "kind": "const",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 45
+      },
+      {
+        "name": "SymbolKind",
+        "kind": "type",
+        "filePath": "src/graph/symbol-graph.ts",
+        "line": 25
+      }
+    ],
+    "src/memory/index.ts": [
+      {
+        "name": "MemoryEntry",
+        "kind": "interface",
+        "filePath": "src/memory/index.ts",
+        "line": 9
+      },
+      {
+        "name": "MemoryFileInfo",
+        "kind": "interface",
+        "filePath": "src/memory/index.ts",
+        "line": 16
+      },
+      {
+        "name": "MemoryStatus",
+        "kind": "interface",
+        "filePath": "src/memory/index.ts",
+        "line": 23
+      },
+      {
+        "name": "resolveMemoryFilePath",
+        "kind": "function",
+        "filePath": "src/memory/index.ts",
+        "line": 42
+      },
+      {
+        "name": "readMemory",
+        "kind": "function",
+        "filePath": "src/memory/index.ts",
+        "line": 62
+      },
+      {
+        "name": "writeMemory",
+        "kind": "function",
+        "filePath": "src/memory/index.ts",
+        "line": 71
+      },
+      {
+        "name": "appendMemory",
+        "kind": "function",
+        "filePath": "src/memory/index.ts",
+        "line": 82
+      },
+      {
+        "name": "clearMemory",
+        "kind": "function",
+        "filePath": "src/memory/index.ts",
+        "line": 99
+      },
+      {
+        "name": "getMemoryStatus",
+        "kind": "function",
+        "filePath": "src/memory/index.ts",
+        "line": 109
+      },
+      {
+        "name": "loadConfigForMemory",
+        "kind": "function",
+        "filePath": "src/memory/index.ts",
+        "line": 127
+      },
+      {
+        "name": "formatMemoryEntry",
+        "kind": "function",
+        "filePath": "src/memory/index.ts",
+        "line": 132
+      },
+      {
+        "name": "appendToSection",
+        "kind": "function",
+        "filePath": "src/memory/index.ts",
+        "line": 144
+      },
+      {
+        "name": "escapeRegex",
+        "kind": "function",
+        "filePath": "src/memory/index.ts",
+        "line": 199
+      },
+      {
+        "name": "DEFAULT_FILES",
+        "kind": "const",
+        "filePath": "src/memory/index.ts",
+        "line": 28
+      },
+      {
+        "name": "DEFAULT_TITLES",
+        "kind": "const",
+        "filePath": "src/memory/index.ts",
+        "line": 35
+      },
+      {
+        "name": "MemoryFileKind",
+        "kind": "type",
+        "filePath": "src/memory/index.ts",
+        "line": 7
+      }
+    ],
+    "src/planning/acceptance.ts": [
+      {
+        "name": "AcceptanceCriterion",
+        "kind": "interface",
+        "filePath": "src/planning/acceptance.ts",
+        "line": 1
+      },
+      {
+        "name": "ParsedSpecForPlanning",
+        "kind": "interface",
+        "filePath": "src/planning/acceptance.ts",
+        "line": 8
+      },
+      {
+        "name": "parseSpecForPlanning",
+        "kind": "function",
+        "filePath": "src/planning/acceptance.ts",
+        "line": 31
+      },
+      {
+        "name": "extractMarkdownSection",
+        "kind": "function",
+        "filePath": "src/planning/acceptance.ts",
+        "line": 76
+      },
+      {
+        "name": "extractListItems",
+        "kind": "function",
+        "filePath": "src/planning/acceptance.ts",
+        "line": 108
+      },
+      {
+        "name": "extractAcceptanceCriteria",
+        "kind": "function",
+        "filePath": "src/planning/acceptance.ts",
+        "line": 130
+      },
+      {
+        "name": "ensureAcceptanceCriteria",
+        "kind": "function",
+        "filePath": "src/planning/acceptance.ts",
+        "line": 179
+      },
+      {
+        "name": "parseHeading",
+        "kind": "function",
+        "filePath": "src/planning/acceptance.ts",
+        "line": 186
+      },
+      {
+        "name": "extractAcId",
+        "kind": "function",
+        "filePath": "src/planning/acceptance.ts",
+        "line": 211
+      },
+      {
+        "name": "bumpAcNum",
+        "kind": "function",
+        "filePath": "src/planning/acceptance.ts",
+        "line": 217
+      },
+      {
+        "name": "isPlaceholderText",
+        "kind": "function",
+        "filePath": "src/planning/acceptance.ts",
+        "line": 224
+      },
+      {
+        "name": "PLACEHOLDER_CRITERIA",
+        "kind": "const",
+        "filePath": "src/planning/acceptance.ts",
+        "line": 25
+      }
+    ],
+    "src/planning/index.ts": [
+      {
+        "name": "RunPlanOptions",
+        "kind": "interface",
+        "filePath": "src/planning/index.ts",
+        "line": 17
+      },
+      {
+        "name": "PlanResult",
+        "kind": "interface",
+        "filePath": "src/planning/index.ts",
+        "line": 26
+      },
+      {
+        "name": "runPlanning",
+        "kind": "function",
+        "filePath": "src/planning/index.ts",
+        "line": 41
+      },
+      {
+        "name": "appendLine",
+        "kind": "function",
+        "filePath": "src/planning/index.ts",
+        "line": 181
+      },
+      {
+        "name": "appendText",
+        "kind": "function",
+        "filePath": "src/planning/index.ts",
+        "line": 188
+      }
+    ],
+    "src/planning/plan-renderer.ts": [
+      {
+        "name": "RenderPlanInput",
+        "kind": "interface",
+        "filePath": "src/planning/plan-renderer.ts",
+        "line": 4
+      },
+      {
+        "name": "renderPlanMarkdown",
+        "kind": "function",
+        "filePath": "src/planning/plan-renderer.ts",
+        "line": 14
+      },
+      {
+        "name": "renderTasksMarkdown",
+        "kind": "function",
+        "filePath": "src/planning/plan-renderer.ts",
+        "line": 138
+      },
+      {
+        "name": "renderPlanCavebus",
+        "kind": "function",
+        "filePath": "src/planning/plan-renderer.ts",
+        "line": 169
+      },
+      {
+        "name": "renderAcceptanceCoverageTable",
+        "kind": "function",
+        "filePath": "src/planning/plan-renderer.ts",
+        "line": 212
+      },
+      {
+        "name": "renderSingleTask",
+        "kind": "function",
+        "filePath": "src/planning/plan-renderer.ts",
+        "line": 239
+      }
+    ],
+    "src/planning/task-generator.ts": [
+      {
+        "name": "PlanningBoundaryFile",
+        "kind": "interface",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 6
+      },
+      {
+        "name": "PlanningBoundary",
+        "kind": "interface",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 12
+      },
+      {
+        "name": "PlannedTask",
+        "kind": "interface",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 44
+      },
+      {
+        "name": "PlanSlice",
+        "kind": "interface",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 61
+      },
+      {
+        "name": "GeneratedPlan",
+        "kind": "interface",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 69
+      },
+      {
+        "name": "GenerateTasksOptions",
+        "kind": "interface",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 80
+      },
+      {
+        "name": "normalizeBoundary",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 89
+      },
+      {
+        "name": "generatePlan",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 127
+      },
+      {
+        "name": "chooseVerificationCommands",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 335
+      },
+      {
+        "name": "groupFilesForTasks",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 379
+      },
+      {
+        "name": "taskId",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 428
+      },
+      {
+        "name": "generateFromSpecOnly",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 432
+      },
+      {
+        "name": "createBoundaryRefinementTask",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 537
+      },
+      {
+        "name": "finishGroup",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 562
+      },
+      {
+        "name": "pickCriteria",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 591
+      },
+      {
+        "name": "riskNotesForFiles",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 610
+      },
+      {
+        "name": "isFileRelevantToRisk",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 626
+      },
+      {
+        "name": "isHighRiskFile",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 646
+      },
+      {
+        "name": "normalizeConfidence",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 657
+      },
+      {
+        "name": "normalizeFileEntries",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 668
+      },
+      {
+        "name": "normalizeFileConfidence",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 682
+      },
+      {
+        "name": "normalizeTestEntries",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 689
+      },
+      {
+        "name": "normalizeCommandEntries",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 709
+      },
+      {
+        "name": "normalizeRiskGates",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 730
+      },
+      {
+        "name": "normalizeRiskStatus",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 746
+      },
+      {
+        "name": "normalizeStringArray",
+        "kind": "function",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 762
+      },
+      {
+        "name": "TaskSize",
+        "kind": "type",
+        "filePath": "src/planning/task-generator.ts",
+        "line": 4
+      }
+    ],
+    "src/plugins/loader.ts": [
+      {
+        "name": "discoverPluginDirs",
+        "kind": "function",
+        "filePath": "src/plugins/loader.ts",
+        "line": 6
+      },
+      {
+        "name": "loadPluginManifest",
+        "kind": "function",
+        "filePath": "src/plugins/loader.ts",
+        "line": 22
+      },
+      {
+        "name": "loadPlugin",
+        "kind": "function",
+        "filePath": "src/plugins/loader.ts",
+        "line": 40
+      },
+      {
+        "name": "loadAllPlugins",
+        "kind": "function",
+        "filePath": "src/plugins/loader.ts",
+        "line": 64
+      }
+    ],
+    "src/plugins/registry.ts": [
+      {
+        "name": "PluginRegistry",
+        "kind": "interface",
+        "filePath": "src/plugins/registry.ts",
+        "line": 4
+      },
+      {
+        "name": "createPluginRegistry",
+        "kind": "function",
+        "filePath": "src/plugins/registry.ts",
+        "line": 12
+      },
+      {
+        "name": "createEmptyRegistry",
+        "kind": "function",
+        "filePath": "src/plugins/registry.ts",
+        "line": 41
+      },
+      {
+        "name": "loadPluginRegistry",
+        "kind": "function",
+        "filePath": "src/plugins/registry.ts",
+        "line": 45
+      }
+    ],
+    "src/plugins/types.ts": [
+      {
+        "name": "PluginHookContext",
+        "kind": "interface",
+        "filePath": "src/plugins/types.ts",
+        "line": 3
+      },
+      {
+        "name": "PluginHooks",
+        "kind": "interface",
+        "filePath": "src/plugins/types.ts",
+        "line": 9
+      },
+      {
+        "name": "LHPlugin",
+        "kind": "interface",
+        "filePath": "src/plugins/types.ts",
+        "line": 20
+      },
+      {
+        "name": "PluginManifest",
+        "kind": "interface",
+        "filePath": "src/plugins/types.ts",
+        "line": 27
+      },
+      {
+        "name": "PluginHookName",
+        "kind": "type",
+        "filePath": "src/plugins/types.ts",
+        "line": 18
+      }
+    ],
+    "src/verification/acceptance.ts": [
+      {
+        "name": "AcceptanceCheck",
+        "kind": "interface",
+        "filePath": "src/verification/acceptance.ts",
+        "line": 6
+      },
+      {
+        "name": "AcceptanceVerificationInput",
+        "kind": "interface",
+        "filePath": "src/verification/acceptance.ts",
+        "line": 14
+      },
+      {
+        "name": "extractAcceptanceCriteriaForCheck",
+        "kind": "function",
+        "filePath": "src/verification/acceptance.ts",
+        "line": 22
+      },
+      {
+        "name": "findAcceptanceEvidence",
+        "kind": "function",
+        "filePath": "src/verification/acceptance.ts",
+        "line": 31
+      },
+      {
+        "name": "verifyAcceptanceCriteria",
+        "kind": "function",
+        "filePath": "src/verification/acceptance.ts",
+        "line": 83
+      },
+      {
+        "name": "extractAcSection",
+        "kind": "function",
+        "filePath": "src/verification/acceptance.ts",
+        "line": 139
+      },
+      {
+        "name": "findTaskStatusInMarkdown",
+        "kind": "function",
+        "filePath": "src/verification/acceptance.ts",
+        "line": 163
+      },
+      {
+        "name": "hasStatusDone",
+        "kind": "function",
+        "filePath": "src/verification/acceptance.ts",
+        "line": 183
+      },
+      {
+        "name": "AcceptanceStatus",
+        "kind": "type",
+        "filePath": "src/verification/acceptance.ts",
+        "line": 4
+      }
+    ],
+    "src/verification/changed-files.ts": [
+      {
+        "name": "ChangedFile",
+        "kind": "interface",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 7
+      },
+      {
+        "name": "BoundaryReview",
+        "kind": "interface",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 15
+      },
+      {
+        "name": "isHarnessArtifactPath",
+        "kind": "function",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 24
+      },
+      {
+        "name": "isImplementationPath",
+        "kind": "function",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 29
+      },
+      {
+        "name": "isPathAllowedByBoundary",
+        "kind": "function",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 33
+      },
+      {
+        "name": "detectChangedFiles",
+        "kind": "function",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 81
+      },
+      {
+        "name": "reviewBoundaryCompliance",
+        "kind": "function",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 157
+      },
+      {
+        "name": "matchSimpleGlob",
+        "kind": "function",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 198
+      },
+      {
+        "name": "extractSectionContent",
+        "kind": "function",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 232
+      },
+      {
+        "name": "extractBullets",
+        "kind": "function",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 255
+      },
+      {
+        "name": "extractCavebusField",
+        "kind": "function",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 264
+      },
+      {
+        "name": "getGitChangedFiles",
+        "kind": "function",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 288
+      },
+      {
+        "name": "runGitCommand",
+        "kind": "function",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 317
+      },
+      {
+        "name": "HARNESS_PREFIXES",
+        "kind": "const",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 22
+      },
+      {
+        "name": "BoundaryStatus",
+        "kind": "type",
+        "filePath": "src/verification/changed-files.ts",
+        "line": 5
+      }
+    ],
+    "src/verification/commands.ts": [
+      {
+        "name": "VerificationCommand",
+        "kind": "interface",
+        "filePath": "src/verification/commands.ts",
+        "line": 5
+      },
+      {
+        "name": "VerificationCommandResult",
+        "kind": "interface",
+        "filePath": "src/verification/commands.ts",
+        "line": 12
+      },
+      {
+        "name": "RunVerificationCommandsOptions",
+        "kind": "interface",
+        "filePath": "src/verification/commands.ts",
+        "line": 26
+      },
+      {
+        "name": "CommandExecResult",
+        "kind": "interface",
+        "filePath": "src/verification/commands.ts",
+        "line": 280
+      },
+      {
+        "name": "isClearlyDangerousCommand",
+        "kind": "function",
+        "filePath": "src/verification/commands.ts",
+        "line": 86
+      },
+      {
+        "name": "isSafeVerificationCommand",
+        "kind": "function",
+        "filePath": "src/verification/commands.ts",
+        "line": 96
+      },
+      {
+        "name": "extractVerificationCommands",
+        "kind": "function",
+        "filePath": "src/verification/commands.ts",
+        "line": 101
+      },
+      {
+        "name": "runVerificationCommands",
+        "kind": "function",
+        "filePath": "src/verification/commands.ts",
+        "line": 197
+      },
+      {
+        "name": "executeCommand",
+        "kind": "function",
+        "filePath": "src/verification/commands.ts",
+        "line": 288
+      },
+      {
+        "name": "truncate",
+        "kind": "function",
+        "filePath": "src/verification/commands.ts",
+        "line": 348
+      },
+      {
+        "name": "extractSection",
+        "kind": "function",
+        "filePath": "src/verification/commands.ts",
+        "line": 353
+      },
+      {
+        "name": "extractCodeBlocks",
+        "kind": "function",
+        "filePath": "src/verification/commands.ts",
+        "line": 376
+      },
+      {
+        "name": "extractInlineCommands",
+        "kind": "function",
+        "filePath": "src/verification/commands.ts",
+        "line": 386
+      },
+      {
+        "name": "extractListBullets",
+        "kind": "function",
+        "filePath": "src/verification/commands.ts",
+        "line": 401
+      },
+      {
+        "name": "DANGEROUS_PATTERNS",
+        "kind": "const",
+        "filePath": "src/verification/commands.ts",
+        "line": 33
+      },
+      {
+        "name": "SAFE_PATTERNS",
+        "kind": "const",
+        "filePath": "src/verification/commands.ts",
+        "line": 60
+      },
+      {
+        "name": "CommandResultStatus",
+        "kind": "type",
+        "filePath": "src/verification/commands.ts",
+        "line": 3
+      }
+    ],
+    "src/verification/index.ts": [
+      {
+        "name": "VerificationEvent",
+        "kind": "interface",
+        "filePath": "src/verification/index.ts",
+        "line": 17
+      },
+      {
+        "name": "RunCheckOptions",
+        "kind": "interface",
+        "filePath": "src/verification/index.ts",
+        "line": 36
+      },
+      {
+        "name": "CheckResult",
+        "kind": "interface",
+        "filePath": "src/verification/index.ts",
+        "line": 49
+      },
+      {
+        "name": "runCheck",
+        "kind": "function",
+        "filePath": "src/verification/index.ts",
+        "line": 67
+      },
+      {
+        "name": "determineVerdict",
+        "kind": "function",
+        "filePath": "src/verification/index.ts",
+        "line": 307
+      },
+      {
+        "name": "renderChecksMarkdown",
+        "kind": "function",
+        "filePath": "src/verification/index.ts",
+        "line": 393
+      },
+      {
+        "name": "renderResultMarkdown",
+        "kind": "function",
+        "filePath": "src/verification/index.ts",
+        "line": 525
+      },
+      {
+        "name": "renderCheckCavebus",
+        "kind": "function",
+        "filePath": "src/verification/index.ts",
+        "line": 633
+      },
+      {
+        "name": "extractRiskGates",
+        "kind": "function",
+        "filePath": "src/verification/index.ts",
+        "line": 688
+      },
+      {
+        "name": "determineNextAction",
+        "kind": "function",
+        "filePath": "src/verification/index.ts",
+        "line": 703
+      },
+      {
+        "name": "parseEventsJsonl",
+        "kind": "function",
+        "filePath": "src/verification/index.ts",
+        "line": 722
+      }
+    ],
+    "src/verification/review.ts": [
+      {
+        "name": "ReviewFinding",
+        "kind": "interface",
+        "filePath": "src/verification/review.ts",
+        "line": 3
+      },
+      {
+        "name": "ReviewSummary",
+        "kind": "interface",
+        "filePath": "src/verification/review.ts",
+        "line": 9
+      },
+      {
+        "name": "analyzeReviewEvidence",
+        "kind": "function",
+        "filePath": "src/verification/review.ts",
+        "line": 41
+      },
+      {
+        "name": "extractReviewSection",
+        "kind": "function",
+        "filePath": "src/verification/review.ts",
+        "line": 115
+      },
+      {
+        "name": "classifySeverity",
+        "kind": "function",
+        "filePath": "src/verification/review.ts",
+        "line": 137
+      },
+      {
+        "name": "isNonFindingLine",
+        "kind": "function",
+        "filePath": "src/verification/review.ts",
+        "line": 147
+      },
+      {
+        "name": "CRITICAL_MARKERS",
+        "kind": "const",
+        "filePath": "src/verification/review.ts",
+        "line": 16
+      },
+      {
+        "name": "MAJOR_MARKERS",
+        "kind": "const",
+        "filePath": "src/verification/review.ts",
+        "line": 23
+      },
+      {
+        "name": "MINOR_MARKERS",
+        "kind": "const",
+        "filePath": "src/verification/review.ts",
+        "line": 34
+      }
+    ],
+    "tests/commands/doctor.test.ts": [
+      {
+        "name": "silenceOutput",
+        "kind": "function",
+        "filePath": "tests/commands/doctor.test.ts",
+        "line": 12
+      },
+      {
+        "name": "fileExistsSafe",
+        "kind": "function",
+        "filePath": "tests/commands/doctor.test.ts",
+        "line": 149
+      },
+      {
+        "name": "dirExistsSafe",
+        "kind": "function",
+        "filePath": "tests/commands/doctor.test.ts",
+        "line": 158
+      },
+      {
+        "name": "ws",
+        "kind": "const",
+        "filePath": "tests/commands/doctor.test.ts",
+        "line": 9
+      },
+      {
+        "name": "suppress",
+        "kind": "const",
+        "filePath": "tests/commands/doctor.test.ts",
+        "line": 10
+      }
+    ],
+    "tests/commands/init-e2e.test.ts": [
+      {
+        "name": "exists",
+        "kind": "function",
+        "filePath": "tests/commands/init-e2e.test.ts",
+        "line": 19
+      },
+      {
+        "name": "tmpDir",
+        "kind": "const",
+        "filePath": "tests/commands/init-e2e.test.ts",
+        "line": 8
+      }
+    ],
+    "tests/commands/init-global.test.ts": [
+      {
+        "name": "silenceOutput",
+        "kind": "function",
+        "filePath": "tests/commands/init-global.test.ts",
+        "line": 13
+      },
+      {
+        "name": "fileExistsSafe",
+        "kind": "function",
+        "filePath": "tests/commands/init-global.test.ts",
+        "line": 126
+      },
+      {
+        "name": "ws",
+        "kind": "const",
+        "filePath": "tests/commands/init-global.test.ts",
+        "line": 8
+      },
+      {
+        "name": "savedHome",
+        "kind": "const",
+        "filePath": "tests/commands/init-global.test.ts",
+        "line": 9
+      },
+      {
+        "name": "fakeHome",
+        "kind": "const",
+        "filePath": "tests/commands/init-global.test.ts",
+        "line": 10
+      },
+      {
+        "name": "suppress",
+        "kind": "const",
+        "filePath": "tests/commands/init-global.test.ts",
+        "line": 11
+      }
+    ],
+    "tests/commands/memory.test.ts": [
+      {
+        "name": "tmpDir",
+        "kind": "const",
+        "filePath": "tests/commands/memory.test.ts",
+        "line": 8
+      }
+    ],
+    "tests/commands/update.test.ts": [
+      {
+        "name": "tmpDir",
+        "kind": "const",
+        "filePath": "tests/commands/update.test.ts",
+        "line": 9
+      }
+    ],
+    "tests/commands/watch.test.ts": [
+      {
+        "name": "makeBoundary",
+        "kind": "function",
+        "filePath": "tests/commands/watch.test.ts",
+        "line": 5
+      }
+    ],
+    "tests/core/config.test.ts": [
+      {
+        "name": "ws",
+        "kind": "const",
+        "filePath": "tests/core/config.test.ts",
+        "line": 14
+      }
+    ],
+    "tests/core/features.test.ts": [
+      {
+        "name": "ws",
+        "kind": "const",
+        "filePath": "tests/core/features.test.ts",
+        "line": 19
+      }
+    ],
+    "tests/core/fs.test.ts": [
+      {
+        "name": "ws",
+        "kind": "const",
+        "filePath": "tests/core/fs.test.ts",
+        "line": 18
+      }
+    ],
+    "tests/core/paths.test.ts": [
+      {
+        "name": "ROOT",
+        "kind": "const",
+        "filePath": "tests/core/paths.test.ts",
+        "line": 28
+      }
+    ],
+    "tests/core/prompt.test.ts": [
+      {
+        "name": "mockInput",
+        "kind": "function",
+        "filePath": "tests/core/prompt.test.ts",
+        "line": 5
+      },
+      {
+        "name": "nullOutput",
+        "kind": "function",
+        "filePath": "tests/core/prompt.test.ts",
+        "line": 15
+      },
+      {
+        "name": "opts",
+        "kind": "const",
+        "filePath": "tests/core/prompt.test.ts",
+        "line": 21
+      }
+    ],
+    "tests/core/state.test.ts": [
+      {
+        "name": "ws",
+        "kind": "const",
+        "filePath": "tests/core/state.test.ts",
+        "line": 16
+      }
+    ],
+    "tests/core/templates.test.ts": [
+      {
+        "name": "ws",
+        "kind": "const",
+        "filePath": "tests/core/templates.test.ts",
+        "line": 13
+      }
+    ],
+    "tests/discovery/boundary.test.ts": [
+      {
+        "name": "makeProject",
+        "kind": "function",
+        "filePath": "tests/discovery/boundary.test.ts",
+        "line": 15
+      },
+      {
+        "name": "makePackageInfo",
+        "kind": "function",
+        "filePath": "tests/discovery/boundary.test.ts",
+        "line": 30
+      },
+      {
+        "name": "makeSearch",
+        "kind": "function",
+        "filePath": "tests/discovery/boundary.test.ts",
+        "line": 42
+      },
+      {
+        "name": "makeTests",
+        "kind": "function",
+        "filePath": "tests/discovery/boundary.test.ts",
+        "line": 52
+      },
+      {
+        "name": "makeBuildInput",
+        "kind": "function",
+        "filePath": "tests/discovery/boundary.test.ts",
+        "line": 62
+      }
+    ],
+    "tests/discovery/discovery-flow.test.ts": [
+      {
+        "name": "ws",
+        "kind": "const",
+        "filePath": "tests/discovery/discovery-flow.test.ts",
+        "line": 9
+      }
+    ],
+    "tests/discovery/import-resolver.test.ts": [
+      {
+        "name": "baz",
+        "kind": "const",
+        "filePath": "tests/discovery/import-resolver.test.ts",
+        "line": 64
+      }
+    ],
+    "tests/discovery/project-detector.test.ts": [
+      {
+        "name": "ws",
+        "kind": "const",
+        "filePath": "tests/discovery/project-detector.test.ts",
+        "line": 7
+      }
+    ],
+    "tests/e2e/helpers.ts": [
+      {
+        "name": "createTempWorkspace",
+        "kind": "function",
+        "filePath": "tests/e2e/helpers.ts",
+        "line": 5
+      },
+      {
+        "name": "cleanupWorkspace",
+        "kind": "function",
+        "filePath": "tests/e2e/helpers.ts",
+        "line": 9
+      },
+      {
+        "name": "fileExists",
+        "kind": "function",
+        "filePath": "tests/e2e/helpers.ts",
+        "line": 13
+      },
+      {
+        "name": "readFile",
+        "kind": "function",
+        "filePath": "tests/e2e/helpers.ts",
+        "line": 22
+      },
+      {
+        "name": "readJson",
+        "kind": "function",
+        "filePath": "tests/e2e/helpers.ts",
+        "line": 26
+      },
+      {
+        "name": "lhPath",
+        "kind": "function",
+        "filePath": "tests/e2e/helpers.ts",
+        "line": 31
+      },
+      {
+        "name": "featurePath",
+        "kind": "function",
+        "filePath": "tests/e2e/helpers.ts",
+        "line": 35
+      }
+    ],
+    "tests/e2e/workflow.test.ts": [
+      {
+        "name": "silenceOutput",
+        "kind": "function",
+        "filePath": "tests/e2e/workflow.test.ts",
+        "line": 24
+      },
+      {
+        "name": "tmpDir",
+        "kind": "const",
+        "filePath": "tests/e2e/workflow.test.ts",
+        "line": 13
+      },
+      {
+        "name": "suppress",
+        "kind": "const",
+        "filePath": "tests/e2e/workflow.test.ts",
+        "line": 14
+      }
+    ],
+    "tests/fixtures/sample-project/src/auth/password.ts": [
+      {
+        "name": "hashPassword",
+        "kind": "function",
+        "filePath": "tests/fixtures/sample-project/src/auth/password.ts",
+        "line": 1
+      },
+      {
+        "name": "verifyPassword",
+        "kind": "function",
+        "filePath": "tests/fixtures/sample-project/src/auth/password.ts",
+        "line": 5
+      },
+      {
+        "name": "generateResetToken",
+        "kind": "function",
+        "filePath": "tests/fixtures/sample-project/src/auth/password.ts",
+        "line": 9
+      }
+    ],
+    "tests/fixtures/sample-project/src/auth/session.ts": [
+      {
+        "name": "Session",
+        "kind": "interface",
+        "filePath": "tests/fixtures/sample-project/src/auth/session.ts",
+        "line": 1
+      },
+      {
+        "name": "createSession",
+        "kind": "function",
+        "filePath": "tests/fixtures/sample-project/src/auth/session.ts",
+        "line": 7
+      },
+      {
+        "name": "isSessionValid",
+        "kind": "function",
+        "filePath": "tests/fixtures/sample-project/src/auth/session.ts",
+        "line": 15
+      }
+    ],
+    "tests/fixtures/sample-project/src/email/send.ts": [
+      {
+        "name": "sendEmail",
+        "kind": "function",
+        "filePath": "tests/fixtures/sample-project/src/email/send.ts",
+        "line": 1
+      }
+    ],
+    "tests/helpers/assertions.ts": [
+      {
+        "name": "expectFileExists",
+        "kind": "function",
+        "filePath": "tests/helpers/assertions.ts",
+        "line": 3
+      },
+      {
+        "name": "expectContains",
+        "kind": "function",
+        "filePath": "tests/helpers/assertions.ts",
+        "line": 7
+      },
+      {
+        "name": "expectJsonParsable",
+        "kind": "function",
+        "filePath": "tests/helpers/assertions.ts",
+        "line": 11
+      }
+    ],
+    "tests/helpers/cli.ts": [
+      {
+        "name": "CliRunResult",
+        "kind": "interface",
+        "filePath": "tests/helpers/cli.ts",
+        "line": 4
+      },
+      {
+        "name": "runCliInProcess",
+        "kind": "function",
+        "filePath": "tests/helpers/cli.ts",
+        "line": 10
+      }
+    ],
+    "tests/helpers/fixture.ts": [
+      {
+        "name": "createTestState",
+        "kind": "function",
+        "filePath": "tests/helpers/fixture.ts",
+        "line": 3
+      },
+      {
+        "name": "createTestFeatureEntry",
+        "kind": "function",
+        "filePath": "tests/helpers/fixture.ts",
+        "line": 16
+      },
+      {
+        "name": "SAMPLE_SPEC_MD",
+        "kind": "const",
+        "filePath": "tests/helpers/fixture.ts",
+        "line": 29
+      },
+      {
+        "name": "SAMPLE_BOUNDARY_JSON",
+        "kind": "const",
+        "filePath": "tests/helpers/fixture.ts",
+        "line": 81
+      },
+      {
+        "name": "SAMPLE_TASKS_MD",
+        "kind": "const",
+        "filePath": "tests/helpers/fixture.ts",
+        "line": 112
+      }
+    ],
+    "tests/helpers/workspace.ts": [
+      {
+        "name": "TestWorkspace",
+        "kind": "interface",
+        "filePath": "tests/helpers/workspace.ts",
+        "line": 8
+      },
+      {
+        "name": "createTempWorkspace",
+        "kind": "function",
+        "filePath": "tests/helpers/workspace.ts",
+        "line": 13
+      },
+      {
+        "name": "initHarnessWorkspace",
+        "kind": "function",
+        "filePath": "tests/helpers/workspace.ts",
+        "line": 21
+      }
+    ],
+    "tests/memory/memory.test.ts": [
+      {
+        "name": "tmpDir",
+        "kind": "const",
+        "filePath": "tests/memory/memory.test.ts",
+        "line": 15
+      }
+    ],
+    "tests/planning/plan-renderer.test.ts": [
+      {
+        "name": "buildRenderInput",
+        "kind": "function",
+        "filePath": "tests/planning/plan-renderer.test.ts",
+        "line": 13
+      }
+    ],
+    "tests/planning/planning-flow.test.ts": [
+      {
+        "name": "ws",
+        "kind": "const",
+        "filePath": "tests/planning/planning-flow.test.ts",
+        "line": 11
+      }
+    ],
+    "tests/planning/task-generator.test.ts": [
+      {
+        "name": "makeBoundary",
+        "kind": "function",
+        "filePath": "tests/planning/task-generator.test.ts",
+        "line": 13
+      }
+    ],
+    "tests/plugins/loader.test.ts": [
+      {
+        "name": "tmpRoot",
+        "kind": "const",
+        "filePath": "tests/plugins/loader.test.ts",
+        "line": 7
+      }
+    ],
+    "tests/plugins/registry.test.ts": [
+      {
+        "name": "makeCtx",
+        "kind": "function",
+        "filePath": "tests/plugins/registry.test.ts",
+        "line": 5
+      }
+    ],
+    "tests/stress/concurrency.test.ts": [
+      {
+        "name": "silenceOutput",
+        "kind": "function",
+        "filePath": "tests/stress/concurrency.test.ts",
+        "line": 17
+      },
+      {
+        "name": "tmpDir",
+        "kind": "const",
+        "filePath": "tests/stress/concurrency.test.ts",
+        "line": 14
+      },
+      {
+        "name": "suppress",
+        "kind": "const",
+        "filePath": "tests/stress/concurrency.test.ts",
+        "line": 15
+      }
+    ],
+    "tests/stress/corruption.test.ts": [
+      {
+        "name": "silenceOutput",
+        "kind": "function",
+        "filePath": "tests/stress/corruption.test.ts",
+        "line": 16
+      },
+      {
+        "name": "tmpDir",
+        "kind": "const",
+        "filePath": "tests/stress/corruption.test.ts",
+        "line": 13
+      },
+      {
+        "name": "suppress",
+        "kind": "const",
+        "filePath": "tests/stress/corruption.test.ts",
+        "line": 14
+      }
+    ],
+    "tests/stress/scale.test.ts": [
+      {
+        "name": "silenceOutput",
+        "kind": "function",
+        "filePath": "tests/stress/scale.test.ts",
+        "line": 15
+      },
+      {
+        "name": "tmpDir",
+        "kind": "const",
+        "filePath": "tests/stress/scale.test.ts",
+        "line": 12
+      },
+      {
+        "name": "suppress",
+        "kind": "const",
+        "filePath": "tests/stress/scale.test.ts",
+        "line": 13
+      },
+      {
+        "name": "x",
+        "kind": "const",
+        "filePath": "tests/stress/scale.test.ts",
+        "line": 177
+      },
+      {
+        "name": "y",
+        "kind": "const",
+        "filePath": "tests/stress/scale.test.ts",
+        "line": 178
+      }
+    ],
+    "tests/stress/workflow.test.ts": [
+      {
+        "name": "silenceOutput",
+        "kind": "function",
+        "filePath": "tests/stress/workflow.test.ts",
+        "line": 18
+      },
+      {
+        "name": "tmpDir",
+        "kind": "const",
+        "filePath": "tests/stress/workflow.test.ts",
+        "line": 15
+      },
+      {
+        "name": "suppress",
+        "kind": "const",
+        "filePath": "tests/stress/workflow.test.ts",
+        "line": 16
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "from": "src/core/errors.ts",
+      "to": "Error",
+      "kind": "extends"
+    },
+    {
+      "from": "src/core/errors.ts",
+      "to": "CLIError",
+      "kind": "extends"
+    },
+    {
+      "from": "src/core/errors.ts",
+      "to": "CLIError",
+      "kind": "extends"
+    }
+  ]
+}

@@ -17,6 +17,7 @@ import { runCaveBusCommand } from "./commands/cavebus.js";
 import { runMemoryCommand } from "./commands/memory.js";
 import { runGraphCommand } from "./commands/graph.js";
 import { runUpdateCommand } from "./commands/update.js";
+import { runUninstallCommand } from "./commands/uninstall.js";
 import { runMcpServer } from "./adapters/mcp-server.js";
 import { runCompletionCommand } from "./commands/completion.js";
 import { runWatchCommand } from "./commands/watch.js";
@@ -258,6 +259,7 @@ Commands:
   memory [show|clear|status]    Manage LeanHarness memory files
   graph <build|update|inspect|clear> Manage the LeanHarness code graph index
   update                        Refresh LH-managed files (preserves user config)
+  uninstall                     Remove all LeanHarness-managed files from this project
   watch <feature>               Watch boundary files and re-run verification on change
   completion [bash|zsh|fish]     Generate shell tab completion script
   doctor                        Check local LeanHarness setup health
@@ -512,6 +514,14 @@ export async function runCli(argv: string[]): Promise<void> {
       await runUpdateCommand({
         cwd,
         host: args.options.host ?? undefined,
+        json: args.flags.json,
+      });
+      break;
+    case "uninstall":
+      await runUninstallCommand({
+        cwd,
+        yes: args.flags.yes,
+        dryRun: args.flags.dryRun,
         json: args.flags.json,
       });
       break;

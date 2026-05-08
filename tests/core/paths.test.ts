@@ -21,6 +21,7 @@ import {
   opencodeConfigPath,
   opencodeAgentsDir,
   opencodePluginsDir,
+  opencodeCommandsDir,
   opencodePluginPath,
   opencodeGuardrailPluginPath,
 } from "../../src/core/paths.js";
@@ -193,6 +194,11 @@ describe("opencode paths", () => {
   it("opencodePluginsDir returns .opencode/plugins", () => {
     const result = opencodePluginsDir(ROOT);
     expect(result).toBe(path.resolve(ROOT, ".opencode", "plugins"));
+  });
+
+  it("opencodeCommandsDir returns .opencode/commands", () => {
+    const result = opencodeCommandsDir(ROOT);
+    expect(result).toBe(path.resolve(ROOT, ".opencode", "commands"));
   });
 
   it("opencodePluginPath appends segments under .opencode/plugins", () => {

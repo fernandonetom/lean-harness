@@ -193,7 +193,19 @@ describe("lh init --host opencode — OpenCode integration", () => {
 
     expect(await exists(path.join(tmpDir, ".opencode"))).toBe(true);
     expect(await exists(path.join(tmpDir, ".opencode", "agents"))).toBe(true);
+    expect(await exists(path.join(tmpDir, ".opencode", "commands"))).toBe(true);
     expect(await exists(path.join(tmpDir, ".opencode", "plugins"))).toBe(true);
+  });
+
+  it("creates OpenCode command templates under .opencode/commands", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir, host: "opencode" });
+    spy.mockRestore();
+
+    const expected = ["lh-spec.md", "lh-discover.md", "lh-plan.md", "lh-build.md", "lh-check.md", "lh-status.md", "lh-do.md"];
+    for (const f of expected) {
+      expect(await exists(path.join(tmpDir, ".opencode", "commands", f))).toBe(true);
+    }
   });
 
   it("creates agent files", async () => {
@@ -218,6 +230,9 @@ describe("lh init --host opencode — OpenCode integration", () => {
     );
     expect(config.agent).toBeTruthy();
     expect(config.agent["lh-scout"]).toBeTruthy();
+    expect(config.command).toBeTruthy();
+    expect(typeof config.command["lh-spec"].template).toBe("string");
+    expect(config.command["lh-spec"].template).toBe(".opencode/commands/lh-spec.md");
   });
 
   it("creates plugin files", async () => {

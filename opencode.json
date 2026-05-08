@@ -137,5 +137,42 @@
     "README.md",
     "docs/*.md",
     ".lh/memory/*.md"
-  ]
+  ],
+  "command": {
+    "lh-spec": {
+      "description": "Create or update a LeanHarness feature specification",
+      "agent": "lh-builder",
+      "template": ".opencode/commands/lh-spec.md"
+    },
+    "lh-discover": {
+      "description": "Perform LeanHarness on-demand discovery for a feature",
+      "agent": "lh-scout",
+      "template": ".opencode/commands/lh-discover.md"
+    },
+    "lh-plan": {
+      "description": "Create a LeanHarness implementation plan and task list",
+      "agent": "lh-builder",
+      "template": ".opencode/commands/lh-plan.md"
+    },
+    "lh-build": {
+      "description": "Execute LeanHarness feature tasks with bounded context",
+      "agent": "lh-builder",
+      "template": ".opencode/commands/lh-build.md"
+    },
+    "lh-check": {
+      "description": "Verify a LeanHarness feature against acceptance criteria",
+      "agent": "lh-verifier",
+      "template": ".opencode/commands/lh-check.md"
+    },
+    "lh-status": {
+      "description": "Inspect LeanHarness feature state and summarize current work",
+      "agent": "lh-builder",
+      "template": ".opencode/commands/lh-status.md"
+    },
+    "lh-do": {
+      "description": "Run the full LeanHarness workflow end-to-end",
+      "agent": "lh-builder",
+      "template": ".opencode/commands/lh-do.md"
+    }
+  }
 }
