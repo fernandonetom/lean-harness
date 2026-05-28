@@ -1,4 +1,5 @@
 import path from "node:path";
+import * as ts from "typescript";
 import { readJsonFile, writeJsonFile, ensureDir, readTextFile } from "../core/fs.js";
 import { harnessPath } from "../core/paths.js";
 
@@ -7,12 +8,13 @@ export interface SymbolNode {
   kind: SymbolKind;
   filePath: string;
   line?: number | undefined;
+  isExported?: boolean;
 }
 
 export interface SymbolEdge {
   from: string;
   to: string;
-  kind: "implements" | "extends" | "calls" | "uses";
+  kind: "implements" | "extends" | "calls" | "uses" | "references";
 }
 
 export interface LHSymbolGraph {
@@ -28,21 +30,11 @@ export type SymbolKind =
   | "function"
   | "const"
   | "type"
-  | "enum";
+  | "enum"
+  | "method"
+  | "property";
 
 const SYMBOL_GRAPH_FILE = "graph/symbol-graph.json";
-
-const SYMBOL_PATTERNS: Array<{ pattern: RegExp; kind: SymbolKind }> = [
-  { pattern: /^(?:export\s+)?(?:abstract\s+)?class\s+(\w+)/gm, kind: "class" },
-  { pattern: /^(?:export\s+)?interface\s+(\w+)/gm, kind: "interface" },
-  { pattern: /^(?:export\s+)?(?:async\s+)?function\s+(\w+)/gm, kind: "function" },
-  { pattern: /^(?:export\s+)?(?:const|let|var)\s+(\w+)\s*(?:=|:)/gm, kind: "const" },
-  { pattern: /^(?:export\s+)?type\s+(\w+)\s*=/gm, kind: "type" },
-  { pattern: /^(?:export\s+)?enum\s+(\w+)/gm, kind: "enum" },
-];
-
-const IMPLEMENTS_PATTERN = /class\s+\w+.*?\bimplements\s+([\w,\s<>]+?)(?:\{|extends)/g;
-const EXTENDS_PATTERN = /class\s+\w+.*?\bextends\s+(\w+)/g;
 
 export function symbolGraphPath(root: string): string {
   return harnessPath(root, SYMBOL_GRAPH_FILE);
@@ -73,12 +65,12 @@ export async function buildSymbolGraph(
     const content = await readTextFile(absPath);
     if (!content) continue;
 
-    const fileSymbols = extractSymbols(content, filePath);
+    const fileSymbols = extractSymbolsWithTS(content, filePath);
     if (fileSymbols.length > 0) {
       symbols[filePath] = fileSymbols;
     }
 
-    const fileRelationships = extractRelationships(content, filePath);
+    const fileRelationships = extractRelationshipsWithTS(content, filePath);
     relationships.push(...fileRelationships);
   }
 
@@ -137,59 +129,242 @@ export function symbolsInFiles(graph: LHSymbolGraph, filePaths: string[]): Symbo
   return results;
 }
 
-function extractSymbols(content: string, filePath: string): SymbolNode[] {
+function extractSymbolsWithTS(content: string, filePath: string): SymbolNode[] {
+  const sourceFile = ts.createSourceFile(
+    filePath,
+    content,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TS,
+  );
+
   const symbols: SymbolNode[] = [];
-  const seen = new Set<string>();
 
-  for (const { pattern, kind } of SYMBOL_PATTERNS) {
-    const cloned = new RegExp(pattern.source, pattern.flags);
-    let m: RegExpExecArray | null;
-    while ((m = cloned.exec(content)) !== null) {
-      const name = m[1];
-      if (!name) continue;
-      const key = `${kind}:${name}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-
-      const lineNum = countLines(content, m.index);
-      symbols.push({ name, kind, filePath, line: lineNum });
-    }
+  function getLineNumber(pos: number): number {
+    return sourceFile.getLineAndCharacterOfPosition(pos).line + 1;
   }
 
+  function getExportStatus(node: ts.Node): boolean {
+    return ts.canHaveModifiers(node)
+      ? ts.getModifiers(node)?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword) ?? false
+      : false;
+  }
+
+  function visit(node: ts.Node) {
+    switch (node.kind) {
+      case ts.SyntaxKind.ClassDeclaration: {
+        const decl = node as ts.ClassDeclaration;
+        if (decl.name) {
+          symbols.push({
+            name: decl.name.text,
+            kind: "class",
+            filePath,
+            line: getLineNumber(decl.name.pos),
+            isExported: getExportStatus(node),
+          });
+        }
+        break;
+      }
+
+      case ts.SyntaxKind.InterfaceDeclaration: {
+        const decl = node as ts.InterfaceDeclaration;
+        symbols.push({
+          name: decl.name.text,
+          kind: "interface",
+          filePath,
+          line: getLineNumber(decl.name.pos),
+          isExported: getExportStatus(node),
+        });
+        break;
+      }
+
+      case ts.SyntaxKind.FunctionDeclaration: {
+        const decl = node as ts.FunctionDeclaration;
+        if (decl.name) {
+          symbols.push({
+            name: decl.name.text,
+            kind: "function",
+            filePath,
+            line: getLineNumber(decl.name.pos),
+            isExported: getExportStatus(node),
+          });
+        }
+        break;
+      }
+
+      case ts.SyntaxKind.VariableStatement: {
+        const decl = node as ts.VariableStatement;
+        for (const varDecl of decl.declarationList.declarations) {
+          if (ts.isIdentifier(varDecl.name)) {
+            symbols.push({
+              name: varDecl.name.text,
+              kind: "const",
+              filePath,
+              line: getLineNumber(varDecl.pos),
+              isExported: getExportStatus(node),
+            });
+          }
+        }
+        break;
+      }
+
+      case ts.SyntaxKind.TypeAliasDeclaration: {
+        const decl = node as ts.TypeAliasDeclaration;
+        symbols.push({
+          name: decl.name.text,
+          kind: "type",
+          filePath,
+          line: getLineNumber(decl.name.pos),
+          isExported: getExportStatus(node),
+        });
+        break;
+      }
+
+      case ts.SyntaxKind.EnumDeclaration: {
+        const decl = node as ts.EnumDeclaration;
+        symbols.push({
+          name: decl.name.text,
+          kind: "enum",
+          filePath,
+          line: getLineNumber(decl.name.pos),
+          isExported: getExportStatus(node),
+        });
+        break;
+      }
+
+      case ts.SyntaxKind.MethodDeclaration: {
+        const decl = node as ts.MethodDeclaration;
+        if (ts.isIdentifier(decl.name)) {
+          symbols.push({
+            name: decl.name.text,
+            kind: "method",
+            filePath,
+            line: getLineNumber(decl.name.pos),
+            isExported: false,
+          });
+        }
+        break;
+      }
+
+      case ts.SyntaxKind.PropertyDeclaration: {
+        const decl = node as ts.PropertyDeclaration;
+        if (ts.isIdentifier(decl.name)) {
+          symbols.push({
+            name: decl.name.text,
+            kind: "property",
+            filePath,
+            line: getLineNumber(decl.name.pos),
+            isExported: false,
+          });
+        }
+        break;
+      }
+    }
+
+    ts.forEachChild(node, visit);
+  }
+
+  visit(sourceFile);
   return symbols;
 }
 
-function extractRelationships(content: string, filePath: string): SymbolEdge[] {
+function extractRelationshipsWithTS(content: string, filePath: string): SymbolEdge[] {
+  const sourceFile = ts.createSourceFile(
+    filePath,
+    content,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TS,
+  );
+
   const relationships: SymbolEdge[] = [];
+  const symbolMap = new Map<string, ts.Node>();
 
-  let m: RegExpExecArray | null;
-
-  const implClone = new RegExp(IMPLEMENTS_PATTERN.source, IMPLEMENTS_PATTERN.flags);
-  while ((m = implClone.exec(content)) !== null) {
-    const names = m[1]?.split(",").map((s) => s.trim().replace(/<.*>/, ""));
-    if (!names) continue;
-    for (const name of names) {
-      if (name) {
-        relationships.push({ from: filePath, to: name, kind: "implements" });
+  function buildSymbolMap(node: ts.Node) {
+    if (
+      ts.isClassDeclaration(node) ||
+      ts.isFunctionDeclaration(node) ||
+      ts.isInterfaceDeclaration(node)
+    ) {
+      const name = (node as ts.ClassDeclaration | ts.FunctionDeclaration | ts.InterfaceDeclaration).name;
+      if (name && ts.isIdentifier(name)) {
+        symbolMap.set(name.text, node);
       }
     }
+    ts.forEachChild(node, buildSymbolMap);
   }
 
-  const extendsClone = new RegExp(EXTENDS_PATTERN.source, EXTENDS_PATTERN.flags);
-  while ((m = extendsClone.exec(content)) !== null) {
-    const name = m[1];
-    if (name) {
-      relationships.push({ from: filePath, to: name, kind: "extends" });
+  buildSymbolMap(sourceFile);
+
+  function visit(node: ts.Node) {
+    if (ts.isClassDeclaration(node)) {
+      const heritageClauses = node.heritageClauses;
+      if (heritageClauses) {
+        for (const clause of heritageClauses) {
+          for (const type of clause.types) {
+            const expr = type.expression;
+            if (ts.isIdentifier(expr)) {
+              const className = (node.name as ts.Identifier)?.text;
+              if (className) {
+                const kind =
+                  clause.token === ts.SyntaxKind.ImplementsKeyword ? "implements" : "extends";
+                relationships.push({
+                  from: filePath,
+                  to: expr.text,
+                  kind,
+                });
+              }
+            }
+          }
+        }
+      }
     }
+
+    if (ts.isCallExpression(node)) {
+      const expr = node.expression;
+      if (ts.isIdentifier(expr)) {
+        const name = expr.text;
+        if (symbolMap.has(name)) {
+          relationships.push({
+            from: filePath,
+            to: name,
+            kind: "calls",
+          });
+        }
+      }
+    }
+
+    if (ts.isPropertyAccessExpression(node)) {
+      const expr = node.expression;
+      if (ts.isIdentifier(expr)) {
+        const name = expr.text;
+        if (symbolMap.has(name)) {
+          relationships.push({
+            from: filePath,
+            to: name,
+            kind: "references",
+          });
+        }
+      }
+    }
+
+    if (ts.isTypeReferenceNode(node)) {
+      const typeName = node.typeName;
+      if (ts.isIdentifier(typeName)) {
+        const name = typeName.text;
+        if (symbolMap.has(name)) {
+          relationships.push({
+            from: filePath,
+            to: name,
+            kind: "references",
+          });
+        }
+      }
+    }
+
+    ts.forEachChild(node, visit);
   }
 
+  visit(sourceFile);
   return relationships;
-}
-
-function countLines(content: string, index: number): number {
-  let count = 1;
-  for (let i = 0; i < index; i++) {
-    if (content[i] === "\n") count++;
-  }
-  return count;
 }

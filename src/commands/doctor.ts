@@ -5,6 +5,7 @@ import { isValidFeatureId, parseFeatureNumber } from "../core/features.js";
 import { harnessPath, claudePath, resolveProjectPath, statePath, templatesDir, policiesDir, featuresDir, opencodeConfigPath, opencodePath, opencodeAgentsDir, opencodePluginsDir, opencodeGuardrailPluginPath, opencodePluginPath } from "../core/paths.js";
 import { createLogger, printJson } from "../core/logger.js";
 import { detectAllAgentHosts } from "../adapters/registry.js";
+import { ensureGraphBuilt } from "../graph/index.js";
 import type { DoctorCheck } from "../core/types.js";
 import type { AgentDetection } from "../adapters/types.js";
 
@@ -177,6 +178,21 @@ export async function runDoctorCommand(options: DoctorOptions): Promise<void> {
     (await fileExists(boundaryPolicy))
       ? { name: ".lh/policies/boundary.yml", status: "pass", message: "present" }
       : { name: ".lh/policies/boundary.yml", status: "warn", message: "missing" },
+  );
+
+  // --- Graph ---
+  const importGraphFile = harnessPath(cwd, "graph/import-graph.json");
+  checks.push(
+    (await fileExists(importGraphFile))
+      ? { name: ".lh/graph/import-graph.json", status: "pass", message: "present" }
+      : { name: ".lh/graph/import-graph.json", status: "warn", message: "missing — run `lh graph build`" },
+  );
+
+  const symbolGraphFile = harnessPath(cwd, "graph/symbol-graph.json");
+  checks.push(
+    (await fileExists(symbolGraphFile))
+      ? { name: ".lh/graph/symbol-graph.json", status: "pass", message: "present" }
+      : { name: ".lh/graph/symbol-graph.json", status: "warn", message: "missing — run `lh graph build`" },
   );
 
   // --- Features ---
@@ -398,6 +414,13 @@ export async function runDoctorCommand(options: DoctorOptions): Promise<void> {
       ],
     },
     {
+      label: "Graph",
+      names: [
+        ".lh/graph/import-graph.json",
+        ".lh/graph/symbol-graph.json",
+      ],
+    },
+    {
       label: "Features",
       names: [".lh/features/", "Feature folder IDs"],
     },
@@ -510,6 +533,35 @@ async function applyFixes(cwd: string, checks: DoctorCheck[], fixes: DoctorFix[]
       fixes.push({ name: ".lh/state.json", action: "created default state", success: true });
     } catch {
       fixes.push({ name: ".lh/state.json", action: "failed to create state", success: false });
+    }
+  }
+
+  const importGraphCheck = checks.find((c) => c.name === ".lh/graph/import-graph.json");
+  const symbolGraphCheck = checks.find((c) => c.name === ".lh/graph/symbol-graph.json");
+  if ((importGraphCheck && importGraphCheck.status === "warn") ||
+      (symbolGraphCheck && symbolGraphCheck.status === "warn")) {
+    try {
+      await ensureGraphBuilt(cwd);
+      if (importGraphCheck) {
+        importGraphCheck.status = "pass";
+        importGraphCheck.message = "rebuilt by --fix";
+      }
+      if (symbolGraphCheck) {
+        symbolGraphCheck.status = "pass";
+        symbolGraphCheck.message = "rebuilt by --fix";
+      }
+      fixes.push({
+        name: ".lh/graph/",
+        action: "rebuilt import and symbol graphs",
+        success: true,
+      });
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : String(err);
+      fixes.push({
+        name: ".lh/graph/",
+        action: `failed to rebuild graph: ${errMsg}`,
+        success: false,
+      });
     }
   }
 }

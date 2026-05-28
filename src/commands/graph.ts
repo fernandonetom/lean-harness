@@ -7,12 +7,22 @@ import {
 import {
   buildSymbolGraph, saveSymbolGraph, loadSymbolGraph, symbolGraphPath,
 } from "../graph/symbol-graph.js";
+import { exportHtml, exportJson, exportDot, exportSubgraph, exportSvg } from "../graph/export.js";
+import path from "node:path";
 import fsp from "node:fs/promises";
 
 export interface GraphOptions {
   cwd: string;
   subcommand: string;
   json?: boolean | undefined;
+  positional?: string[];
+  options?: {
+    width?: string;
+    height?: string;
+    filter?: string;
+    kind?: string[];
+    directory?: string;
+  };
 }
 
 export async function runGraphCommand(options: GraphOptions): Promise<void> {
@@ -87,7 +97,81 @@ export async function runGraphCommand(options: GraphOptions): Promise<void> {
       }
       break;
     }
+    case "export": {
+      const format = options.positional?.[0] ?? "html";
+      
+      if (format === "subgraph") {
+        log.info("Exporting filtered subgraph...");
+        const importGraph = await loadImportGraph(cwd);
+        const symbolGraph = await loadSymbolGraph(cwd);
+        
+        if (!importGraph) {
+          throw new CLIError("No import graph found. Run: lh graph build");
+        }
+        if (!symbolGraph) {
+          throw new CLIError("No symbol graph found. Run: lh graph build");
+        }
+        
+        const filterOptions: import("../graph/export.js").SubgraphOptions = {};
+        if (options.positional?.[1]) {
+          filterOptions.pattern = options.positional[1];
+        }
+        
+        const outputPath = await exportSubgraph(cwd, importGraph, symbolGraph, filterOptions);
+        const relativePath = path.relative(cwd, outputPath);
+        if (json) {
+          printJson({ exported: true, format: "subgraph", path: relativePath, ...filterOptions });
+        } else {
+          log.success(`Exported subgraph to ${relativePath}`);
+        }
+        break;
+      }
+      
+      if (!["html", "json", "dot", "svg"].includes(format)) {
+        throw new CLIError(`Unknown export format: ${format}. Expected html, json, dot, svg, or subgraph.`);
+      }
+      
+      log.info(`Exporting graph in ${format} format...`);
+      const importGraph = await loadImportGraph(cwd);
+      const symbolGraph = await loadSymbolGraph(cwd);
+      
+      if (!importGraph) {
+        throw new CLIError("No import graph found. Run: lh graph build");
+      }
+      if (!symbolGraph) {
+        throw new CLIError("No symbol graph found. Run: lh graph build");
+      }
+      
+      let outputPath: string;
+      switch (format) {
+        case "html":
+          outputPath = await exportHtml(cwd, importGraph, symbolGraph);
+          break;
+        case "json":
+          outputPath = await exportJson(cwd, importGraph, symbolGraph);
+          break;
+        case "dot":
+          outputPath = await exportDot(cwd, importGraph);
+          break;
+        case "svg": {
+          const width = options.options?.width ? parseInt(options.options.width, 10) : 1920;
+          const height = options.options?.height ? parseInt(options.options.height, 10) : 1080;
+          outputPath = await exportSvg(cwd, importGraph, { width, height });
+          break;
+        }
+        default:
+          throw new CLIError(`Unknown export format: ${format}`);
+      }
+      
+      const relativePath = path.relative(cwd, outputPath);
+      if (json) {
+        printJson({ exported: true, format, path: relativePath });
+      } else {
+        log.success(`Exported graph to ${relativePath}`);
+      }
+      break;
+    }
     default:
-      throw new CLIError(`Unknown graph subcommand: ${subcommand}. Expected build, update, inspect, or clear.`);
+      throw new CLIError(`Unknown graph subcommand: ${subcommand}. Expected build, update, inspect, clear, or export.`);
   }
 }

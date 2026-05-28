@@ -173,6 +173,17 @@
       "description": "Run the full LeanHarness workflow end-to-end",
       "agent": "lh-builder",
       "template": ".opencode/commands/lh-do.md"
+    },
+    "lh-graph": {
+      "description": "Explore the code graph (imports, symbols, dependencies)",
+      "agent": "graph-explorer",
+      "template": ".opencode/commands/lh-graph.md"
+    }
+  },
+  "mcpServers": {
+    "leanharness": {
+      "command": "node",
+      "args": ["dist/index.js", "mcp-server"]
     }
   }
 }
