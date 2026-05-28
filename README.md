@@ -54,6 +54,39 @@ Initialize in a target project:
 lh init --host all
 ```
 
+## Graph System
+
+LeanHarness maintains a code graph for smarter discovery and bounded context:
+
+- **Import graph** — File-level dependencies and import relationships
+- **Symbol graph** — Class, function, and interface tracking (TypeScript AST-based)
+- **Knowledge graph** — Cross-feature patterns and decisions
+
+### Commands
+
+```bash
+lh graph build          # Build graphs from scratch
+lh graph update         # Incremental update (detects changes)
+lh graph inspect        # Show graph statistics
+lh graph clear          # Remove graph files
+```
+
+### How it's used
+
+- **Discovery:** Graph scoring boosts files near your change boundary
+- **Context compiler:** Knowledge graph adds relevant patterns to task context
+- **MCP server:** Graph tools for agent exploration (`lh mcp-server`)
+- **Symbol lookup:** Find class/interface/function declarations via AST
+- **Call graph:** Track function calls and type references
+
+### When to rebuild
+
+Rebuild the graph when:
+- Starting work in a new codebase
+- After large refactors
+- If discovery seems to miss relevant files
+- `lh doctor` reports graph files missing
+
 ## Core workflow
 
 ```bash

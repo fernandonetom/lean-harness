@@ -5,6 +5,7 @@ import { runDoctorCommand } from "../../src/commands/doctor.js";
 import { createTempWorkspace, type TestWorkspace } from "../helpers/workspace.js";
 import { ensureDir, writeTextFile } from "../../src/core/fs.js";
 import { harnessPath, statePath } from "../../src/core/paths.js";
+import { graphPath, symbolGraphPath } from "../../src/graph/index.js";
 
 let ws: TestWorkspace;
 const suppress = { write: () => true } as any;
@@ -143,6 +144,156 @@ describe("doctor --fix", () => {
     expect(result.fixes).toBeDefined();
     expect(result.fixes.length).toBeGreaterThan(0);
     expect(result.fixes.some((f: any) => f.success)).toBe(true);
+  });
+});
+
+describe("doctor graph checks", () => {
+  it("reports missing graph files", async () => {
+    await ensureDir(harnessPath(ws.root));
+    await writeTextFile(harnessPath(ws.root, "config.yml"), "version: 0.1");
+    await fsp.writeFile(statePath(ws.root), JSON.stringify({ version: "0.1" }), "utf8");
+
+    let output = "";
+    const origWrite = process.stdout.write.bind(process.stdout);
+    const origErr = process.stderr.write.bind(process.stderr);
+    process.stdout.write = ((chunk: any) => {
+      output += String(chunk);
+      return true;
+    }) as any;
+    process.stderr.write = suppress.write;
+
+    try {
+      await runDoctorCommand({ cwd: ws.root, json: true });
+    } finally {
+      process.stdout.write = origWrite;
+      process.stderr.write = origErr;
+    }
+
+    const result = JSON.parse(output);
+    const importGraphCheck = result.checks.find((c: any) => c.name === ".lh/graph/import-graph.json");
+    const symbolGraphCheck = result.checks.find((c: any) => c.name === ".lh/graph/symbol-graph.json");
+
+    expect(importGraphCheck).toBeDefined();
+    expect(importGraphCheck.status).toBe("warn");
+    expect(importGraphCheck.message).toContain("missing");
+    expect(symbolGraphCheck).toBeDefined();
+    expect(symbolGraphCheck.status).toBe("warn");
+    expect(symbolGraphCheck.message).toContain("missing");
+  });
+
+  it("detects graph files when present", async () => {
+    await ensureDir(harnessPath(ws.root));
+    await writeTextFile(harnessPath(ws.root, "config.yml"), "version: 0.1");
+    await fsp.writeFile(statePath(ws.root), JSON.stringify({ version: "0.1" }), "utf8");
+
+    const importGraph = {
+      version: "1",
+      builtAt: new Date().toISOString(),
+      rootDir: ws.root,
+      nodeCount: 0,
+      edgeCount: 0,
+      nodes: {},
+      edges: [],
+    };
+    const symbolGraph = {
+      builtAt: new Date().toISOString(),
+      rootDir: ws.root,
+      symbols: {},
+      relationships: [],
+    };
+
+    await ensureDir(path.dirname(graphPath(ws.root)));
+    await fsp.writeFile(graphPath(ws.root), JSON.stringify(importGraph), "utf8");
+    await fsp.writeFile(symbolGraphPath(ws.root), JSON.stringify(symbolGraph), "utf8");
+
+    let output = "";
+    const origWrite = process.stdout.write.bind(process.stdout);
+    const origErr = process.stderr.write.bind(process.stderr);
+    process.stdout.write = ((chunk: any) => {
+      output += String(chunk);
+      return true;
+    }) as any;
+    process.stderr.write = suppress.write;
+
+    try {
+      await runDoctorCommand({ cwd: ws.root, json: true });
+    } finally {
+      process.stdout.write = origWrite;
+      process.stderr.write = origErr;
+    }
+
+    const result = JSON.parse(output);
+    const importGraphCheck = result.checks.find((c: any) => c.name === ".lh/graph/import-graph.json");
+    const symbolGraphCheck = result.checks.find((c: any) => c.name === ".lh/graph/symbol-graph.json");
+
+    expect(importGraphCheck.status).toBe("pass");
+    expect(importGraphCheck.message).toBe("present");
+    expect(symbolGraphCheck.status).toBe("pass");
+    expect(symbolGraphCheck.message).toBe("present");
+  });
+
+  it("rebuilt graph with --fix", async () => {
+    await ensureDir(harnessPath(ws.root));
+    await writeTextFile(harnessPath(ws.root, "config.yml"), "version: 0.1");
+    await fsp.writeFile(statePath(ws.root), JSON.stringify({ version: "0.1" }), "utf8");
+
+    let output = "";
+    const origWrite = process.stdout.write.bind(process.stdout);
+    const origErr = process.stderr.write.bind(process.stderr);
+    process.stdout.write = ((chunk: any) => {
+      output += String(chunk);
+      return true;
+    }) as any;
+    process.stderr.write = suppress.write;
+
+    try {
+      await runDoctorCommand({ cwd: ws.root, json: true, fix: true });
+    } finally {
+      process.stdout.write = origWrite;
+      process.stderr.write = origErr;
+    }
+
+    const result = JSON.parse(output);
+    const importGraphCheck = result.checks.find((c: any) => c.name === ".lh/graph/import-graph.json");
+    const symbolGraphCheck = result.checks.find((c: any) => c.name === ".lh/graph/symbol-graph.json");
+
+    expect(importGraphCheck.status).toBe("pass");
+    expect(importGraphCheck.message).toBe("rebuilt by --fix");
+    expect(symbolGraphCheck.status).toBe("pass");
+    expect(symbolGraphCheck.message).toBe("rebuilt by --fix");
+
+    const importGraphExists = await fileExistsSafe(graphPath(ws.root));
+    const symbolGraphExists = await fileExistsSafe(symbolGraphPath(ws.root));
+    expect(importGraphExists).toBe(true);
+    expect(symbolGraphExists).toBe(true);
+  });
+
+  it("includes graph in JSON output", async () => {
+    await ensureDir(harnessPath(ws.root));
+    await writeTextFile(harnessPath(ws.root, "config.yml"), "version: 0.1");
+    await fsp.writeFile(statePath(ws.root), JSON.stringify({ version: "0.1" }), "utf8");
+
+    let output = "";
+    const origWrite = process.stdout.write.bind(process.stdout);
+    const origErr = process.stderr.write.bind(process.stderr);
+    process.stdout.write = ((chunk: any) => {
+      output += String(chunk);
+      return true;
+    }) as any;
+    process.stderr.write = suppress.write;
+
+    try {
+      await runDoctorCommand({ cwd: ws.root, json: true });
+    } finally {
+      process.stdout.write = origWrite;
+      process.stderr.write = origErr;
+    }
+
+    const result = JSON.parse(output);
+    expect(result.checks).toBeDefined();
+    expect(Array.isArray(result.checks)).toBe(true);
+    const graphChecks = result.checks.filter((c: any) => c.name.includes("graph"));
+    expect(graphChecks.length).toBe(2);
   });
 });
 
