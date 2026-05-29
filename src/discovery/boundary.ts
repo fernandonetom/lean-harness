@@ -3,8 +3,6 @@ import type { PackageDetection } from "./package-detector.js";
 import type { SearchResult, CandidateFile } from "./search.js";
 import type { TestDetection } from "./test-detector.js";
 import type { DiscoveryDepth, Confidence, CompactConfidence } from "../core/types.js";
-import type { LHImportGraph } from "../graph/import-graph.js";
-import { graphBoundaryClose } from "../graph/import-graph.js";
 
 export interface BoundaryBuildInput {
   featureId: string;
@@ -16,7 +14,6 @@ export interface BoundaryBuildInput {
   tests: TestDetection;
   hints: string[];
   maxFiles: number;
-  importGraph?: LHImportGraph | null | undefined;
 }
 
 export interface BoundaryFileEntry {
@@ -191,7 +188,7 @@ export function buildBoundary(input: BoundaryBuildInput): BoundaryJson {
   const {
     featureId, featureTitle, depth,
     project, packageInfo, search, tests,
-    hints, maxFiles, importGraph,
+    hints, maxFiles,
   } = input;
 
   const touchFiles: BoundaryFileEntry[] = [];
@@ -308,10 +305,7 @@ export function buildBoundary(input: BoundaryBuildInput): BoundaryJson {
     confidence = "medium";
   }
 
-  const touchFilePaths = touchFiles.map((f) => f.path);
-  const closureGaps = importGraph
-    ? graphBoundaryClose(importGraph, touchFilePaths)
-    : [];
+  const closureGaps: BoundaryJson["closureGaps"] = [];
 
   return {
     featureId,
