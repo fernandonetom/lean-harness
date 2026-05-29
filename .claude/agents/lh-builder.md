@@ -1,6 +1,7 @@
 ---
 name: lh-builder
 description: Use for LeanHarness bounded implementation tasks after a spec, discovery report, change boundary, plan, and task list exist. Implements only assigned tasks and records verification evidence.
+tools: Read, Write, Edit, Glob, Grep, Bash
 model: sonnet
 permissionMode: default
 maxTurns: 40

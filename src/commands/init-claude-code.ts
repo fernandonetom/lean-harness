@@ -827,6 +827,7 @@ function createCCAgentBuilder(): string {
   return `---
 name: lh-builder
 description: Use for LeanHarness bounded implementation tasks after a spec, discovery report, change boundary, plan, and task list exist. Implements only assigned tasks and records verification evidence.
+tools: Read, Write, Edit, Glob, Grep, Bash
 model: sonnet
 permissionMode: default
 maxTurns: 40
@@ -1606,8 +1607,13 @@ Examples:
 - Do not skip check.
 - Respect risk gates from \`.lh/config.yml\`.
 - Use bounded context for implementation tasks.
-- If subagents exist (e.g., \`.claude/agents/lh-*.md\`), use them when helpful.
-- If subagents do not exist yet, perform the steps directly.
+- **Use the Agent tool** to delegate each workflow step to the appropriate subagent:
+  - Discover step → \`subagent_type: "lh-scout"\`
+  - Build step (per task) → \`subagent_type: "lh-builder"\`
+  - Review step (after each task) → \`subagent_type: "lh-reviewer"\`
+  - Check step → \`subagent_type: "lh-verifier"\`
+  - Compress step (after each summary) → \`subagent_type: "lh-compressor"\`
+- If a named subagent is unavailable, perform that step directly.
 - If hooks exist, respect their outcomes.
 - If CLI commands exist later, prefer them for deterministic file operations.
 - If CLI commands do not exist yet, manually create or update artifacts using templates from \`.lh/templates/\`.
@@ -1794,7 +1800,7 @@ function createCCSkillDiscover(): string {
 name: lh-discover
 description: Perform LeanHarness on-demand discovery for an existing codebase and produce a focused change boundary. Use when the user invokes /lh-discover or needs relevant files, tests, commands, constraints, risks, and unknowns before planning.
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
 ---
 
 # lh-discover
@@ -1831,12 +1837,14 @@ Examples:
    - \`.lh/memory/decisions.md\`
    - \`.lh/memory/patterns.md\`
    - \`.lh/memory/cave.md\`
-5. **Perform discovery.** Explore in levels, starting at the configured default depth (usually D2):
-   - **D0 — Repo shape:** Check for \`package.json\`, \`pyproject.toml\`, \`go.mod\`, \`Cargo.toml\`, \`Makefile\`. Use \`find\` / \`ls\` for these config files only. Identify package manager, major folders, framework clues, and test command candidates.
-   - **D1 — Seed files:** Invoke \`/graphify\` with the feature description and goal as input. Use graphify's semantic search to identify files most relevant to the feature. Do not use grep or glob for seed discovery.
-   - **D2 — Dependency boundary:** Use graphify neighbor traversal from the D1 seed files to find imports, callees, callers, neighboring tests, and shared utilities. Distinguish edit vs. read-only files using graphify relationship data.
-   - **D3 — Risk probes:** Use graphify symbol lookup to find auth, payment, permission, and security-sensitive paths. Run focused test commands to detect failures. Do not use grep for symbol discovery.
-   - **D4 — Deep dive:** Use graphify relationship queries for broader architecture inspection. Only escalate when D0–D3 is insufficient.
+5. **Perform discovery.**
+   - **Preferred:** Invoke the Agent tool with \`subagent_type: "lh-scout"\`, passing the feature ID, spec path, memory file paths, and any hints provided. Use the scout's structured output to populate the discovery artifacts in steps 7–8.
+   - **Fallback (if \`lh-scout\` is unavailable):** Explore directly in levels, starting at the configured default depth (usually D2):
+     - **D0 — Repo shape:** Check for \`package.json\`, \`pyproject.toml\`, \`go.mod\`, \`Cargo.toml\`, \`Makefile\`. Use \`find\` / \`ls\` for these config files only. Identify package manager, major folders, framework clues, and test command candidates.
+     - **D1 — Seed files:** Invoke \`/graphify\` with the feature description and goal as input. Use graphify's semantic search to identify files most relevant to the feature. Do not use grep or glob for seed discovery.
+     - **D2 — Dependency boundary:** Use graphify neighbor traversal from the D1 seed files to find imports, callees, callers, neighboring tests, and shared utilities. Distinguish edit vs. read-only files using graphify relationship data.
+     - **D3 — Risk probes:** Use graphify symbol lookup to find auth, payment, permission, and security-sensitive paths. Run focused test commands to detect failures. Do not use grep for symbol discovery.
+     - **D4 — Deep dive:** Use graphify relationship queries for broader architecture inspection. Only escalate when D0–D3 is insufficient.
 6. **Stop when sufficient.** Stop when the change boundary is sufficient for a safe plan. Escalate only when the current boundary is insufficient.
 7. **Write discovery.** Write \`discovery.md\` using \`.lh/templates/discovery.md\`.
 8. **Write boundary.** Write \`boundary.json\` using \`.lh/templates/boundary.json\`.
@@ -2098,12 +2106,12 @@ Do not require exact flag parsing. Interpret natural language flexibly.
 4. **For each task:**
    a. Compile bounded context from artifacts. Read only relevant files.
    b. Confirm expected edit files are inside the change boundary.
-   c. If behavior changes, prefer writing or updating tests first.
-   d. Implement the task.
-   e. Run task verification commands when available.
-   f. Record commands and results.
-   g. Write task summary to \`task-summaries/<task-id>.md\`.
-   h. Append CaveBus summary to \`cavebus.log\`.
+   c. **Implement:** Invoke the Agent tool with \`subagent_type: "lh-builder"\`, passing the compiled bounded context (feature ID, task ID, task goal, expected files, read-only context, verification commands, prior task summaries). If \`lh-builder\` is unavailable, implement the task directly; prefer writing or updating tests first if behavior changes.
+   d. Run task verification commands when available.
+   e. Record commands and results.
+   f. **Review:** Invoke the Agent tool with \`subagent_type: "lh-reviewer"\`, passing feature ID, task ID, changed files list, task summary path, and boundary path. If \`lh-reviewer\` is unavailable, perform self-review inline.
+   g. **Compress:** Invoke the Agent tool with \`subagent_type: "lh-compressor"\`, passing the verbose task summary. Append the returned compact CaveBus entry to \`cavebus.log\`. If \`lh-compressor\` is unavailable, write the CaveBus summary directly.
+   h. Write task summary to \`task-summaries/<task-id>.md\`.
    i. Update task status in \`tasks.md\`.
 5. **Boundary enforcement.** If the task requires files outside the boundary:
    - Stop before editing those files.
@@ -2175,9 +2183,9 @@ Use actual values. Do not hardcode project-specific content.
 
 ## Review Behavior
 
-If \`.claude/agents/lh-reviewer.md\` exists, use it for review when helpful.
+After each task implementation, invoke the Agent tool with \`subagent_type: "lh-reviewer"\` (step 4f above), passing feature ID, task ID, changed files, task summary path, and boundary path.
 
-If no reviewer subagent exists yet, perform a self-review checking:
+If \`lh-reviewer\` is unavailable, perform self-review checking:
 
 - Acceptance criteria coverage
 - Boundary violations
@@ -2229,7 +2237,7 @@ function createCCSkillCheck(): string {
 name: lh-check
 description: Verify a LeanHarness feature against acceptance criteria, changed files, risk gates, review findings, and command evidence. Use when the user invokes /lh-check or wants a final pass, needs-fix, or blocked verdict.
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
 ---
 
 # lh-check
@@ -2265,20 +2273,22 @@ Examples:
    - \`task-summaries/\` — Per-task completion records
    - \`cavebus.log\` — Compressed history
    - \`events.jsonl\` — Event log if present
-3. **Determine changed files.** Use available evidence:
+3. **Delegate verification.** Invoke the Agent tool with \`subagent_type: "lh-verifier"\`, passing the feature ID and artifact paths. Use the verifier's returned verdict, AC table, command results, and CaveBus entry as the basis for steps 12–13. If \`lh-verifier\` is unavailable, perform steps 4–11 directly.
+4. **Determine changed files.** (fallback) Use available evidence:
    - Task summaries (files listed as changed)
    - \`git diff\` if available
    - Events log if available
-4. **Check acceptance criteria.** Evaluate each AC one by one against evidence.
-5. **Check task statuses.** Confirm all planned tasks are \`done\` or \`skipped\` with justification.
-6. **Check verification commands.** Review commands run and their results from task summaries.
-7. **Run verification commands.** When appropriate and safe, run relevant verification commands (tests, lint, type check).
-8. **Check boundary compliance.** Confirm all changed files are inside the approved boundary.
-9. **Check risk gates.** Confirm all triggered risk gates were resolved or approved.
-10. **Check review findings.** Confirm no blocking review findings remain.
-11. **Write checks.** Write \`checks.md\` using \`.lh/templates/checks.md\`.
-12. **Write result.** Write or update \`result.md\` using \`.lh/templates/result.md\`.
-13. **Set verdict.** Assign final verdict: \`pass\`, \`needs-fix\`, or \`blocked\`.
+5. **Check acceptance criteria.** Evaluate each AC one by one against evidence.
+6. **Check task statuses.** Confirm all planned tasks are \`done\` or \`skipped\` with justification.
+7. **Check verification commands.** Review commands run and their results from task summaries.
+8. **Run verification commands.** When appropriate and safe, run relevant verification commands (tests, lint, type check).
+9. **Check boundary compliance.** Confirm all changed files are inside the approved boundary.
+10. **Check risk gates.** Confirm all triggered risk gates were resolved or approved.
+11. **Check review findings.** Confirm no blocking review findings remain.
+12. **Write checks.** Write \`checks.md\` using \`.lh/templates/checks.md\`.
+13. **Write result.** Write or update \`result.md\` using \`.lh/templates/result.md\`.
+14. **Append CaveBus.** Invoke the Agent tool with \`subagent_type: "lh-compressor"\`, passing the verification output. Append the returned compact CaveBus entry to \`cavebus.log\`. If \`lh-compressor\` is unavailable, write the CaveBus summary directly.
+15. **Set verdict.** Assign final verdict: \`pass\`, \`needs-fix\`, or \`blocked\`.
 
 ## Verdict Rules
 

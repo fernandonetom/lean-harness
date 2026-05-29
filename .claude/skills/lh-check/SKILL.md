@@ -2,7 +2,7 @@
 name: lh-check
 description: Verify a LeanHarness feature against acceptance criteria, changed files, risk gates, review findings, and command evidence. Use when the user invokes /lh-check or wants a final pass, needs-fix, or blocked verdict.
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
 ---
 
 # lh-check
@@ -38,20 +38,22 @@ Examples:
    - `task-summaries/` — Per-task completion records
    - `cavebus.log` — Compressed history
    - `events.jsonl` — Event log if present
-3. **Determine changed files.** Use available evidence:
+3. **Delegate verification.** Invoke the Agent tool with `subagent_type: "lh-verifier"`, passing the feature ID and artifact paths. Use the verifier's returned verdict, AC table, command results, and CaveBus entry as the basis for steps 12–13. If `lh-verifier` is unavailable, perform steps 4–11 directly.
+4. **Determine changed files.** (fallback) Use available evidence:
    - Task summaries (files listed as changed)
    - `git diff` if available
    - Events log if available
-4. **Check acceptance criteria.** Evaluate each AC one by one against evidence.
-5. **Check task statuses.** Confirm all planned tasks are `done` or `skipped` with justification.
-6. **Check verification commands.** Review commands run and their results from task summaries.
-7. **Run verification commands.** When appropriate and safe, run relevant verification commands (tests, lint, type check).
-8. **Check boundary compliance.** Confirm all changed files are inside the approved boundary.
-9. **Check risk gates.** Confirm all triggered risk gates were resolved or approved.
-10. **Check review findings.** Confirm no blocking review findings remain.
-11. **Write checks.** Write `checks.md` using `.lh/templates/checks.md`.
-12. **Write result.** Write or update `result.md` using `.lh/templates/result.md`.
-13. **Set verdict.** Assign final verdict: `pass`, `needs-fix`, or `blocked`.
+5. **Check acceptance criteria.** Evaluate each AC one by one against evidence.
+6. **Check task statuses.** Confirm all planned tasks are `done` or `skipped` with justification.
+7. **Check verification commands.** Review commands run and their results from task summaries.
+8. **Run verification commands.** When appropriate and safe, run relevant verification commands (tests, lint, type check).
+9. **Check boundary compliance.** Confirm all changed files are inside the approved boundary.
+10. **Check risk gates.** Confirm all triggered risk gates were resolved or approved.
+11. **Check review findings.** Confirm no blocking review findings remain.
+12. **Write checks.** Write `checks.md` using `.lh/templates/checks.md`.
+13. **Write result.** Write or update `result.md` using `.lh/templates/result.md`.
+14. **Append CaveBus.** Invoke the Agent tool with `subagent_type: "lh-compressor"`, passing the verification output. Append the returned compact CaveBus entry to `cavebus.log`. If `lh-compressor` is unavailable, write the CaveBus summary directly.
+15. **Set verdict.** Assign final verdict: `pass`, `needs-fix`, or `blocked`.
 
 ## Verdict Rules
 

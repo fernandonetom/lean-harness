@@ -51,12 +51,12 @@ Do not require exact flag parsing. Interpret natural language flexibly.
 4. **For each task:**
    a. Compile bounded context from artifacts. Read only relevant files.
    b. Confirm expected edit files are inside the change boundary.
-   c. If behavior changes, prefer writing or updating tests first.
-   d. Implement the task.
-   e. Run task verification commands when available.
-   f. Record commands and results.
-   g. Write task summary to `task-summaries/<task-id>.md`.
-   h. Append CaveBus summary to `cavebus.log`.
+   c. **Implement:** Invoke the Agent tool with `subagent_type: "lh-builder"`, passing the compiled bounded context (feature ID, task ID, task goal, expected files, read-only context, verification commands, prior task summaries). If `lh-builder` is unavailable, implement the task directly; prefer writing or updating tests first if behavior changes.
+   d. Run task verification commands when available.
+   e. Record commands and results.
+   f. **Review:** Invoke the Agent tool with `subagent_type: "lh-reviewer"`, passing feature ID, task ID, changed files list, task summary path, and boundary path. If `lh-reviewer` is unavailable, perform self-review inline.
+   g. **Compress:** Invoke the Agent tool with `subagent_type: "lh-compressor"`, passing the verbose task summary. Append the returned compact CaveBus entry to `cavebus.log`. If `lh-compressor` is unavailable, write the CaveBus summary directly.
+   h. Write task summary to `task-summaries/<task-id>.md`.
    i. Update task status in `tasks.md`.
 5. **Boundary enforcement.** If the task requires files outside the boundary:
    - Stop before editing those files.
@@ -128,9 +128,9 @@ Use actual values. Do not hardcode project-specific content.
 
 ## Review Behavior
 
-If `.claude/agents/lh-reviewer.md` exists, use it for review when helpful.
+After each task implementation, invoke the Agent tool with `subagent_type: "lh-reviewer"` (step 4f above), passing feature ID, task ID, changed files, task summary path, and boundary path.
 
-If no reviewer subagent exists yet, perform a self-review checking:
+If `lh-reviewer` is unavailable, perform self-review checking:
 
 - Acceptance criteria coverage
 - Boundary violations
