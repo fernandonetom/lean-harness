@@ -2,7 +2,7 @@
 name: lh-plan
 description: Create a LeanHarness implementation plan and task list from an existing feature spec, discovery report, and change boundary. Use when the user invokes /lh-plan or needs planned tasks before building.
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep
+allowed-tools: Read, Write, Edit, Glob, Grep, TaskCreate, TaskUpdate
 ---
 
 # lh-plan
@@ -26,6 +26,27 @@ Examples:
 /lh-plan F001
 /lh-plan F001 --small-tasks
 ```
+
+## Task Tooling
+
+**On Claude Code:** As the very first action (before any Read, Bash, or other tool call), call TaskCreate for each step below all at once, so the user sees the full roadmap immediately. Before starting each step, call TaskUpdate to mark it in_progress. After completing each step, call TaskUpdate to mark it completed. Use the activeForm field as the spinner label.
+
+**On OpenCode:** Before starting each step, emit a step header:
+
+    ---
+    **Step N/M — <Step Name>**
+
+where N is the current step number and M is the total step count.
+
+**Steps:**
+
+| # | Subject | activeForm |
+|---|---------|------------|
+| 1 | Read spec + discovery + boundary | Reading artifacts |
+| 2 | Design tasks and wave grouping | Designing tasks |
+| 3 | Check session budget | Checking session budget |
+| 4 | Write plan.md + tasks.md | Writing plan |
+| 5 | Update state + report | Updating state |
 
 ## Workflow
 
