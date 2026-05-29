@@ -1,0 +1,24 @@
+# Source and tests — only dist is needed
+src/
+tests/
+
+# Docs and examples — read on GitHub, not needed in the package
+docs/
+examples/
+
+# Development tooling
+.github/
+.changeset/
+.claude/
+.opencode/
+.lh/features/
+.lh/state.json
+graphify-out/
+
+# Config files
+tsconfig.json
+vitest.config.ts
+opencode.json
+.mcp.json
+CLAUDE.md
+CONTRIBUTING.md
