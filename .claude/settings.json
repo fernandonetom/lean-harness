@@ -114,5 +114,9 @@
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/feneto/.claude/statusline.sh"
   }
 }

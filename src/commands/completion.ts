@@ -13,18 +13,47 @@ const COMMANDS = [
   "help", "version",
 ];
 
-const GLOBAL_FLAGS = [
-  "--help", "--version", "--json", "--force", "--all", "--print",
-  "--dry-run", "--from-spec", "--next", "--run", "--no-run", "--strict",
-  "--validate", "--yes", "--fix",
-  "--title", "--cwd", "--id", "--depth", "--max-files", "--task",
-  "--output", "--max-bytes", "--include-file", "--host", "--allowed-tools",
-  "--permission-mode", "--output-format", "--claude-command",
-  "--opencode-command", "--opencode-agent", "--model", "--format",
-  "--attach", "--session", "--task-size", "--max-tasks",
-  "--approve-risk", "--command", "--max-command-ms",
-  "--mode", "--source", "--type", "--tail",
-];
+const COMMON_FLAGS = ["--help", "--version", "--json", "--cwd"];
+
+const COMMAND_FLAGS: Record<string, string[]> = {
+  init: ["--force", "--yes", "--host", "--global", "--team"],
+  status: [],
+  spec: ["--title", "--id", "--force"],
+  new: ["--title", "--id", "--force"],
+  list: ["--all"],
+  show: [],
+  archive: [],
+  discover: ["--depth", "--max-files", "--hint"],
+  plan: ["--force", "--from-spec", "--max-tasks", "--task-size"],
+  "compile-task": ["--task", "--output", "--max-bytes", "--include-file", "--print"],
+  "run-task": [
+    "--task", "--host", "--allowed-tools", "--permission-mode", "--output-format",
+    "--claude-command", "--opencode-command", "--opencode-agent", "--model", "--format",
+    "--attach", "--session", "--max-bytes", "--dry-run",
+  ],
+  build: [
+    "--task", "--host", "--dry-run", "--all", "--max-tasks", "--max-bytes",
+    "--allowed-tools", "--permission-mode", "--output-format", "--claude-command",
+    "--opencode-command", "--opencode-agent", "--format", "--model", "--attach",
+    "--session", "--approve-risk", "--strict",
+  ],
+  check: ["--run", "--no-run", "--strict", "--force", "--command", "--max-command-ms"],
+  compress: ["--mode", "--source", "--output", "--dry-run", "--force"],
+  cavebus: ["--type", "--tail", "--validate", "--strict"],
+  memory: [],
+  update: ["--host"],
+  uninstall: ["--yes", "--dry-run"],
+  watch: ["--run", "--no-run", "--strict"],
+  doctor: ["--fix"],
+  completion: [],
+};
+
+function flagsForCommand(cmd: string): string[] {
+  return [...COMMON_FLAGS, ...(COMMAND_FLAGS[cmd] ?? [])];
+}
+
+/** Union of all flags (legacy fish/zsh fallback) */
+const ALL_FLAGS = [...new Set([...COMMON_FLAGS, ...Object.values(COMMAND_FLAGS).flat()])];
 
 const VALID_SHELLS = new Set<string>(["bash", "zsh", "fish"]);
 
@@ -49,7 +78,9 @@ export function generateCompletion(shell: CompletionShell): string {
 
 function generateBash(): string {
   const cmds = COMMANDS.join(" ");
-  const flags = GLOBAL_FLAGS.join(" ");
+  const initFlags = flagsForCommand("init").join(" ");
+  const discoverFlags = flagsForCommand("discover").join(" ");
+  const allFlags = ALL_FLAGS.join(" ");
   return `# LeanHarness bash completion
 # Add to ~/.bashrc: eval "$(lh completion bash)"
 
@@ -58,7 +89,6 @@ _lh_completions() {
   cur="\${COMP_WORDS[COMP_CWORD]}"
   prev="\${COMP_WORDS[COMP_CWORD-1]}"
   commands="${cmds}"
-  flags="${flags}"
 
   if [[ \${COMP_CWORD} -eq 1 ]]; then
     COMPREPLY=( $(compgen -W "\${commands}" -- "\${cur}") )
@@ -66,6 +96,11 @@ _lh_completions() {
   fi
 
   if [[ "\${cur}" == -* ]]; then
+    case "\${COMP_WORDS[1]}" in
+      init) flags="${initFlags}" ;;
+      discover) flags="${discoverFlags}" ;;
+      *) flags="${allFlags}" ;;
+    esac
     COMPREPLY=( $(compgen -W "\${flags}" -- "\${cur}") )
     return 0
   fi
@@ -118,7 +153,7 @@ complete -F _lh_completions lh
 
 function generateZsh(): string {
   const cmdsArray = COMMANDS.map((c) => `'${c}:${getCommandDescription(c)}'`).join("\n    ");
-  const flagsArray = GLOBAL_FLAGS.map((f) => `'${f}'`).join("\n    ");
+  const flagsArray = ALL_FLAGS.map((f) => `'${f}'`).join("\n    ");
   return `#compdef lh
 # LeanHarness zsh completion
 # Add to ~/.zshrc: eval "$(lh completion zsh)"
@@ -184,7 +219,7 @@ function generateFish(): string {
 
   lines.push("");
 
-  for (const flag of GLOBAL_FLAGS) {
+  for (const flag of ALL_FLAGS) {
     const name = flag.replace(/^--/, "");
     lines.push(`complete -c lh -l '${name}'`);
   }

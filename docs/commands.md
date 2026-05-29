@@ -41,13 +41,14 @@ Initialize the LeanHarness artifact store and host integration files.
 
 ```bash
 lh init --host all
+lh init --host claude-code --host opencode
 lh init --host claude-code
 lh init --host opencode
 ```
 
 **Options:**
 
-- `--host <host>` — Which host integration to install: `claude-code`, `opencode`, or `all`
+- `--host <host>` — Agent host integration (repeatable): `claude-code`, `opencode`, or `all` (both). Omit to choose interactively with multi-select.
 - `--force` — Overwrite existing integration files
 - `--yes` / `-y` — Skip interactive prompts, use defaults
 - `--global` — Install skills/agents to user-level directories

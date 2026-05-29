@@ -8,9 +8,19 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/), and t
 
 ### Added
 
+- Branded CLI header on every `lh --help` and `lh <command> --help` (plain text when piped; color when TTY allows)
+- Interactive multi-select for agent hosts during `lh init` (@clack/prompts)
+- Repeatable `lh init --host` flags (e.g. `--host claude-code --host opencode`)
+
 ### Changed
 
+- CLI parsing uses Commander.js with per-command `--help` (e.g. `lh init --help` shows only init options)
+- Replaced single "Both" init prompt with multi-select for Claude Code and OpenCode
+
 ### Fixed
+
+- `lh init` now installs bundled harness scaffold files (templates, `protocols/cavebus.yml`, and host-neutral policies) instead of only creating empty directories
+- `lh doctor --fix` installs missing scaffold files; doctor now checks for `.lh/templates/spec.md`
 
 ### Security
 

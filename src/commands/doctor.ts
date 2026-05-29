@@ -5,6 +5,7 @@ import { isValidFeatureId, parseFeatureNumber } from "../core/features.js";
 import { harnessPath, claudePath, resolveProjectPath, statePath, templatesDir, policiesDir, featuresDir, opencodeConfigPath, opencodePath, opencodeAgentsDir, opencodePluginsDir, opencodeGuardrailPluginPath, opencodePluginPath } from "../core/paths.js";
 import { createLogger, printJson } from "../core/logger.js";
 import { detectAllAgentHosts } from "../adapters/registry.js";
+import { installBundledScaffold } from "../core/bundled-scaffold.js";
 import type { DoctorCheck } from "../core/types.js";
 import type { AgentDetection } from "../adapters/types.js";
 
@@ -94,6 +95,13 @@ export async function runDoctorCommand(options: DoctorOptions): Promise<void> {
       : { name: ".lh/protocols/cavebus.yml", status: "warn", message: "missing" },
   );
 
+  const specTemplate = harnessPath(cwd, "templates", "spec.md");
+  checks.push(
+    (await fileExists(specTemplate))
+      ? { name: ".lh/templates/spec.md", status: "pass", message: "present" }
+      : { name: ".lh/templates/spec.md", status: "warn", message: "missing" },
+  );
+
   const discoveryTemplate = harnessPath(cwd, "templates", "discovery.md");
   checks.push(
     (await fileExists(discoveryTemplate))
@@ -177,6 +185,13 @@ export async function runDoctorCommand(options: DoctorOptions): Promise<void> {
     (await fileExists(boundaryPolicy))
       ? { name: ".lh/policies/boundary.yml", status: "pass", message: "present" }
       : { name: ".lh/policies/boundary.yml", status: "warn", message: "missing" },
+  );
+
+  const commandsPolicy = harnessPath(cwd, "policies", "commands.yml");
+  checks.push(
+    (await fileExists(commandsPolicy))
+      ? { name: ".lh/policies/commands.yml", status: "pass", message: "present" }
+      : { name: ".lh/policies/commands.yml", status: "warn", message: "missing" },
   );
 
   // --- Features ---
@@ -378,6 +393,7 @@ export async function runDoctorCommand(options: DoctorOptions): Promise<void> {
         ".lh/templates/",
         ".lh/policies/",
         ".lh/protocols/cavebus.yml",
+        ".lh/templates/spec.md",
         ".lh/templates/discovery.md",
         ".lh/templates/boundary.json",
         ".lh/templates/checks.md",
@@ -395,6 +411,7 @@ export async function runDoctorCommand(options: DoctorOptions): Promise<void> {
         "CaveBus tooling",
         ".lh/policies/risk-gates.yml",
         ".lh/policies/boundary.yml",
+        ".lh/policies/commands.yml",
       ],
     },
     {
@@ -513,4 +530,31 @@ async function applyFixes(cwd: string, checks: DoctorCheck[], fixes: DoctorFix[]
     }
   }
 
+  const scaffoldStatuses = await installBundledScaffold(cwd, { overwrite: false });
+  for (const [label, status] of Object.entries(scaffoldStatuses)) {
+    if (status !== "created" && status !== "updated") continue;
+    const check = checks.find((c) => c.name === label);
+    if (check && check.status === "warn") {
+      check.status = "pass";
+      check.message = status === "created" ? "installed by --fix" : "updated by --fix";
+    }
+    fixes.push({
+      name: label,
+      action: status === "created" ? "installed scaffold file" : "updated scaffold file",
+      success: true,
+    });
+  }
+
+  const installedScaffold = Object.values(scaffoldStatuses).some(
+    (s) => s === "created" || s === "updated",
+  );
+  if (installedScaffold) {
+    for (const dirName of [".lh/templates/", ".lh/policies/"]) {
+      const dirCheck = checks.find((c) => c.name === dirName);
+      if (dirCheck && dirCheck.status === "warn") {
+        dirCheck.status = "pass";
+        dirCheck.message = "present";
+      }
+    }
+  }
 }

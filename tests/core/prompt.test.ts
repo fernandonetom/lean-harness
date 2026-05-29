@@ -1,6 +1,23 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Readable, Writable } from "node:stream";
-import { promptConfirm, promptSelect, promptText } from "../../src/core/prompt.js";
+
+const { mockMultiselect, mockIntro, mockOutro, mockCancel, mockIsCancel } = vi.hoisted(() => ({
+  mockMultiselect: vi.fn(),
+  mockIntro: vi.fn(),
+  mockOutro: vi.fn(),
+  mockCancel: vi.fn(),
+  mockIsCancel: vi.fn((value: unknown) => value === Symbol.for("cancel")),
+}));
+
+vi.mock("@clack/prompts", () => ({
+  multiselect: mockMultiselect,
+  intro: mockIntro,
+  outro: mockOutro,
+  cancel: mockCancel,
+  isCancel: mockIsCancel,
+}));
+
+import { promptConfirm, promptMultiSelect, promptText } from "../../src/core/prompt.js";
 
 function mockInput(answer: string): NodeJS.ReadableStream {
   const stream = new Readable({
@@ -51,30 +68,22 @@ describe("promptConfirm", () => {
   });
 });
 
-describe("promptSelect", () => {
+describe("promptMultiSelect", () => {
   const choices = [
     { label: "Claude Code", value: "claude-code" as const },
     { label: "OpenCode", value: "opencode" as const },
-    { label: "Both", value: "all" as const },
   ];
 
-  it("selects by number", async () => {
-    expect(await promptSelect("Host?", choices, opts("1"))).toBe("claude-code");
-    expect(await promptSelect("Host?", choices, opts("2"))).toBe("opencode");
-    expect(await promptSelect("Host?", choices, opts("3"))).toBe("all");
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockMultiselect.mockResolvedValue(["claude-code", "opencode"]);
   });
 
-  it("selects by value string", async () => {
-    expect(await promptSelect("Host?", choices, opts("opencode"))).toBe("opencode");
-  });
-
-  it("selects by label (case-insensitive)", async () => {
-    expect(await promptSelect("Host?", choices, opts("claude code"))).toBe("claude-code");
-  });
-
-  it("defaults to first choice for invalid input", async () => {
-    expect(await promptSelect("Host?", choices, opts("999"))).toBe("claude-code");
-    expect(await promptSelect("Host?", choices, opts("invalid"))).toBe("claude-code");
+  it("returns selected values from clack multiselect", async () => {
+    const result = await promptMultiSelect("Hosts?", choices, { noColor: true });
+    expect(result).toEqual(["claude-code", "opencode"]);
+    expect(mockMultiselect).toHaveBeenCalled();
+    expect(mockIntro).toHaveBeenCalledWith("Hosts?");
   });
 });
 

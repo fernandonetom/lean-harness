@@ -334,8 +334,7 @@ var BUILTIN_DENY = [
   { pattern: 'env', reason: 'Refuses to expose environment secrets.' },
   { pattern: '*> /dev/sd*', reason: 'Refuses to write directly to block devices.' },
   { pattern: 'dd if=*', reason: 'Refuses raw disk writes.' },
-  { pattern: 'mkfs*', reason: 'Refuses filesystem creation on devices.' },
-  { pattern: ':(){ :|:& };:*', reason: 'Refuses fork bombs.' }
+  { pattern: 'mkfs*', reason: 'Refuses filesystem creation on devices.' }
 ];
 
 var BUILTIN_SAFE = [

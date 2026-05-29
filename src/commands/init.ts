@@ -19,6 +19,7 @@ import {
   normalizeInitHosts,
   hasAnyInitHost,
 } from "../cli/init-hosts.js";
+import { installBundledScaffold } from "../core/bundled-scaffold.js";
 
 export type { InitHost };
 
@@ -213,6 +214,25 @@ export async function runInitCommand(options: InitOptions): Promise<void> {
           : status === "updated"
             ? `  ${file.label} (updated)`
             : `  ${file.label} (exists, skipped)`;
+      log.info(msg);
+    }
+  }
+
+  if (!json) {
+    log.info("");
+    log.info("Harness scaffold:");
+  }
+
+  const scaffoldResult = await installBundledScaffold(cwd, { overwrite });
+  for (const [label, status] of Object.entries(scaffoldResult)) {
+    result.files[label] = status;
+    if (!json) {
+      const msg =
+        status === "created"
+          ? `  ${label} (created)`
+          : status === "updated"
+            ? `  ${label} (updated)`
+            : `  ${label} (exists, skipped)`;
       log.info(msg);
     }
   }
@@ -493,6 +513,38 @@ async function installOpenCodeConfig(
   return { status: "updated", warnings };
 }
 
+function mergePermissionConfig(
+  existing: Record<string, unknown>,
+  lhConfig: Record<string, unknown>,
+  _warnings: string[],
+): Record<string, unknown> {
+  const merged = { ...existing };
+
+  const allowFields = ["read", "list", "glob", "grep", "edit"] as const;
+  for (const field of allowFields) {
+    if (existing[field] === undefined) {
+      merged[field] = lhConfig[field] ?? "ask";
+    }
+  }
+
+  const existingBash = (existing["bash"] ?? {}) as Record<string, unknown>;
+  const lhBash = (lhConfig["bash"] ?? {}) as Record<string, unknown>;
+  const mergedBash: Record<string, unknown> = { ...existingBash };
+
+  for (const [key, value] of Object.entries(lhBash)) {
+    if (existingBash[key] === undefined) {
+      mergedBash[key] = value;
+    }
+  }
+  merged["bash"] = mergedBash;
+
+  if (existing["webfetch"] === undefined) {
+    merged["webfetch"] = lhConfig["webfetch"] ?? "ask";
+  }
+
+  return merged;
+}
+
 function mergeOpenCodeConfig(
   existing: Record<string, unknown>,
   lhConfig: Record<string, unknown>,
@@ -507,6 +559,12 @@ function mergeOpenCodeConfig(
 
   if (!result["permission"]) {
     result["permission"] = lhConfig["permission"];
+  } else {
+    result["permission"] = mergePermissionConfig(
+      (result["permission"] ?? {}) as Record<string, unknown>,
+      (lhConfig["permission"] ?? {}) as Record<string, unknown>,
+      warnings,
+    );
   }
 
   const existingAgents = (result["agent"] ?? {}) as Record<string, unknown>;
@@ -565,17 +623,22 @@ function createOpenCodeConfigObject(): Record<string, unknown> {
   return {
     "$schema": "https://opencode.ai/config.json",
     "permission": {
-      "*": "ask",
       "read": "allow",
       "list": "allow",
       "glob": "allow",
       "grep": "allow",
-      "edit": "ask",
+      "edit": "allow",
       "bash": {
-        "*": "ask",
         "git status*": "allow",
         "git diff*": "allow",
         "git log*": "allow",
+        "git branch*": "allow",
+        "git show*": "allow",
+        "git blame*": "allow",
+        "ls*": "allow",
+        "find*": "allow",
+        "grep*": "allow",
+        "rg*": "allow",
         "npm test*": "allow",
         "npm run test*": "allow",
         "npm run lint*": "allow",
@@ -583,12 +646,20 @@ function createOpenCodeConfigObject(): Record<string, unknown> {
         "pnpm test*": "allow",
         "pnpm lint*": "allow",
         "pnpm typecheck*": "allow",
+        "pnpm run test*": "allow",
+        "pnpm run lint*": "allow",
         "yarn test*": "allow",
         "yarn lint*": "allow",
         "bun test*": "allow",
         "pytest*": "allow",
         "go test*": "allow",
         "cargo test*": "allow",
+        "node --check*": "allow",
+        "python -m json.tool*": "allow",
+        "sed -n*": "allow",
+        "wc *": "allow",
+        "head *": "allow",
+        "tail *": "allow",
         "rm -rf*": "deny",
         "git push*": "ask",
         "git reset*": "ask",
@@ -615,7 +686,6 @@ function createOpenCodeConfigObject(): Record<string, unknown> {
         "permission": {
           "edit": "deny",
           "bash": {
-            "*": "ask",
             "git status*": "allow",
             "git diff*": "allow",
             "git log*": "allow",
@@ -631,9 +701,8 @@ function createOpenCodeConfigObject(): Record<string, unknown> {
         "description": "LeanHarness bounded implementation agent. Implements assigned tasks from compiled LeanHarness context while staying inside the approved change boundary.",
         "mode": "primary",
         "permission": {
-          "edit": "ask",
+          "edit": "allow",
           "bash": {
-            "*": "ask",
             "npm test*": "allow",
             "npm run test*": "allow",
             "npm run lint*": "allow",
@@ -641,6 +710,8 @@ function createOpenCodeConfigObject(): Record<string, unknown> {
             "pnpm test*": "allow",
             "pnpm lint*": "allow",
             "pnpm typecheck*": "allow",
+            "pnpm run test*": "allow",
+            "pnpm run lint*": "allow",
             "yarn test*": "allow",
             "yarn lint*": "allow",
             "bun test*": "allow",
@@ -649,6 +720,8 @@ function createOpenCodeConfigObject(): Record<string, unknown> {
             "cargo test*": "allow",
             "git status*": "allow",
             "git diff*": "allow",
+            "git log*": "allow",
+            "rm -rf*": "deny",
             "npm install*": "ask",
             "npm update*": "ask",
             "pnpm add*": "ask",
@@ -658,7 +731,8 @@ function createOpenCodeConfigObject(): Record<string, unknown> {
             "git push*": "ask",
             "git reset*": "ask",
             "git clean*": "ask",
-            "rm -rf*": "deny",
+            "cat .env*": "deny",
+            "printenv*": "deny",
           },
         },
       },
@@ -668,7 +742,6 @@ function createOpenCodeConfigObject(): Record<string, unknown> {
         "permission": {
           "edit": "deny",
           "bash": {
-            "*": "ask",
             "git status*": "allow",
             "git diff*": "allow",
             "git log*": "allow",
@@ -689,9 +762,9 @@ function createOpenCodeConfigObject(): Record<string, unknown> {
         "permission": {
           "edit": "deny",
           "bash": {
-            "*": "ask",
             "git status*": "allow",
             "git diff*": "allow",
+            "git log*": "allow",
             "npm test*": "allow",
             "npm run test*": "allow",
             "npm run lint*": "allow",
@@ -717,11 +790,11 @@ function createOpenCodeConfigObject(): Record<string, unknown> {
         "description": "LeanHarness CaveBus compression agent. Converts verbose feature notes into compact CaveBus summaries while preserving protected tokens exactly.",
         "mode": "subagent",
         "permission": {
-          "edit": "ask",
+          "edit": "allow",
           "bash": {
-            "*": "ask",
             "git status*": "allow",
             "git diff*": "allow",
+            "git log*": "allow",
           },
           "webfetch": "deny",
         },
@@ -837,7 +910,6 @@ mode: subagent
 permission:
   edit: deny
   bash:
-    "*": ask
     "git status*": allow
     "git diff*": allow
     "git log*": allow
@@ -892,11 +964,11 @@ function createAgentBuilder(): string {
 description: LeanHarness bounded implementation agent. Implements assigned tasks from compiled LeanHarness context while staying inside the approved change boundary.
 mode: primary
 permission:
-  edit: ask
+  edit: allow
   bash:
-    "*": ask
     "git status*": allow
     "git diff*": allow
+    "git log*": allow
     "npm test*": allow
     "npm run test*": allow
     "npm run lint*": allow
@@ -920,6 +992,8 @@ permission:
     "git reset*": ask
     "git clean*": ask
     "rm -rf*": deny
+    "cat .env*": deny
+    "printenv*": deny
   webfetch: ask
 ---
 
@@ -970,7 +1044,6 @@ mode: subagent
 permission:
   edit: deny
   bash:
-    "*": ask
     "git status*": allow
     "git diff*": allow
     "git log*": allow
@@ -1027,9 +1100,9 @@ mode: subagent
 permission:
   edit: deny
   bash:
-    "*": ask
     "git status*": allow
     "git diff*": allow
+    "git log*": allow
     "npm test*": allow
     "npm run test*": allow
     "npm run lint*": allow
@@ -1683,11 +1756,11 @@ function createAgentCompressor(): string {
 description: LeanHarness CaveBus compression agent. Converts verbose discovery, task, review, verification, and memory notes into compact summaries while preserving protected tokens exactly.
 mode: subagent
 permission:
-  edit: ask
+  edit: allow
   bash:
-    "*": ask
     "git status*": allow
     "git diff*": allow
+    "git log*": allow
   webfetch: deny
 ---
 

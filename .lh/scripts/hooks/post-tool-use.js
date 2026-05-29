@@ -60,8 +60,8 @@ function main() {
 
       if (check.blocked || !check.inside) {
         var feedback = shared.postToolBlock(
-          'LeanHarness detected an out-of-boundary edit after the tool ran: `' + p +
-          '`. Do not continue implementation until you either revert the change or update discovery.md and boundary.json with a clear reason.'
+          'LeanHarness detected an out-of-boundary edit after the tool ran: \`' + p +
+          '\`. Do not continue implementation until you either revert the change or update discovery.md and boundary.json with a clear reason.'
         );
         process.stdout.write(JSON.stringify(feedback));
 
@@ -93,8 +93,8 @@ function main() {
     var hasError = tr2.stderr || tr2.error;
     if (hasError && command) {
       var failFeedback = shared.postToolBlock(
-        'LeanHarness recorded a failed command in the event log: `' + command +
-        '`. Review the error output and either fix the issue or mark the current task as needs-fix.'
+        'LeanHarness recorded a failed command in the event log: \`' + command +
+        '\`. Review the error output and either fix the issue or mark the current task as needs-fix.'
       );
       process.stdout.write(JSON.stringify(failFeedback));
       return;

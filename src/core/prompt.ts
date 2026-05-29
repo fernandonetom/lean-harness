@@ -1,4 +1,5 @@
 import { createInterface, type Interface as ReadlineInterface } from "node:readline";
+import * as clack from "@clack/prompts";
 import { createColors } from "./colors.js";
 
 export interface PromptOptions {
@@ -36,41 +37,35 @@ export async function promptConfirm(
   });
 }
 
-export async function promptSelect<T extends string>(
+export async function promptMultiSelect<T extends string>(
   message: string,
   choices: Array<{ label: string; value: T }>,
-  options?: PromptOptions,
-): Promise<T> {
-  const colors = createColors(options?.noColor ? { noColor: true } : undefined);
-  const out = options?.output ?? process.stdout;
+  options?: PromptOptions & { required?: boolean },
+): Promise<T[]> {
+  const noColor = options?.noColor ?? process.env.NO_COLOR !== undefined;
 
-  out.write(`${colors.cyan("?")} ${message}\n`);
-  for (let i = 0; i < choices.length; i++) {
-    const choice = choices[i]!;
-    out.write(`  ${colors.dim(`${i + 1})`)} ${choice.label}\n`);
+  clack.intro(message);
+
+  const selectOptions = choices.map((c) => ({ value: c.value, label: c.label }));
+  const result = await clack.multiselect({
+    message: "Select agent hosts (space to toggle, enter to confirm)",
+    // Clack Option<T> expects value: T; mapped literals satisfy runtime but not strict generics
+    options: selectOptions as { value: string; label: string }[],
+    required: options?.required ?? true,
+  });
+
+  if (clack.isCancel(result)) {
+    clack.cancel("Setup cancelled.");
+    process.exit(0);
   }
 
-  const rl = createRl(options);
+  const selected = result as T[];
 
-  return new Promise<T>((resolve) => {
-    rl.question(`${colors.dim("Enter choice (number):")} `, (answer) => {
-      rl.close();
-      const trimmed = answer.trim();
-      const idx = parseInt(trimmed, 10);
-      if (idx >= 1 && idx <= choices.length) {
-        resolve(choices[idx - 1]!.value);
-      } else {
-        const match = choices.find(
-          (c) => c.value === trimmed || c.label.toLowerCase() === trimmed.toLowerCase(),
-        );
-        if (match) {
-          resolve(match.value);
-        } else {
-          resolve(choices[0]!.value);
-        }
-      }
-    });
-  });
+  if (!noColor) {
+    clack.outro(`${selected.length} host(s) selected`);
+  }
+
+  return selected;
 }
 
 export async function promptText(

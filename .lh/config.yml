@@ -4,65 +4,56 @@
 version: "0.1"
 
 project:
-  name: auto                  # auto-detect from git remote or package.json
-  mode: brownfield-first      # assume existing codebase; discover, don't scaffold
+  name: auto
+  mode: brownfield-first
 
 host:
   primary: claude-code
   adapter: claude-cli
 
-# Visible workflow: Specify -> Discover -> Build -> Check
 workflow:
   visible_steps:
     - specify
     - discover
     - build
     - check
-  one_command: do             # single entry point that walks all steps
-  require_worktree: false     # git worktree per feature (off by default)
-  require_review: true        # human review before marking done
-  require_verification: true  # verification evidence required before done
+  one_command: do
+  require_worktree: false
+  require_review: true
+  require_verification: true
 
 artifacts:
   root: .lh
   features_dir: .lh/features
   templates_dir: .lh/templates
   memory_dir: .lh/memory
-  event_log: events.jsonl     # per-feature event stream
-  cavebus_log: cavebus.log    # per-feature compressed agent messages
+  event_log: events.jsonl
+  cavebus_log: cavebus.log
 
-# On-demand discovery: only touch code relevant to active feature
 discovery:
   strategy: on-demand
-  default_depth: D2           # D0=file, D1=imports, D2=transitive, D3=full-module
-  max_initial_files: 25       # cap first-pass discovery
-  escalate_on:                # trigger deeper discovery or human review
-    - auth
-    - payments
-    - database_migration
-    - security
-    - no_tests_found
-    - unclear_owner
+  default_depth: D2
+  max_initial_files: 25
 
-# Bounded context: compile only what each task needs
 context:
   bounded_context: true
   compile_per_task: true
   include_full_repo_map: false
 
-# CaveBus compression for agent-to-agent messages
 compression:
   enabled: true
   protocol: cavebus
-  mode: full                  # full = maximally compressed; lite = readable shorthand
+  mode: full
 
-# Verification: what counts as "done"
+models:
+  agent: auto
+  subagent: auto
+
 verification:
-  require_acceptance_trace: true   # each acceptance criterion traced to evidence
-  require_changed_files: true      # at least one file changed
-  require_review: true             # human sign-off
+  require_acceptance_trace: true
+  require_changed_files: true
+  require_review: true
 
-# Risk gates: require explicit approval before proceeding
 risk_gates:
   require_approval:
     - destructive_migration
@@ -73,31 +64,32 @@ risk_gates:
     - broad_refactor
     - security_sensitive_change
 
-# Memory: local, feature-scoped
 memory:
-  store: local                # local files only
-  scope: feature              # scoped to active feature by default
+  store: local
+  scope: feature
   project_file: .lh/memory/project.md
   decisions_file: .lh/memory/decisions.md
   patterns_file: .lh/memory/patterns.md
   cave_file: .lh/memory/cave.md
 
-# Logging
 logging:
   event_format: jsonl
   write_events: true
   write_cavebus: true
   log_level: info
 
-# Adapters: host-specific integration points
+features:
+  # solo-first default: feature work is not committed to the repo.
+  # Set to true for team workflows where specs and plans are shared artifacts.
+  commit: false
+
+build:
+  # Maximum complexity weight per session wave.
+  # lh-plan groups tasks into waves that stay under this budget.
+  session_budget: 15
+
 adapters:
   claude-cli:
     skills_dir: .claude/skills
     hooks_enabled: true
     settings_file: .claude/settings.json
-
-# Code graph index for import-aware discovery and cross-feature knowledge
-graph:
-  enabled: true
-  index_path: .lh/graph           # where import-graph.json and symbol-graph.json live
-  auto_update: true               # update graph automatically before discovery runs

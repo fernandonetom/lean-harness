@@ -24,7 +24,7 @@ export async function renderNamedTemplate(
   const raw = await loadTemplate(root, name);
   if (raw === null) {
     throw new Error(
-      `Template not found: .lh/templates/${name}.md\nRun \`lh init\` to create default templates.`,
+      `Template not found: .lh/templates/${name}.md\nRun \`lh init\` or \`lh doctor --fix\` to install default templates.`,
     );
   }
   return ensureFinalNewline(renderTemplate(raw, values));

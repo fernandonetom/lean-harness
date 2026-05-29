@@ -34,28 +34,15 @@ Examples:
 /lh-do Fix the checkout total rounding bug. Start near src/billing.
 ```
 
-## Phase Detection
-
-Before running any step, inspect the feature folder to determine the current phase:
-
-| Artifacts present | Detected phase | Action |
-|-------------------|----------------|--------|
-| None | Not started | Run `lh-spec` workflow |
-| `spec.md` only | Spec done | Run `lh-discover` workflow |
-| `spec.md` + `discovery.md` + `boundary.json` | Discovery done | Run `lh-plan` workflow |
-| `plan.md` + `tasks.md`, no checkpoint | Plan done | Run `lh-build` wave 1 |
-| `plan.md` + `checkpoint.md` | Mid-build | Read checkpoint; run `lh-build` from `next_task` |
-| All tasks `done`, no `checks.md` | Build done | Run `lh-check` workflow |
-| `checks.md` with verdict `pass` | Feature done | Show status; no action needed |
-| `checks.md` with verdict `needs-fix` | Needs fix | Run `lh-build --fix-review` workflow |
-| `checks.md` with verdict `blocked` | Blocked | Report blockers; ask user to resolve |
-
 ## Workflow
 
 1. **Determine scope.** Check whether the user provided a feature ID or a new request.
-2. **Detect phase.** Use the phase detection table to find where this feature is.
-3. **Run the next phase only.** Do not skip ahead or re-run completed phases.
-4. **End with NEXT SESSION block.** Every run ends with a NEXT SESSION block pointing to the next invocation.
+2. **Specify.** If new request, run the `/lh-spec` workflow to create a feature spec.
+3. **Discover.** Run the `/lh-discover` workflow to produce discovery and change boundary.
+4. **Plan.** Run the `/lh-plan` workflow to create plan and task list.
+5. **Build.** Run the `/lh-build` workflow to implement tasks.
+6. **Check.** Run the `/lh-check` workflow to verify completion.
+7. **Report.** Present final verdict and next action.
 
 ## Operating Rules
 
@@ -125,26 +112,9 @@ Do not call a feature done unless:
 Every `/lh-do` run must end with:
 
 - **Feature ID** — The assigned feature identifier
-- **Phase run** — Which phase executed this session
-- **Status** — Current workflow status after this run
+- **Status** — Current workflow status
 - **Files created or changed** — Artifact and source file list
-- **Verification verdict** — `pass`, `needs-fix`, or `blocked` (if check ran)
+- **Verification verdict** — `pass`, `needs-fix`, or `blocked`
 - **Commands run** — Verification commands and their results
 - **Blockers or follow-ups** — Unresolved issues
-- **NEXT SESSION block** — Always end with:
-
-````
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  NEXT SESSION — <Phase> complete
-  Paste this to continue:
-
-  /lh-do <feature-id>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-````
-
-When done:
-````
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  DONE — <feature-id> passed verification
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-````
+- **Suggested next action** — What the user should do next

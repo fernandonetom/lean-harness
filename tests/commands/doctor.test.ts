@@ -82,6 +82,31 @@ describe("doctor --fix", () => {
     expect(content.schema).toBe("leanharness-state");
   });
 
+  it("installs missing scaffold files including spec.md", async () => {
+    await ensureDir(harnessPath(ws.root));
+    await writeTextFile(harnessPath(ws.root, "config.yml"), "version: 0.1");
+    await fsp.writeFile(
+      statePath(ws.root),
+      JSON.stringify({ version: "0.1", schema: "leanharness-state" }),
+      "utf8",
+    );
+    await ensureDir(harnessPath(ws.root, "templates"));
+
+    const specPath = harnessPath(ws.root, "templates", "spec.md");
+    expect(await fileExistsSafe(specPath)).toBe(false);
+
+    const restore = silenceOutput();
+    try {
+      await runDoctorCommand({ cwd: ws.root, fix: true });
+    } finally {
+      restore();
+    }
+
+    expect(await fileExistsSafe(specPath)).toBe(true);
+    const spec = await fsp.readFile(specPath, "utf8");
+    expect(spec).toContain("# Spec:");
+  });
+
   it("creates missing directories (templates, policies, features)", async () => {
     await ensureDir(harnessPath(ws.root));
     await writeTextFile(harnessPath(ws.root, "config.yml"), "version: 0.1");

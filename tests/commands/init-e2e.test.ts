@@ -52,6 +52,56 @@ describe("lh init — LH core artifacts", () => {
     expect(await exists(path.join(tmpDir, ".lh", "protocols"))).toBe(true);
   });
 
+  it("installs bundled templates, protocols, and default policies", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir });
+    spy.mockRestore();
+
+    const scaffoldFiles = [
+      path.join(tmpDir, ".lh", "templates", "spec.md"),
+      path.join(tmpDir, ".lh", "templates", "discovery.md"),
+      path.join(tmpDir, ".lh", "templates", "boundary.json"),
+      path.join(tmpDir, ".lh", "templates", "cavebus-message.md"),
+      path.join(tmpDir, ".lh", "templates", "cavebus", "discovery.cave"),
+      path.join(tmpDir, ".lh", "protocols", "cavebus.yml"),
+      path.join(tmpDir, ".lh", "policies", "risk-gates.yml"),
+      path.join(tmpDir, ".lh", "policies", "boundary.yml"),
+      path.join(tmpDir, ".lh", "policies", "commands.yml"),
+    ];
+    for (const file of scaffoldFiles) {
+      expect(await exists(file), `expected ${file}`).toBe(true);
+    }
+
+    const spec = await fs.readFile(path.join(tmpDir, ".lh", "templates", "spec.md"), "utf-8");
+    expect(spec).toContain("# Spec:");
+    expect(spec).toContain("{{FEATURE_ID}}");
+  });
+
+  it("does not overwrite customized scaffold templates without --force", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir });
+    const specPath = path.join(tmpDir, ".lh", "templates", "spec.md");
+    await fs.writeFile(specPath, "# Custom spec template\n");
+    await runInitCommand({ cwd: tmpDir });
+    spy.mockRestore();
+
+    const spec = await fs.readFile(specPath, "utf-8");
+    expect(spec).toBe("# Custom spec template\n");
+  });
+
+  it("overwrites scaffold templates with --force", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir });
+    const specPath = path.join(tmpDir, ".lh", "templates", "spec.md");
+    await fs.writeFile(specPath, "# Custom spec template\n");
+    await runInitCommand({ cwd: tmpDir, force: true });
+    spy.mockRestore();
+
+    const spec = await fs.readFile(specPath, "utf-8");
+    expect(spec).toContain("# Spec:");
+    expect(spec).not.toBe("# Custom spec template\n");
+  });
+
   it("creates config.yml and state.json", async () => {
     const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     await runInitCommand({ cwd: tmpDir });

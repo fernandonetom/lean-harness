@@ -18,7 +18,6 @@ Accept any of:
 - Feature ID plus specific task ID (e.g., `F001 T-02`)
 - Feature ID plus `--resume` to continue from the last active task
 - Feature ID plus `--fix-review` to address review findings
-- Feature ID plus `--wave N` to execute a specific wave (e.g., `F001 --wave 1`)
 - Natural language variants of the above
 
 Examples:
@@ -28,8 +27,6 @@ Examples:
 /lh-build F001 T-02
 /lh-build F001 --resume
 /lh-build F001 --fix-review
-/lh-build F001 --wave 1
-/lh-build F001 --wave 2
 /lh-build F001 fix the test failures from T-01
 ```
 
@@ -51,9 +48,6 @@ Do not require exact flag parsing. Interpret natural language flexibly.
    - Next `pending` task in order
    - All remaining `pending` tasks
    - Fix tasks from review findings
-
-3a. **Read checkpoint.** If `.lh/features/<id>/checkpoint.md` exists, read it to determine which tasks have already completed in the current wave. Skip completed tasks. Resume from `next_task`.
-
 4. **For each task:**
    a. Compile bounded context from artifacts. Read only relevant files.
    b. Confirm expected edit files are inside the change boundary.
@@ -64,24 +58,10 @@ Do not require exact flag parsing. Interpret natural language flexibly.
    g. Write task summary to `task-summaries/<task-id>.md`.
    h. Append CaveBus summary to `cavebus.log`.
    i. Update task status in `tasks.md`.
-
-   4j. **Write checkpoint.** After each task completes, write `.lh/features/<id>/checkpoint.md`:
-
-   ```markdown
-   # Build Checkpoint
-   feature: <feature-id>
-   wave: <N>
-   wave_total: <total>
-   completed_tasks: [T-01, T-02]
-   next_task: <next-pending-task-or-none>
-   resume_command: /lh-build <feature-id> --wave <N>
-   updated: <ISO timestamp>
-   ```
-
-5. **Boundary enforcement.** If a file is outside the boundary (hook will deny the edit):
-   - Edit `boundary.json` first — add the path to both `touchFiles` (as `{"path": "<file>", "reason": "<why>", "confidence": "high"}`) and `allowedEditGlobs`. The boundary file is under `.lh/` so edits are always allowed.
-   - Update `discovery.md` explaining why this file is needed.
-   - Retry the original edit.
+5. **Boundary enforcement.** If the task requires files outside the boundary:
+   - Stop before editing those files.
+   - Update `discovery.md` and `boundary.json` with the new files.
+   - Explain why the boundary changed.
 6. **Risk gates.** If a risk gate is triggered:
    - Pause for approval unless the spec already explicitly approves it.
 7. **Test failures.** If tests fail:
@@ -186,7 +166,6 @@ May update these only when execution reveals plan-invalidating information:
 Every `/lh-build` run must end with:
 
 - **Feature ID** — The feature identifier
-- **Wave** — Which wave ran (e.g., "Wave 1 of 2")
 - **Tasks attempted** — Which tasks were worked on
 - **Task statuses** — Current status of each attempted task
 - **Files changed** — Source files created, modified, or deleted
@@ -194,34 +173,4 @@ Every `/lh-build` run must end with:
 - **Commands run** — Verification commands and results
 - **Review findings** — Issues found during self-review
 - **Blockers or follow-ups** — Unresolved issues
-- **NEXT SESSION block** — Always end with one of:
-
-If more waves remain:
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  NEXT SESSION — Wave N/M complete
-  Paste this to continue:
-
-  /lh-build <feature-id> --wave <N+1>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
-If all waves complete:
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  NEXT SESSION — Build complete
-  Paste this to continue:
-
-  /lh-check <feature-id>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
-If blocked or needs-fix:
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  NEXT SESSION — Build paused (<reason>)
-  Paste this to continue after fixing:
-
-  /lh-build <feature-id> --wave <N>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
+- **Recommended next command** — `/lh-check <feature-id>` when all tasks are done, or `/lh-build <feature-id> <next-task>` to continue

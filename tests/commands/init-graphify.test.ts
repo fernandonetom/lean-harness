@@ -12,6 +12,7 @@ vi.mock("node:child_process", () => ({
   execSync: mockExecSync,
 }));
 
+import { legacyHostToSelection } from "../../src/cli/init-hosts.js";
 import {
   checkPythonVersion,
   checkGraphifyInstalled,
@@ -76,19 +77,19 @@ describe("runGraphifyInstall", () => {
 
   it("throws CLIError when Python version is too old", async () => {
     mockSpawnSync.mockReturnValue({ status: 0, stdout: "Python 3.9.0\n", stderr: "", error: undefined });
-    await expect(runGraphifyInstall("claude-code", mockLog, false)).rejects.toThrow(CLIError);
+    await expect(runGraphifyInstall(legacyHostToSelection("claude-code"), mockLog, false)).rejects.toThrow(CLIError);
   });
 
   it("throws CLIError when Python is not found", async () => {
     mockSpawnSync.mockReturnValue({ status: 1, stdout: "", stderr: "", error: new Error("not found") });
-    await expect(runGraphifyInstall("claude-code", mockLog, false)).rejects.toThrow(CLIError);
+    await expect(runGraphifyInstall(legacyHostToSelection("claude-code"), mockLog, false)).rejects.toThrow(CLIError);
   });
 
   it("skips pip install when graphify is already installed", async () => {
     mockSpawnSync
       .mockReturnValueOnce({ status: 0, stdout: "Python 3.11.0\n", stderr: "", error: undefined }) // python check
       .mockReturnValueOnce({ status: 0, stdout: "graphify 1.0\n", stderr: "", error: undefined }); // graphify check
-    await runGraphifyInstall("claude-code", mockLog, false);
+    await runGraphifyInstall(legacyHostToSelection("claude-code"), mockLog, false);
     expect(mockExecSync).not.toHaveBeenCalled();
   });
 
@@ -96,7 +97,7 @@ describe("runGraphifyInstall", () => {
     mockSpawnSync
       .mockReturnValueOnce({ status: 0, stdout: "Python 3.11.0\n", stderr: "", error: undefined }) // python check
       .mockReturnValueOnce({ status: 1, error: new Error("not found") }); // graphify not found
-    await runGraphifyInstall("claude-code", mockLog, false);
+    await runGraphifyInstall(legacyHostToSelection("claude-code"), mockLog, false);
     expect(mockExecSync).toHaveBeenCalledWith(
       "pip install graphifyy && graphify install",
       expect.any(Object),
@@ -107,7 +108,7 @@ describe("runGraphifyInstall", () => {
     mockSpawnSync
       .mockReturnValueOnce({ status: 0, stdout: "Python 3.11.0\n", stderr: "", error: undefined })
       .mockReturnValueOnce({ status: 0, stdout: "graphify 1.0\n", stderr: "", error: undefined }); // already installed
-    await runGraphifyInstall("opencode", mockLog, false);
+    await runGraphifyInstall(legacyHostToSelection("opencode"), mockLog, false);
     expect(mockExecSync).toHaveBeenCalledWith(
       "graphify opencode install",
       expect.any(Object),
@@ -118,7 +119,7 @@ describe("runGraphifyInstall", () => {
     mockSpawnSync
       .mockReturnValueOnce({ status: 0, stdout: "Python 3.11.0\n", stderr: "", error: undefined })
       .mockReturnValueOnce({ status: 0, stdout: "graphify 1.0\n", stderr: "", error: undefined });
-    await runGraphifyInstall("all", mockLog, false);
+    await runGraphifyInstall(legacyHostToSelection("all"), mockLog, false);
     expect(mockExecSync).toHaveBeenCalledWith(
       "graphify opencode install",
       expect.any(Object),
@@ -129,7 +130,7 @@ describe("runGraphifyInstall", () => {
     mockSpawnSync
       .mockReturnValueOnce({ status: 0, stdout: "Python 3.11.0\n", stderr: "", error: undefined })
       .mockReturnValueOnce({ status: 0, stdout: "graphify 1.0\n", stderr: "", error: undefined });
-    await runGraphifyInstall("claude-code", mockLog, false);
+    await runGraphifyInstall(legacyHostToSelection("claude-code"), mockLog, false);
     expect(mockExecSync).not.toHaveBeenCalledWith(
       "graphify opencode install",
       expect.any(Object),
@@ -141,6 +142,6 @@ describe("runGraphifyInstall", () => {
       .mockReturnValueOnce({ status: 0, stdout: "Python 3.11.0\n", stderr: "", error: undefined })
       .mockReturnValueOnce({ status: 1, error: new Error("not found") });
     mockExecSync.mockImplementation(() => { throw new Error("pip failed"); });
-    await expect(runGraphifyInstall("claude-code", mockLog, false)).rejects.toThrow(CLIError);
+    await expect(runGraphifyInstall(legacyHostToSelection("claude-code"), mockLog, false)).rejects.toThrow(CLIError);
   });
 });

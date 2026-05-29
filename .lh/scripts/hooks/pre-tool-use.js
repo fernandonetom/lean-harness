@@ -30,11 +30,12 @@ function handleBash(input, root) {
       'deny',
       'LeanHarness blocked this command: ' +
       result.reason.replace(/\.$/, '') +
-      '. Command: `' + command + '`.'
+      '. Command: \`' + command + '\`.'
     );
     process.stdout.write(JSON.stringify(decision));
     return;
   }
+
 }
 
 function handleFileEdit(input, root, toolName) {
@@ -53,7 +54,7 @@ function handleFileEdit(input, root, toolName) {
       var escDecision = shared.preToolDecision(
         'PreToolUse',
         'deny',
-        'LeanHarness blocked this edit because the path escapes the project directory: `' + p + '`.'
+        'LeanHarness blocked this edit because the path escapes the project directory: \`' + p + '\`.'
       );
       process.stdout.write(JSON.stringify(escDecision));
       return;
@@ -70,8 +71,8 @@ function handleFileEdit(input, root, toolName) {
         var blockDecision = shared.preToolDecision(
           'PreToolUse',
           'deny',
-          'LeanHarness blocked this edit because `' + p +
-          '` is explicitly blocked in the active change boundary. ' + check.reason
+          'LeanHarness blocked this edit because \`' + p +
+          '\` is explicitly blocked in the active change boundary. ' + check.reason
         );
         process.stdout.write(JSON.stringify(blockDecision));
         return;
@@ -79,18 +80,12 @@ function handleFileEdit(input, root, toolName) {
 
       if (!check.inside) {
         var featureName = featureRef || 'active feature';
-        var boundaryPath = featureDir
-          ? '.lh/features/' + featureDir.split('.lh/features/').pop() + '/boundary.json'
-          : 'boundary.json';
         var oobDecision = shared.preToolDecision(
           'PreToolUse',
           'deny',
-          'LeanHarness blocked this edit because `' + p +
-          '` is outside the active change boundary for ' + featureName +
-          '. To fix: 1) Add `' + p + '` to the touchFiles array and allowedEditGlobs in `' +
-          boundaryPath + '` (bootstrap path, always editable). ' +
-          '2) Update `discovery.md` explaining why this file is needed. ' +
-          '3) Retry this edit.'
+          'LeanHarness blocked this edit because \`' + p +
+          '\` is outside the active change boundary for ' + featureName +
+          '. Update discovery and boundary before editing it.'
         );
         process.stdout.write(JSON.stringify(oobDecision));
         return;

@@ -19,7 +19,6 @@ bootstrap_allow:
   - .claude/**
   - .opencode/**
   - docs/**
-  - scripts/hooks/**
   - README.md
   - CLAUDE.md
   - opencode.json

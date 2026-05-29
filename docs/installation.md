@@ -37,13 +37,21 @@ In your target project directory:
 
 ```bash
 lh init --host all
+# or select multiple hosts explicitly:
+lh init --host claude-code --host opencode
 ```
 
 This creates:
 
-- `.lh/` — artifact store, templates, policies, protocols, configuration
-- `.claude/` — Claude Code integration files (skills, subagents, hooks, settings)
-- `opencode.json` and `.opencode/` — OpenCode integration files (agents, guardrail plugin)
+- `.lh/` — artifact store, configuration, and bundled scaffold files:
+  - `templates/` — artifact shape definitions (`spec.md`, `discovery.md`, `boundary.json`, plan/tasks/checks templates, CaveBus templates)
+  - `protocols/` — `cavebus.yml` protocol definition
+  - `policies/` — host-neutral policies (`risk-gates.yml`, `boundary.yml`, `commands.yml`)
+  - `memory/`, `features/`, `config.yml`, `state.json`
+- `.claude/` — Claude Code integration files (skills, subagents, hooks, settings) when `--host claude-code` is selected
+- `opencode.json` and `.opencode/` — OpenCode integration files (agents, guardrail plugin) when `--host opencode` is selected
+
+Existing scaffold files are not overwritten on re-init unless you pass `--force`. To install only missing scaffold files, run `lh doctor --fix`.
 
 To initialize for a single host:
 

@@ -108,37 +108,6 @@ next: T-01
 
 Use actual planned values. Do not hardcode project-specific content.
 
-## Task Weight Assignment
-
-Assign a complexity weight to every task. Use this table:
-
-| Weight | When to assign |
-|--------|----------------|
-| 1 | Read-only, config tweak, comment change |
-| 2 | Small isolated change, 1–3 files, low coupling |
-| 3 | Mid-size change, wiring across 2–4 files, or moderate risk |
-| 5 | New module, complex logic, risky area (auth, payments, migration), or 5+ files |
-
-Signals that push a task toward 5: `escalate_on` hits in `discovery.md`, `risk_flags` in spec, unknown test coverage, broad cross-cutting concern.
-
-Record the weight in the task row in `tasks.md` and in the plan's Task Breakdown list.
-
-## Wave Grouping
-
-After assigning weights, group tasks into waves. Read `build.session_budget` from `.lh/config.yml` (default: 15).
-
-Rules:
-- Fill each wave greedily in task order until the next task would exceed the budget.
-- Never split a single task across waves.
-- A task with weight > session_budget gets its own wave (document why).
-- Record waves in the `## Waves` section of `plan.md`.
-
-Example with session_budget 15:
-```
-Wave 1 (weight: 13): T-01 w:3, T-02 w:5, T-03 w:5
-Wave 2 (weight: 8):  T-04 w:3, T-05 w:5
-```
-
 ## Final Response Format
 
 Every `/lh-plan` run must end with:
@@ -151,14 +120,3 @@ Every `/lh-plan` run must end with:
 - **Risk gates** — Any triggered risk gates
 - **First recommended task** — Which task to start with
 - **Recommended next command** — `/lh-build <feature-id>`
-- **Wave summary** — Number of waves and total weight
-- **NEXT SESSION block** — End every `/lh-plan` response with:
-
-````
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  NEXT SESSION — Plan complete (N waves)
-  Paste this to continue:
-
-  /lh-build <feature-id> --wave 1
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-````

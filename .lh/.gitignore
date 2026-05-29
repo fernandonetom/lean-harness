@@ -1,0 +1,13 @@
+# LeanHarness — solo mode (default)
+# Feature work is personal and not committed to the repo.
+# To share feature artifacts with your team, set features.commit: true
+# in .lh/config.yml and re-run: lh init --force --team
+
+/features/
+/state.json
+
+# Runtime log (session-local, never commit)
+/memory/cave.md
+
+# Local config overrides (personal, never commit)
+config.local.yml

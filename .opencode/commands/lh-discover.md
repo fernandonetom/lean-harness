@@ -38,11 +38,11 @@ Examples:
    - `.lh/memory/patterns.md`
    - `.lh/memory/cave.md`
 5. **Perform discovery.** Explore in levels, starting at the configured default depth (usually D2):
-   - **D0 — Repo shape:** Package manager, major folders, framework clues, test command candidates.
-   - **D1 — Candidate surfaces:** Files likely related to the feature (routes, components, services, models), obvious tests.
-   - **D2 — Dependency boundary:** Imports, callers, callees, neighboring tests, shared utilities, edit vs. read-only distinction.
-   - **D3 — Risk probes:** Focused test runs, migration inspection, security-sensitive paths, permissions/auth/payment checks.
-   - **D4 — Deep dive:** Broader architecture inspection only when necessary.
+   - **D0 — Repo shape:** Check for package.json, pyproject.toml, go.mod, Cargo.toml, Makefile using find/ls. Identify package manager, framework, and test commands.
+   - **D1 — Seed files:** Use graphify semantic search with the feature description to identify relevant files. Do not use grep or glob for D1.
+   - **D2 — Dependency boundary:** Use graphify neighbor traversal from D1 seeds to find imports, callees, tests, and utilities.
+   - **D3 — Risk probes:** Use graphify symbol lookup for auth, payment, security paths. Run targeted test commands.
+   - **D4 — Deep dive:** Use graphify relationship queries for broader inspection only when D0–D3 is insufficient.
 6. **Stop when sufficient.** Stop when the change boundary is sufficient for a safe plan. Escalate only when the current boundary is insufficient.
 7. **Write discovery.** Write `discovery.md` using `.lh/templates/discovery.md`.
 8. **Write boundary.** Write `boundary.json` using `.lh/templates/boundary.json`.
@@ -58,7 +58,8 @@ Examples:
 - Mark confidence as `low`, `medium`, or `high`.
 - If no tests are found, record that explicitly.
 - If verification commands are unknown, record that explicitly.
-- Use search (Glob, Grep, find) to identify candidate files before reading them.
+- Use graphify for D1–D4. Do not use grep or glob for graph-aware discovery.
+- D0 only: use find/ls for config file existence checks.
 - Read only enough of each file to confirm relevance.
 
 ## Risk Gate Triggers

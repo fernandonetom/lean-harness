@@ -25,8 +25,37 @@
       "rm -rf*": "deny",
       "cat .env*": "deny",
       "printenv*": "deny",
-      "env": "deny"
-    }
+      "env": "deny",
+      "git branch*": "allow",
+      "git show*": "allow",
+      "git blame*": "allow",
+      "ls*": "allow",
+      "find*": "allow",
+      "grep*": "allow",
+      "rg*": "allow",
+      "pnpm run test*": "allow",
+      "pnpm run lint*": "allow",
+      "node --check*": "allow",
+      "python -m json.tool*": "allow",
+      "sed -n*": "allow",
+      "wc *": "allow",
+      "head *": "allow",
+      "tail *": "allow",
+      "git push*": "ask",
+      "git reset*": "ask",
+      "git clean*": "ask",
+      "npm install*": "ask",
+      "npm update*": "ask",
+      "pnpm add*": "ask",
+      "pnpm update*": "ask",
+      "yarn add*": "ask",
+      "bun add*": "ask",
+      "*deploy*": "ask",
+      "*migrate reset*": "ask",
+      "*db reset*": "ask"
+    },
+    "edit": "allow",
+    "webfetch": "ask"
   },
   "agent": {
     "lh-scout": {
@@ -50,6 +79,7 @@
       "description": "LeanHarness bounded implementation agent. Implements assigned tasks from compiled LeanHarness context while staying inside the approved change boundary.",
       "mode": "primary",
       "permission": {
+        "edit": "allow",
         "bash": {
           "npm test*": "allow",
           "npm run test*": "allow",
@@ -58,6 +88,8 @@
           "pnpm test*": "allow",
           "pnpm lint*": "allow",
           "pnpm typecheck*": "allow",
+          "pnpm run test*": "allow",
+          "pnpm run lint*": "allow",
           "yarn test*": "allow",
           "yarn lint*": "allow",
           "bun test*": "allow",
@@ -66,7 +98,19 @@
           "cargo test*": "allow",
           "git status*": "allow",
           "git diff*": "allow",
-          "rm -rf*": "deny"
+          "git log*": "allow",
+          "rm -rf*": "deny",
+          "npm install*": "ask",
+          "npm update*": "ask",
+          "pnpm add*": "ask",
+          "pnpm update*": "ask",
+          "yarn add*": "ask",
+          "bun add*": "ask",
+          "git push*": "ask",
+          "git reset*": "ask",
+          "git clean*": "ask",
+          "cat .env*": "deny",
+          "printenv*": "deny"
         }
       }
     },
@@ -98,6 +142,7 @@
         "bash": {
           "git status*": "allow",
           "git diff*": "allow",
+          "git log*": "allow",
           "npm test*": "allow",
           "npm run test*": "allow",
           "npm run lint*": "allow",
@@ -111,7 +156,10 @@
           "pytest*": "allow",
           "go test*": "allow",
           "cargo test*": "allow",
-          "rm -rf*": "deny"
+          "rm -rf*": "deny",
+          "git push*": "ask",
+          "git reset*": "ask",
+          "git clean*": "ask"
         },
         "webfetch": "deny"
       }
@@ -120,9 +168,11 @@
       "description": "LeanHarness CaveBus compression agent. Converts verbose feature notes into compact CaveBus summaries while preserving protected tokens exactly.",
       "mode": "subagent",
       "permission": {
+        "edit": "allow",
         "bash": {
           "git status*": "allow",
-          "git diff*": "allow"
+          "git diff*": "allow",
+          "git log*": "allow"
         },
         "webfetch": "deny"
       }
@@ -180,10 +230,15 @@
       "template": ".opencode/commands/lh-graph.md"
     }
   },
-  "mcpServers": {
+  "mcp": {
     "leanharness": {
+      "type": "allow",
+      "enabled": true,
       "command": "node",
-      "args": ["dist/index.js", "mcp-server"]
+      "args": [
+        "dist/index.js",
+        "mcp-server"
+      ]
     }
   }
 }

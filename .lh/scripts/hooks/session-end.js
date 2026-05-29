@@ -89,15 +89,15 @@ function handleStop(input, root, hookEvent) {
 
   if (!hasSummary) {
     reasons.push(
-      'LeanHarness needs a task summary before stopping. Write or update a task summary in `' +
+      'LeanHarness needs a task summary before stopping. Write or update a task summary in \`' +
       path.join('.lh/features', path.basename(featureDir), 'task-summaries') +
-      '/` with files changed, commands run, verification evidence, and next action.'
+      '/\` with files changed, commands run, verification evidence, and next action.'
     );
   }
 
   if (hasUnresolvedFailure) {
     reasons.push(
-      'LeanHarness detected failed commands in events.jsonl. Before stopping, summarize the failure and mark the task `needs-fix` or `blocked`.'
+      'LeanHarness detected failed commands in events.jsonl. Before stopping, summarize the failure and mark the task \`needs-fix\` or \`blocked\`.'
     );
   }
 
