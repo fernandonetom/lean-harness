@@ -40,9 +40,10 @@ Examples:
 2. **Specify.** If new request, run the `/lh-spec` workflow to create a feature spec.
 3. **Discover.** Run the `/lh-discover` workflow to produce discovery and change boundary.
 4. **Plan.** Run the `/lh-plan` workflow to create plan and task list.
-5. **Build.** Run the `/lh-build` workflow to implement tasks.
-6. **Check.** Run the `/lh-check` workflow to verify completion.
-7. **Report.** Present final verdict and next action.
+5. **Branch Setup.** Before delegating build tasks, confirm the target branch (see Branch Setup section).
+6. **Build.** Run the `/lh-build` workflow to implement tasks.
+7. **Check.** Run the `/lh-check` workflow to verify completion.
+8. **Report.** Present final verdict and next action.
 
 ## Operating Rules
 
@@ -63,6 +64,22 @@ Examples:
 - If hooks exist, respect their outcomes.
 - If CLI commands exist later, prefer them for deterministic file operations.
 - If CLI commands do not exist yet, manually create or update artifacts using templates from `.lh/templates/`.
+
+## Branch Setup
+
+Before delegating build tasks, confirm the development branch.
+
+1. Run `git branch --show-current` to get the active branch.
+2. If the branch name already contains `<feature-id>` (e.g., `feature/F001-...`), skip — the branch is already set.
+3. Otherwise, ask the user using the `AskUserQuestion` tool:
+   - `header`: `"Branch setup"`
+   - `question`: `"You're on '<current-branch>'. Where should this feature's work go?"`
+   - `options`:
+     - label: `"New branch (Recommended)"`, description: `"Create 'feature/<id>-<slug>'. Select Other to use a different prefix like fix/ or chore/."`
+     - label: `"Stay on current branch"`, description: `"Continue on '<current-branch>' without switching."`
+4. For "New branch": run `git checkout -b feature/<id>-<slug>`. If the branch already exists, run `git checkout feature/<id>-<slug>` instead.
+5. For "Other" (custom name): run `git checkout -b <custom-name>`. If the branch already exists, run `git checkout <custom-name>` instead.
+6. For "Stay on current branch": proceed without changes.
 
 ## Question Format
 

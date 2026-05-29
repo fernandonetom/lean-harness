@@ -53,8 +53,9 @@ Before running any step, inspect the feature folder to determine the current pha
 
 1. **Determine scope.** Check whether the user provided a feature ID or a new request.
 2. **Detect phase.** Use the phase detection table to find where this feature is.
-3. **Run the next phase only.** Do not skip ahead or re-run completed phases.
-4. **End with NEXT SESSION block.** Every run ends with a NEXT SESSION block pointing to the next invocation.
+3. **Branch Setup.** If the detected phase is "Plan done" or "Mid-build", confirm the target branch before executing build tasks (see Branch Setup section).
+4. **Run the next phase only.** Do not skip ahead or re-run completed phases.
+5. **End with NEXT SESSION block.** Every run ends with a NEXT SESSION block pointing to the next invocation.
 
 ## Operating Rules
 
@@ -70,6 +71,22 @@ Before running any step, inspect the feature folder to determine the current pha
 - If guardrail plugin exists, respect its outcomes.
 - If CLI commands exist later, prefer them for deterministic file operations.
 - If CLI commands do not exist yet, manually create or update artifacts using templates from `.lh/templates/`.
+
+## Branch Setup
+
+Before executing build tasks, confirm the development branch.
+
+1. Run `git branch --show-current` to get the active branch.
+2. If the branch name already contains `<feature-id>` (e.g., `feature/F001-...`), skip — the branch is already set.
+3. Otherwise, ask the user:
+
+   > **Branch setup:** You're on `<current-branch>`. Where should this feature's work go?
+   > 1. New branch (Recommended) — create `feature/<id>-<slug>` (type a different prefix like `fix/` or `chore/` if needed)
+   > 2. Stay on `<current-branch>` — continue without switching
+   > 3. Other — type your preferred branch name
+
+4. For option 1 or "Other": run `git checkout -b <branch>`. If the branch already exists, run `git checkout <branch>` instead.
+5. For option 2: proceed without changes.
 
 ## Question Format
 

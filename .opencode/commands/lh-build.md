@@ -45,15 +45,16 @@ Do not require exact flag parsing. Interpret natural language flexibly.
    - `tasks.md` — Task list and statuses
    - Relevant memory files from `.lh/memory/`
    - Prior task summaries from `task-summaries/`
-3. **Determine task scope:**
+3. **Branch Setup.** Confirm the target branch before writing any code (see Branch Setup section).
+4. **Determine task scope:**
    - One specified task
    - Next `pending` task in order
    - All remaining `pending` tasks
    - Fix tasks from review findings
 
-3a. **Read checkpoint.** If `.lh/features/<id>/checkpoint.md` exists, read it to determine which tasks have already completed in the current wave. Skip completed tasks. Resume from `next_task`.
+4a. **Read checkpoint.** If `.lh/features/<id>/checkpoint.md` exists, read it to determine which tasks have already completed in the current wave. Skip completed tasks. Resume from `next_task`.
 
-4. **For each task:**
+5. **For each task:**
    a. Compile bounded context from artifacts. Read only relevant files.
    b. Confirm expected edit files are inside the change boundary.
    c. If behavior changes, prefer writing or updating tests first.
@@ -64,7 +65,7 @@ Do not require exact flag parsing. Interpret natural language flexibly.
    h. Append CaveBus summary to `cavebus.log`.
    i. Update task status in `tasks.md`.
 
-   4j. **Write checkpoint.** After each task completes, write `.lh/features/<id>/checkpoint.md`:
+   5j. **Write checkpoint.** After each task completes, write `.lh/features/<id>/checkpoint.md`:
 
    ```markdown
    # Build Checkpoint
@@ -77,16 +78,16 @@ Do not require exact flag parsing. Interpret natural language flexibly.
    updated: <ISO timestamp>
    ```
 
-5. **Boundary enforcement.** If a file is outside the boundary (guardrail plugin will deny the edit):
+6. **Boundary enforcement.** If a file is outside the boundary (guardrail plugin will deny the edit):
    - Edit `boundary.json` first — add the path to both `touchFiles` (as `{"path": "<file>", "reason": "<why>", "confidence": "high"}`) and `allowedEditGlobs`. The boundary file is under `.lh/` so edits are always allowed.
    - Update `discovery.md` explaining why this file is needed.
    - Retry the original edit.
-6. **Risk gates.** If a risk gate is triggered:
+7. **Risk gates.** If a risk gate is triggered:
    - Pause for approval unless the spec already explicitly approves it.
-7. **Test failures.** If tests fail:
+8. **Test failures.** If tests fail:
    - Diagnose and fix if within task scope.
    - Otherwise mark task as `needs-fix` or `blocked`.
-8. **Verification evidence.** Do not mark a task `done` without verification evidence.
+9. **Verification evidence.** Do not mark a task `done` without verification evidence.
 
 ## Bounded Context Rules
 
@@ -95,6 +96,22 @@ Do not require exact flag parsing. Interpret natural language flexibly.
 - Avoid pulling in unrelated architecture.
 - Preserve exact paths, symbols, commands, and errors (protected tokens).
 - Use compact summaries after each task for handoffs.
+
+## Branch Setup
+
+Before writing any code, confirm the development branch.
+
+1. Run `git branch --show-current` to get the active branch.
+2. If the branch name already contains `<feature-id>` (e.g., `feature/F001-...`), skip — the branch is already set.
+3. Otherwise, ask the user:
+
+   > **Branch setup:** You're on `<current-branch>`. Where should this feature's work go?
+   > 1. New branch (Recommended) — create `feature/<id>-<slug>` (type a different prefix like `fix/` or `chore/` if needed)
+   > 2. Stay on `<current-branch>` — continue without switching
+   > 3. Other — type your preferred branch name
+
+4. For option 1 or "Other": run `git checkout -b <branch>`. If the branch already exists, run `git checkout <branch>` instead.
+5. For option 2: proceed without changes.
 
 ## Question Format
 
