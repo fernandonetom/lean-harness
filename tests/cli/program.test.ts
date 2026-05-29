@@ -28,9 +28,13 @@ describe("normalizeInitHosts", () => {
 
 describe("buildProgram help", () => {
   let stdout = "";
+  let savedCI: string | undefined;
 
   beforeEach(() => {
     stdout = "";
+    // GitHub Actions sets CI=true which suppresses the banner; clear it so banner tests work
+    savedCI = process.env.CI;
+    delete process.env.CI;
     vi.spyOn(process.stdout, "write").mockImplementation((chunk: string | Uint8Array) => {
       stdout += typeof chunk === "string" ? chunk : Buffer.from(chunk).toString();
       return true;
@@ -39,6 +43,11 @@ describe("buildProgram help", () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+    if (savedCI !== undefined) {
+      process.env.CI = savedCI;
+    } else {
+      delete process.env.CI;
+    }
   });
 
   it("init --help does not list discover-only flags", async () => {
