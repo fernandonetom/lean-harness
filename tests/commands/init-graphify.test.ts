@@ -2,8 +2,10 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { CLIError } from "../../src/core/errors.js";
 
 // Mock child_process before importing the module under test
-const mockSpawnSync = vi.fn();
-const mockExecSync = vi.fn();
+const { mockSpawnSync, mockExecSync } = vi.hoisted(() => ({
+  mockSpawnSync: vi.fn(),
+  mockExecSync: vi.fn(),
+}));
 
 vi.mock("node:child_process", () => ({
   spawnSync: mockSpawnSync,

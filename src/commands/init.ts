@@ -1,3 +1,4 @@
+import { spawnSync, execSync } from "node:child_process";
 import { CLIError } from "../core/errors.js";
 import { ensureDir } from "../core/fs.js";
 import { writeTextFile, writeJsonFile, readJsonFile, fileExists } from "../core/fs.js";
@@ -31,6 +32,82 @@ interface InitResult {
 }
 
 const VALID_HOSTS = new Set<string>(["claude-code", "opencode", "all"]);
+
+export function checkPythonVersion(): { ok: boolean; version: string } {
+  try {
+    const result = spawnSync("python3", ["--version"], { encoding: "utf-8" });
+    if (result.status !== 0 || result.error) return { ok: false, version: "" };
+    const output = (result.stdout || result.stderr || "").trim();
+    const match = /Python (\d+)\.(\d+)/.exec(output);
+    if (!match) return { ok: false, version: output };
+    const major = parseInt(match[1]!, 10);
+    const minor = parseInt(match[2]!, 10);
+    const ok = major > 3 || (major === 3 && minor >= 10);
+    return { ok, version: `${major}.${minor}` };
+  } catch {
+    return { ok: false, version: "" };
+  }
+}
+
+export function checkGraphifyInstalled(): boolean {
+  try {
+    const result = spawnSync("graphify", ["--version"], { encoding: "utf-8" });
+    return result.status === 0 && !result.error;
+  } catch {
+    return false;
+  }
+}
+
+export async function runGraphifyInstall(
+  host: InitHost | undefined,
+  log: ReturnType<typeof createLogger>,
+  json: boolean,
+): Promise<{ warnings: string[] }> {
+  const warnings: string[] = [];
+
+  const python = checkPythonVersion();
+  if (!python.ok) {
+    const found = python.version ? `Found Python ${python.version}.` : "Python 3 not found.";
+    throw new CLIError(
+      `Graphify requires Python 3.10 or later. ${found}\n` +
+        `Install Python 3.10+ from https://python.org and re-run lh init.`,
+    );
+  }
+  if (!json) log.info(`  Python ${python.version} (ok)`);
+
+  const alreadyInstalled = checkGraphifyInstalled();
+  if (alreadyInstalled) {
+    if (!json) log.info("  graphify already installed (skipped)");
+  } else {
+    if (!json) log.info("  installing graphify...");
+    try {
+      execSync("pip install graphifyy && graphify install", {
+        stdio: json ? "pipe" : "inherit",
+      });
+    } catch (err) {
+      throw new CLIError(
+        `Failed to install graphify. Run manually: pip install graphifyy && graphify install\n` +
+          `Error: ${String(err)}`,
+      );
+    }
+    if (!json) log.info("  graphify installed");
+  }
+
+  const needsOpenCode = host === "opencode" || host === "all";
+  if (needsOpenCode) {
+    if (!json) log.info("  configuring graphify for OpenCode...");
+    try {
+      execSync("graphify opencode install", { stdio: json ? "pipe" : "inherit" });
+    } catch (err) {
+      const msg = `graphify opencode install failed: ${String(err)}`;
+      warnings.push(msg);
+      if (!json) log.warn(`  ${msg}`);
+    }
+    if (!json) log.info("  graphify OpenCode integration configured");
+  }
+
+  return { warnings };
+}
 
 export async function runInitCommand(options: InitOptions): Promise<void> {
   const { cwd, force = false, json = false, host, yes = false, global: isGlobal = false, team = false } = options;
@@ -161,6 +238,14 @@ export async function runInitCommand(options: InitOptions): Promise<void> {
     }
     result.warnings.push(...ccResult.warnings);
   }
+
+  // --- graphify installation ---
+  if (!json) {
+    log.info("");
+    log.info("Graphify installation:");
+  }
+  const graphifyResult = await runGraphifyInstall(parsedHost, log, json);
+  result.warnings.push(...graphifyResult.warnings);
 
   if (isGlobal) {
     if (!json) {
