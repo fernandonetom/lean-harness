@@ -2192,6 +2192,35 @@ Examples:
 
 Do not require exact flag parsing. Interpret natural language flexibly.
 
+## Task Tooling
+
+**On Claude Code:** Task creation happens in two phases.
+
+**Phase 1 — At skill start** (before any Read, Bash, or other tool call), call TaskCreate for these three fixed setup tasks:
+
+| # | Subject | activeForm |
+|---|---------|------------|
+| 1 | Read artifacts + boundary | Reading artifacts |
+| 2 | Branch setup | Setting up branch |
+| 3 | Choose execution mode | Choosing execution mode |
+
+**Phase 2 — After reading tasks.md**, call TaskCreate for each T-## row using the task description as the subject (e.g., \`T-01 Add reset route\`), then add a final task: \`Verify + build summary\` (activeForm: \`Verifying and summarizing\`).
+
+Invocation variants:
+- \`/lh-build F001\` — create tasks for all pending T-## entries
+- \`/lh-build F001 T-02\` — create only the T-02 task + verify task
+- \`/lh-build F001 --resume\` — mark already-done tasks \`completed\` on creation; create tasks for remaining pending ones
+- \`/lh-build F001 --fix-review\` — create only tasks marked \`needs-fix\` + verify task
+
+Mark each task \`in_progress\` before starting its work and \`completed\` after finishing.
+
+**On OpenCode:** Before starting each step, emit a step header:
+
+    ---
+    **Step N/M — <Step Name>**
+
+Update the total step count (M) after Phase 2 completes and the full task list is known.
+
 ## Workflow
 
 1. **Locate feature.** Find the feature folder under \`.lh/features/\`.
