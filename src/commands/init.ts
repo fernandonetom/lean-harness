@@ -865,7 +865,9 @@ D0 repo shape, D1 candidate surfaces, D2 dependency boundary, D3 risk probes, D4
 ## Rules
 
 - Do not edit files or implement the feature.
-- Prefer search, targeted reads, and exact paths.
+- **Use graphify for D1–D4.** Use graphify semantic search for seed discovery (D1), neighbor traversal for dependency boundary (D2), symbol lookup for risk probes (D3), and relationship queries for deep dive (D4). Do not use grep or glob for graph-aware discovery.
+- **D0 only:** Use `find` / `ls` for config file existence checks (package.json, pyproject.toml, go.mod, etc.).
+- Prefer exact paths and targeted reads.
 - Record why each file is relevant. Mark confidence as low/medium/high.
 - Distinguish touch files from read-only reference files.
 - Identify tests, commands, do-not-touch areas, risk gates, and unknowns.

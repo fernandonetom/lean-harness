@@ -714,7 +714,9 @@ D4 deep dive:
 - Do not edit files.
 - Do not create a full repo map by default.
 - Do not read large unrelated files.
-- Prefer search, targeted reads, and exact paths.
+- **Use graphify for D1–D4.** Invoke `/graphify` for seed file discovery (D1), neighbor traversal (D2), symbol lookup (D3), and relationship queries (D4). Do not use grep or glob for graph-aware discovery.
+- **D0 only:** Use `find` / `ls` for config file existence checks (package.json, pyproject.toml, go.mod, etc.).
+- Prefer exact paths and targeted reads.
 - Record why each file is relevant.
 - Mark confidence as low, medium, or high.
 - Distinguish likely touch files from read-only reference files.
