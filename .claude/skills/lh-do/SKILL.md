@@ -53,8 +53,13 @@ Examples:
 - Do not skip check.
 - Respect risk gates from `.lh/config.yml`.
 - Use bounded context for implementation tasks.
-- If subagents exist (e.g., `.claude/agents/lh-*.md`), use them when helpful.
-- If subagents do not exist yet, perform the steps directly.
+- **Use the Agent tool** to delegate each workflow step to the appropriate subagent:
+  - Discover step → `subagent_type: "lh-scout"`
+  - Build step (per task) → `subagent_type: "lh-builder"`
+  - Review step (after each task) → `subagent_type: "lh-reviewer"`
+  - Check step → `subagent_type: "lh-verifier"`
+  - Compress step (after each summary) → `subagent_type: "lh-compressor"`
+- If a named subagent is unavailable, perform that step directly.
 - If hooks exist, respect their outcomes.
 - If CLI commands exist later, prefer them for deterministic file operations.
 - If CLI commands do not exist yet, manually create or update artifacts using templates from `.lh/templates/`.
