@@ -2,7 +2,7 @@
 name: lh-spec
 description: Create or update a LeanHarness feature specification from a user request. Use when the user invokes /lh-spec or wants to define goal, non-goals, acceptance criteria, constraints, assumptions, and verification expectations before implementation.
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep
+allowed-tools: Read, Write, Edit, Glob, Grep, AskUserQuestion
 ---
 
 # lh-spec
@@ -65,6 +65,17 @@ Ask questions only when:
 - A legal, security, payment, or auth decision is required
 
 Otherwise proceed with explicit assumptions and record them in the spec under Assumptions or Notes.
+
+## Question Format
+
+When you need to ask a clarifying question, use the `AskUserQuestion` tool — never plain text. This shows clickable option chips instead of requiring the user to type.
+
+Structure each question with:
+- `header`: short topic label (≤12 chars, e.g., "Reset method")
+- `question`: clear question ending with `?`
+- `options`: 2–4 choices, each with a short `label` (1–5 words) and a one-sentence `description`
+
+Ask one question per invocation. If multiple are needed, ask the most blocking one first and record the rest as assumptions.
 
 ## Acceptance Criteria Style
 

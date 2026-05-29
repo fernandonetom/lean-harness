@@ -96,6 +96,17 @@ Do not require exact flag parsing. Interpret natural language flexibly.
 - Preserve exact paths, symbols, commands, and errors (protected tokens).
 - Use compact summaries after each task for handoffs.
 
+## Question Format
+
+When you need to ask a clarifying question or seek risk gate approval, format it as a numbered list so the user can reply with a single digit.
+
+> **[Topic]:** [Question?]
+> 1. [Short label] — [one-sentence description]
+> 2. [Short label] — [one-sentence description]
+> 3. Other — describe your preference
+
+Ask one question at a time. Wait for the reply before continuing.
+
 ## Implementation Rules
 
 - Stay inside the approved change boundary.

@@ -71,6 +71,17 @@ Before running any step, inspect the feature folder to determine the current pha
 - If CLI commands exist later, prefer them for deterministic file operations.
 - If CLI commands do not exist yet, manually create or update artifacts using templates from `.lh/templates/`.
 
+## Question Format
+
+When you need to ask a clarifying question, format it as a numbered list so the user can reply with a single digit.
+
+> **[Topic]:** [Question?]
+> 1. [Short label] — [one-sentence description]
+> 2. [Short label] — [one-sentence description]
+> 3. Other — describe your preference
+
+Ask one question at a time. Wait for the reply before continuing.
+
 ## Required Artifacts
 
 Each feature produces artifacts under `.lh/features/<feature-id>-<slug>/`:
