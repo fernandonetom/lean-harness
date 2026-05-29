@@ -15,10 +15,8 @@ import { runCheckCommand } from "./commands/check.js";
 import { runCompressCommand } from "./commands/compress.js";
 import { runCaveBusCommand } from "./commands/cavebus.js";
 import { runMemoryCommand } from "./commands/memory.js";
-import { runGraphCommand } from "./commands/graph.js";
 import { runUpdateCommand } from "./commands/update.js";
 import { runUninstallCommand } from "./commands/uninstall.js";
-import { runMcpServer } from "./adapters/mcp-server.js";
 import { runCompletionCommand } from "./commands/completion.js";
 import { runWatchCommand } from "./commands/watch.js";
 import { getVersion } from "./core/version.js";
@@ -73,9 +71,6 @@ export interface ParsedArgs {
     source: string | null;
     type: string | null;
     tail: string | null;
-    width: string | null;
-    height: string | null;
-    filter: string | null;
   };
   repeated: {
     hint: string[];
@@ -102,9 +97,6 @@ export function parseArgs(argv: string[]): ParsedArgs {
       source: null,
       type: null,
       tail: null,
-      width: null,
-      height: null,
-      filter: null,
     },
     repeated: { hint: [], includeFile: [], command: [], approveRisk: [] },
   };
@@ -118,7 +110,6 @@ export function parseArgs(argv: string[]): ParsedArgs {
     "--model", "--format", "--attach", "--session",
     "--max-command-ms",
     "--mode", "--source", "--type", "--tail",
-    "--width", "--height", "--filter",
   ]);
   const repeatedFlags = new Set(["--hint", "--include-file", "--command", "--approve-risk"]);
   let i = 0;
@@ -225,9 +216,6 @@ function applyStringFlag(result: ParsedArgs, key: string, val: string): boolean 
     case "--source": result.options.source = val; return true;
     case "--type": result.options.type = val; return true;
     case "--tail": result.options.tail = val; return true;
-    case "--width": result.options.width = val; return true;
-    case "--height": result.options.height = val; return true;
-    case "--filter": result.options.filter = val; return true;
     default: return false;
   }
 }
@@ -267,12 +255,6 @@ Commands:
   compress <feature>            Generate compact CaveBus summaries from feature artifacts
   cavebus <feature>             Inspect and validate a feature's CaveBus log
   memory [show|clear|status]    Manage LeanHarness memory files
-  graph <build|update|inspect|clear|export> Manage code graph (imports, symbols, knowledge)
-  graph export html        Export interactive HTML visualization
-  graph export json        Export JSON data for programmatic access
-  graph export dot         Export DOT format for Graphviz
-  graph export svg         Export static SVG image
-  graph export subgraph    Export filtered subgraph by pattern
   update                        Refresh LH-managed files (preserves user config)
   uninstall                     Remove all LeanHarness-managed files from this project
   watch <feature>               Watch boundary files and re-run verification on change
@@ -326,9 +308,6 @@ Options:
   --global                       Install skills/agents to user-level directories
   --team                        Use team mode: feature artifacts are committed (default: solo)
   -y, --yes                     Skip interactive prompts (use defaults)
-  --width <number>              SVG export width (default: 1920)
-  --height <number>             SVG export height (default: 1080)
-  --filter <pattern>            Subgraph export filter pattern (glob)
   -h, --help                    Show help
   -v, --version                 Show version
 
@@ -521,19 +500,6 @@ export async function runCli(argv: string[]): Promise<void> {
         json: args.flags.json,
       });
       break;
-    case "graph":
-      await runGraphCommand({
-        cwd,
-        subcommand: args.positional[0] ?? "inspect",
-        positional: args.positional.slice(1),
-        json: args.flags.json,
-        options: {
-          width: args.options.width ?? undefined,
-          height: args.options.height ?? undefined,
-          filter: args.options.filter ?? undefined,
-        } as any,
-      });
-      break;
     case "update":
       await runUpdateCommand({
         cwd,
@@ -561,9 +527,6 @@ export async function runCli(argv: string[]): Promise<void> {
       break;
     case "doctor":
       await runDoctorCommand({ cwd, json: args.flags.json, fix: args.flags.fix });
-      break;
-    case "mcp-server":
-      await runMcpServer(cwd);
       break;
     case "completion":
       await runCompletionCommand({ shell: args.positional[0] ?? "" });
