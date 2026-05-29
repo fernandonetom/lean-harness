@@ -200,15 +200,3 @@ function escapeRegex(str: string): string {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-// Re-export knowledge graph operations (structured memory layer)
-export {
-  appendKnowledge,
-  linkKnowledge,
-  queryKnowledge,
-  queryKnowledgeByFeature,
-  renderKnowledgeSection,
-  type KnowledgeNode,
-  type KnowledgeKind,
-  type KnowledgeEdgeKind,
-  type LHKnowledgeGraph,
-} from "../graph/knowledge-graph.js";
