@@ -2,7 +2,7 @@
 name: lh-discover
 description: Perform LeanHarness on-demand discovery for an existing codebase and produce a focused change boundary. Use when the user invokes /lh-discover or needs relevant files, tests, commands, constraints, risks, and unknowns before planning.
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
 ---
 
 # lh-discover
@@ -39,12 +39,14 @@ Examples:
    - `.lh/memory/decisions.md`
    - `.lh/memory/patterns.md`
    - `.lh/memory/cave.md`
-5. **Perform discovery.** Explore in levels, starting at the configured default depth (usually D2):
-   - **D0 — Repo shape:** Check for `package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `Makefile`. Use `find` / `ls` for these config files only. Identify package manager, major folders, framework clues, and test command candidates.
-   - **D1 — Seed files:** Invoke `/graphify` with the feature description and goal as input. Use graphify's semantic search to identify files most relevant to the feature. Do not use grep or glob for seed discovery.
-   - **D2 — Dependency boundary:** Use graphify neighbor traversal from the D1 seed files to find imports, callees, callers, neighboring tests, and shared utilities. Distinguish edit vs. read-only files using graphify relationship data.
-   - **D3 — Risk probes:** Use graphify symbol lookup to find auth, payment, permission, and security-sensitive paths. Run focused test commands to detect failures. Do not use grep for symbol discovery.
-   - **D4 — Deep dive:** Use graphify relationship queries for broader architecture inspection. Only escalate when D0–D3 is insufficient.
+5. **Perform discovery.**
+   - **Preferred:** Invoke the Agent tool with `subagent_type: "lh-scout"`, passing the feature ID, spec path, memory file paths, and any hints provided. Use the scout's structured output to populate the discovery artifacts in steps 7–8.
+   - **Fallback (if `lh-scout` is unavailable):** Explore directly in levels, starting at the configured default depth (usually D2):
+     - **D0 — Repo shape:** Check for `package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `Makefile`. Use `find` / `ls` for these config files only. Identify package manager, major folders, framework clues, and test command candidates.
+     - **D1 — Seed files:** Invoke `/graphify` with the feature description and goal as input. Use graphify's semantic search to identify files most relevant to the feature. Do not use grep or glob for seed discovery.
+     - **D2 — Dependency boundary:** Use graphify neighbor traversal from the D1 seed files to find imports, callees, callers, neighboring tests, and shared utilities. Distinguish edit vs. read-only files using graphify relationship data.
+     - **D3 — Risk probes:** Use graphify symbol lookup to find auth, payment, permission, and security-sensitive paths. Run focused test commands to detect failures. Do not use grep for symbol discovery.
+     - **D4 — Deep dive:** Use graphify relationship queries for broader architecture inspection. Only escalate when D0–D3 is insufficient.
 6. **Stop when sufficient.** Stop when the change boundary is sufficient for a safe plan. Escalate only when the current boundary is insufficient.
 7. **Write discovery.** Write `discovery.md` using `.lh/templates/discovery.md`.
 8. **Write boundary.** Write `boundary.json` using `.lh/templates/boundary.json`.
