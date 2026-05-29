@@ -64,6 +64,17 @@ Examples:
 - If CLI commands exist later, prefer them for deterministic file operations.
 - If CLI commands do not exist yet, manually create or update artifacts using templates from `.lh/templates/`.
 
+## Question Format
+
+When you need to ask a clarifying question, use the `AskUserQuestion` tool — never plain text. This shows clickable option chips instead of requiring the user to type.
+
+Structure each question with:
+- `header`: short topic label (≤12 chars, e.g., "Reset method")
+- `question`: clear question ending with `?`
+- `options`: 2–4 choices, each with a short `label` (1–5 words) and a one-sentence `description`
+
+Ask one question per invocation. If multiple are needed, ask the most blocking one first and record the rest as assumptions.
+
 ## Required Artifacts
 
 Each feature produces artifacts under `.lh/features/<feature-id>-<slug>/`:
