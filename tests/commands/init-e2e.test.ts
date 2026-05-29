@@ -5,6 +5,19 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import { runInitCommand } from "../../src/commands/init.js";
 
+vi.mock("node:child_process", () => ({
+  spawnSync: vi.fn((cmd: string, args: string[]) => {
+    if (cmd === "python3" && args[0] === "--version") {
+      return { status: 0, stdout: "Python 3.11.0\n", stderr: "", error: undefined };
+    }
+    if (cmd === "graphify" && args[0] === "--version") {
+      return { status: 1, stdout: "", stderr: "", error: new Error("not found") };
+    }
+    return { status: 0, stdout: "", stderr: "", error: undefined };
+  }),
+  execSync: vi.fn(),
+}));
+
 let tmpDir: string;
 
 beforeEach(async () => {
