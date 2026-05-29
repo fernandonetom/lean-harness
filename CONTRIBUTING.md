@@ -2,7 +2,7 @@
 
 ## Project status
 
-LeanHarness is at v0.1 — dogfooding-ready but not production-stable. Contributions are welcome, especially bug reports, documentation improvements, and adapter contributions.
+LeanHarness v1.0.0 is the first stable release. Contributions are welcome, especially bug reports, documentation improvements, and adapter contributions.
 
 ## Development setup
 
@@ -127,14 +127,17 @@ Guardrails enforce safety during agent execution:
 
 ## Release process
 
-1. Run validation: `npm run release:check`
-2. Update version in `package.json` and `src/cli.ts` (VERSION constant).
-3. Update `CHANGELOG.md` with changes under the new version heading.
-4. Commit with message: `release: vX.Y.Z`
-5. Create a git tag: `git tag vX.Y.Z`
-6. Publish: `npm publish --access public` (only when intentionally releasing)
+LeanHarness uses [Changesets](https://github.com/changesets/changesets) for automated releases:
 
-Do not publish without running the full release checklist. See `docs/release-checklist.md`.
+1. Add a changeset for your change:
+   ```bash
+   npm run changeset
+   ```
+2. Merge your PR to `main`.
+3. GitHub Actions will open or update a "Version Packages" release PR.
+4. Merging that release PR automatically bumps versions, creates a git tag, generates GitHub Release notes, and publishes to npm.
+
+Do not publish manually. See `docs/release-checklist.md` for the full pre-release validation checklist.
 
 ## Pull request checklist
 

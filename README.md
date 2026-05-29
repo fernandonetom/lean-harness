@@ -32,18 +32,7 @@ Greenfield projects work too — they are the simpler case.
 ## Quick start
 
 ```bash
-git clone <repository-url>
-cd LeanHarness
-npm install
-npm run build
-node dist/index.js --help
-node dist/index.js doctor
-```
-
-To link the CLI globally from this checkout:
-
-```bash
-npm link
+npm install -g @feneto/lh
 lh --help
 lh doctor
 ```
@@ -160,8 +149,6 @@ The password reset example shows a complete feature lifecycle with all artifacts
 - [Password reset example](docs/examples/password-reset.md)
 - [Troubleshooting](docs/troubleshooting.md)
 - [Security and safety](docs/security.md)
-- [Roadmap](docs/roadmap.md)
-- [Release checklist](docs/release-checklist.md)
 - [Contributing](CONTRIBUTING.md)
 
 Design documentation:
@@ -212,16 +199,6 @@ LeanHarness guardrails are best-effort safety measures, not a security sandbox:
 Guardrails are enforced by hooks (Claude Code) and plugins (OpenCode). Agent hosts can still execute code if users approve actions. Use dry-runs before real agent execution.
 
 See [docs/security.md](docs/security.md) for the full safety model.
-
-## Roadmap
-
-| Phase | Focus | Status |
-|-------|-------|--------|
-| v0.1 | Core workflow, CLI, two adapters, guardrails, tests | **Current** |
-| v0.2 | Richer planning, stronger checks, better host config | Planned |
-| v0.3 | Additional hosts, CI integration, worktree support | Planned |
-
-See [docs/roadmap.md](docs/roadmap.md) for details.
 
 ## License
 

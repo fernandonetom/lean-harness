@@ -24,6 +24,7 @@
 | `update` | Refresh LH-managed files (preserves config) |
 | `watch` | Watch boundary files, re-run verification on change |
 | `completion` | Generate shell tab completion scripts |
+| `graph` | Build and inspect the code graph (imports, symbols, knowledge) |
 
 ## Global options
 

@@ -9,34 +9,27 @@
 
 LeanHarness itself has no runtime dependencies. Agent hosts are invoked as external processes.
 
-## Local development install
+## Install from npm
+
+```bash
+npm install -g @feneto/lh
+lh --help
+```
+
+## Development install (from source)
 
 Clone the repository and install dev dependencies:
 
 ```bash
 git clone <repository-url>
-cd LeanHarness
+cd lean-harness
 npm install
-```
-
-## Build from source
-
-```bash
 npm run build
-```
-
-This compiles TypeScript from `src/` to `dist/`. The entry point is `dist/index.js`.
-
-## Link the CLI locally
-
-To use the `lh` command globally from this checkout:
-
-```bash
 npm link
 lh --help
 ```
 
-Once published, installation may use `npm install -g @feneto/lh`. Until then, use local development install or `npm link`.
+`npm run build` compiles TypeScript from `src/` to `dist/`. The entry point is `dist/index.js`.
 
 ## Initialize a project
 
@@ -96,14 +89,6 @@ See [docs/hosts/opencode.md](hosts/opencode.md) for details.
 ## Verify installation
 
 ```bash
-npm run build
-node dist/index.js --help
-node dist/index.js doctor
-```
-
-Or with a linked CLI:
-
-```bash
 lh --help
 lh doctor
 ```
@@ -118,7 +103,11 @@ lh doctor
 
 ## Updating
 
-Pull the latest source and rebuild:
+```bash
+npm update -g @feneto/lh
+```
+
+For development installs: pull and rebuild:
 
 ```bash
 git pull
@@ -126,13 +115,13 @@ npm install
 npm run build
 ```
 
-If linked via `npm link`, the `lh` command automatically uses the rebuilt `dist/`.
-
-## Uninstalling local links
+## Uninstalling
 
 ```bash
-npm unlink
+npm uninstall -g @feneto/lh
 ```
+
+For development installs: `npm unlink`.
 
 ## Troubleshooting
 

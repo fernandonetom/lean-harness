@@ -747,14 +747,3 @@ CaveBus supports each phase of the LeanHarness workflow:
 
 **Check:** `VERIFY` messages carry final verification results. `CMD` messages record verification command runs. The canonical `checks.md` and `result.md` remain sources of truth.
 
-## Future Implementation Notes
-
-Future LeanHarness CLI versions may:
-
-- Parse and validate CaveBus messages against the protocol definition in `.lh/protocols/cavebus.yml`.
-- Automatically preserve protected tokens during compression.
-- Compile bounded context from `cavebus.log` entries.
-- Index CaveBus messages for feature status dashboards.
-- Lint CaveBus messages for anti-patterns.
-
-This prompt does not implement any of that code. The protocol specification and templates are design artifacts for v0.1.

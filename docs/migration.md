@@ -8,7 +8,7 @@ LeanHarness is designed for brownfield codebases. No restructuring required.
 
 ```bash
 cd your-project
-npx leanharness init --host claude-code
+npx @feneto/lh init --host claude-code
 ```
 
 This creates:
@@ -127,10 +127,10 @@ Feature artifacts (`spec.md`, `discovery.md`, `plan.md`, `checks.md`, `result.md
 
 ```yaml
 - name: LeanHarness doctor
-  run: npx leanharness doctor --json
+  run: npx @feneto/lh doctor --json
 
 - name: LeanHarness check
-  run: npx leanharness check $FEATURE_ID --no-run --json
+  run: npx @feneto/lh check $FEATURE_ID --no-run --json
 ```
 
 Use `--no-run` in CI to skip command execution (tests should run separately). Use `--json` for machine-readable output.

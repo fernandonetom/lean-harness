@@ -15,7 +15,7 @@ LeanHarness
 ├── Artifact store (.lh/)
 ├── Discovery engine (src/discovery/)
 ├── Context compiler (src/context/)
-├── CaveBus compression layer (src/compression/)
+├── CaveBus compression layer (src/cavebus/)
 ├── Verification engine (src/verification/)
 ├── Agent adapter layer (src/adapters/)
 ├── Plugin system (src/plugins/)
@@ -119,7 +119,7 @@ Responsibilities:
 
 ### CaveBus compression layer
 
-**Source:** `src/compression/`
+**Source:** `src/cavebus/`
 
 Internal protocol for compact, structured communication between phases and tasks.
 
@@ -315,23 +315,40 @@ src/
 │   ├── claude-code.ts          # Claude Code adapter
 │   └── opencode.ts             # OpenCode adapter
 ├── discovery/
-│   ├── discovery-engine.ts     # Discovery orchestration
+│   ├── index.ts                # Discovery orchestration
 │   ├── project-detector.ts     # Project type detection
 │   ├── test-detector.ts        # Test framework detection
-│   └── import-resolver.ts      # Import tracing
+│   ├── import-resolver.ts      # Import tracing
+│   ├── boundary.ts             # Boundary management
+│   ├── search.ts               # File search
+│   ├── graph-scorer.ts         # Graph-based candidate scoring
+│   └── package-detector.ts     # Package manager detection
 ├── context/
-│   └── compiler.ts             # Bounded context compilation
+│   ├── compiler.ts             # Bounded context compilation
+│   ├── task-context.ts         # Task context assembly
+│   └── protected-tokens.ts     # Protected token preservation
 ├── planning/
-│   └── planner.ts              # Plan and task generation
+│   ├── index.ts                # Plan and task orchestration
+│   ├── task-generator.ts       # Task generation
+│   ├── plan-renderer.ts        # Plan formatting
+│   └── acceptance.ts           # Acceptance criteria parsing
 ├── build/
 │   ├── index.ts                # Build orchestration
-│   └── task-runner.ts          # Single task execution
+│   ├── task-runner.ts          # Single task execution
+│   ├── task-status.ts          # Task status tracking
+│   └── task-summary.ts         # Task summary generation
 ├── verification/
 │   ├── index.ts                # Check orchestration
-│   └── commands.ts             # Command execution with timeout
-├── compression/
-│   ├── compressor.ts           # CaveBus compression
-│   └── validator.ts            # CaveBus log validation
+│   ├── commands.ts             # Command execution with timeout
+│   ├── acceptance.ts           # Acceptance criteria tracing
+│   ├── changed-files.ts        # Changed file diffing
+│   └── review.ts               # Review finding integration
+├── cavebus/
+│   ├── index.ts                # Public API
+│   ├── compress.ts             # CaveBus compression
+│   ├── validate.ts             # CaveBus log validation
+│   ├── schema.ts               # Schema definitions
+│   └── protected.ts            # Protected token handling
 ├── memory/
 │   └── index.ts                # Memory read/write
 ├── plugins/

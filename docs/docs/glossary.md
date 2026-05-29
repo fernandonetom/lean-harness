@@ -8,7 +8,7 @@ Consistent terminology used throughout LeanHarness documentation and code.
 Observable behaviors listed in a feature spec that prove the feature works. Each criterion is individually verifiable during the Check phase.
 
 **adapter**
-A component in the agent adapter layer that translates LeanHarness operations into commands for a specific agent host. The Claude Code adapter is the only one planned for v0.1.
+A component in the agent adapter layer that translates LeanHarness operations into commands for a specific agent host. Claude Code and OpenCode adapters are both implemented.
 
 **artifact store**
 The `.lh/` directory in a project. Contains all feature artifacts, project-level configuration, and cached context. The source of truth for feature work.

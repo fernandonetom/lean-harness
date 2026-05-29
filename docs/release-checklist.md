@@ -30,7 +30,7 @@ All must pass with zero errors.
 - [ ] `docs/configuration.md` covers all configuration surfaces
 - [ ] `docs/installation.md` has accurate setup instructions
 - [ ] No placeholder text (`TODO`, `TBD`, `fill this in`) in docs
-- [ ] No claims of production maturity or npm publication if not yet published
+- [ ] No claims about features that are not implemented
 - [ ] Doc links resolve to existing files
 
 Quick check:

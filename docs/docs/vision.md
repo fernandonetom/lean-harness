@@ -53,7 +53,7 @@ Claude Code is the first target execution host. LeanHarness integrates deeply wi
 - Hooks for lifecycle events
 - Settings for project-level configuration
 
-The architecture includes an adapter layer so that other agent hosts can be supported in the future. But v0.1 is Claude Code only. This focus allows the framework to be useful quickly rather than being a mediocre abstraction over multiple platforms.
+The architecture includes an adapter layer for multiple agent hosts. Claude Code and OpenCode are both supported. Additional hosts can be added via the adapter interface.
 
 ### Token-aware
 

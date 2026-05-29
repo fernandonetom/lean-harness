@@ -2,7 +2,7 @@
 
 ## Scope
 
-LeanHarness v0.1 provides guardrails for AI coding agent sessions. These guardrails are best-effort safety measures, not a security sandbox. This document describes what LeanHarness protects against, what it does not, and how to use it safely.
+LeanHarness provides guardrails for AI coding agent sessions. These guardrails are best-effort safety measures, not a security sandbox. This document describes what LeanHarness protects against, what it does not, and how to use it safely.
 
 ## What LeanHarness protects against
 
