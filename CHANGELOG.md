@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0
+
+### Minor Changes
+
+- 411babc: enhance LeanHarness agent and skill functionalities
+  standardize question format across skills and commands
+
 All notable changes to LeanHarness will be documented in this file.
 
 The format is inspired by [Keep a Changelog](https://keepachangelog.com/), and this project uses semantic versioning once releases begin.
