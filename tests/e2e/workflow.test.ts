@@ -1,5 +1,18 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { createTempWorkspace, cleanupWorkspace, fileExists, readFile, readJson, lhPath, featurePath } from "./helpers.js";
+
+vi.mock("node:child_process", () => ({
+  spawnSync: vi.fn((cmd: string, args: string[]) => {
+    if (cmd === "python3" && args[0] === "--version") {
+      return { status: 0, stdout: "Python 3.11.0\n", stderr: "", error: undefined };
+    }
+    if (cmd === "graphify" && args[0] === "--version") {
+      return { status: 1, stdout: "", stderr: "", error: new Error("not found") };
+    }
+    return { status: 0, stdout: "", stderr: "", error: undefined };
+  }),
+  execSync: vi.fn(),
+}));
 import { runInitCommand } from "../../src/commands/init.js";
 import { runSpecCommand } from "../../src/commands/spec.js";
 import { runDiscoverCommand } from "../../src/commands/discover.js";
