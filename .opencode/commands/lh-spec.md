@@ -64,6 +64,17 @@ Ask questions only when:
 
 Otherwise proceed with explicit assumptions and record them in the spec under Assumptions or Notes.
 
+## Question Format
+
+When you need to ask a clarifying question, format it as a numbered list so the user can reply with a single digit.
+
+> **[Topic]:** [Question?]
+> 1. [Short label] — [one-sentence description]
+> 2. [Short label] — [one-sentence description]
+> 3. Other — describe your preference
+
+Ask one question at a time. Wait for the reply before continuing.
+
 ## Acceptance Criteria Style
 
 Write acceptance criteria that are testable and user-observable when possible. Use checkbox format:
