@@ -44,31 +44,47 @@ Do not require exact flag parsing. Interpret natural language flexibly.
    - Relevant memory files from `.lh/memory/`
    - Prior task summaries from `task-summaries/`
 3. **Branch Setup.** Confirm the target branch before writing any code (see Branch Setup section).
-4. **Determine task scope:**
+4. **Ask execution mode.** Before implementing any task, ask the user how this build should run using the `AskUserQuestion` tool:
+   - `header`: `"Exec mode"`
+   - `question`: `"How should this build run?"`
+   - `options`:
+     - label: `"Subagents"`, description: `"Dispatch lh-builder for implementation, lh-reviewer for review after every task, lh-compressor for compression — each task runs in a fresh, isolated agent."`
+     - label: `"Current agent"`, description: `"Implement, review, and compress directly in this session without subagent dispatch."`
+5. **Determine task scope:**
    - One specified task
    - Next `pending` task in order
    - All remaining `pending` tasks
    - Fix tasks from review findings
-5. **For each task:**
+6. **For each task (subagents mode):**
    a. Compile bounded context from artifacts. Read only relevant files.
    b. Confirm expected edit files are inside the change boundary.
-   c. **Implement:** Invoke the Agent tool with `subagent_type: "lh-builder"`, passing the compiled bounded context (feature ID, task ID, task goal, expected files, read-only context, verification commands, prior task summaries). If `lh-builder` is unavailable, implement the task directly; prefer writing or updating tests first if behavior changes.
+   c. **MUST implement:** Invoke the Agent tool with `subagent_type: "lh-builder"`, passing: feature ID, task ID, task goal, expected files, bounded context (relevant spec sections, boundary entries, memory entries, file content), verification commands, prior task summaries. Do NOT implement inline. If the Agent tool itself errors or reports the subagent type is not registered, report the error to the user and stop.
    d. Run task verification commands when available.
    e. Record commands and results.
-   f. **Review:** Invoke the Agent tool with `subagent_type: "lh-reviewer"`, passing feature ID, task ID, changed files list, task summary path, and boundary path. If `lh-reviewer` is unavailable, perform self-review inline.
-   g. **Compress:** Invoke the Agent tool with `subagent_type: "lh-compressor"`, passing the verbose task summary. Append the returned compact CaveBus entry to `cavebus.log`. If `lh-compressor` is unavailable, write the CaveBus summary directly.
+   f. **MUST review:** Invoke the Agent tool with `subagent_type: "lh-reviewer"` after every task without exception, passing: feature ID, task ID, changed files list, task summary path, boundary path.
+   g. **MUST compress:** Invoke the Agent tool with `subagent_type: "lh-compressor"`, passing the verbose task summary. Append the returned compact CaveBus entry to `cavebus.log`.
    h. Write task summary to `task-summaries/<task-id>.md`.
    i. Update task status in `tasks.md`.
-6. **Boundary enforcement.** If the task requires files outside the boundary:
+7. **For each task (current-agent mode):**
+   a. Compile bounded context from artifacts. Read only relevant files.
+   b. Confirm expected edit files are inside the change boundary.
+   c. Implement directly. Prefer writing or updating tests first for behavior changes.
+   d. Run task verification commands when available.
+   e. Record commands and results.
+   f. Self-review inline: acceptance criteria coverage, boundary violations, missing tests, security issues, regressions, overengineering, accidental broad refactors.
+   g. Write CaveBus summary directly to `cavebus.log`.
+   h. Write task summary to `task-summaries/<task-id>.md`.
+   i. Update task status in `tasks.md`.
+8. **Boundary enforcement.** If the task requires files outside the boundary:
    - Stop before editing those files.
    - Update `discovery.md` and `boundary.json` with the new files.
    - Explain why the boundary changed.
-7. **Risk gates.** If a risk gate is triggered:
+9. **Risk gates.** If a risk gate is triggered:
    - Pause for approval unless the spec already explicitly approves it.
-8. **Test failures.** If tests fail:
+10. **Test failures.** If tests fail:
    - Diagnose and fix if within task scope.
    - Otherwise mark task as `needs-fix` or `blocked`.
-9. **Verification evidence.** Do not mark a task `done` without verification evidence.
+11. **Verification evidence.** Do not mark a task `done` without verification evidence.
 
 ## Bounded Context Rules
 
@@ -156,9 +172,9 @@ Use actual values. Do not hardcode project-specific content.
 
 ## Review Behavior
 
-After each task implementation, invoke the Agent tool with `subagent_type: "lh-reviewer"` (step 4f above), passing feature ID, task ID, changed files, task summary path, and boundary path.
+**Subagents mode:** After each task, MUST invoke the Agent tool with `subagent_type: "lh-reviewer"` (step 6f), passing feature ID, task ID, changed files, task summary path, and boundary path. Do not skip. Do not fall back to self-review unless the Agent tool itself errors.
 
-If `lh-reviewer` is unavailable, perform self-review checking:
+**Current-agent mode:** After each task, perform self-review inline (step 7f) checking:
 
 - Acceptance criteria coverage
 - Boundary violations
