@@ -163,7 +163,7 @@ LeanHarness has two graph systems:
 - Multi-format (code, docs, images, video)
 - Community detection and visualization
 - Claude Code only (via skill)
-- Requires Python and `graphifyy` package
+- Requires Python and `graphify` package
 
 **When to use each:**
 
