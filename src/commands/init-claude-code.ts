@@ -1594,9 +1594,10 @@ Examples:
 2. **Specify.** If new request, run the \`/lh-spec\` workflow to create a feature spec.
 3. **Discover.** Run the \`/lh-discover\` workflow to produce discovery and change boundary.
 4. **Plan.** Run the \`/lh-plan\` workflow to create plan and task list.
-5. **Build.** Run the \`/lh-build\` workflow to implement tasks.
-6. **Check.** Run the \`/lh-check\` workflow to verify completion.
-7. **Report.** Present final verdict and next action.
+5. **Branch Setup.** Before delegating build tasks, confirm the target branch (see Branch Setup section).
+6. **Build.** Run the \`/lh-build\` workflow to implement tasks.
+7. **Check.** Run the \`/lh-check\` workflow to verify completion.
+8. **Report.** Present final verdict and next action.
 
 ## Operating Rules
 
@@ -1617,6 +1618,22 @@ Examples:
 - If hooks exist, respect their outcomes.
 - If CLI commands exist later, prefer them for deterministic file operations.
 - If CLI commands do not exist yet, manually create or update artifacts using templates from \`.lh/templates/\`.
+
+## Branch Setup
+
+Before delegating build tasks, confirm the development branch.
+
+1. Run \`git branch --show-current\` to get the active branch.
+2. If the branch name already contains \`<feature-id>\` (e.g., \`feature/F001-...\`), skip — the branch is already set.
+3. Otherwise, ask the user using the \`AskUserQuestion\` tool:
+   - \`header\`: \`"Branch setup"\`
+   - \`question\`: \`"You're on '<current-branch>'. Where should this feature's work go?"\`
+   - \`options\`:
+     - label: \`"New branch (Recommended)"\`, description: \`"Create 'feature/<id>-<slug>'. Select Other to use a different prefix like fix/ or chore/."\`
+     - label: \`"Stay on current branch"\`, description: \`"Continue on '<current-branch>' without switching."\`
+4. For "New branch": run \`git checkout -b feature/<id>-<slug>\`. If the branch already exists, run \`git checkout feature/<id>-<slug>\` instead.
+5. For "Other" (custom name): run \`git checkout -b <custom-name>\`. If the branch already exists, run \`git checkout <custom-name>\` instead.
+6. For "Stay on current branch": proceed without changes.
 
 ## Question Format
 
@@ -2120,12 +2137,13 @@ Do not require exact flag parsing. Interpret natural language flexibly.
    - \`tasks.md\` — Task list and statuses
    - Relevant memory files from \`.lh/memory/\`
    - Prior task summaries from \`task-summaries/\`
-3. **Determine task scope:**
+3. **Branch Setup.** Confirm the target branch before writing any code (see Branch Setup section).
+4. **Determine task scope:**
    - One specified task
    - Next \`pending\` task in order
    - All remaining \`pending\` tasks
    - Fix tasks from review findings
-4. **For each task:**
+5. **For each task:**
    a. Compile bounded context from artifacts. Read only relevant files.
    b. Confirm expected edit files are inside the change boundary.
    c. **Implement:** Invoke the Agent tool with \`subagent_type: "lh-builder"\`, passing the compiled bounded context (feature ID, task ID, task goal, expected files, read-only context, verification commands, prior task summaries). If \`lh-builder\` is unavailable, implement the task directly; prefer writing or updating tests first if behavior changes.
@@ -2135,16 +2153,16 @@ Do not require exact flag parsing. Interpret natural language flexibly.
    g. **Compress:** Invoke the Agent tool with \`subagent_type: "lh-compressor"\`, passing the verbose task summary. Append the returned compact CaveBus entry to \`cavebus.log\`. If \`lh-compressor\` is unavailable, write the CaveBus summary directly.
    h. Write task summary to \`task-summaries/<task-id>.md\`.
    i. Update task status in \`tasks.md\`.
-5. **Boundary enforcement.** If the task requires files outside the boundary:
+6. **Boundary enforcement.** If the task requires files outside the boundary:
    - Stop before editing those files.
    - Update \`discovery.md\` and \`boundary.json\` with the new files.
    - Explain why the boundary changed.
-6. **Risk gates.** If a risk gate is triggered:
+7. **Risk gates.** If a risk gate is triggered:
    - Pause for approval unless the spec already explicitly approves it.
-7. **Test failures.** If tests fail:
+8. **Test failures.** If tests fail:
    - Diagnose and fix if within task scope.
    - Otherwise mark task as \`needs-fix\` or \`blocked\`.
-8. **Verification evidence.** Do not mark a task \`done\` without verification evidence.
+9. **Verification evidence.** Do not mark a task \`done\` without verification evidence.
 
 ## Bounded Context Rules
 
@@ -2153,6 +2171,22 @@ Do not require exact flag parsing. Interpret natural language flexibly.
 - Avoid pulling in unrelated architecture.
 - Preserve exact paths, symbols, commands, and errors (protected tokens).
 - Use compact summaries after each task for handoffs.
+
+## Branch Setup
+
+Before writing any code, confirm the development branch.
+
+1. Run \`git branch --show-current\` to get the active branch.
+2. If the branch name already contains \`<feature-id>\` (e.g., \`feature/F001-...\`), skip — the branch is already set.
+3. Otherwise, ask the user using the \`AskUserQuestion\` tool:
+   - \`header\`: \`"Branch setup"\`
+   - \`question\`: \`"You're on '<current-branch>'. Where should this feature's work go?"\`
+   - \`options\`:
+     - label: \`"New branch (Recommended)"\`, description: \`"Create 'feature/<id>-<slug>'. Select Other to use a different prefix like fix/ or chore/."\`
+     - label: \`"Stay on current branch"\`, description: \`"Continue on '<current-branch>' without switching."\`
+4. For "New branch": run \`git checkout -b feature/<id>-<slug>\`. If the branch already exists, run \`git checkout feature/<id>-<slug>\` instead.
+5. For "Other" (custom name): run \`git checkout -b <custom-name>\`. If the branch already exists, run \`git checkout <custom-name>\` instead.
+6. For "Stay on current branch": proceed without changes.
 
 ## Question Format
 
