@@ -158,9 +158,9 @@ Use actual values. Do not hardcode project-specific content.
 
 ## Review Behavior
 
-If `.opencode/agents/lh-reviewer.md` exists, use it for review when helpful.
+After every task, perform self-review. This is mandatory — not optional, not "when helpful".
 
-If no reviewer subagent exists yet, perform a self-review checking:
+Check:
 
 - Acceptance criteria coverage
 - Boundary violations
