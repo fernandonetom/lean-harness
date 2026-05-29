@@ -101,6 +101,10 @@ export function claudeSettingsPath(root: string): string {
   return claudePath(root, "settings.json");
 }
 
+export function claudeSettingsLocalPath(root: string): string {
+  return claudePath(root, "settings.local.json");
+}
+
 export function scriptsHooksDir(root: string): string {
   return harnessPath(root, "scripts", "hooks");
 }

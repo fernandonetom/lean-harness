@@ -1,5 +1,5 @@
 import { ensureDir, writeTextFile, writeJsonFile, readJsonFile, fileExists } from "../core/fs.js";
-import { claudePath, claudeSkillsDir, claudeAgentsDir, claudeHooksDir, claudeSettingsPath, scriptsHooksDir, harnessPath, policiesDir } from "../core/paths.js";
+import { claudePath, claudeSkillsDir, claudeAgentsDir, claudeHooksDir, claudeSettingsPath, claudeSettingsLocalPath, scriptsHooksDir, harnessPath, policiesDir } from "../core/paths.js";
 import { createLogger } from "../core/logger.js";
 
 export interface ClaudePackResult {
@@ -74,13 +74,10 @@ export async function installClaudeCodePack(
   result.files[".claude/settings.json"] = settingsResult.status;
   result.warnings.push(...settingsResult.warnings);
 
-  // --- settings.local.example.json ---
-  const localExamplePath = claudePath(cwd, "settings.local.example.json");
-  const localExampleStatus = await writeTextFile(localExamplePath, createSettingsLocalExample(), { overwrite: force });
-  result.files[".claude/settings.local.example.json"] = localExampleStatus;
-  if (!json) {
-    log.info(localExampleStatus === "created" ? "  .claude/settings.local.example.json (created)" : localExampleStatus === "updated" ? "  .claude/settings.local.example.json (updated)" : "  .claude/settings.local.example.json (exists, skipped)");
-  }
+  // --- settings.local.json (user-specific: statusLine with home dir path) ---
+  const settingsLocalResult = await installClaudeCodeSettingsLocal(cwd, force, log, json);
+  result.files[".claude/settings.local.json"] = settingsLocalResult.status;
+  result.warnings.push(...settingsLocalResult.warnings);
 
   // --- README.md ---
   const readmePath = claudePath(cwd, "README.md");
@@ -187,8 +184,6 @@ async function installClaudeCodeSettings(
 ): Promise<SettingsInstallResult> {
   const cfgPath = claudeSettingsPath(cwd);
   const warnings: string[] = [];
-  const { homedir } = await import("node:os");
-  const homeDir = homedir();
 
   const existing = await readJsonFile<Record<string, unknown>>(cfgPath).catch((err: unknown) => {
     if (err instanceof Error && err.message.includes("Failed to parse JSON")) {
@@ -204,10 +199,6 @@ async function installClaudeCodeSettings(
   }
 
   const lhSettings = createClaudeCodeSettingsObject();
-  lhSettings["statusLine"] = {
-    type: "command",
-    command: `bash ${homeDir}/.claude/statusline.sh`,
-  };
 
   if (existing === null) {
     await writeJsonFile(cfgPath, lhSettings, { overwrite: true });
@@ -215,10 +206,56 @@ async function installClaudeCodeSettings(
     return { status: "created", warnings };
   }
 
-  const merged = mergeClaudeCodeSettings(existing, lhSettings, force, warnings, homeDir);
+  const merged = mergeClaudeCodeSettings(existing, lhSettings, force, warnings);
   await writeJsonFile(cfgPath, merged, { overwrite: true });
   if (!json) log.info("  .claude/settings.json (updated)");
   return { status: "updated", warnings };
+}
+
+async function installClaudeCodeSettingsLocal(
+  cwd: string,
+  force: boolean,
+  log: ReturnType<typeof createLogger>,
+  json: boolean,
+): Promise<SettingsInstallResult> {
+  const { homedir } = await import("node:os");
+  const homeDir = homedir();
+  const cfgPath = claudeSettingsLocalPath(cwd);
+  const warnings: string[] = [];
+
+  const existing = await readJsonFile<Record<string, unknown>>(cfgPath).catch((err: unknown) => {
+    if (err instanceof Error && err.message.includes("Failed to parse JSON")) {
+      return "invalid" as const;
+    }
+    return null;
+  });
+
+  if (existing === "invalid") {
+    const msg = "Cannot update .claude/settings.local.json because it is not valid JSON. Fix the file or move it before running lh init --host claude-code.";
+    if (!json) log.error(msg);
+    return { status: "skipped", warnings: [msg] };
+  }
+
+  const statusLine = {
+    type: "command",
+    command: `bash ${homeDir}/.claude/statusline.sh`,
+  };
+
+  if (existing === null) {
+    await writeJsonFile(cfgPath, { statusLine }, { overwrite: true });
+    if (!json) log.info("  .claude/settings.local.json (created)");
+    return { status: "created", warnings };
+  }
+
+  if (!("statusLine" in existing) || force) {
+    const updated = { ...existing, statusLine };
+    await writeJsonFile(cfgPath, updated, { overwrite: true });
+    if (!json) log.info("  .claude/settings.local.json (updated)");
+    return { status: "updated", warnings };
+  }
+
+  if (!json) log.info("  .claude/settings.local.json (exists, skipped)");
+  return { status: "skipped", warnings };
 }
 
 function mergeClaudeCodeSettings(
@@ -226,7 +263,6 @@ function mergeClaudeCodeSettings(
   lhSettings: Record<string, unknown>,
   force: boolean,
   warnings: string[],
-  homeDir?: string,
 ): Record<string, unknown> {
   const result = { ...existing };
 
@@ -328,14 +364,6 @@ function mergeClaudeCodeSettings(
     }
   }
   result["hooks"] = mergedHooks;
-
-  // --- statusLine ---
-  if (homeDir && (!("statusLine" in result) || force)) {
-    result["statusLine"] = {
-      type: "command",
-      command: `bash ${homeDir}/.claude/statusline.sh`,
-    };
-  }
 
   return result;
 }
@@ -465,18 +493,6 @@ export function createClaudeCodeSettingsObject(): Record<string, unknown> {
   };
 }
 
-function createSettingsLocalExample(): string {
-  return `{
-  "permissions": {
-    "allow": [],
-    "ask": [],
-    "deny": []
-  },
-  "env": {}
-}
-`;
-}
-
 function createClaudeCodeReadme(): string {
   return `# .claude/ — Claude Code Integration Surface
 
@@ -496,9 +512,9 @@ Project-level Claude Code permissions and environment.
 
 This file is committed to the repository. All contributors share the same guardrails.
 
-### settings.local.example.json
+### settings.local.json
 
-Template for per-developer overrides. Copy to \`settings.local.json\` to add personal permissions or environment variables. \`settings.local.json\` should be gitignored.
+Per-developer overrides. Add personal permissions, environment variables, or user-specific settings here. This file is gitignored and not shared with other contributors.
 
 ## Planned directories (not yet created)
 

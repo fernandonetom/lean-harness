@@ -247,17 +247,22 @@ describe("lh init --host claude-code — Claude Code integration", () => {
     expect(parsed.directories[".claude"]).toBe("created");
   });
 
-  it("adds statusLine to .claude/settings.json", async () => {
+  it("adds statusLine to .claude/settings.local.json", async () => {
     const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     await runInitCommand({ cwd: tmpDir, host: "claude-code" });
     spy.mockRestore();
 
     const settings = JSON.parse(
-      await fs.readFile(path.join(tmpDir, ".claude", "settings.json"), "utf-8"),
+      await fs.readFile(path.join(tmpDir, ".claude", "settings.local.json"), "utf-8"),
     );
     expect(settings.statusLine).toBeDefined();
     expect(settings.statusLine.type).toBe("command");
     expect(settings.statusLine.command).toContain("statusline.sh");
+
+    const mainSettings = JSON.parse(
+      await fs.readFile(path.join(tmpDir, ".claude", "settings.json"), "utf-8"),
+    );
+    expect(mainSettings.statusLine).toBeUndefined();
   });
 });
 
