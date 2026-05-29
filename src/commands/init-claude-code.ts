@@ -1863,7 +1863,7 @@ function createCCSkillDiscover(): string {
 name: lh-discover
 description: Perform LeanHarness on-demand discovery for an existing codebase and produce a focused change boundary. Use when the user invokes /lh-discover or needs relevant files, tests, commands, constraints, risks, and unknowns before planning.
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, TaskCreate, TaskUpdate
 ---
 
 # lh-discover
@@ -1889,6 +1889,27 @@ Examples:
 /lh-discover F001
 /lh-discover F001 --hint src/routes/auth.ts
 \`\`\`
+
+## Task Tooling
+
+**On Claude Code:** As the very first action (before any Read, Bash, or other tool call), call TaskCreate for each step below all at once, so the user sees the full roadmap immediately. Before starting each step, call TaskUpdate to mark it in_progress. After completing each step, call TaskUpdate to mark it completed. Use the activeForm field as the spinner label.
+
+**On OpenCode:** Before starting each step, emit a step header:
+
+    ---
+    **Step N/M — <Step Name>**
+
+where N is the current step number and M is the total step count.
+
+**Steps:**
+
+| # | Subject | activeForm |
+|---|---------|------------|
+| 1 | Read spec + config | Reading spec and config |
+| 2 | D0 — Repo shape | Mapping repo shape |
+| 3 | D1–D4 — Semantic discovery | Running semantic discovery |
+| 4 | Write boundary | Writing boundary |
+| 5 | Report | Reporting |
 
 ## Workflow
 
