@@ -1713,7 +1713,7 @@ function createCCSkillSpec(): string {
 name: lh-spec
 description: Create or update a LeanHarness feature specification from a user request. Use when the user invokes /lh-spec or wants to define goal, non-goals, acceptance criteria, constraints, assumptions, and verification expectations before implementation.
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep, AskUserQuestion
+allowed-tools: Read, Write, Edit, Glob, Grep, AskUserQuestion, TaskCreate, TaskUpdate
 ---
 
 # lh-spec
@@ -1740,6 +1740,30 @@ Examples:
 /lh-spec F001
 /lh-spec Refactor billing validation — constraint: do not change public API
 \`\`\`
+
+## Task Tooling
+
+**On Claude Code:** As the very first action (before any Read, Bash, or other tool call), call TaskCreate for each step below all at once, so the user sees the full roadmap immediately. Before starting each step, call TaskUpdate to mark it in_progress. After completing each step, call TaskUpdate to mark it completed. Use the activeForm field as the spinner label.
+
+**On OpenCode:** Before starting each step, emit a step header:
+
+    ---
+    **Step N/M — <Step Name>**
+
+where N is the current step number and M is the total step count.
+
+**Steps:**
+
+| # | Subject | activeForm |
+|---|---------|------------|
+| 1 | Read config + project context | Reading config and context |
+| 2 | Determine scope | Determining scope |
+| 3 | Generate feature ID + directory | Generating feature ID |
+| 4 | Ask clarifying questions | Asking clarifying questions |
+| 5 | Write spec | Writing spec |
+| 6 | Update state + report | Updating state |
+
+Step 4 is created at skill start like all others. If no clarifying questions are needed, mark it completed immediately without user interaction.
 
 ## Workflow
 
@@ -1894,8 +1918,8 @@ Examples:
 
 - Do not create a full repo map by default.
 - Do not read large unrelated files.
-- **Use graphify for D1–D4.** Do not use grep or glob for finding seed files, dependency traversal, or symbol lookup. Graphify provides semantic graph navigation that replaces grep/glob for all graph-aware discovery.
 - **D0 only:** Use \`find\` / \`ls\` for config file existence checks (package.json, pyproject.toml, go.mod, etc.).
+- **D1–D4:** If \`graphify-out/graph.json\` exists, use \`graphify query "<question>"\` via Bash for semantic discovery. If not, use Glob and Grep.
 - Prefer exact paths and commands.
 - Record why each file is relevant.
 - Mark confidence as \`low\`, \`medium\`, or \`high\`.
