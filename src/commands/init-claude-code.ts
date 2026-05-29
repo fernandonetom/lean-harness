@@ -187,6 +187,8 @@ async function installClaudeCodeSettings(
 ): Promise<SettingsInstallResult> {
   const cfgPath = claudeSettingsPath(cwd);
   const warnings: string[] = [];
+  const { homedir } = await import("node:os");
+  const homeDir = homedir();
 
   const existing = await readJsonFile<Record<string, unknown>>(cfgPath).catch((err: unknown) => {
     if (err instanceof Error && err.message.includes("Failed to parse JSON")) {
@@ -202,6 +204,10 @@ async function installClaudeCodeSettings(
   }
 
   const lhSettings = createClaudeCodeSettingsObject();
+  lhSettings["statusLine"] = {
+    type: "command",
+    command: `bash ${homeDir}/.claude/statusline.sh`,
+  };
 
   if (existing === null) {
     await writeJsonFile(cfgPath, lhSettings, { overwrite: true });
@@ -209,7 +215,7 @@ async function installClaudeCodeSettings(
     return { status: "created", warnings };
   }
 
-  const merged = mergeClaudeCodeSettings(existing, lhSettings, force, warnings);
+  const merged = mergeClaudeCodeSettings(existing, lhSettings, force, warnings, homeDir);
   await writeJsonFile(cfgPath, merged, { overwrite: true });
   if (!json) log.info("  .claude/settings.json (updated)");
   return { status: "updated", warnings };
@@ -220,6 +226,7 @@ function mergeClaudeCodeSettings(
   lhSettings: Record<string, unknown>,
   force: boolean,
   warnings: string[],
+  homeDir?: string,
 ): Record<string, unknown> {
   const result = { ...existing };
 
@@ -321,6 +328,14 @@ function mergeClaudeCodeSettings(
     }
   }
   result["hooks"] = mergedHooks;
+
+  // --- statusLine ---
+  if (homeDir && (!("statusLine" in result) || force)) {
+    result["statusLine"] = {
+      type: "command",
+      command: `bash ${homeDir}/.claude/statusline.sh`,
+    };
+  }
 
   return result;
 }
@@ -3590,4 +3605,125 @@ limitations:
   - Boundary enforcement works best when .lh/features/<feature>/boundary.json exists.
   - If no active feature or boundary exists, the hooks block only clearly risky operations.
 `;
+}
+
+// ---------------------------------------------------------------------------
+// Statusline script
+// ---------------------------------------------------------------------------
+
+export function createStatuslineScript(): string {
+  return `#!/usr/bin/env bash
+# LeanHarness Claude Code status line
+# Receives JSON from Claude Code via stdin on each prompt render.
+#
+# Normal:  sonnet-4.6 | main | $0.0234 | ████████░░░░░░░░░░░░ 40%
+# Warning: sonnet-4.6 | main | $1.23 | ☠️ ████████████████░░░░ 78%
+# Danger:  sonnet-4.6 | main | $1.23 | ☠️ [RED]████████████████████[RESET] 85%
+
+input=$(cat)
+
+model=$(printf '%s' "$input" | jq -r '.model.display_name // empty')
+dir=$(printf '%s' "$input" | jq -r '.workspace.current_dir // empty')
+used=$(printf '%s' "$input" | jq -r '.context_window.used_percentage // empty')
+cost=$(printf '%s' "$input" | jq -r '.session_cost_usd // .cost_usd // .session.cost_usd // .total_cost_usd // empty')
+
+branch=''
+[ -n "$dir" ] && branch=$(git -C "$dir" branch --show-current 2>/dev/null || true)
+
+short_model=$(printf '%s' "$model" | sed 's/^[Cc]laude[- ]//; s/-[0-9]\\{8\\}$//')
+
+RED=$(printf '\\033[31m')
+RESET=$(printf '\\033[0m')
+
+skull=''
+used_int=''
+bar_segment=''
+if [ -n "$used" ]; then
+  used_int=$(printf '%.0f' "$used")
+  filled=$(( used_int * 20 / 100 ))
+  empty=$(( 20 - filled ))
+  bar=''
+  [ "$filled" -gt 0 ] && bar=$(printf '%*s' "$filled" '' | tr ' ' '█')
+  [ "$empty"  -gt 0 ] && bar="\${bar}$(printf '%*s' "$empty" '' | tr ' ' '░')"
+  [ "$used_int" -ge 75 ] && skull='☠️ '
+  if [ "$used_int" -gt 80 ]; then
+    bar_segment="\${skull}\${RED}\${bar}\${RESET} \${used_int}%"
+  else
+    bar_segment="\${skull}\${bar} \${used_int}%"
+  fi
+fi
+
+out=''
+append() { [ -n "$1" ] && out="\${out:+$out | }$1"; }
+
+append "$short_model"
+append "$branch"
+
+if [ -n "$cost" ] && [ "$cost" != 'null' ] && [ "$cost" != '0' ] && [ "$cost" != '0.0' ]; then
+  append "$(printf '$%.4f' "$cost")"
+fi
+
+[ -n "$bar_segment" ] && append "$bar_segment"
+
+printf '%s\\n' "$out"
+`;
+}
+
+export async function installGlobalClaudeCodeStatusLine(
+  homeDir: string,
+  force: boolean,
+  log: ReturnType<typeof createLogger>,
+  json: boolean,
+): Promise<{ scriptStatus: "created" | "updated" | "skipped"; settingsStatus: "created" | "updated" | "skipped" }> {
+  const pathMod = await import("node:path");
+  const fsp = await import("node:fs/promises");
+
+  const scriptPath = pathMod.join(homeDir, ".claude", "statusline.sh");
+  await ensureDir(pathMod.join(homeDir, ".claude"));
+  const scriptContent = createStatuslineScript();
+  const scriptStatus = await writeTextFile(scriptPath, scriptContent, { overwrite: force });
+  if (scriptStatus === "created" || scriptStatus === "updated") {
+    await fsp.chmod(scriptPath, 0o755);
+  }
+  if (!json) {
+    log.info(
+      scriptStatus === "created"
+        ? "  ~/.claude/statusline.sh (created)"
+        : scriptStatus === "updated"
+          ? "  ~/.claude/statusline.sh (updated)"
+          : "  ~/.claude/statusline.sh (exists, skipped)",
+    );
+  }
+
+  const settingsPath = pathMod.join(homeDir, ".claude", "settings.json");
+  const lhStatusLine = {
+    type: "command",
+    command: `bash ${pathMod.join(homeDir, ".claude", "statusline.sh")}`,
+  };
+
+  const existing = await readJsonFile<Record<string, unknown>>(settingsPath);
+  let settingsStatus: "created" | "updated" | "skipped";
+
+  if (existing === null) {
+    await writeJsonFile(settingsPath, { statusLine: lhStatusLine }, { overwrite: true });
+    settingsStatus = "created";
+  } else if (!("statusLine" in existing) || force) {
+    const merged = { ...existing, statusLine: lhStatusLine };
+    await writeJsonFile(settingsPath, merged, { overwrite: true });
+    settingsStatus = "updated";
+  } else {
+    settingsStatus = "skipped";
+  }
+
+  if (!json) {
+    log.info(
+      settingsStatus === "created"
+        ? "  ~/.claude/settings.json statusLine (created)"
+        : settingsStatus === "updated"
+          ? "  ~/.claude/settings.json statusLine (updated)"
+          : "  ~/.claude/settings.json statusLine (exists, skipped)",
+    );
+  }
+
+  return { scriptStatus, settingsStatus };
 }

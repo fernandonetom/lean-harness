@@ -9,17 +9,24 @@ import {
 } from "../core/config.js";
 import { harnessPath, featuresDir, memoryDir, templatesDir, policiesDir, protocolsDir, configPath, statePath, harnessGitignorePath, opencodePath, opencodeConfigPath, opencodeAgentsDir, opencodePluginsDir, opencodeCommandsDir, opencodePluginPath, opencodeGuardrailPluginPath } from "../core/paths.js";
 import { createLogger, printJson } from "../core/logger.js";
-import { installClaudeCodePack } from "./init-claude-code.js";
+import { installClaudeCodePack, installGlobalClaudeCodeStatusLine } from "./init-claude-code.js";
 import { createOpenCodeCommandFiles } from "./load-opencode-commands.js";
-import { promptSelect, promptConfirm } from "../core/prompt.js";
+import { promptMultiSelect } from "../core/prompt.js";
+import { printInitBanner } from "../cli/banner.js";
+import {
+  type InitHost,
+  type InitHostSelection,
+  normalizeInitHosts,
+  hasAnyInitHost,
+} from "../cli/init-hosts.js";
 
-export type InitHost = "claude-code" | "opencode" | "all";
+export type { InitHost };
 
 export interface InitOptions {
   cwd: string;
   force?: boolean;
   json?: boolean;
-  host?: string | undefined;
+  host?: string | string[] | undefined;
   yes?: boolean;
   global?: boolean;
   team?: boolean;
@@ -30,8 +37,6 @@ interface InitResult {
   files: Record<string, "created" | "updated" | "skipped">;
   warnings: string[];
 }
-
-const VALID_HOSTS = new Set<string>(["claude-code", "opencode", "all"]);
 
 export function checkPythonVersion(): { ok: boolean; version: string } {
   try {
@@ -59,7 +64,7 @@ export function checkGraphifyInstalled(): boolean {
 }
 
 export async function runGraphifyInstall(
-  host: InitHost | undefined,
+  hosts: InitHostSelection,
   log: ReturnType<typeof createLogger>,
   json: boolean,
 ): Promise<{ warnings: string[] }> {
@@ -93,8 +98,7 @@ export async function runGraphifyInstall(
     if (!json) log.info("  graphify installed");
   }
 
-  const needsOpenCode = host === "opencode" || host === "all";
-  if (needsOpenCode) {
+  if (hosts.openCode) {
     if (!json) log.info("  configuring graphify for OpenCode...");
     try {
       execSync("graphify opencode install", { stdio: json ? "pipe" : "inherit" });
@@ -109,26 +113,32 @@ export async function runGraphifyInstall(
   return { warnings };
 }
 
+function resolveHostArg(host: string | string[] | undefined): string[] {
+  if (host === undefined) return [];
+  return Array.isArray(host) ? host : [host];
+}
+
 export async function runInitCommand(options: InitOptions): Promise<void> {
   const { cwd, force = false, json = false, host, yes = false, global: isGlobal = false, team = false } = options;
   const log = createLogger({ json });
   const overwrite = force;
 
-  if (host !== undefined && !VALID_HOSTS.has(host)) {
-    throw new CLIError(`Invalid --host value for init: ${host}. Expected claude-code, opencode, all, or omit the flag.`);
-  }
+  let hostSelection = normalizeInitHosts(resolveHostArg(host));
 
-  let parsedHost = host as InitHost | undefined;
-
-  if (!json && !yes && parsedHost === undefined && process.stdin.isTTY) {
-    parsedHost = await promptSelect<InitHost>(
-      "Which agent host do you want to set up?",
+  if (!json && !yes && !hasAnyInitHost(hostSelection) && process.stdin.isTTY) {
+    printInitBanner();
+    const selected = await promptMultiSelect<"claude-code" | "opencode">(
+      "Which agent hosts do you want to set up?",
       [
         { label: "Claude Code", value: "claude-code" },
         { label: "OpenCode", value: "opencode" },
-        { label: "Both (Claude Code + OpenCode)", value: "all" },
       ],
+      { required: true },
     );
+    hostSelection = {
+      claudeCode: selected.includes("claude-code"),
+      openCode: selected.includes("opencode"),
+    };
   }
 
   if (!json) {
@@ -207,8 +217,7 @@ export async function runInitCommand(options: InitOptions): Promise<void> {
     }
   }
 
-  const installOpenCode = parsedHost === "opencode" || parsedHost === "all";
-  if (installOpenCode) {
+  if (hostSelection.openCode) {
     if (!json) {
       log.info("");
       log.info("OpenCode integration:");
@@ -223,8 +232,7 @@ export async function runInitCommand(options: InitOptions): Promise<void> {
     result.warnings.push(...ocResult.warnings);
   }
 
-  const installClaudeCode = parsedHost === "claude-code" || parsedHost === "all";
-  if (installClaudeCode) {
+  if (hostSelection.claudeCode) {
     if (!json) {
       log.info("");
       log.info("Claude Code integration:");
@@ -244,7 +252,7 @@ export async function runInitCommand(options: InitOptions): Promise<void> {
     log.info("");
     log.info("Graphify installation:");
   }
-  const graphifyResult = await runGraphifyInstall(parsedHost, log, json);
+  const graphifyResult = await runGraphifyInstall(hostSelection, log, json);
   result.warnings.push(...graphifyResult.warnings);
 
   if (isGlobal) {
@@ -252,7 +260,7 @@ export async function runInitCommand(options: InitOptions): Promise<void> {
       log.info("");
       log.info("Global (user-level) installation:");
     }
-    const globalResult = await installGlobalPack(parsedHost, overwrite, log, json);
+    const globalResult = await installGlobalPack(hostSelection, overwrite, log, json);
     for (const [key, value] of Object.entries(globalResult.directories)) {
       result.directories[key] = value;
     }
@@ -1551,7 +1559,7 @@ limitations:
 }
 
 async function installGlobalPack(
-  host: InitHost | undefined,
+  hosts: InitHostSelection,
   force: boolean,
   log: ReturnType<typeof createLogger>,
   json: boolean,
@@ -1573,7 +1581,7 @@ async function installGlobalPack(
     log.info(cfgStatus === "created" ? "  ~/.lh/config.yml (created)" : cfgStatus === "updated" ? "  ~/.lh/config.yml (updated)" : "  ~/.lh/config.yml (exists, skipped)");
   }
 
-  const installClaude = host === "claude-code" || host === "all" || host === undefined;
+  const installClaude = hosts.claudeCode || !hasAnyInitHost(hosts);
   if (installClaude) {
     const skillsDir = path.join(home, ".claude", "skills");
     await ensureDir(skillsDir);
@@ -1587,10 +1595,14 @@ async function installGlobalPack(
     if (!json) {
       log.info(status === "created" ? "  ~/.claude/skills/leanharness.md (created)" : status === "updated" ? "  ~/.claude/skills/leanharness.md (updated)" : "  ~/.claude/skills/leanharness.md (exists, skipped)");
     }
+
+    // statusline.sh + global settings.json statusLine key
+    const slResult = await installGlobalClaudeCodeStatusLine(home, force, log, json);
+    result.files["~/.claude/statusline.sh"] = slResult.scriptStatus;
+    result.files["~/.claude/settings.json statusLine"] = slResult.settingsStatus;
   }
 
-  const installOC = host === "opencode" || host === "all";
-  if (installOC) {
+  if (hosts.openCode) {
     const agentsDir = path.join(home, ".opencode", "agents");
     await ensureDir(agentsDir);
     result.directories["~/.opencode/agents"] = "created";

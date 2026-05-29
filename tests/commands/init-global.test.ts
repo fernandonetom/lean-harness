@@ -134,6 +134,88 @@ describe("lh init --global", () => {
     expect(result.files["~/.lh/config.yml"]).toBe("created");
     expect(result.files["~/.claude/skills/leanharness.md"]).toBe("created");
   });
+
+  it("creates ~/.claude/statusline.sh for claude-code host", async () => {
+    const restore = silenceOutput();
+    try {
+      await runInitCommand({ cwd: ws.root, global: true, host: "claude-code", yes: true });
+    } finally {
+      restore();
+    }
+
+    const scriptPath = path.join(fakeHome, ".claude", "statusline.sh");
+    expect(await fileExistsSafe(scriptPath)).toBe(true);
+    const content = await fsp.readFile(scriptPath, "utf8");
+    expect(content).toContain("#!/usr/bin/env bash");
+    expect(content).toContain("context_window");
+    expect(content).toContain("☠️");
+  });
+
+  it("~/.claude/statusline.sh is executable", async () => {
+    const restore = silenceOutput();
+    try {
+      await runInitCommand({ cwd: ws.root, global: true, host: "claude-code", yes: true });
+    } finally {
+      restore();
+    }
+
+    const scriptPath = path.join(fakeHome, ".claude", "statusline.sh");
+    const stat = await fsp.stat(scriptPath);
+    // owner execute bit (0o100)
+    expect(stat.mode & 0o100).toBe(0o100);
+  });
+
+  it("adds statusLine to ~/.claude/settings.json for claude-code host", async () => {
+    const restore = silenceOutput();
+    try {
+      await runInitCommand({ cwd: ws.root, global: true, host: "claude-code", yes: true });
+    } finally {
+      restore();
+    }
+
+    const settingsPath = path.join(fakeHome, ".claude", "settings.json");
+    expect(await fileExistsSafe(settingsPath)).toBe(true);
+    const content = JSON.parse(await fsp.readFile(settingsPath, "utf8"));
+    expect(content.statusLine).toBeDefined();
+    expect(content.statusLine.type).toBe("command");
+    expect(content.statusLine.command).toContain("statusline.sh");
+  });
+
+  it("does not overwrite existing statusLine in ~/.claude/settings.json without --force", async () => {
+    const settingsPath = path.join(fakeHome, ".claude", "settings.json");
+    await fsp.mkdir(path.join(fakeHome, ".claude"), { recursive: true });
+    await fsp.writeFile(settingsPath, JSON.stringify({
+      statusLine: { type: "command", command: "echo custom" }
+    }), "utf8");
+
+    const restore = silenceOutput();
+    try {
+      await runInitCommand({ cwd: ws.root, global: true, host: "claude-code", yes: true });
+    } finally {
+      restore();
+    }
+
+    const content = JSON.parse(await fsp.readFile(settingsPath, "utf8"));
+    expect(content.statusLine.command).toBe("echo custom");
+  });
+
+  it("overwrites existing statusLine in ~/.claude/settings.json with --force", async () => {
+    const settingsPath = path.join(fakeHome, ".claude", "settings.json");
+    await fsp.mkdir(path.join(fakeHome, ".claude"), { recursive: true });
+    await fsp.writeFile(settingsPath, JSON.stringify({
+      statusLine: { type: "command", command: "echo custom" }
+    }), "utf8");
+
+    const restore = silenceOutput();
+    try {
+      await runInitCommand({ cwd: ws.root, global: true, host: "claude-code", yes: true, force: true });
+    } finally {
+      restore();
+    }
+
+    const content = JSON.parse(await fsp.readFile(settingsPath, "utf8"));
+    expect(content.statusLine.command).toContain("statusline.sh");
+  });
 });
 
 async function fileExistsSafe(p: string): Promise<boolean> {

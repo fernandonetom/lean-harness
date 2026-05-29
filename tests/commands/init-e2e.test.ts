@@ -196,6 +196,19 @@ describe("lh init --host claude-code — Claude Code integration", () => {
     expect(parsed.files).toBeTruthy();
     expect(parsed.directories[".claude"]).toBe("created");
   });
+
+  it("adds statusLine to .claude/settings.json", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir, host: "claude-code" });
+    spy.mockRestore();
+
+    const settings = JSON.parse(
+      await fs.readFile(path.join(tmpDir, ".claude", "settings.json"), "utf-8"),
+    );
+    expect(settings.statusLine).toBeDefined();
+    expect(settings.statusLine.type).toBe("command");
+    expect(settings.statusLine.command).toContain("statusline.sh");
+  });
 });
 
 describe("lh init --host opencode — OpenCode integration", () => {
@@ -267,6 +280,17 @@ describe("lh init --host all — both integrations", () => {
     expect(await exists(path.join(tmpDir, ".claude"))).toBe(true);
     expect(await exists(path.join(tmpDir, ".opencode"))).toBe(true);
     expect(await exists(path.join(tmpDir, "opencode.json"))).toBe(true);
+  });
+});
+
+describe("lh init — repeatable --host flags", () => {
+  it("creates both integrations when hosts are passed separately", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir, host: ["claude-code", "opencode"] });
+    spy.mockRestore();
+
+    expect(await exists(path.join(tmpDir, ".claude"))).toBe(true);
+    expect(await exists(path.join(tmpDir, ".opencode"))).toBe(true);
   });
 });
 
