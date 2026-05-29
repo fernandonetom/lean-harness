@@ -2415,7 +2415,7 @@ function createCCSkillCheck(): string {
 name: lh-check
 description: Verify a LeanHarness feature against acceptance criteria, changed files, risk gates, review findings, and command evidence. Use when the user invokes /lh-check or wants a final pass, needs-fix, or blocked verdict.
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, TaskCreate, TaskUpdate
 ---
 
 # lh-check
@@ -2438,6 +2438,27 @@ Examples:
 /lh-check F001
 /lh-check all
 \`\`\`
+
+## Task Tooling
+
+**On Claude Code:** As the very first action (before any Read, Bash, or other tool call), call TaskCreate for each step below all at once, so the user sees the full roadmap immediately. Before starting each step, call TaskUpdate to mark it in_progress. After completing each step, call TaskUpdate to mark it completed. Use the activeForm field as the spinner label.
+
+**On OpenCode:** Before starting each step, emit a step header:
+
+    ---
+    **Step N/M — <Step Name>**
+
+where N is the current step number and M is the total step count.
+
+**Steps:**
+
+| # | Subject | activeForm |
+|---|---------|------------|
+| 1 | Read all artifacts | Reading artifacts |
+| 2 | Run verification commands | Running verification |
+| 3 | AC-by-AC evaluation | Evaluating acceptance criteria |
+| 4 | Write checks.md + result.md | Writing check results |
+| 5 | Report verdict | Reporting verdict |
 
 ## Workflow
 
