@@ -64,10 +64,10 @@ where N is the current step number and M is the total step count.
    - **Preferred:** Invoke the Agent tool with `subagent_type: "lh-scout"`, passing the feature ID, spec path, memory file paths, and any hints provided. Use the scout's structured output to populate the discovery artifacts in steps 7–8.
    - **Fallback (if `lh-scout` is unavailable, hits its turn limit, or returns incomplete results):** Explore directly in levels, starting at the configured default depth (usually D2):
      - **D0 — Repo shape:** Check for `package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `Makefile`. Use `find` / `ls` for these config files only. Identify package manager, major folders, framework clues, and test command candidates.
-     - **D1 — Seed files:** Check if `graphify-out/graph.json` exists. If yes, run `graphify query "<feature description>"` via Bash to find relevant files. If not, use Glob and Grep.
-     - **D2 — Dependency boundary:** If graph exists, run `graphify query` for imports, callees, callers, tests, and utilities. Otherwise use Grep for import analysis.
-     - **D3 — Risk probes:** If graph exists, run `graphify query` for auth, payment, and security-sensitive paths. Otherwise use Grep. Run focused test commands.
-     - **D4 — Deep dive:** If graph exists, run `graphify query` for broader inspection. Only escalate when D0–D3 is insufficient.
+     - **D1 — Seed files:** Invoke `/graphify` with the feature description and goal as input. Use graphify's semantic search to identify files most relevant to the feature. Do not use grep or glob for seed discovery.
+     - **D2 — Dependency boundary:** Use graphify neighbor traversal from the D1 seed files to find imports, callees, callers, neighboring tests, and shared utilities. Distinguish edit vs. read-only files using graphify relationship data.
+     - **D3 — Risk probes:** Use graphify symbol lookup to find auth, payment, permission, and security-sensitive paths. Run focused test commands to detect failures. Do not use grep for symbol discovery.
+     - **D4 — Deep dive:** Use graphify relationship queries for broader architecture inspection. Only escalate when D0–D3 is insufficient.
 6. **Stop when sufficient.** Stop when the change boundary is sufficient for a safe plan. Escalate only when the current boundary is insufficient.
 7. **Write discovery.** Write `discovery.md` using `.lh/templates/discovery.md`.
 8. **Write boundary.** Write `boundary.json` using `.lh/templates/boundary.json`.
@@ -78,14 +78,13 @@ where N is the current step number and M is the total step count.
 
 - Do not create a full repo map by default.
 - Do not read large unrelated files.
+- **Use graphify for D1–D4.** Do not use grep or glob for finding seed files, dependency traversal, or symbol lookup. Graphify provides semantic graph navigation that replaces grep/glob for all graph-aware discovery.
 - **D0 only:** Use `find` / `ls` for config file existence checks (package.json, pyproject.toml, go.mod, etc.).
-- **D1–D4:** If `graphify-out/graph.json` exists, use `graphify query "<question>"` via Bash for semantic discovery. If not, use Glob and Grep.
 - Prefer exact paths and commands.
 - Record why each file is relevant.
 - Mark confidence as `low`, `medium`, or `high`.
 - If no tests are found, record that explicitly.
 - If verification commands are unknown, record that explicitly.
-- Use search (Glob, Grep, find) to identify candidate files before reading them.
 - Read only enough of each file to confirm relevance.
 
 ## Risk Gate Triggers

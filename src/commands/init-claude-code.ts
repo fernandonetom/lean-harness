@@ -1967,8 +1967,6 @@ where N is the current step number and M is the total step count.
 - Mark confidence as \`low\`, \`medium\`, or \`high\`.
 - If no tests are found, record that explicitly.
 - If verification commands are unknown, record that explicitly.
-- Use search (Glob, Grep, find) to identify candidate files before reading them.
-- Read only enough of each file to confirm relevance.
 
 ## Risk Gate Triggers
 
