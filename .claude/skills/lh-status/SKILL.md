@@ -2,7 +2,7 @@
 name: lh-status
 description: Inspect LeanHarness feature state and summarize current specs, discovery, plans, tasks, checks, blockers, and next actions. Use when the user invokes /lh-status or asks what is happening in the current LeanHarness work.
 disable-model-invocation: true
-allowed-tools: Read, Glob, Grep
+allowed-tools: Read, Glob, Grep, TaskCreate, TaskUpdate
 ---
 
 # lh-status
@@ -28,6 +28,25 @@ Examples:
 /lh-status all
 /lh-status blocked
 ```
+
+## Task Tooling
+
+**On Claude Code:** As the very first action (before any Read, Bash, or other tool call), call TaskCreate for each step below all at once, so the user sees the full roadmap immediately. Before starting each step, call TaskUpdate to mark it in_progress. After completing each step, call TaskUpdate to mark it completed. Use the activeForm field as the spinner label.
+
+**On OpenCode:** Before starting each step, emit a step header:
+
+    ---
+    **Step N/M — <Step Name>**
+
+where N is the current step number and M is the total step count.
+
+**Steps:**
+
+| # | Subject | activeForm |
+|---|---------|------------|
+| 1 | Read state.json + feature dirs | Reading state |
+| 2 | Analyze consistency + blockers | Analyzing consistency |
+| 3 | Report | Reporting |
 
 ## Workflow
 
