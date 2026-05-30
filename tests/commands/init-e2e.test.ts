@@ -211,6 +211,45 @@ describe("lh init --host claude-code — Claude Code integration", () => {
     }
   });
 
+  it("includes Task Tooling section in generated skill files", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir, host: "claude-code" });
+    spy.mockRestore();
+
+    const skillsToCheck = ["lh-spec", "lh-discover", "lh-plan", "lh-build", "lh-check", "lh-status", "lh-do"];
+    for (const skill of skillsToCheck) {
+      const skillPath = path.join(tmpDir, ".claude", "skills", skill, "SKILL.md");
+      const content = await fs.readFile(skillPath, "utf-8");
+      expect(content, `${skill}/SKILL.md should contain Task Tooling section`).toContain("## Task Tooling");
+    }
+  });
+
+  it("includes two-phase task tooling in lh-build", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir, host: "claude-code" });
+    spy.mockRestore();
+
+    const skillPath = path.join(tmpDir, ".claude", "skills", "lh-build", "SKILL.md");
+    const content = await fs.readFile(skillPath, "utf-8");
+    expect(content).toContain("Phase 1");
+    expect(content).toContain("Phase 2");
+    expect(content).toContain("Verify + build summary");
+  });
+
+  it("includes TaskCreate and TaskUpdate in allowed-tools for skills with explicit tool lists", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir, host: "claude-code" });
+    spy.mockRestore();
+
+    const skillsWithAllowedTools = ["lh-spec", "lh-discover", "lh-plan", "lh-check", "lh-status"];
+    for (const skill of skillsWithAllowedTools) {
+      const skillPath = path.join(tmpDir, ".claude", "skills", skill, "SKILL.md");
+      const content = await fs.readFile(skillPath, "utf-8");
+      expect(content, `${skill}/SKILL.md allowed-tools should include TaskCreate`).toContain("TaskCreate");
+      expect(content, `${skill}/SKILL.md allowed-tools should include TaskUpdate`).toContain("TaskUpdate");
+    }
+  });
+
   it("creates settings.json", async () => {
     const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     await runInitCommand({ cwd: tmpDir, host: "claude-code" });
