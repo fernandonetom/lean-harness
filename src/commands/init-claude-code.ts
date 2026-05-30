@@ -1588,6 +1588,27 @@ Examples:
 /lh-do Fix the checkout total rounding bug. Start near src/billing.
 \`\`\`
 
+## Task Tooling
+
+**On Claude Code:** As the very first action (before any Read, Bash, or other tool call), call TaskCreate for each step below all at once, so the user sees the full roadmap immediately. Before starting each step, call TaskUpdate to mark it in_progress. After completing each step, call TaskUpdate to mark it completed. Use the activeForm field as the spinner label.
+
+**On OpenCode:** Before starting each step, emit a step header:
+
+    ---
+    **Step N/M — <Step Name>**
+
+where N is the current step number and M is the total step count.
+
+**Steps:**
+
+| # | Subject | activeForm |
+|---|---------|------------|
+| 1 | Specify | Running lh-spec |
+| 2 | Discover | Running lh-discover |
+| 3 | Plan | Running lh-plan |
+| 4 | Build | Running lh-build |
+| 5 | Check + report verdict | Running lh-check |
+
 ## Workflow
 
 1. **Determine scope.** Check whether the user provided a feature ID or a new request.
