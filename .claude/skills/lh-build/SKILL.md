@@ -79,6 +79,12 @@ Update the total step count (M) after Phase 2 completes and the full task list i
    - `options`:
      - label: `"Subagents"`, description: `"Dispatch lh-builder for implementation, lh-reviewer for review after every task, lh-compressor for compression — each task runs in a fresh, isolated agent."`
      - label: `"Current agent"`, description: `"Implement, review, and compress directly in this session without subagent dispatch."`
+4b. **Ask subagent model** (subagents mode only). If the user chose **Subagents**, immediately ask which model to use with the `AskUserQuestion` tool:
+   - `header`: `"Model"`
+   - `question`: `"Which model should subagents use?"`
+   - `options`:
+     - label: `"Sonnet (Recommended)"`, description: `"Best reasoning and implementation quality. Handles complex logic, multi-file changes, and edge cases reliably. Higher token cost."`
+     - label: `"Haiku"`, description: `"Fast and lightweight. Good for well-scoped tasks with clear boundaries. Lower cost — may miss subtle edge cases or require extra review passes."`
 5. **Determine task scope:**
    - One specified task
    - Next `pending` task in order
@@ -87,11 +93,15 @@ Update the total step count (M) after Phase 2 completes and the full task list i
 6. **For each task (subagents mode):**
    a. Compile bounded context from artifacts. Read only relevant files.
    b. Confirm expected edit files are inside the change boundary.
-   c. **MUST implement:** Invoke the Agent tool with `subagent_type: "lh-builder"`, passing: feature ID, task ID, task goal, expected files, bounded context (relevant spec sections, boundary entries, memory entries, file content), verification commands, prior task summaries. Do NOT implement inline. If the Agent tool itself errors or reports the subagent type is not registered, report the error to the user and stop.
+   c. **MUST implement:** Invoke the Agent tool with `subagent_type: "lh-builder"`, `model: <chosen-model>` (from step 4b, either `"sonnet"` or `"haiku"`), and `description: "Build <task-id> for <feature-id>"`, passing: feature ID, task ID, task goal, expected files, bounded context (relevant spec sections, boundary entries, memory entries, file content), verification commands, prior task summaries. Do NOT implement inline. If the Agent tool itself errors or reports the subagent type is not registered, report the error to the user and stop.
    d. Run task verification commands when available.
    e. Record commands and results.
-   f. **MUST review:** Invoke the Agent tool with `subagent_type: "lh-reviewer"` after every task without exception, passing: feature ID, task ID, changed files list, task summary path, boundary path.
-   g. **MUST compress:** Invoke the Agent tool with `subagent_type: "lh-compressor"`, passing the verbose task summary. Append the returned compact CaveBus entry to `cavebus.log`.
+   f. **MUST review:** Invoke the Agent tool with `subagent_type: "lh-reviewer"`, `model: <chosen-model>`, and `description: "Review <task-id> for <feature-id>"` after every task without exception, passing: feature ID, task ID, changed files list, task summary path, boundary path.
+   f-2. **Review verdict handling:**
+       - If `lh-reviewer` returns `verdict: pass` → continue to step 6g (compress)
+       - If `lh-reviewer` returns `verdict: needs-fix` → trigger auto-fix loop (see Auto-Fix Loop below)
+       - If `lh-reviewer` returns `verdict: blocked` → stop the build, escalate
+   g. **MUST compress:** Invoke the Agent tool with `subagent_type: "lh-compressor"`, `model: <chosen-model>`, and `description: "Compress <task-id> summary"`, passing the verbose task summary. Append the returned compact CaveBus entry to `cavebus.log`.
    h. Write task summary to `task-summaries/<task-id>.md`.
    i. Update task status in `tasks.md`.
 7. **For each task (current-agent mode):**
@@ -201,7 +211,7 @@ Use actual values. Do not hardcode project-specific content.
 
 ## Review Behavior
 
-**Subagents mode:** After each task, MUST invoke the Agent tool with `subagent_type: "lh-reviewer"` (step 6f), passing feature ID, task ID, changed files, task summary path, and boundary path. Do not skip. Do not fall back to self-review unless the Agent tool itself errors.
+**Subagents mode:** After each task, MUST invoke the Agent tool with `subagent_type: "lh-reviewer"`, `model: <chosen-model>` (from step 4b), and `description: "Review <task-id> for <feature-id>"` (step 6f), passing feature ID, task ID, changed files, task summary path, and boundary path. Do not skip. Do not fall back to self-review unless the Agent tool itself errors.
 
 **Current-agent mode:** After each task, perform self-review inline (step 7f) checking:
 
@@ -215,6 +225,82 @@ Use actual values. Do not hardcode project-specific content.
 
 Record review findings in the task summary.
 
+### Auto-Fix Loop (Subagents Mode)
+
+When `lh-reviewer` returns `verdict: needs-fix` (step 6f-2), the auto-fix loop activates:
+
+1. **Increment iteration.** Set `iter = iter + 1` (v1 → v2 → v3).
+2. **Max iterations check.** If `iter > 3`:
+   - Write BLOCK to `cavebus.log`:
+     ```
+     BLOCK <FEATURE_ID> <TASK_ID> reason:max fix iterations reached
+     need: human review
+     iter: v3
+     next: review BLOCK, fix manually, then re-run /lh-build
+     ```
+   - Mark task as `needs-fix`.
+   - Stop the build for this task.
+3. **Dispatch fix agent.** Invoke:
+   ```
+   Agent(subagent_type: "lh-builder-fix", model: <chosen-model>, description: "Fix <task-id> findings v<iter>")
+   ```
+   Pass:
+   - original task goal and ID
+   - review findings (critical/major/minor structured)
+   - changed files so far
+   - boundary path
+   - iteration number
+4. **Verification.** Run verification commands. Record results.
+5. **Re-review.** Invoke `lh-reviewer` again on the fixed code (goto step 6f).
+6. **Loop.** If still `needs-fix`, go back to step 1. If `pass`, continue to step 6g.
+
+Max 3 iterations per task. Each iteration is a fresh subagent with full review findings.
+
+### Auto-Fix Loop (Current-Agent Mode)
+
+When self-review (step 7f) finds issues:
+
+1. **Increment iteration.** Set `iter = iter + 1` (v1 → v2 → v3).
+2. **Max iterations check.** If `iter > 3`:
+   - Write BLOCK to `cavebus.log`:
+     ```
+     BLOCK <FEATURE_ID> <TASK_ID> reason:max fix iterations reached
+     need: human review
+     iter: v3
+     next: review BLOCK, fix manually, then re-run /lh-build
+     ```
+   - Mark task as `needs-fix`.
+   - Stop the build for this task.
+3. **Dispatch fix agent.** Invoke:
+   ```
+   Agent(subagent_type: "lh-builder-fix", model: auto, description: "Fix <task-id> findings v<iter>")
+   ```
+   Pass: task goal, review findings, changed files, boundary, iteration number.
+4. **Verification.** Run verification commands. Record results.
+5. **Re-review.** Repeat self-review on the fixed code (goto step 7f).
+6. **Loop.** If still `needs-fix`, go back to step 1. If `pass`, continue to step 7g.
+
+### Fix Agent Context Format
+
+When dispatching `lh-builder-fix`, pass structured context:
+
+```
+feature: <FEATURE_ID>
+task: <TASK_ID>
+iteration: v<1|2|3>
+original_goal: <task description from tasks.md>
+review_findings:
+  critical:
+    - <finding> file:<path> evidence:<line/symbol>
+  major:
+    - <finding> file:<path> evidence:<line/symbol>
+  minor:
+    - <finding> file:<path> evidence:<line/symbol>
+changed_files: [<file1>, <file2>]
+boundary: .lh/features/<id>/boundary.json
+verification_commands: [<command1>, <command2>]
+```
+
 ## Output Artifacts
 
 Create or update:
@@ -222,9 +308,17 @@ Create or update:
 ```
 .lh/features/<feature-id>-<slug>/tasks.md
 .lh/features/<feature-id>-<slug>/task-summaries/<task-id>.md
-.lh/features/<feature-id>-<slug>/events.jsonl
 .lh/features/<feature-id>-<slug>/cavebus.log
 ```
+
+If fix iterations occurred, also create:
+```
+.lh/features/<feature-id>-<slug>/task-summaries/<task-id>-fix-v1.md
+.lh/features/<feature-id>-<slug>/task-summaries/<task-id>-fix-v2.md
+.lh/features/<feature-id>-<slug>/task-summaries/<task-id>-fix-v3.md
+```
+
+Note: `events.jsonl` is auto-managed by LeanHarness hooks. Do not write to it.
 
 May update these only when execution reveals plan-invalidating information:
 
@@ -241,9 +335,10 @@ Every `/lh-build` run must end with:
 - **Feature ID** — The feature identifier
 - **Tasks attempted** — Which tasks were worked on
 - **Task statuses** — Current status of each attempted task
+- **Fix iterations** — Per-task iteration count if auto-fix loop was triggered (e.g., "T-01: v1 pass, T-02: v1→v2 pass, T-03: v1→v2→v3 needs-fix")
 - **Files changed** — Source files created, modified, or deleted
 - **Tests added or updated** — Test files touched
 - **Commands run** — Verification commands and results
-- **Review findings** — Issues found during self-review
-- **Blockers or follow-ups** — Unresolved issues
-- **Recommended next command** — `/lh-check <feature-id>` when all tasks are done, or `/lh-build <feature-id> <next-task>` to continue
+- **Review findings** — Issues found during review
+- **Blockers or follow-ups** — Unresolved issues (including max fix iterations BLOCKs)
+- **Recommended next command** — `/new` then `/lh-check <feature-id>` when all tasks are done, or `/new` then `/lh-build <feature-id> <next-task>` to continue

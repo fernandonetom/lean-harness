@@ -176,6 +176,44 @@
         },
         "webfetch": "deny"
       }
+    },
+    "lh-builder-fix": {
+      "description": "LeanHarness bounded fix agent. Addresses specific review findings from lh-reviewer without re-implementing the entire task.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "allow",
+        "bash": {
+          "npm test*": "allow",
+          "npm run test*": "allow",
+          "npm run lint*": "allow",
+          "npm run typecheck*": "allow",
+          "pnpm test*": "allow",
+          "pnpm lint*": "allow",
+          "pnpm typecheck*": "allow",
+          "yarn test*": "allow",
+          "yarn lint*": "allow",
+          "bun test*": "allow",
+          "pytest*": "allow",
+          "go test*": "allow",
+          "cargo test*": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "rm -rf*": "deny",
+          "npm install*": "ask",
+          "npm update*": "ask",
+          "pnpm add*": "ask",
+          "pnpm update*": "ask",
+          "yarn add*": "ask",
+          "bun add*": "ask",
+          "git push*": "ask",
+          "git reset*": "ask",
+          "git clean*": "ask",
+          "cat .env*": "deny",
+          "printenv*": "deny"
+        },
+        "webfetch": "ask"
+      }
     }
   },
   "compaction": {

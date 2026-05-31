@@ -39,10 +39,10 @@ Before running any step, inspect the feature folder to determine the current pha
 
 | Artifacts present | Detected phase | Action |
 |-------------------|----------------|--------|
-| None | Not started | Run `lh-spec` workflow |
-| `spec.md` only | Spec done | Run `lh-discover` workflow |
+| None | Not started | Run `lh-spec` workflow (**will ask clarifying questions**) |
+| `spec.md` only | Spec done | Run `lh-discover` workflow (**will ask research questions**) |
 | `spec.md` + `discovery.md` + `boundary.json` | Discovery done | Run `lh-plan` workflow |
-| `plan.md` + `tasks.md`, no checkpoint | Plan done | Run `lh-build` wave 1 |
+| `plan.md` + `tasks.md`, no checkpoint | Plan done | Run `lh-build` wave 1 (**will ask branch/risk questions**) |
 | `plan.md` + `checkpoint.md` | Mid-build | Read checkpoint; run `lh-build` from `next_task` |
 | All tasks `done`, no `checks.md` | Build done | Run `lh-check` workflow |
 | `checks.md` with verdict `pass` | Feature done | Show status; no action needed |
@@ -53,9 +53,8 @@ Before running any step, inspect the feature folder to determine the current pha
 
 1. **Determine scope.** Check whether the user provided a feature ID or a new request.
 2. **Detect phase.** Use the phase detection table to find where this feature is.
-3. **Branch Setup.** If the detected phase is "Plan done" or "Mid-build", confirm the target branch before executing build tasks (see Branch Setup section).
-4. **Run the next phase only.** Do not skip ahead or re-run completed phases.
-5. **End with NEXT SESSION block.** Every run ends with a NEXT SESSION block pointing to the next invocation.
+3. **Run the next phase only.** Do not skip ahead or re-run completed phases.
+4. **End with NEXT SESSION block.** Every run ends with a NEXT SESSION block pointing to the next invocation.
 
 ## Operating Rules
 
@@ -72,32 +71,26 @@ Before running any step, inspect the feature folder to determine the current pha
 - If CLI commands exist later, prefer them for deterministic file operations.
 - If CLI commands do not exist yet, manually create or update artifacts using templates from `.lh/templates/`.
 
-## Branch Setup
-
-Before executing build tasks, confirm the development branch.
-
-1. Run `git branch --show-current` to get the active branch.
-2. If the branch name already contains `<feature-id>` (e.g., `feature/F001-...`), skip — the branch is already set.
-3. Otherwise, ask the user:
-
-   > **Branch setup:** You're on `<current-branch>`. Where should this feature's work go?
-   > 1. New branch (Recommended) — create `feature/<id>-<slug>` (type a different prefix like `fix/` or `chore/` if needed)
-   > 2. Stay on `<current-branch>` — continue without switching
-   > 3. Other — type your preferred branch name
-
-4. For option 1 or "Other": run `git checkout -b <branch>`. If the branch already exists, run `git checkout <branch>` instead.
-5. For option 2: proceed without changes.
-
 ## Question Format
 
-When you need to ask a clarifying question, format it as a numbered list so the user can reply with a single digit.
+When you need to ask a clarifying question, format it as a numbered list so the user can reply with a single digit. **Always include an AI-recommended option marked with "(Recommended)"** — this should be the most sensible default based on your analysis.
 
 > **[Topic]:** [Question?]
-> 1. [Short label] — [one-sentence description]
-> 2. [Short label] — [one-sentence description]
-> 3. Other — describe your preference
+> 1. [Option A] — [description] **(Recommended)**
+> 2. [Option B] — [description]
+> 3. Other — [describe your preference or ask a different question]
 
-Ask one question at a time. Wait for the reply before continuing.
+Ask one question at a time. Ask the most blocking question first. Wait for the reply before continuing.
+
+## Delegation of Questions
+
+The workflow delegates clarification and research questions to the appropriate phase:
+
+- **Spec phase** (`/lh-spec`): Handles clarifying questions about the feature request, acceptance criteria, non-goals, verification expectations, and technical approach. The spec phase asks questions aggressively — only skip when 100% certain.
+- **Discovery phase** (`/lh-discover`): Handles conditional research questions about unknown libraries, tech stack, low confidence, and risk areas. Discovery asks before deepening or researching. Web research is available for any unknown areas.
+- **Build phase** (`/lh-build`): Handles branch setup and risk gate approval questions.
+
+When orchestrating through `/lh-do`, trust that each phase will ask the appropriate questions. Do not duplicate question-asking across phases.
 
 ## Required Artifacts
 
@@ -165,6 +158,7 @@ Every `/lh-do` run must end with:
   NEXT SESSION — <Phase> complete
   Paste this to continue:
 
+  /new
   /lh-do <feature-id>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```

@@ -114,10 +114,11 @@ Create or update:
 ```
 .lh/features/<feature-id>-<slug>/checks.md
 .lh/features/<feature-id>-<slug>/result.md
-.lh/features/<feature-id>-<slug>/events.jsonl
 .lh/features/<feature-id>-<slug>/cavebus.log
 .lh/state.json
 ```
+
+Note: `events.jsonl` is auto-managed by LeanHarness hooks. Do not write to it.
 
 ## CaveBus Check Summary
 
@@ -160,6 +161,7 @@ If verdict is `needs-fix`:
   NEXT SESSION — Needs fix
   Paste this to continue:
 
+  /new
   /lh-build <feature-id> --fix-review
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```

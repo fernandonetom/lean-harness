@@ -81,25 +81,56 @@ Step 4 is created at skill start like all others. If no clarifying questions are
 
 ## Clarifying Question Policy
 
-Ask questions only when:
+**Ask clarifying questions aggressively.** Only skip asking when you are 100% certain about every aspect of the feature. When in doubt, ask.
 
-- The request is impossible to interpret safely
-- Acceptance criteria would be contradictory
+Ask questions when:
+
+- The request is ambiguous, incomplete, or impossible to interpret safely
+- No acceptance criteria are provided or they would be contradictory
+- Non-goals are unclear — what should explicitly NOT be included?
+- Verification expectations are vague — how will success be measured?
+- Technical approach is undefined — what patterns or libraries to use?
 - The user asks for a high-risk change but intent is unclear
 - A legal, security, payment, or auth decision is required
+- Users or actors are not specified
+- Edge cases or error handling expectations are missing
+- Performance, scale, or compatibility requirements are absent
 
-Otherwise proceed with explicit assumptions and record them in the spec under Assumptions or Notes.
+**Enforce asking:** If you are not 100% certain of any critical aspect, ask. Record assumptions only as a last resort when the user declines to answer.
 
 ## Question Format
 
-When you need to ask a clarifying question, use the `AskUserQuestion` tool — never plain text. This shows clickable option chips instead of requiring the user to type.
+When you need to ask a clarifying question, use the `AskUserQuestion` tool — never plain text. This shows clickable option chips instead of requiring the user to type. **Always include an AI-recommended option marked with "(Recommended)"** — this should be the most sensible default based on your analysis.
 
 Structure each question with:
 - `header`: short topic label (≤12 chars, e.g., "Reset method")
 - `question`: clear question ending with `?`
-- `options`: 2–4 choices, each with a short `label` (1–5 words) and a one-sentence `description`
+- `options`: 2–4 choices, each with a short `label` (1–5 words) and a one-sentence `description`. Mark the recommended option with "(Recommended)" in the label.
 
-Ask one question per invocation. If multiple are needed, ask the most blocking one first and record the rest as assumptions.
+Example:
+
+```json
+{
+  "header": "Reset method",
+  "question": "Which password reset method should we use?",
+  "options": [
+    { "label": "Email link (Recommended)", "description": "Send reset link via email — most common approach" },
+    { "label": "SMS code", "description": "Send code via SMS — requires phone verification" },
+    { "label": "Other", "description": "Describe your preferred method" }
+  ]
+}
+```
+
+Ask one question at a time. Ask the most blocking question first. Wait for the reply before continuing.
+
+## AI Recommendation Guidelines
+
+When proposing a recommended option:
+
+- Base it on common industry patterns, security best practices, or consistency with the codebase
+- Consider what most users would expect in this context
+- If multiple options are equally valid, recommend the safest or most reversible choice
+- Mark only ONE option as recommended
 
 ## Acceptance Criteria Style
 
@@ -127,11 +158,7 @@ Create or update:
 .lh/state.json
 ```
 
-Optionally create:
-
-```
-.lh/features/<feature-id>-<slug>/events.jsonl
-```
+Note: `events.jsonl` is auto-managed by LeanHarness hooks. Do not write to it.
 
 ## Final Response Format
 
@@ -143,4 +170,4 @@ Every `/lh-spec` run must end with:
 - **Acceptance criteria summary** — List of AC IDs and short descriptions
 - **Assumptions made** — Explicit assumptions recorded in the spec
 - **Clarifying questions** — If any remain unanswered
-- **Recommended next command** — `/lh-discover <feature-id>`
+- **Recommended next command** — `/new` then `/lh-discover <feature-id>`

@@ -59,7 +59,7 @@ where N is the current step number and M is the total step count.
    - `task-summaries/` — Per-task completion records
    - `cavebus.log` — Compressed history
    - `events.jsonl` — Event log if present
-3. **Delegate verification.** Invoke the Agent tool with `subagent_type: "lh-verifier"`, passing the feature ID and artifact paths. Use the verifier's returned verdict, AC table, command results, and CaveBus entry as the basis for steps 12–13. If `lh-verifier` is unavailable, perform steps 4–11 directly.
+3. **Delegate verification.** Invoke the Agent tool with `subagent_type: "lh-verifier"` and `description: "Verify feature <feature-id>"`, passing the feature ID and artifact paths. Use the verifier's returned verdict, AC table, command results, and CaveBus entry as the basis for steps 12–13. If `lh-verifier` is unavailable, perform steps 4–11 directly.
 4. **Determine changed files.** (fallback) Use available evidence:
    - Task summaries (files listed as changed)
    - `git diff` if available
@@ -73,7 +73,7 @@ where N is the current step number and M is the total step count.
 11. **Check review findings.** Confirm no blocking review findings remain.
 12. **Write checks.** Write `checks.md` using `.lh/templates/checks.md`.
 13. **Write result.** Write or update `result.md` using `.lh/templates/result.md`.
-14. **Append CaveBus.** Invoke the Agent tool with `subagent_type: "lh-compressor"`, passing the verification output. Append the returned compact CaveBus entry to `cavebus.log`. If `lh-compressor` is unavailable, write the CaveBus summary directly.
+14. **Append CaveBus.** Invoke the Agent tool with `subagent_type: "lh-compressor"` and `description: "Compress verification summary for <feature-id>"`, passing the verification output. Append the returned compact CaveBus entry to `cavebus.log`. If `lh-compressor` is unavailable, write the CaveBus summary directly.
 15. **Set verdict.** Assign final verdict: `pass`, `needs-fix`, or `blocked`.
 
 ## Verdict Rules
@@ -139,10 +139,11 @@ Create or update:
 ```
 .lh/features/<feature-id>-<slug>/checks.md
 .lh/features/<feature-id>-<slug>/result.md
-.lh/features/<feature-id>-<slug>/events.jsonl
 .lh/features/<feature-id>-<slug>/cavebus.log
 .lh/state.json
 ```
+
+Note: `events.jsonl` is auto-managed by LeanHarness hooks. Do not write to it.
 
 ## CaveBus Check Summary
 
