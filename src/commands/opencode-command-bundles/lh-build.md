@@ -172,6 +172,52 @@ Check:
 
 Record review findings in the task summary.
 
+### Auto-Fix Loop
+
+If self-review found issues (`needs-fix` verdict):
+
+1. **Iteration.** Increment fix iteration (v1 → v2 → v3).
+2. **Max iterations.** If iteration > 3, stop. Write BLOCK entry to `cavebus.log`:
+   ```
+   BLOCK <FEATURE_ID> <TASK_ID> reason:max fix iterations reached
+   need: human review
+   iter: v3
+   next: review BLOCK, fix manually, then re-run /lh-build
+   ```
+   Mark task as `needs-fix` and stop the build.
+3. **Fix agent.** Dispatch `lh-builder-fix` subagent with:
+   - original task goal
+   - review findings (critical/major/minor structured list)
+   - changed files so far
+   - boundary path
+   - fix iteration number
+4. **Verification.** Run verification commands after fix. Record results.
+5. **Re-review.** Repeat self-review on the fixed code. Use the same checklist above.
+6. **Loop.** If still `needs-fix`, go back to step 1. If `pass`, continue to next task.
+
+The fix loop runs up to 3 times per task. Each iteration gets a fresh subagent with the review findings. Do not attempt to fix inline in the same session — always dispatch the fix agent.
+
+### Fix Agent Context
+
+When dispatching `lh-builder-fix`, pass structured context:
+
+```
+feature: <FEATURE_ID>
+task: <TASK_ID>
+iteration: v<1|2|3>
+original_goal: <task description from tasks.md>
+review_findings:
+  critical:
+    - <finding> file:<path> evidence:<line/symbol>
+  major:
+    - <finding> file:<path> evidence:<line/symbol>
+  minor:
+    - <finding> file:<path> evidence:<line/symbol>
+changed_files: [<file1>, <file2>]
+boundary: .lh/features/<id>/boundary.json
+verification_commands: [<command1>, <command2>]
+```
+
 ## Output Artifacts
 
 Create or update:
@@ -179,9 +225,17 @@ Create or update:
 ```
 .lh/features/<feature-id>-<slug>/tasks.md
 .lh/features/<feature-id>-<slug>/task-summaries/<task-id>.md
-.lh/features/<feature-id>-<slug>/events.jsonl
 .lh/features/<feature-id>-<slug>/cavebus.log
 ```
+
+If fix iterations occurred, also create:
+```
+.lh/features/<feature-id>-<slug>/task-summaries/<task-id>-fix-v1.md
+.lh/features/<feature-id>-<slug>/task-summaries/<task-id>-fix-v2.md
+.lh/features/<feature-id>-<slug>/task-summaries/<task-id>-fix-v3.md
+```
+
+Note: `events.jsonl` is auto-managed by LeanHarness hooks. Do not write to it.
 
 May update these only when execution reveals plan-invalidating information:
 
@@ -199,6 +253,7 @@ Every `/lh-build` run must end with:
 - **Wave** — Which wave ran (e.g., "Wave 1 of 2")
 - **Tasks attempted** — Which tasks were worked on
 - **Task statuses** — Current status of each attempted task
+- **Fix iterations** — Per-task iteration count if fix loop was triggered (e.g., "T-01: v1 pass, T-02: v1→v2 pass, T-03: v1→v2→v3 needs-fix")
 - **Files changed** — Source files created, modified, or deleted
 - **Tests added or updated** — Test files touched
 - **Commands run** — Verification commands and results
@@ -212,6 +267,7 @@ If more waves remain:
   NEXT SESSION — Wave N/M complete
   Paste this to continue:
 
+  /new
   /lh-build <feature-id> --wave <N+1>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
@@ -222,16 +278,29 @@ If all waves complete:
   NEXT SESSION — Build complete
   Paste this to continue:
 
+  /new
   /lh-check <feature-id>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-If blocked or needs-fix:
+If blocked or needs-fix (including max fix iterations reached):
 ```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   NEXT SESSION — Build paused (<reason>)
   Paste this to continue after fixing:
 
+  /new
   /lh-build <feature-id> --wave <N>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+If blocked due to max fix iterations:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  NEXT SESSION — Max fix iterations reached for <TASK_ID>
+  Human review required. Fix manually, then re-run:
+
+  /new
+  /lh-build <feature-id> <TASK_ID>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```

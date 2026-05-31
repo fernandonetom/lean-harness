@@ -55,25 +55,42 @@ Examples:
 
 ## Clarifying Question Policy
 
-Ask questions only when:
+**Ask clarifying questions aggressively.** Only skip asking when you are 100% certain about every aspect of the feature. When in doubt, ask.
 
-- The request is impossible to interpret safely
-- Acceptance criteria would be contradictory
+Ask questions when:
+
+- The request is ambiguous, incomplete, or impossible to interpret safely
+- No acceptance criteria are provided or they would be contradictory
+- Non-goals are unclear — what should explicitly NOT be included?
+- Verification expectations are vague — how will success be measured?
+- Technical approach is undefined — what patterns or libraries to use?
 - The user asks for a high-risk change but intent is unclear
 - A legal, security, payment, or auth decision is required
+- Users or actors are not specified
+- Edge cases or error handling expectations are missing
+- Performance, scale, or compatibility requirements are absent
 
-Otherwise proceed with explicit assumptions and record them in the spec under Assumptions or Notes.
+**Enforce asking:** If you are not 100% certain of any critical aspect, ask. Record assumptions only as a last resort when the user declines to answer.
 
 ## Question Format
 
-When you need to ask a clarifying question, format it as a numbered list so the user can reply with a single digit.
+When you need to ask a clarifying question, format it as a numbered list so the user can reply with a single digit. **Always include an AI-recommended option marked with "(Recommended)"** — this should be the most sensible default based on your analysis.
 
 > **[Topic]:** [Question?]
-> 1. [Short label] — [one-sentence description]
-> 2. [Short label] — [one-sentence description]
-> 3. Other — describe your preference
+> 1. [Option A] — [description] **(Recommended)**
+> 2. [Option B] — [description]
+> 3. Other — [describe your preference or ask a different question]
 
-Ask one question at a time. Wait for the reply before continuing.
+Ask one question at a time. Ask the most blocking question first. Wait for the reply before continuing.
+
+## AI Recommendation Guidelines
+
+When proposing a recommended option:
+
+- Base it on common industry patterns, security best practices, or consistency with the codebase
+- Consider what most users would expect in this context
+- If multiple options are equally valid, recommend the safest or most reversible choice
+- Mark only ONE option as recommended
 
 ## Acceptance Criteria Style
 
@@ -101,11 +118,7 @@ Create or update:
 .lh/state.json
 ```
 
-Optionally create:
-
-```
-.lh/features/<feature-id>-<slug>/events.jsonl
-```
+Note: `events.jsonl` is auto-managed by LeanHarness hooks. Do not write to it.
 
 ## Final Response Format
 
@@ -124,6 +137,7 @@ Every `/lh-spec` run must end with:
   NEXT SESSION — Spec complete
   Paste this to continue:
 
+  /new
   /lh-discover <feature-id>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```

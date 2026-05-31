@@ -16,9 +16,9 @@ Project-level Claude Code permissions and environment.
 
 This file is committed to the repository. All contributors share the same guardrails.
 
-### settings.local.example.json
+### settings.local.json
 
-Template for per-developer overrides. Copy to `settings.local.json` to add personal permissions or environment variables. `settings.local.json` should be gitignored.
+Per-developer overrides. Add personal permissions, environment variables, or user-specific settings here. This file is gitignored and not shared with other contributors.
 
 ## Planned directories (not yet created)
 

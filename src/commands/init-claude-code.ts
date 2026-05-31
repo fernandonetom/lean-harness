@@ -627,6 +627,7 @@ function createClaudeCodeAgentFiles(): FileEntry[] {
   return [
     { filename: "lh-scout.md", content: createCCAgentScout() },
     { filename: "lh-builder.md", content: createCCAgentBuilder() },
+    { filename: "lh-builder-fix.md", content: createCCAgentBuilderFix() },
     { filename: "lh-reviewer.md", content: createCCAgentReviewer() },
     { filename: "lh-verifier.md", content: createCCAgentVerifier() },
     { filename: "lh-compressor.md", content: createCCAgentCompressor() },
@@ -668,7 +669,7 @@ function createCCAgentScout(): string {
   return `---
 name: lh-scout
 description: Use for LeanHarness targeted brownfield discovery. Finds relevant files, tests, commands, constraints, risks, unknowns, and change-boundary candidates without editing code or creating a full repo map.
-tools: Read, Glob, Grep, Bash
+tools: Read, Glob, Grep, Bash, Skill
 model: sonnet
 permissionMode: plan
 maxTurns: 20
@@ -745,7 +746,11 @@ D4 deep dive:
 - Do not edit files.
 - Do not create a full repo map by default.
 - Do not read large unrelated files.
-- **Use graphify for D1–D4.** Invoke \`/graphify\` for seed file discovery (D1), neighbor traversal (D2), symbol lookup (D3), and relationship queries (D4). Do not use grep or glob for graph-aware discovery.
+- **Graphify is mandatory for D1–D4.** Before using Grep or Glob for any D1–D4 discovery step, you MUST invoke the \`Skill\` tool with \`skill: "graphify"\`. Only fall back to Grep/Glob if the Skill call returns an error indicating graphify is not installed.
+  - D1 seed discovery: \`Skill(skill: "graphify", args: "query: <feature description>")\`
+  - D2 neighbor traversal: \`Skill(skill: "graphify", args: "query: <seed concept> callers imports dependencies")\`
+  - D3 symbol lookup: \`Skill(skill: "graphify", args: "path <conceptA> <conceptB>")\` or \`Skill(skill: "graphify", args: "explain <symbol>")\`
+  - D4 deep dive: \`Skill(skill: "graphify", args: "query: <broader relationship question>")\`
 - **D0 only:** Use \`find\` / \`ls\` for config file existence checks (package.json, pyproject.toml, go.mod, etc.).
 - Prefer exact paths and targeted reads.
 - Record why each file is relevant.
@@ -776,32 +781,19 @@ Detect and report these risk gates from \`.lh/config.yml\`:
 
 ## Output format
 
-Return a compact but useful discovery result:
-
-- Feature ID:
-- Discovery depth:
-- Confidence:
-- Likely touch files:
-- Read-only reference files:
-- Relevant tests:
-- Commands:
-- Do-not-touch areas:
-- Risk gates:
-- Unknowns:
-- Recommended boundary updates:
-- Recommended next action:
-
-Also include a CaveBus summary following \`.lh/templates/cavebus-message.md\` format:
+Return ONLY the structured CaveBus block below — no prose, no explanations, no file content. Keep each field to one line. This compact format is what the caller uses to write \`discovery.md\` and \`boundary.json\`.
 
 DISC <FEATURE_ID> conf:<low|med|high> depth:<D0-D4>
-touch:
-read:
-tests:
-cmd:
-risk:
-unknown:
-avoid:
-next:
+touch: <comma-separated file paths>
+read: <comma-separated file paths>
+tests: <comma-separated test files or commands>
+cmd: <comma-separated build/test/lint commands>
+risk: <triggered risk gate IDs, or none>
+unknown: <short phrases, or none>
+avoid: <paths or areas to not touch>
+next: <recommended next action>
+
+Then append one short paragraph (3–5 sentences max) summarising confidence and key findings. Nothing else.
 
 ## General rules
 
@@ -977,6 +969,131 @@ Return:
 - Do not broaden the architecture.
 - Do not update dependencies without approval.
 - Do not claim done based only on confidence.
+`;
+}
+
+function createCCAgentBuilderFix(): string {
+  return `---
+name: lh-builder-fix
+description: Use for LeanHarness bounded fix tasks after lh-reviewer returns verdict:needs-fix. Addresses specific review findings without re-implementing the entire task. Use only after review findings are available.
+tools: Read, Write, Edit, Glob, Grep, Bash
+model: sonnet
+permissionMode: default
+maxTurns: 30
+---
+
+# lh-builder-fix
+
+## Mission
+
+You are the LeanHarness fix agent. Your job is to address specific review findings from \`lh-reviewer\` — nothing more. Do not re-implement the whole task. Fix only what the reviewer flagged.
+
+## Source of Truth
+
+\`.lh/\` is the source of truth. Do not rely on hidden chat memory. Read feature artifacts before making decisions.
+
+## Required Inputs
+
+You may receive:
+
+- feature ID
+- task ID
+- fix iteration (v1, v2, v3)
+- review findings from lh-reviewer (critical/major/minor structured list)
+- original task goal
+- changed files so far
+- boundary path
+- verification commands
+
+## Read first
+
+When available, read:
+
+- \`.lh/config.yml\`
+- \`.lh/features/<feature-id>-<slug>/spec.md\`
+- \`.lh/features/<feature-id>-<slug>/boundary.json\`
+- \`.lh/features/<feature-id>-<slug>/tasks.md\`
+- \`task-summaries/<task-id>.md\` (prior attempts)
+- relevant source files that need fixing
+- \`.lh/memory/patterns.md\`
+
+## Fix Rules
+
+- Address only the findings listed in the review. Do not add unrelated changes.
+- Stay inside \`boundary.json\`. If a fix requires files outside the boundary, stop and report.
+- Fix critical findings first, then major, then minor.
+- Preserve all working code from prior attempts. Do not undo previous work unless the finding explicitly requires it.
+- Preserve protected tokens exactly (file paths, function names, commands, error messages, test names, routes, env vars, class names, symbols, config keys, URLs, migration names, table names, feature IDs, task IDs, acceptance criteria IDs).
+- If a finding is ambiguous, fix the most conservative interpretation.
+- If a finding seems incorrect, note it but still address it — reviewers are authoritative on the fix scope.
+- Do not perform broad refactors unless the review finding explicitly requires one.
+
+## Verification
+
+After applying fixes, run verification commands. Record every command and result. Do not mark done without evidence.
+
+## Task summary
+
+At the end of the fix, produce a summary for:
+
+\`.lh/features/<feature-id>-<slug>/task-summaries/<task-id>-fix-v<iter>.md\`
+
+Include:
+
+- iteration number
+- findings addressed (each finding and what was done about it)
+- files changed
+- commands run
+- verification results
+- remaining issues
+- follow-ups
+
+## CaveBus summary
+
+Also produce this compact summary following \`.lh/templates/cavebus-message.md\` format:
+
+\`\`\`
+SUM <FEATURE_ID> <TASK_ID> status:<done|needs-fix|blocked> iter:<v1|v2|v3>
+fix:
+  crit:
+  major:
+  minor:
+test:
+pass:
+fail:
+next:
+\`\`\`
+
+## Output format
+
+Return:
+
+- Feature ID:
+- Task ID:
+- Fix iteration: v{n}
+- Findings addressed:
+- Files changed:
+- Commands run:
+- Verification evidence:
+- Remaining issues:
+- Follow-ups:
+- CaveBus summary:
+
+## General rules
+
+- Treat \`.lh/\` as the source of truth.
+- Keep canonical artifacts human-readable.
+- Preserve protected tokens exactly.
+- Prefer bounded context over accumulated context.
+- Do not claim done without verification evidence.
+
+## Non-goals
+
+- Do not re-implement the entire task.
+- Do not add unrelated features.
+- Do not perform opportunistic cleanup.
+- Do not update dependencies.
+- Do not mark the task done based only on confidence.
 `;
 }
 
@@ -1629,16 +1746,17 @@ where N is the current step number and M is the total step count.
 - Do not skip check.
 - Respect risk gates from \`.lh/config.yml\`.
 - Use bounded context for implementation tasks.
-- **Use the Agent tool** to delegate each workflow step to the appropriate subagent:
-  - Discover step → \`subagent_type: "lh-scout"\`
-  - Build step (per task) → \`subagent_type: "lh-builder"\`
-  - Review step (after each task) → \`subagent_type: "lh-reviewer"\`
-  - Check step → \`subagent_type: "lh-verifier"\`
-  - Compress step (after each summary) → \`subagent_type: "lh-compressor"\`
-- If a named subagent is unavailable, perform that step directly.
-- If hooks exist, respect their outcomes.
-- If CLI commands exist later, prefer them for deterministic file operations.
-- If CLI commands do not exist yet, manually create or update artifacts using templates from \`.lh/templates/\`.
+- **Use the Agent tool** to delegate each workflow step to the appropriate subagent (always include the required \`description\` field):
+    - Discover step → runs \`/lh-discover\` which uses graphify directly (no scout subagent)
+    - Build step (per task) → \`subagent_type: "lh-builder"\`, \`description: "Build <task-id> for <feature-id>"\`
+    - Review step (after each task) → \`subagent_type: "lh-reviewer"\`, \`description: "Review <task-id> for <feature-id>"\`
+    - Check step → \`subagent_type: "lh-verifier"\`, \`description: "Verify feature <feature-id>"\`
+    - Compress step (after each summary) → \`subagent_type: "lh-compressor"\`, \`description: "Compress <task-id> summary"\`
+    - If a named subagent is unavailable, perform that step directly.
+    - If hooks exist, respect their outcomes.
+    - If CLI commands exist later, prefer them for deterministic file operations.
+    - If CLI commands do not exist yet, manually create or update artifacts using templates from \`.lh/templates/\`.
+    - For the discover step: invoke \`/lh-discover\` directly — it uses graphify for all D1–D4 discovery.
 
 ## Branch Setup
 
@@ -1658,14 +1776,37 @@ Before delegating build tasks, confirm the development branch.
 
 ## Question Format
 
-When you need to ask a clarifying question, use the \`AskUserQuestion\` tool — never plain text. This shows clickable option chips instead of requiring the user to type.
+When you need to ask a clarifying question, use the \`AskUserQuestion\` tool — never plain text. This shows clickable option chips instead of requiring the user to type. **Always include an AI-recommended option marked with "(Recommended)"** — this should be the most sensible default based on your analysis.
 
 Structure each question with:
 - \`header\`: short topic label (≤12 chars, e.g., "Reset method")
 - \`question\`: clear question ending with \`?\`
-- \`options\`: 2–4 choices, each with a short \`label\` (1–5 words) and a one-sentence \`description\`
+- \`options\`: 2–4 choices, each with a short \`label\` (1–5 words) and a one-sentence \`description\`. Mark the recommended option with "(Recommended)" in the label.
 
-Ask one question per invocation. If multiple are needed, ask the most blocking one first and record the rest as assumptions.
+Example:
+
+\`\`\`json
+{
+  "header": "Branch setup",
+  "question": "You're on 'main'. Where should this feature's work go?",
+  "options": [
+    { "label": "New branch (Recommended)", "description": "Create 'feature/<id>-<slug>'. Select Other to use a different prefix like fix/ or chore/." },
+    { "label": "Stay on current branch", "description": "Continue on '<current-branch>' without switching." }
+  ]
+}
+\`\`\`
+
+Ask one question at a time. Ask the most blocking question first. Wait for the reply before continuing.
+
+## Delegation of Questions
+
+The workflow delegates clarification and research questions to the appropriate phase:
+
+- **Spec phase** (\`/lh-spec\`): Handles clarifying questions about the feature request, acceptance criteria, non-goals, verification expectations, and technical approach. The spec phase asks questions aggressively — only skip when 100% certain.
+- **Discovery phase** (\`/lh-discover\`): Handles conditional research questions about unknown libraries, tech stack, low confidence, and risk areas. Discovery asks before deepening or researching. Web research is available for any unknown areas.
+- **Build phase** (\`/lh-build\`): Handles branch setup and risk gate approval questions.
+
+When orchestrating through \`/lh-do\`, trust that each phase will ask the appropriate questions. Do not duplicate question-asking across phases.
 
 ## Required Artifacts
 
@@ -1813,25 +1954,56 @@ Step 4 is created at skill start like all others. If no clarifying questions are
 
 ## Clarifying Question Policy
 
-Ask questions only when:
+**Ask clarifying questions aggressively.** Only skip asking when you are 100% certain about every aspect of the feature. When in doubt, ask.
 
-- The request is impossible to interpret safely
-- Acceptance criteria would be contradictory
+Ask questions when:
+
+- The request is ambiguous, incomplete, or impossible to interpret safely
+- No acceptance criteria are provided or they would be contradictory
+- Non-goals are unclear — what should explicitly NOT be included?
+- Verification expectations are vague — how will success be measured?
+- Technical approach is undefined — what patterns or libraries to use?
 - The user asks for a high-risk change but intent is unclear
 - A legal, security, payment, or auth decision is required
+- Users or actors are not specified
+- Edge cases or error handling expectations are missing
+- Performance, scale, or compatibility requirements are absent
 
-Otherwise proceed with explicit assumptions and record them in the spec under Assumptions or Notes.
+**Enforce asking:** If you are not 100% certain of any critical aspect, ask. Record assumptions only as a last resort when the user declines to answer.
 
 ## Question Format
 
-When you need to ask a clarifying question, use the \`AskUserQuestion\` tool — never plain text. This shows clickable option chips instead of requiring the user to type.
+When you need to ask a clarifying question, use the \`AskUserQuestion\` tool — never plain text. This shows clickable option chips instead of requiring the user to type. **Always include an AI-recommended option marked with "(Recommended)"** — this should be the most sensible default based on your analysis.
 
 Structure each question with:
 - \`header\`: short topic label (≤12 chars, e.g., "Reset method")
 - \`question\`: clear question ending with \`?\`
-- \`options\`: 2–4 choices, each with a short \`label\` (1–5 words) and a one-sentence \`description\`
+- \`options\`: 2–4 choices, each with a short \`label\` (1–5 words) and a one-sentence \`description\`. Mark the recommended option with "(Recommended)" in the label.
 
-Ask one question per invocation. If multiple are needed, ask the most blocking one first and record the rest as assumptions.
+Example:
+
+\`\`\`json
+{
+  "header": "Reset method",
+  "question": "Which password reset method should we use?",
+  "options": [
+    { "label": "Email link (Recommended)", "description": "Send reset link via email — most common approach" },
+    { "label": "SMS code", "description": "Send code via SMS — requires phone verification" },
+    { "label": "Other", "description": "Describe your preferred method" }
+  ]
+}
+\`\`\`
+
+Ask one question at a time. Ask the most blocking question first. Wait for the reply before continuing.
+
+## AI Recommendation Guidelines
+
+When proposing a recommended option:
+
+- Base it on common industry patterns, security best practices, or consistency with the codebase
+- Consider what most users would expect in this context
+- If multiple options are equally valid, recommend the safest or most reversible choice
+- Mark only ONE option as recommended
 
 ## Acceptance Criteria Style
 
@@ -1859,11 +2031,7 @@ Create or update:
 .lh/state.json
 \`\`\`
 
-Optionally create:
-
-\`\`\`
-.lh/features/<feature-id>-<slug>/events.jsonl
-\`\`\`
+Note: \`events.jsonl\` is auto-managed by LeanHarness hooks. Do not write to it.
 
 ## Final Response Format
 
@@ -1875,7 +2043,7 @@ Every \`/lh-spec\` run must end with:
 - **Acceptance criteria summary** — List of AC IDs and short descriptions
 - **Assumptions made** — Explicit assumptions recorded in the spec
 - **Clarifying questions** — If any remain unanswered
-- **Recommended next command** — \`/lh-discover <feature-id>\`
+- **Recommended next command** — \`/new\` then \`/lh-discover <feature-id>\`
 `;
 }
 
@@ -1884,32 +2052,33 @@ function createCCSkillDiscover(): string {
 name: lh-discover
 description: Perform LeanHarness on-demand discovery for an existing codebase and produce a focused change boundary. Use when the user invokes /lh-discover or needs relevant files, tests, commands, constraints, risks, and unknowns before planning.
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, TaskCreate, TaskUpdate
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, Skill, TaskCreate, TaskUpdate, AskUserQuestion
 ---
 
 # lh-discover
 
 ## Purpose
 
-Produce a focused discovery report and change boundary for a feature. Discovery identifies only the files, tests, commands, constraints, risks, and unknowns relevant to the active feature. It avoids full-repo mapping.
+Produce a focused discovery report and change boundary for a feature using graphify. Discovery identifies only the files, tests, commands, constraints, risks, and unknowns relevant to the active feature. It avoids full-repo mapping.
+
+All D1–D4 discovery is performed via the graphify skill — never via grep, glob, or a scout subagent.
 
 ## Inputs
 
 Accept any of:
 
-- Feature ID (e.g., \`F001\`)
+- Feature ID (e.g., \\\`F001\\\`)
 - Feature folder path
-- Raw feature request (only if no spec exists yet)
 - File hints (e.g., "Start near src/billing")
 - Area hints (e.g., "Focus on auth middleware")
 - Risk hints (e.g., "Touches payment processing")
 
 Examples:
 
-\`\`\`
+\\\`\\\`\\\`
 /lh-discover F001
 /lh-discover F001 --hint src/routes/auth.ts
-\`\`\`
+\\\`\\\`\\\`
 
 ## Task Tooling
 
@@ -1926,106 +2095,131 @@ where N is the current step number and M is the total step count.
 
 | # | Subject | activeForm |
 |---|---------|------------|
-| 1 | Read spec + config | Reading spec and config |
-| 2 | D0 — Repo shape | Mapping repo shape |
-| 3 | D1–D4 — Semantic discovery | Running semantic discovery |
-| 4 | Write boundary | Writing boundary |
-| 5 | Report | Reporting |
+| 1 | Read spec + config + memory | Reading artifacts |
+| 2 | Graphify — build or verify | Checking graph |
+| 3 | D1 — Seed files via graphify | Querying graph for seed files |
+| 4 | Coverage check + user prompt | Evaluating graph coverage |
+| 5 | Conditional research — web + deeper discovery | Researching unknowns |
+| 6 | D2–D3 — Dependency + risk probes | Traversal and risk probes |
+| 7 | Risk gate review + user prompt | Reviewing risk areas |
+| 8 | Aggregate → write artifacts | Writing discovery and boundary |
+| 9 | Report | Reporting |
 
 ## Workflow
 
-1. **Locate feature.** Find the feature folder under \`.lh/features/\`.
-2. **Read spec.** Read \`spec.md\` for goal, acceptance criteria, and constraints.
-3. **Read config.** Read \`.lh/config.yml\` for discovery settings and risk gates.
+1. **Locate feature.** Find the feature folder under \\\`.lh/features/\\\`.
+2. **Read spec.** Read \\\`spec.md\\\` for goal, acceptance criteria, constraints, and hints.
+3. **Read config.** Read \\\`.lh/config.yml\\\` for discovery settings and risk gates.
 4. **Read memory.** Check relevant memory files:
-   - \`.lh/memory/project.md\`
-   - \`.lh/memory/decisions.md\`
-   - \`.lh/memory/patterns.md\`
-   - \`.lh/memory/cave.md\`
-5. **Perform discovery.**
-   - **Preferred:** Invoke the Agent tool with \`subagent_type: "lh-scout"\`, passing the feature ID, spec path, memory file paths, and any hints provided. Use the scout's structured output to populate the discovery artifacts in steps 7–8.
-   - **Fallback (if \`lh-scout\` is unavailable):** Explore directly in levels, starting at the configured default depth (usually D2):
-     - **D0 — Repo shape:** Check for \`package.json\`, \`pyproject.toml\`, \`go.mod\`, \`Cargo.toml\`, \`Makefile\`. Use \`find\` / \`ls\` for these config files only. Identify package manager, major folders, framework clues, and test command candidates.
-     - **D1 — Seed files:** Invoke \`/graphify\` with the feature description and goal as input. Use graphify's semantic search to identify files most relevant to the feature. Do not use grep or glob for seed discovery.
-     - **D2 — Dependency boundary:** Use graphify neighbor traversal from the D1 seed files to find imports, callees, callers, neighboring tests, and shared utilities. Distinguish edit vs. read-only files using graphify relationship data.
-     - **D3 — Risk probes:** Use graphify symbol lookup to find auth, payment, permission, and security-sensitive paths. Run focused test commands to detect failures. Do not use grep for symbol discovery.
-     - **D4 — Deep dive:** Use graphify relationship queries for broader architecture inspection. Only escalate when D0–D3 is insufficient.
-6. **Stop when sufficient.** Stop when the change boundary is sufficient for a safe plan. Escalate only when the current boundary is insufficient.
-7. **Write discovery.** Write \`discovery.md\` using \`.lh/templates/discovery.md\`.
-8. **Write boundary.** Write \`boundary.json\` using \`.lh/templates/boundary.json\`.
-9. **Update status.** Set feature status to \`discovered\` when sufficient.
-10. **Report.** Present confidence and next action.
+   - \\\`.lh/memory/project.md\\\`
+   - \\\`.lh/memory/decisions.md\\\`
+   - \\\`.lh/memory/patterns.md\\\`
+   - \\\`.lh/memory/cave.md\\\`
 
-## On-Demand Discovery Rules
+### Step 2 — Graphify Setup
 
-- Do not create a full repo map by default.
-- Do not read large unrelated files.
-- **Use graphify for D1–D4.** Do not use grep or glob for finding seed files, dependency traversal, or symbol lookup. Graphify provides semantic graph navigation that replaces grep/glob for all graph-aware discovery.
-- **D0 only:** Use \`find\` / \`ls\` for config file existence checks (package.json, pyproject.toml, go.mod, etc.).
-- Prefer exact paths and commands.
-- Record why each file is relevant.
-- Mark confidence as \`low\`, \`medium\`, or \`high\`.
-- If no tests are found, record that explicitly.
-- If verification commands are unknown, record that explicitly.
+Check if graphify graph exists:
 
-## Risk Gate Triggers
+\`\`\`bash
+test -f graphify-out/graph.json && echo "exists" || echo "missing"
+\`\`\`
 
-Trigger risk gates (from \`.lh/config.yml\`) for:
+- **If missing:** Run \\\`Skill(skill: "graphify", args: "path .")\\\` to build the graph. This may take a while on large codebases — inform the user.
+- **If present:** Continue to Step 3.
 
-- Auth rewrites (\`auth_rewrite\`)
-- Payment logic (\`payment_logic\`)
-- Destructive migrations (\`destructive_migration\`)
-- New dependencies (\`new_dependency\`)
-- Public API breaks (\`public_api_break\`)
-- Broad refactors (\`broad_refactor\`)
-- Security-sensitive changes (\`security_sensitive_change\`)
+### Step 3 — D1 Seed Discovery via Graphify
 
-When a risk gate is triggered, record it in \`discovery.md\` under Risks Discovered and in \`boundary.json\` under \`risk_gates_triggered\`. The build step will pause for approval.
-
-## Output Artifacts
-
-Create or update:
+Run the graphify skill to find seed files related to the feature:
 
 \`\`\`
+Skill(skill: "graphify", args: "query: <feature description from spec.md>")
+\`\`\`
+
+Use the feature's goal or title from \\\`spec.md\\\` as the query. Extract file paths and node labels from the graphify output.
+
+### Step 4 — Coverage Check
+
+Evaluate graphify results. Ask for graph update if:
+
+- Fewer than 5 relevant files returned for D1
+- Spec hints (\\\`--hint\\\` paths) are not represented in the results
+- Graphify output indicates the relevant area may not be covered (e.g., a monorepo package not in the graph)
+
+Use the \\\`AskUserQuestion\\\` tool:
+
+\\\`\\\`\\\`json
+{
+  "header": "Graph coverage",
+  "question": "The graph may be stale or incomplete for this feature. Rebuild it to get better results?",
+  "options": [
+    { "label": "Update graph (Recommended)", "description": "Run graphify --update to incrementally refresh. Better coverage, more accurate boundaries." },
+    { "label": "Continue anyway", "description": "Proceed with the current graph. Results may be incomplete. Discovery confidence may be lower." }
+  ]
+}
+\\\`\\\`\\\`
 .lh/features/<feature-id>-<slug>/discovery.md
 .lh/features/<feature-id>-<slug>/boundary.json
-.lh/features/<feature-id>-<slug>/events.jsonl
 .lh/features/<feature-id>-<slug>/cavebus.log
-\`\`\`
+\\\`\\\`\\\`
+
+Note: \\\`events.jsonl\\\` is auto-managed by LeanHarness hooks. Do not write to it.
 
 ## CaveBus Summary
 
-Append a compact discovery summary to \`cavebus.log\` following \`.lh/templates/cavebus-message.md\` format. Example:
+Append a compact discovery summary to \\\`cavebus.log\\\` following \\\`.lh/templates/cavebus-message.md\\\` format. Example:
 
 \`\`\`
 DISC F001 conf:med depth:D2
-touch: src/routes/reset.ts, src/services/email.ts
-read: src/middleware/auth.ts
-tests: tests/routes/reset.test.ts
-cmd: pnpm test, pnpm lint
-risk: auth_rewrite
-unknown: token storage mechanism
-avoid: src/legacy/
+touch:
+- src/routes/reset.ts reason:reset flow entry point
+- src/services/email.ts reason:email dispatch
+read:
+- src/middleware/auth.ts reason:middleware ordering
+tests:
+- tests/routes/reset.test.ts
+risk:
+- security_sensitive_change
+unknown:
+- token storage mechanism
 next: plan
 \`\`\`
 
 Use actual discovered values. Do not hardcode project-specific content.
 
+## Non-Goals
+
+- Do not use a scout subagent for discovery.
+- Do not implement the feature.
+- Do not refactor code.
+- Do not update dependencies.
+- Do not create broad architecture maps.
+- Do not mark the feature discovered unless the boundary is sufficient.
+
 ## Final Response Format
 
-Every \`/lh-discover\` run must end with:
+Every \\\`/lh-discover\\\` run must end with:
 
 - **Feature ID** — The feature identifier
-- **Discovery status** — \`discovered\` or \`insufficient\`
-- **Confidence** — \`low\`, \`medium\`, or \`high\`
+- **Discovery status** — \\\`discovered\\\` or \\\`insufficient\\\`
+- **Confidence** — \\\`low\\\`, \\\`medium\\\`, or \\\`high\\\`
 - **Likely touch files** — Files that will be modified
 - **Read-only files** — Files needed for context but not changed
 - **Relevant tests** — Test files and commands
 - **Commands discovered** — Build, test, lint commands
 - **Risk gates** — Triggered risk gates
 - **Unknowns** — Unresolved questions about the codebase
-- **Boundary path** — Path to \`boundary.json\`
-- **Recommended next command** — \`/lh-plan <feature-id>\`
+- **Boundary path** — Path to \\\`boundary.json\\\`
+- **NEXT SESSION block** — End every \\\`/lh-discover\\\` response with:
+
+\\\`\\\`\\\`
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  NEXT SESSION — Discovery complete
+  Paste this to continue:
+
+  /new
+  /lh-plan <feature-id>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+\\\`\\\`\\\`
 `;
 }
 
@@ -2142,9 +2336,10 @@ Create or update:
 \`\`\`
 .lh/features/<feature-id>-<slug>/plan.md
 .lh/features/<feature-id>-<slug>/tasks.md
-.lh/features/<feature-id>-<slug>/events.jsonl
 .lh/features/<feature-id>-<slug>/cavebus.log
 \`\`\`
+
+Note: \`events.jsonl\` is auto-managed by LeanHarness hooks. Do not write to it.
 
 ## CaveBus Summary
 
@@ -2172,7 +2367,7 @@ Every \`/lh-plan\` run must end with:
 - **Acceptance criteria coverage** — Summary of which AC maps to which tasks
 - **Risk gates** — Any triggered risk gates
 - **First recommended task** — Which task to start with
-- **Recommended next command** — \`/lh-build <feature-id>\`
+- **Recommended next command** — \`/new\` then \`/lh-build <feature-id>\`
 `;
 }
 
@@ -2258,6 +2453,12 @@ Update the total step count (M) after Phase 2 completes and the full task list i
    - \`options\`:
      - label: \`"Subagents"\`, description: \`"Dispatch lh-builder for implementation, lh-reviewer for review after every task, lh-compressor for compression — each task runs in a fresh, isolated agent."\`
      - label: \`"Current agent"\`, description: \`"Implement, review, and compress directly in this session without subagent dispatch."\`
+4b. **Ask subagent model** (subagents mode only). If the user chose **Subagents**, immediately ask which model to use with the \`AskUserQuestion\` tool:
+   - \`header\`: \`"Model"\`
+   - \`question\`: \`"Which model should subagents use?"\`
+   - \`options\`:
+     - label: \`"Sonnet (Recommended)"\`, description: \`"Best reasoning and implementation quality. Handles complex logic, multi-file changes, and edge cases reliably. Higher token cost."\`
+     - label: \`"Haiku"\`, description: \`"Fast and lightweight. Good for well-scoped tasks with clear boundaries. Lower cost — may miss subtle edge cases or require extra review passes."\`
 5. **Determine task scope:**
    - One specified task
    - Next \`pending\` task in order
@@ -2266,11 +2467,15 @@ Update the total step count (M) after Phase 2 completes and the full task list i
 6. **For each task (subagents mode):**
    a. Compile bounded context from artifacts. Read only relevant files.
    b. Confirm expected edit files are inside the change boundary.
-   c. **MUST implement:** Invoke the Agent tool with \`subagent_type: "lh-builder"\`, passing: feature ID, task ID, task goal, expected files, bounded context (relevant spec sections, boundary entries, memory entries, file content), verification commands, prior task summaries. Do NOT implement inline. If the Agent tool itself errors or reports the subagent type is not registered, report the error to the user and stop.
+   c. **MUST implement:** Invoke the Agent tool with \`subagent_type: "lh-builder"\`, \`model: <chosen-model>\` (from step 4b, either \`"sonnet"\` or \`"haiku"\`), and \`description: "Build <task-id> for <feature-id>"\`, passing: feature ID, task ID, task goal, expected files, bounded context (relevant spec sections, boundary entries, memory entries, file content), verification commands, prior task summaries. Do NOT implement inline. If the Agent tool itself errors or reports the subagent type is not registered, report the error to the user and stop.
    d. Run task verification commands when available.
    e. Record commands and results.
-   f. **MUST review:** Invoke the Agent tool with \`subagent_type: "lh-reviewer"\` after every task without exception, passing: feature ID, task ID, changed files list, task summary path, boundary path.
-   g. **MUST compress:** Invoke the Agent tool with \`subagent_type: "lh-compressor"\`, passing the verbose task summary. Append the returned compact CaveBus entry to \`cavebus.log\`.
+   f. **MUST review:** Invoke the Agent tool with \`subagent_type: "lh-reviewer"\`, \`model: <chosen-model>\`, and \`description: "Review <task-id> for <feature-id>"\` after every task without exception, passing: feature ID, task ID, changed files list, task summary path, boundary path.
+   f-2. **Review verdict handling:**
+       - If \`lh-reviewer\` returns \`verdict: pass\` → continue to step 6g (compress)
+       - If \`lh-reviewer\` returns \`verdict: needs-fix\` → trigger auto-fix loop (see Auto-Fix Loop below)
+       - If \`lh-reviewer\` returns \`verdict: blocked\` → stop the build, escalate
+   g. **MUST compress:** Invoke the Agent tool with \`subagent_type: "lh-compressor"\`, \`model: <chosen-model>\`, and \`description: "Compress <task-id> summary"\`, passing the verbose task summary. Append the returned compact CaveBus entry to \`cavebus.log\`.
    h. Write task summary to \`task-summaries/<task-id>.md\`.
    i. Update task status in \`tasks.md\`.
 7. **For each task (current-agent mode):**
@@ -2380,7 +2585,7 @@ Use actual values. Do not hardcode project-specific content.
 
 ## Review Behavior
 
-**Subagents mode:** After each task, MUST invoke the Agent tool with \`subagent_type: "lh-reviewer"\` (step 6f), passing feature ID, task ID, changed files, task summary path, and boundary path. Do not skip. Do not fall back to self-review unless the Agent tool itself errors.
+**Subagents mode:** After each task, MUST invoke the Agent tool with \`subagent_type: "lh-reviewer"\`, \`model: <chosen-model>\` (from step 4b), and \`description: "Review <task-id> for <feature-id>"\` (step 6f), passing feature ID, task ID, changed files, task summary path, and boundary path. Do not skip. Do not fall back to self-review unless the Agent tool itself errors.
 
 **Current-agent mode:** After each task, perform self-review inline (step 7f) checking:
 
@@ -2394,6 +2599,82 @@ Use actual values. Do not hardcode project-specific content.
 
 Record review findings in the task summary.
 
+### Auto-Fix Loop (Subagents Mode)
+
+When \`lh-reviewer\` returns \`verdict: needs-fix\` (step 6f-2), the auto-fix loop activates:
+
+1. **Increment iteration.** Set \`iter = iter + 1\` (v1 → v2 → v3).
+2. **Max iterations check.** If \`iter > 3\`:
+   - Write BLOCK to \`cavebus.log\`:
+     \`\`\`
+     BLOCK <FEATURE_ID> <TASK_ID> reason:max fix iterations reached
+     need: human review
+     iter: v3
+     next: review BLOCK, fix manually, then re-run /lh-build
+     \`\`\`
+   - Mark task as \`needs-fix\`.
+   - Stop the build for this task.
+3. **Dispatch fix agent.** Invoke:
+   \`\`\`
+   Agent(subagent_type: "lh-builder-fix", model: <chosen-model>, description: "Fix <task-id> findings v<iter>")
+   \`\`\`
+   Pass:
+   - original task goal and ID
+   - review findings (critical/major/minor structured)
+   - changed files so far
+   - boundary path
+   - iteration number
+4. **Verification.** Run verification commands. Record results.
+5. **Re-review.** Invoke \`lh-reviewer\` again on the fixed code (goto step 6f).
+6. **Loop.** If still \`needs-fix\`, go back to step 1. If \`pass\`, continue to step 6g.
+
+Max 3 iterations per task. Each iteration is a fresh subagent with full review findings.
+
+### Auto-Fix Loop (Current-Agent Mode)
+
+When self-review (step 7f) finds issues:
+
+1. **Increment iteration.** Set \`iter = iter + 1\` (v1 → v2 → v3).
+2. **Max iterations check.** If \`iter > 3\`:
+   - Write BLOCK to \`cavebus.log\`:
+     \`\`\`
+     BLOCK <FEATURE_ID> <TASK_ID> reason:max fix iterations reached
+     need: human review
+     iter: v3
+     next: review BLOCK, fix manually, then re-run /lh-build
+     \`\`\`
+   - Mark task as \`needs-fix\`.
+   - Stop the build for this task.
+3. **Dispatch fix agent.** Invoke:
+   \`\`\`
+   Agent(subagent_type: "lh-builder-fix", model: auto, description: "Fix <task-id> findings v<iter>")
+   \`\`\`
+   Pass: task goal, review findings, changed files, boundary, iteration number.
+4. **Verification.** Run verification commands. Record results.
+5. **Re-review.** Repeat self-review on the fixed code (goto step 7f).
+6. **Loop.** If still \`needs-fix\`, go back to step 1. If \`pass\`, continue to step 7g.
+
+### Fix Agent Context Format
+
+When dispatching \`lh-builder-fix\`, pass structured context:
+
+\`\`\`
+feature: <FEATURE_ID>
+task: <TASK_ID>
+iteration: v<1|2|3>
+original_goal: <task description from tasks.md>
+review_findings:
+  critical:
+    - <finding> file:<path> evidence:<line/symbol>
+  major:
+    - <finding> file:<path> evidence:<line/symbol>
+  minor:
+    - <finding> file:<path> evidence:<line/symbol>
+changed_files: [<file1>, <file2>]
+boundary: .lh/features/<id>/boundary.json
+verification_commands: [<command1>, <command2>]
+\`\`\`
+
 ## Output Artifacts
 
 Create or update:
@@ -2401,9 +2682,17 @@ Create or update:
 \`\`\`
 .lh/features/<feature-id>-<slug>/tasks.md
 .lh/features/<feature-id>-<slug>/task-summaries/<task-id>.md
-.lh/features/<feature-id>-<slug>/events.jsonl
 .lh/features/<feature-id>-<slug>/cavebus.log
 \`\`\`
+
+If fix iterations occurred, also create:
+\`\`\`
+.lh/features/<feature-id>-<slug>/task-summaries/<task-id>-fix-v1.md
+.lh/features/<feature-id>-<slug>/task-summaries/<task-id>-fix-v2.md
+.lh/features/<feature-id>-<slug>/task-summaries/<task-id>-fix-v3.md
+\`\`\`
+
+Note: \`events.jsonl\` is auto-managed by LeanHarness hooks. Do not write to it.
 
 May update these only when execution reveals plan-invalidating information:
 
@@ -2420,12 +2709,13 @@ Every \`/lh-build\` run must end with:
 - **Feature ID** — The feature identifier
 - **Tasks attempted** — Which tasks were worked on
 - **Task statuses** — Current status of each attempted task
+- **Fix iterations** — Per-task iteration count if auto-fix loop was triggered (e.g., "T-01: v1 pass, T-02: v1→v2 pass, T-03: v1→v2→v3 needs-fix")
 - **Files changed** — Source files created, modified, or deleted
 - **Tests added or updated** — Test files touched
 - **Commands run** — Verification commands and results
-- **Review findings** — Issues found during self-review
-- **Blockers or follow-ups** — Unresolved issues
-- **Recommended next command** — \`/lh-check <feature-id>\` when all tasks are done, or \`/lh-build <feature-id> <next-task>\` to continue
+- **Review findings** — Issues found during review
+- **Blockers or follow-ups** — Unresolved issues (including max fix iterations BLOCKs)
+- **Recommended next command** — \`/new\` then \`/lh-check <feature-id>\` when all tasks are done, or \`/new\` then \`/lh-build <feature-id> <next-task>\` to continue
 `;
 }
 
@@ -2491,7 +2781,7 @@ where N is the current step number and M is the total step count.
    - \`task-summaries/\` — Per-task completion records
    - \`cavebus.log\` — Compressed history
    - \`events.jsonl\` — Event log if present
-3. **Delegate verification.** Invoke the Agent tool with \`subagent_type: "lh-verifier"\`, passing the feature ID and artifact paths. Use the verifier's returned verdict, AC table, command results, and CaveBus entry as the basis for steps 12–13. If \`lh-verifier\` is unavailable, perform steps 4–11 directly.
+3. **Delegate verification.** Invoke the Agent tool with \`subagent_type: "lh-verifier"\` and \`description: "Verify feature <feature-id>"\`, passing the feature ID and artifact paths. Use the verifier's returned verdict, AC table, command results, and CaveBus entry as the basis for steps 12–13. If \`lh-verifier\` is unavailable, perform steps 4–11 directly.
 4. **Determine changed files.** (fallback) Use available evidence:
    - Task summaries (files listed as changed)
    - \`git diff\` if available
@@ -2505,7 +2795,7 @@ where N is the current step number and M is the total step count.
 11. **Check review findings.** Confirm no blocking review findings remain.
 12. **Write checks.** Write \`checks.md\` using \`.lh/templates/checks.md\`.
 13. **Write result.** Write or update \`result.md\` using \`.lh/templates/result.md\`.
-14. **Append CaveBus.** Invoke the Agent tool with \`subagent_type: "lh-compressor"\`, passing the verification output. Append the returned compact CaveBus entry to \`cavebus.log\`. If \`lh-compressor\` is unavailable, write the CaveBus summary directly.
+14. **Append CaveBus.** Invoke the Agent tool with \`subagent_type: "lh-compressor"\` and \`description: "Compress verification summary for <feature-id>"\`, passing the verification output. Append the returned compact CaveBus entry to \`cavebus.log\`. If \`lh-compressor\` is unavailable, write the CaveBus summary directly.
 15. **Set verdict.** Assign final verdict: \`pass\`, \`needs-fix\`, or \`blocked\`.
 
 ## Verdict Rules
@@ -2571,10 +2861,11 @@ Create or update:
 \`\`\`
 .lh/features/<feature-id>-<slug>/checks.md
 .lh/features/<feature-id>-<slug>/result.md
-.lh/features/<feature-id>-<slug>/events.jsonl
 .lh/features/<feature-id>-<slug>/cavebus.log
 .lh/state.json
 \`\`\`
+
+Note: \`events.jsonl\` is auto-managed by LeanHarness hooks. Do not write to it.
 
 ## CaveBus Check Summary
 

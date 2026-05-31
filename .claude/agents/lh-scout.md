@@ -1,7 +1,7 @@
 ---
 name: lh-scout
 description: Use for LeanHarness targeted brownfield discovery. Finds relevant files, tests, commands, constraints, risks, unknowns, and change-boundary candidates without editing code or creating a full repo map.
-tools: Read, Glob, Grep, Bash
+tools: Read, Glob, Grep, Bash, Skill
 model: sonnet
 permissionMode: plan
 maxTurns: 20
@@ -78,7 +78,11 @@ D4 deep dive:
 - Do not edit files.
 - Do not create a full repo map by default.
 - Do not read large unrelated files.
-- **Use graphify for D1–D4.** Invoke `/graphify` for seed file discovery (D1), neighbor traversal (D2), symbol lookup (D3), and relationship queries (D4). Do not use grep or glob for graph-aware discovery.
+- **Graphify is mandatory for D1–D4.** Before using Grep or Glob for any D1–D4 discovery step, you MUST invoke the `Skill` tool with `skill: "graphify"`. Only fall back to Grep/Glob if the Skill call returns an error indicating graphify is not installed.
+  - D1 seed discovery: `Skill(skill: "graphify", args: "query: <feature description>")`
+  - D2 neighbor traversal: `Skill(skill: "graphify", args: "query: <seed concept> callers imports dependencies")`
+  - D3 symbol lookup: `Skill(skill: "graphify", args: "path <conceptA> <conceptB>")` or `Skill(skill: "graphify", args: "explain <symbol>")`
+  - D4 deep dive: `Skill(skill: "graphify", args: "query: <broader relationship question>")`
 - **D0 only:** Use `find` / `ls` for config file existence checks (package.json, pyproject.toml, go.mod, etc.).
 - Prefer exact paths and targeted reads.
 - Record why each file is relevant.
@@ -109,32 +113,19 @@ Detect and report these risk gates from `.lh/config.yml`:
 
 ## Output format
 
-Return a compact but useful discovery result:
-
-- Feature ID:
-- Discovery depth:
-- Confidence:
-- Likely touch files:
-- Read-only reference files:
-- Relevant tests:
-- Commands:
-- Do-not-touch areas:
-- Risk gates:
-- Unknowns:
-- Recommended boundary updates:
-- Recommended next action:
-
-Also include a CaveBus summary following `.lh/templates/cavebus-message.md` format:
+Return ONLY the structured CaveBus block below — no prose, no explanations, no file content. Keep each field to one line. This compact format is what the caller uses to write `discovery.md` and `boundary.json`.
 
 DISC <FEATURE_ID> conf:<low|med|high> depth:<D0-D4>
-touch:
-read:
-tests:
-cmd:
-risk:
-unknown:
-avoid:
-next:
+touch: <comma-separated file paths>
+read: <comma-separated file paths>
+tests: <comma-separated test files or commands>
+cmd: <comma-separated build/test/lint commands>
+risk: <triggered risk gate IDs, or none>
+unknown: <short phrases, or none>
+avoid: <paths or areas to not touch>
+next: <recommended next action>
+
+Then append one short paragraph (3–5 sentences max) summarising confidence and key findings. Nothing else.
 
 ## General rules
 

@@ -75,16 +75,17 @@ where N is the current step number and M is the total step count.
 - Do not skip check.
 - Respect risk gates from `.lh/config.yml`.
 - Use bounded context for implementation tasks.
-- **Use the Agent tool** to delegate each workflow step to the appropriate subagent:
-  - Discover step → `subagent_type: "lh-scout"`
-  - Build step (per task) → `subagent_type: "lh-builder"`
-  - Review step (after each task) → `subagent_type: "lh-reviewer"`
-  - Check step → `subagent_type: "lh-verifier"`
-  - Compress step (after each summary) → `subagent_type: "lh-compressor"`
-- If a named subagent is unavailable, perform that step directly.
-- If hooks exist, respect their outcomes.
-- If CLI commands exist later, prefer them for deterministic file operations.
-- If CLI commands do not exist yet, manually create or update artifacts using templates from `.lh/templates/`.
+- **Use the Agent tool** to delegate each workflow step to the appropriate subagent (always include the required `description` field):
+    - Discover step → runs `/lh-discover` which uses graphify directly (no scout subagent)
+    - Build step (per task) → `subagent_type: "lh-builder"`, `description: "Build <task-id> for <feature-id>"`
+    - Review step (after each task) → `subagent_type: "lh-reviewer"`, `description: "Review <task-id> for <feature-id>"`
+    - Check step → `subagent_type: "lh-verifier"`, `description: "Verify feature <feature-id>"`
+    - Compress step (after each summary) → `subagent_type: "lh-compressor"`, `description: "Compress <task-id> summary"`
+    - If a named subagent is unavailable, perform that step directly.
+    - If hooks exist, respect their outcomes.
+    - If CLI commands exist later, prefer them for deterministic file operations.
+    - If CLI commands do not exist yet, manually create or update artifacts using templates from `.lh/templates/`.
+    - For the discover step: invoke `/lh-discover` directly — it uses graphify for all D1–D4 discovery.
 
 ## Branch Setup
 
@@ -104,14 +105,37 @@ Before delegating build tasks, confirm the development branch.
 
 ## Question Format
 
-When you need to ask a clarifying question, use the `AskUserQuestion` tool — never plain text. This shows clickable option chips instead of requiring the user to type.
+When you need to ask a clarifying question, use the `AskUserQuestion` tool — never plain text. This shows clickable option chips instead of requiring the user to type. **Always include an AI-recommended option marked with "(Recommended)"** — this should be the most sensible default based on your analysis.
 
 Structure each question with:
 - `header`: short topic label (≤12 chars, e.g., "Reset method")
 - `question`: clear question ending with `?`
-- `options`: 2–4 choices, each with a short `label` (1–5 words) and a one-sentence `description`
+- `options`: 2–4 choices, each with a short `label` (1–5 words) and a one-sentence `description`. Mark the recommended option with "(Recommended)" in the label.
 
-Ask one question per invocation. If multiple are needed, ask the most blocking one first and record the rest as assumptions.
+Example:
+
+```json
+{
+  "header": "Branch setup",
+  "question": "You're on 'main'. Where should this feature's work go?",
+  "options": [
+    { "label": "New branch (Recommended)", "description": "Create 'feature/<id>-<slug>'. Select Other to use a different prefix like fix/ or chore/." },
+    { "label": "Stay on current branch", "description": "Continue on '<current-branch>' without switching." }
+  ]
+}
+```
+
+Ask one question at a time. Ask the most blocking question first. Wait for the reply before continuing.
+
+## Delegation of Questions
+
+The workflow delegates clarification and research questions to the appropriate phase:
+
+- **Spec phase** (`/lh-spec`): Handles clarifying questions about the feature request, acceptance criteria, non-goals, verification expectations, and technical approach. The spec phase asks questions aggressively — only skip when 100% certain.
+- **Discovery phase** (`/lh-discover`): Handles conditional research questions about unknown libraries, tech stack, low confidence, and risk areas. Discovery asks before deepening or researching. Web research is available for any unknown areas.
+- **Build phase** (`/lh-build`): Handles branch setup and risk gate approval questions.
+
+When orchestrating through `/lh-do`, trust that each phase will ask the appropriate questions. Do not duplicate question-asking across phases.
 
 ## Required Artifacts
 

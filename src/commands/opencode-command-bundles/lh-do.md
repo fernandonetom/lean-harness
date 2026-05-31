@@ -39,10 +39,10 @@ Before running any step, inspect the feature folder to determine the current pha
 
 | Artifacts present | Detected phase | Action |
 |-------------------|----------------|--------|
-| None | Not started | Run `lh-spec` workflow |
-| `spec.md` only | Spec done | Run `lh-discover` workflow |
+| None | Not started | Run `lh-spec` workflow (**will ask clarifying questions**) |
+| `spec.md` only | Spec done | Run `lh-discover` workflow (**will ask research questions**) |
 | `spec.md` + `discovery.md` + `boundary.json` | Discovery done | Run `lh-plan` workflow |
-| `plan.md` + `tasks.md`, no checkpoint | Plan done | Run `lh-build` wave 1 |
+| `plan.md` + `tasks.md`, no checkpoint | Plan done | Run `lh-build` wave 1 (**will ask branch/risk questions**) |
 | `plan.md` + `checkpoint.md` | Mid-build | Read checkpoint; run `lh-build` from `next_task` |
 | All tasks `done`, no `checks.md` | Build done | Run `lh-check` workflow |
 | `checks.md` with verdict `pass` | Feature done | Show status; no action needed |
@@ -73,14 +73,24 @@ Before running any step, inspect the feature folder to determine the current pha
 
 ## Question Format
 
-When you need to ask a clarifying question, format it as a numbered list so the user can reply with a single digit.
+When you need to ask a clarifying question, format it as a numbered list so the user can reply with a single digit. **Always include an AI-recommended option marked with "(Recommended)"** — this should be the most sensible default based on your analysis.
 
 > **[Topic]:** [Question?]
-> 1. [Short label] — [one-sentence description]
-> 2. [Short label] — [one-sentence description]
-> 3. Other — describe your preference
+> 1. [Option A] — [description] **(Recommended)**
+> 2. [Option B] — [description]
+> 3. Other — [describe your preference or ask a different question]
 
-Ask one question at a time. Wait for the reply before continuing.
+Ask one question at a time. Ask the most blocking question first. Wait for the reply before continuing.
+
+## Delegation of Questions
+
+The workflow delegates clarification and research questions to the appropriate phase:
+
+- **Spec phase** (`/lh-spec`): Handles clarifying questions about the feature request, acceptance criteria, non-goals, verification expectations, and technical approach. The spec phase asks questions aggressively — only skip when 100% certain.
+- **Discovery phase** (`/lh-discover`): Handles conditional research questions about unknown libraries, tech stack, low confidence, and risk areas. Discovery asks before deepening or researching. Web research is available for any unknown areas.
+- **Build phase** (`/lh-build`): Handles branch setup and risk gate approval questions.
+
+When orchestrating through `/lh-do`, trust that each phase will ask the appropriate questions. Do not duplicate question-asking across phases.
 
 ## Required Artifacts
 
@@ -148,6 +158,7 @@ Every `/lh-do` run must end with:
   NEXT SESSION — <Phase> complete
   Paste this to continue:
 
+  /new
   /lh-do <feature-id>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```

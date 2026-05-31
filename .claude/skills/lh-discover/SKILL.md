@@ -2,32 +2,33 @@
 name: lh-discover
 description: Perform LeanHarness on-demand discovery for an existing codebase and produce a focused change boundary. Use when the user invokes /lh-discover or needs relevant files, tests, commands, constraints, risks, and unknowns before planning.
 disable-model-invocation: true
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, TaskCreate, TaskUpdate
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, Skill, TaskCreate, TaskUpdate, AskUserQuestion
 ---
 
 # lh-discover
 
 ## Purpose
 
-Produce a focused discovery report and change boundary for a feature. Discovery identifies only the files, tests, commands, constraints, risks, and unknowns relevant to the active feature. It avoids full-repo mapping.
+Produce a focused discovery report and change boundary for a feature using graphify. Discovery identifies only the files, tests, commands, constraints, risks, and unknowns relevant to the active feature. It avoids full-repo mapping.
+
+All D1–D4 discovery is performed via the graphify skill — never via grep, glob, or a scout subagent.
 
 ## Inputs
 
 Accept any of:
 
-- Feature ID (e.g., `F001`)
+- Feature ID (e.g., \`F001\`)
 - Feature folder path
-- Raw feature request (only if no spec exists yet)
 - File hints (e.g., "Start near src/billing")
 - Area hints (e.g., "Focus on auth middleware")
 - Risk hints (e.g., "Touches payment processing")
 
 Examples:
 
-```
+\`\`\`
 /lh-discover F001
 /lh-discover F001 --hint src/routes/auth.ts
-```
+\`\`\`
 
 ## Task Tooling
 
@@ -44,104 +45,128 @@ where N is the current step number and M is the total step count.
 
 | # | Subject | activeForm |
 |---|---------|------------|
-| 1 | Read spec + config | Reading spec and config |
-| 2 | D0 — Repo shape | Mapping repo shape |
-| 3 | D1–D4 — Semantic discovery | Running semantic discovery |
-| 4 | Write boundary | Writing boundary |
-| 5 | Report | Reporting |
+| 1 | Read spec + config + memory | Reading artifacts |
+| 2 | Graphify — build or verify | Checking graph |
+| 3 | D1 — Seed files via graphify | Querying graph for seed files |
+| 4 | Coverage check + user prompt | Evaluating graph coverage |
+| 5 | Conditional research — web + deeper discovery | Researching unknowns |
+| 6 | D2–D3 — Dependency + risk probes | Traversal and risk probes |
+| 7 | Risk gate review + user prompt | Reviewing risk areas |
+| 8 | Aggregate → write artifacts | Writing discovery and boundary |
+| 9 | Report | Reporting |
 
 ## Workflow
 
-1. **Locate feature.** Find the feature folder under `.lh/features/`.
-2. **Read spec.** Read `spec.md` for goal, acceptance criteria, and constraints.
-3. **Read config.** Read `.lh/config.yml` for discovery settings and risk gates.
+1. **Locate feature.** Find the feature folder under \`.lh/features/\`.
+2. **Read spec.** Read \`spec.md\` for goal, acceptance criteria, constraints, and hints.
+3. **Read config.** Read \`.lh/config.yml\` for discovery settings and risk gates.
 4. **Read memory.** Check relevant memory files:
-   - `.lh/memory/project.md`
-   - `.lh/memory/decisions.md`
-   - `.lh/memory/patterns.md`
-   - `.lh/memory/cave.md`
-5. **Perform discovery.**
-   - **Preferred:** Invoke the Agent tool with `subagent_type: "lh-scout"`, passing the feature ID, spec path, memory file paths, and any hints provided. Use the scout's structured output to populate the discovery artifacts in steps 7–8.
-   - **Fallback (if `lh-scout` is unavailable, hits its turn limit, or returns incomplete results):** Explore directly in levels, starting at the configured default depth (usually D2):
-     - **D0 — Repo shape:** Check for `package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `Makefile`. Use `find` / `ls` for these config files only. Identify package manager, major folders, framework clues, and test command candidates.
-     - **D1 — Seed files:** Invoke `/graphify` with the feature description and goal as input. Use graphify's semantic search to identify files most relevant to the feature. Do not use grep or glob for seed discovery.
-     - **D2 — Dependency boundary:** Use graphify neighbor traversal from the D1 seed files to find imports, callees, callers, neighboring tests, and shared utilities. Distinguish edit vs. read-only files using graphify relationship data.
-     - **D3 — Risk probes:** Use graphify symbol lookup to find auth, payment, permission, and security-sensitive paths. Run focused test commands to detect failures. Do not use grep for symbol discovery.
-     - **D4 — Deep dive:** Use graphify relationship queries for broader architecture inspection. Only escalate when D0–D3 is insufficient.
-6. **Stop when sufficient.** Stop when the change boundary is sufficient for a safe plan. Escalate only when the current boundary is insufficient.
-7. **Write discovery.** Write `discovery.md` using `.lh/templates/discovery.md`.
-8. **Write boundary.** Write `boundary.json` using `.lh/templates/boundary.json`.
-9. **Update status.** Set feature status to `discovered` when sufficient.
-10. **Report.** Present confidence and next action.
+   - \`.lh/memory/project.md\`
+   - \`.lh/memory/decisions.md\`
+   - \`.lh/memory/patterns.md\`
+   - \`.lh/memory/cave.md\`
 
-## On-Demand Discovery Rules
+### Step 2 — Graphify Setup
 
-- Do not create a full repo map by default.
-- Do not read large unrelated files.
-- **Use graphify for D1–D4.** Do not use grep or glob for finding seed files, dependency traversal, or symbol lookup. Graphify provides semantic graph navigation that replaces grep/glob for all graph-aware discovery.
-- **D0 only:** Use `find` / `ls` for config file existence checks (package.json, pyproject.toml, go.mod, etc.).
-- Prefer exact paths and commands.
-- Record why each file is relevant.
-- Mark confidence as `low`, `medium`, or `high`.
-- If no tests are found, record that explicitly.
-- If verification commands are unknown, record that explicitly.
-- Read only enough of each file to confirm relevance.
+Check if graphify graph exists:
 
-## Risk Gate Triggers
+```bash
+test -f graphify-out/graph.json && echo "exists" || echo "missing"
+```
 
-Trigger risk gates (from `.lh/config.yml`) for:
+- **If missing:** Run \`Skill(skill: "graphify", args: "path .")\` to build the graph. This may take a while on large codebases — inform the user.
+- **If present:** Continue to Step 3.
 
-- Auth rewrites (`auth_rewrite`)
-- Payment logic (`payment_logic`)
-- Destructive migrations (`destructive_migration`)
-- New dependencies (`new_dependency`)
-- Public API breaks (`public_api_break`)
-- Broad refactors (`broad_refactor`)
-- Security-sensitive changes (`security_sensitive_change`)
+### Step 3 — D1 Seed Discovery via Graphify
 
-When a risk gate is triggered, record it in `discovery.md` under Risks Discovered and in `boundary.json` under `risk_gates_triggered`. The build step will pause for approval.
-
-## Output Artifacts
-
-Create or update:
+Run the graphify skill to find seed files related to the feature:
 
 ```
+Skill(skill: "graphify", args: "query: <feature description from spec.md>")
+```
+
+Use the feature's goal or title from \`spec.md\` as the query. Extract file paths and node labels from the graphify output.
+
+### Step 4 — Coverage Check
+
+Evaluate graphify results. Ask for graph update if:
+
+- Fewer than 5 relevant files returned for D1
+- Spec hints (\`--hint\` paths) are not represented in the results
+- Graphify output indicates the relevant area may not be covered (e.g., a monorepo package not in the graph)
+
+Use the \`AskUserQuestion\` tool:
+
+\`\`\`json
+{
+  "header": "Graph coverage",
+  "question": "The graph may be stale or incomplete for this feature. Rebuild it to get better results?",
+  "options": [
+    { "label": "Update graph (Recommended)", "description": "Run graphify --update to incrementally refresh. Better coverage, more accurate boundaries." },
+    { "label": "Continue anyway", "description": "Proceed with the current graph. Results may be incomplete. Discovery confidence may be lower." }
+  ]
+}
+\`\`\`
 .lh/features/<feature-id>-<slug>/discovery.md
 .lh/features/<feature-id>-<slug>/boundary.json
-.lh/features/<feature-id>-<slug>/events.jsonl
 .lh/features/<feature-id>-<slug>/cavebus.log
-```
+\`\`\`
+
+Note: \`events.jsonl\` is auto-managed by LeanHarness hooks. Do not write to it.
 
 ## CaveBus Summary
 
-Append a compact discovery summary to `cavebus.log` following `.lh/templates/cavebus-message.md` format. Example:
+Append a compact discovery summary to \`cavebus.log\` following \`.lh/templates/cavebus-message.md\` format. Example:
 
 ```
 DISC F001 conf:med depth:D2
-touch: src/routes/reset.ts, src/services/email.ts
-read: src/middleware/auth.ts
-tests: tests/routes/reset.test.ts
-cmd: pnpm test, pnpm lint
-risk: auth_rewrite
-unknown: token storage mechanism
-avoid: src/legacy/
+touch:
+- src/routes/reset.ts reason:reset flow entry point
+- src/services/email.ts reason:email dispatch
+read:
+- src/middleware/auth.ts reason:middleware ordering
+tests:
+- tests/routes/reset.test.ts
+risk:
+- security_sensitive_change
+unknown:
+- token storage mechanism
 next: plan
 ```
 
 Use actual discovered values. Do not hardcode project-specific content.
 
+## Non-Goals
+
+- Do not use a scout subagent for discovery.
+- Do not implement the feature.
+- Do not refactor code.
+- Do not update dependencies.
+- Do not create broad architecture maps.
+- Do not mark the feature discovered unless the boundary is sufficient.
+
 ## Final Response Format
 
-Every `/lh-discover` run must end with:
+Every \`/lh-discover\` run must end with:
 
 - **Feature ID** — The feature identifier
-- **Discovery status** — `discovered` or `insufficient`
-- **Confidence** — `low`, `medium`, or `high`
+- **Discovery status** — \`discovered\` or \`insufficient\`
+- **Confidence** — \`low\`, \`medium\`, or \`high\`
 - **Likely touch files** — Files that will be modified
 - **Read-only files** — Files needed for context but not changed
 - **Relevant tests** — Test files and commands
 - **Commands discovered** — Build, test, lint commands
 - **Risk gates** — Triggered risk gates
 - **Unknowns** — Unresolved questions about the codebase
-- **Boundary path** — Path to `boundary.json`
-- **Recommended next command** — `/lh-plan <feature-id>`
+- **Boundary path** — Path to \`boundary.json\`
+- **NEXT SESSION block** — End every \`/lh-discover\` response with:
+
+\`\`\`
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  NEXT SESSION — Discovery complete
+  Paste this to continue:
+
+  /new
+  /lh-plan <feature-id>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+\`\`\`

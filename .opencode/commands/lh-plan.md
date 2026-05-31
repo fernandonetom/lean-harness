@@ -87,9 +87,10 @@ Create or update:
 ```
 .lh/features/<feature-id>-<slug>/plan.md
 .lh/features/<feature-id>-<slug>/tasks.md
-.lh/features/<feature-id>-<slug>/events.jsonl
 .lh/features/<feature-id>-<slug>/cavebus.log
 ```
+
+Note: `events.jsonl` is auto-managed by LeanHarness hooks. Do not write to it.
 
 ## CaveBus Summary
 
@@ -148,7 +149,7 @@ Every `/lh-plan` run must end with:
 - **Acceptance criteria coverage** — Summary of which AC maps to which tasks
 - **Risk gates** — Any triggered risk gates
 - **First recommended task** — Which task to start with
-- **Recommended next command** — `/lh-build <feature-id>`
+- **Recommended next command** — `/new` then `/lh-build <feature-id>`
 - **Wave summary** — Number of waves and total weight
 - **NEXT SESSION block** — End every `/lh-plan` response with:
 
@@ -157,6 +158,7 @@ Every `/lh-plan` run must end with:
   NEXT SESSION — Plan complete (N waves)
   Paste this to continue:
 
+  /new
   /lh-build <feature-id> --wave 1
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
