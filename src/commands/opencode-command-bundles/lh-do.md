@@ -65,6 +65,7 @@ Before running any step, inspect the feature folder to determine the current pha
 - Do not skip check.
 - Respect risk gates from `.lh/config.yml`.
 - Use bounded context for implementation tasks.
+- For the **Specify step**: if subagents exist, delegate to the spec subagent; otherwise follow the lh-spec workflow directly from `.opencode/commands/lh-spec.md`. Do not skip it.
 - If subagents exist (e.g., `.opencode/agents/lh-*.md`), use them when helpful.
 - If subagents do not exist yet, perform the steps directly.
 - If guardrail plugin exists, respect its outcomes.

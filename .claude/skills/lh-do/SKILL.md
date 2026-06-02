@@ -76,6 +76,7 @@ where N is the current step number and M is the total step count.
 - Respect risk gates from `.lh/config.yml`.
 - Use bounded context for implementation tasks.
 - **Use the Agent tool** to delegate each workflow step to the appropriate subagent (always include the required `description` field):
+    - Specify step → spawn Agent with `description: "Run lh-spec for <feature-id>"` and prompt: `"Read `.claude/skills/lh-spec/SKILL.md` and follow its workflow for: <request>"`. **Never call `Skill(lh-spec)`** — lh-spec has `disable-model-invocation: true`.
     - Discover step → runs `/lh-discover` which uses graphify directly (no scout subagent)
     - Build step (per task) → `subagent_type: "lh-builder"`, `description: "Build <task-id> for <feature-id>"`
     - Review step (after each task) → `subagent_type: "lh-reviewer"`, `description: "Review <task-id> for <feature-id>"`
