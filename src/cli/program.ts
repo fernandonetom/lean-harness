@@ -17,6 +17,7 @@ import { runCompressCommand } from "../commands/compress.js";
 import { runCaveBusCommand } from "../commands/cavebus.js";
 import { runMemoryCommand } from "../commands/memory.js";
 import { runUpdateCommand } from "../commands/update.js";
+import { runBoundaryAllow, runBoundarySetMode, runBoundaryStatus } from "../commands/boundary.js";
 import { runUninstallCommand } from "../commands/uninstall.js";
 import { runCompletionCommand } from "../commands/completion.js";
 import { runWatchCommand } from "../commands/watch.js";
@@ -378,6 +379,31 @@ export function buildProgram(): Command {
         kind,
         json: opts.json,
       });
+    });
+
+  const boundary = program.command("boundary").description("Manage boundary enforcement config");
+
+  boundary
+    .command("allow")
+    .argument("<file-path>", "File path to add to session_overrides")
+    .description("Add a file path to boundary_enforcement.session_overrides in .lh/config.yml")
+    .action(async (filePath: string) => {
+      await runBoundaryAllow(resolveCwd(boundary.optsWithGlobals()), filePath);
+    });
+
+  boundary
+    .command("set-mode")
+    .argument("<mode>", "Enforcement mode: strict, warn, or off")
+    .description("Set boundary_enforcement.mode in .lh/config.yml")
+    .action(async (mode: string) => {
+      await runBoundarySetMode(resolveCwd(boundary.optsWithGlobals()), mode);
+    });
+
+  boundary
+    .command("status")
+    .description("Print current boundary_enforcement configuration from .lh/config.yml")
+    .action(async () => {
+      await runBoundaryStatus(resolveCwd(boundary.optsWithGlobals()));
     });
 
   program

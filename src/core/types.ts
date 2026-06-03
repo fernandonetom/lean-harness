@@ -123,6 +123,12 @@ export interface HarnessConfigBuild {
   session_budget?: number;
 }
 
+export interface HarnessConfigBoundaryEnforcement {
+  mode?: 'strict' | 'warn' | 'off';
+  always_allow?: string[];
+  session_overrides?: string[];
+}
+
 export interface HarnessConfigAdapter {
   skills_dir?: string;
   hooks_enabled?: boolean;
@@ -146,6 +152,7 @@ export interface HarnessConfig {
   logging?: HarnessConfigLogging;
   features?: HarnessConfigFeatures;
   build?: HarnessConfigBuild;
+  boundary_enforcement?: HarnessConfigBoundaryEnforcement;
   adapters?: Record<string, HarnessConfigAdapter>;
 }
 
