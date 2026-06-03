@@ -17,6 +17,7 @@
 | `compile-task` | Compile bounded context for a task |
 | `run-task` | Compile context and invoke an agent host |
 | `build` | Run planned tasks through an agent host |
+| `boundary` | Manage boundary enforcement configuration |
 | `check` | Verify a feature against acceptance criteria |
 | `compress` | Generate CaveBus summaries from feature artifacts |
 | `cavebus` | Inspect and validate CaveBus log |
@@ -291,6 +292,50 @@ All `run-task` options plus:
 - With `--dry-run`, validates context and plan without invoking agents.
 
 **Safety:** Always use `--dry-run` before a real build. Real builds invoke an external agent host and may modify files.
+
+## boundary
+
+Manage boundary enforcement configuration.
+
+```bash
+lh boundary status
+lh boundary set-mode strict
+lh boundary set-mode warn
+lh boundary set-mode off
+lh boundary allow <file-path>
+lh boundary exempt <file-path>
+```
+
+**Options:**
+
+- `status` — Print current `boundary_enforcement` configuration from `.lh/config.yml`
+- `set-mode <mode>` — Set `boundary_enforcement.mode` (`strict`, `warn`, `off`)
+- `allow <file-path>` — Add a file path to `boundary_enforcement.session_overrides` in `.lh/config.yml`
+- `exempt <file-path>` — Remove a file path from `session_overrides`
+
+**Modes:**
+
+| Mode | Behavior |
+|------|----------|
+| `strict` | Blocks edits outside boundary |
+| `warn` | Logs warnings but allows edits (default) |
+| `off` | Disabled |
+
+**Examples:**
+
+```bash
+# View current configuration
+lh boundary status
+
+# Enable strict mode
+lh boundary set-mode strict
+
+# Allow a specific file temporarily
+lh boundary allow src/legacy/old-code.ts
+
+# Remove override
+lh boundary exempt src/legacy/old-code.ts
+```
 
 ## check
 
