@@ -93,3 +93,8 @@ adapters:
     skills_dir: .claude/skills
     hooks_enabled: true
     settings_file: .claude/settings.json
+
+boundary_enforcement:
+  mode: warn
+  # always_allow: []   # glob patterns always permitted regardless of boundary
+  # session_overrides: []   # file paths added at runtime via 'lh boundary allow'
