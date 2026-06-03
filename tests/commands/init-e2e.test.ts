@@ -205,7 +205,7 @@ describe("lh init --host claude-code — Claude Code integration", () => {
     await runInitCommand({ cwd: tmpDir, host: "claude-code" });
     spy.mockRestore();
 
-    const expectedSkills = ["lh-do", "lh-spec", "lh-discover", "lh-plan", "lh-build", "lh-check", "lh-status"];
+    const expectedSkills = ["lh-do", "lh-spec", "lh-discover", "lh-plan", "lh-build", "lh-check", "lh-status", "lh-release"];
     for (const skill of expectedSkills) {
       expect(await exists(path.join(tmpDir, ".claude", "skills", skill))).toBe(true);
     }
@@ -322,7 +322,7 @@ describe("lh init --host opencode — OpenCode integration", () => {
     await runInitCommand({ cwd: tmpDir, host: "opencode" });
     spy.mockRestore();
 
-    const expected = ["lh-spec.md", "lh-discover.md", "lh-plan.md", "lh-build.md", "lh-check.md", "lh-status.md", "lh-do.md"];
+    const expected = ["lh-spec.md", "lh-discover.md", "lh-plan.md", "lh-build.md", "lh-check.md", "lh-status.md", "lh-release.md", "lh-do.md"];
     for (const f of expected) {
       expect(await exists(path.join(tmpDir, ".opencode", "commands", f))).toBe(true);
     }

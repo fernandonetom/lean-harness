@@ -9,6 +9,7 @@ const COMMAND_NAMES = [
   "lh-build.md",
   "lh-check.md",
   "lh-status.md",
+  "lh-release.md",
   "lh-do.md",
 ] as const;
 

@@ -1,6 +1,7 @@
 ---
-description: Prepare and publish a LeanHarness release. Check diff against main, validate tests and docs, run changeset, ask for version, commit, push, and open a PR with release notes.
-agent: lh-builder
+name: lh-release
+description: Prepare and publish a LeanHarness release. Validate environment, check tests and docs, run changeset, ask for version, commit, push, and open a PR with release notes.
+disable-model-invocation: true
 ---
 
 # lh-release
@@ -69,7 +70,7 @@ Look for:
 
 ### Step 5: Ask User for Version
 
-Present the analysis and recommend a version. Ask the user to confirm or choose a different version.
+Present the analysis and recommend a version. Ask the user to confirm or choose a different version using the AskUserQuestion tool.
 
 ### Step 6: Validate Codebase
 
