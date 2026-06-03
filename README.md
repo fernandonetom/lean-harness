@@ -4,7 +4,7 @@ AI harness framework for brownfield feature work with on-demand discovery, bound
 
 ## Status
 
-**v1.0.0 — first stable release.** The core workflow is implemented with a deterministic CLI, two agent host adapters (Claude Code, OpenCode), guardrail layers, and a test suite.
+**v1.3.0 — configurable boundary enforcement.** The core workflow is implemented with a deterministic CLI, two agent host adapters (Claude Code, OpenCode), configurable boundary enforcement modes, and a comprehensive test suite.
 
 ## What it does
 
@@ -64,7 +64,6 @@ lh graph clear          # Remove graph files
 
 - **Discovery:** Graph scoring boosts files near your change boundary
 - **Context compiler:** Knowledge graph adds relevant patterns to task context
-- **MCP server:** Graph tools for agent exploration (`lh mcp-server`)
 - **Symbol lookup:** Find class/interface/function declarations via AST
 - **Call graph:** Track function calls and type references
 
@@ -113,6 +112,26 @@ lh cavebus F001 --validate
 - `lh check` is the completion gate. Do not mark work done without a passing check.
 - Use dry-runs before invoking real agent hosts.
 
+## Boundary enforcement
+
+Change boundaries are enforced via hooks (Claude Code) and plugins (OpenCode). You can configure enforcement strictness:
+
+```bash
+lh boundary status          # view current config
+lh boundary set-mode strict # block edits outside boundary
+lh boundary set-mode warn   # warnings only (default)
+lh boundary set-mode off    # disable enforcement
+```
+
+Or via `.lh/config.yml`:
+
+```yaml
+boundary_enforcement:
+  mode: warn           # strict | warn | off
+  always_allow:        # glob patterns always permitted
+    - "**/*.test.ts"
+```
+
 ## Agent hosts
 
 LeanHarness supports multiple agent hosts through adapters:
@@ -141,13 +160,18 @@ The password reset example shows a complete feature lifecycle with all artifacts
 - [Installation](docs/installation.md)
 - [Commands](docs/commands.md)
 - [Configuration](docs/configuration.md)
+- [Boundary enforcement](docs/security.md#boundary-enforcement)
+- [Graph system](docs/graph.md)
 - [Host adapters](docs/host-adapters.md)
 - [Claude Code host](docs/hosts/claude-code.md)
 - [OpenCode host](docs/hosts/opencode.md)
 - [CaveBus protocol](docs/cavebus.md)
 - [Dogfooding guide](docs/dogfooding.md)
 - [Password reset example](docs/examples/password-reset.md)
+- [Cookbook](docs/cookbook.md)
 - [Troubleshooting](docs/troubleshooting.md)
+- [Release checklist](docs/release-checklist.md)
+- [Migration guide](docs/migration.md)
 - [Security and safety](docs/security.md)
 - [Contributing](CONTRIBUTING.md)
 
@@ -191,6 +215,7 @@ Repository maintainers must configure the `NPM_TOKEN` GitHub Actions secret for 
 LeanHarness guardrails are best-effort safety measures, not a security sandbox:
 
 - **Change boundaries** limit which files an agent can modify.
+- **Boundary enforcement modes** — configure strict (block), warn (log), or off (disabled) via `lh boundary set-mode` or `boundary_enforcement.mode` in `.lh/config.yml`.
 - **Risk gates** require approval for high-risk changes (auth, payments, migrations, dependencies).
 - **Command policies** block known-destructive commands.
 - **Secret protection** blocks reads of `.env` and credential files.
