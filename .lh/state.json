@@ -1,9 +1,0 @@
-{
-  "version": "0.1",
-  "schema": "leanharness-state",
-  "activeFeature": null,
-  "nextFeatureNumber": 1,
-  "features": [],
-  "lastUpdated": null,
-  "notes": "State is a cache/index. Feature artifacts under .lh/features are the source of truth."
-}
