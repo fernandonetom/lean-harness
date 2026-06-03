@@ -1,7 +1,7 @@
 # LeanHarness configuration
 # Source of truth for project-wide harness behavior.
 
-version: "0.1"
+version: "1.2.1"
 
 project:
   name: auto

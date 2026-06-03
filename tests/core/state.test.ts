@@ -1,4 +1,6 @@
+import { getVersion } from "../../src/core/version.js";
 import { describe, it, expect, afterEach } from "vitest";
+import { getVersion } from "../../src/core/version.js";
 import {
   normalizeState,
   upsertFeatureEntry,
@@ -9,6 +11,7 @@ import {
   loadState,
   saveState,
 } from "../../src/core/state.js";
+import { getVersion } from "../../src/core/version.js";
 import { createTempWorkspace, initHarnessWorkspace } from "../helpers/workspace.js";
 import type { TestWorkspace } from "../helpers/workspace.js";
 import type { HarnessState, FeatureIndexEntry } from "../../src/core/types.js";
@@ -41,14 +44,14 @@ describe("normalizeState", () => {
 
   it("returns defaults for array (typeof array is object)", () => {
     const state = normalizeState([1, 2]);
-    expect(state.version).toBe("0.1");
+    expect(state.version).toBe(getVersion());
     expect(state.features).toEqual([]);
     expect(state.activeFeature).toBeNull();
   });
 
   it("returns defaults for empty object", () => {
     const state = normalizeState({});
-    expect(state.version).toBe("0.1");
+    expect(state.version).toBe(getVersion());
     expect(state.schema).toBe("leanharness-state");
     expect(state.activeFeature).toBeNull();
     expect(state.nextFeatureNumber).toBe(1);
@@ -262,7 +265,7 @@ describe("loadState / saveState", () => {
     await rm(statePath(ws.root), { force: true });
 
     const state = await loadState(ws.root);
-    expect(state.version).toBe("0.1");
+    expect(state.version).toBe(getVersion());
     expect(state.schema).toBe("leanharness-state");
     expect(state.features).toEqual([]);
   });

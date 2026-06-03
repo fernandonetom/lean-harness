@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import path from "node:path";
 import fsp from "node:fs/promises";
+import { getVersion } from "../../src/core/version.js";
 import {
   loadHarnessConfig,
   loadHarnessState,
@@ -22,9 +23,9 @@ afterEach(async () => {
 });
 
 describe("createDefaultState", () => {
-  it("returns the expected default state shape", () => {
+  it("returns the expected default state shape with current version", () => {
     const state = createDefaultState();
-    expect(state.version).toBe("0.1");
+    expect(state.version).toBe(getVersion());
     expect(state.schema).toBe("leanharness-state");
     expect(state.activeFeature).toBeNull();
     expect(state.nextFeatureNumber).toBe(1);
@@ -88,8 +89,8 @@ describe("loadHarnessConfig", () => {
     await initHarnessWorkspace(ws.root);
     const result = await loadHarnessConfig(ws.root);
     expect(result.parsed).not.toBeNull();
-    // The default config has version: "0.1" (string with quotes)
-    expect(result.parsed!.version).toBe("0.1");
+    // The default config has version matching current package.json
+    expect(result.parsed!.version).toBe(getVersion());
   });
 
   it("parses nested sections from config.yml", async () => {
@@ -179,7 +180,7 @@ describe("loadHarnessConfig", () => {
     await fsp.mkdir(harnessDir, { recursive: true });
     await fsp.writeFile(
       path.join(harnessDir, "config.yml"),
-      'version: "0.1"\n\ntest:\n  items: [foo, bar, baz]\n',
+      'version: getVersion()\n\ntest:\n  items: [foo, bar, baz]\n',
     );
     const result = await loadHarnessConfig(ws.root);
     const test = result.parsed!["test"] as Record<string, unknown>;
@@ -211,7 +212,7 @@ describe("loadHarnessConfig", () => {
 describe("loadHarnessState", () => {
   it("returns default state when no state.json exists", async () => {
     const state = await loadHarnessState(ws.root);
-    expect(state.version).toBe("0.1");
+    expect(state.version).toBe(getVersion());
     expect(state.schema).toBe("leanharness-state");
     expect(state.activeFeature).toBeNull();
     expect(state.nextFeatureNumber).toBe(1);
@@ -222,7 +223,7 @@ describe("loadHarnessState", () => {
   it("loads state from an existing state.json", async () => {
     await initHarnessWorkspace(ws.root);
     const state = await loadHarnessState(ws.root);
-    expect(state.version).toBe("0.1");
+    expect(state.version).toBe(getVersion());
     expect(state.schema).toBe("leanharness-state");
   });
 
@@ -232,7 +233,7 @@ describe("loadHarnessState", () => {
     await fsp.writeFile(
       path.join(harnessDir, "state.json"),
       JSON.stringify({
-        version: "0.1",
+        version: getVersion(),
         schema: "leanharness-state",
         active_feature: "feat-1",
         nextFeatureNumber: 3,

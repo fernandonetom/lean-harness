@@ -45,7 +45,7 @@ describe("runUpdateCommand", () => {
     expect(await fs.access(path.join(tmpDir, ".lh", "state.json")).then(() => true).catch(() => false)).toBe(true);
   });
 
-  it("preserves user config.yml", async () => {
+  it("updates version in user config.yml", async () => {
     const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     await runInitCommand({ cwd: tmpDir });
     const customConfig = "# my custom config\nversion: 0.1\nproject:\n  name: myproject\n";
@@ -54,7 +54,26 @@ describe("runUpdateCommand", () => {
     spy.mockRestore();
 
     const config = await fs.readFile(path.join(tmpDir, ".lh", "config.yml"), "utf-8");
-    expect(config).toBe(customConfig);
+    // Version should be updated to current version, rest preserved
+    expect(config).toContain('version: "1.2.1"');
+    expect(config).toContain("# my custom config");
+    expect(config).toContain("name: myproject");
+  });
+
+  it("restores user config with updated version", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir });
+    // Write custom config with old version
+    const customConfig = "# my custom config\nversion: \"0.9\"\nproject:\n  name: myproject\n";
+    await fs.writeFile(path.join(tmpDir, ".lh", "config.yml"), customConfig);
+    await runUpdateCommand({ cwd: tmpDir });
+    spy.mockRestore();
+
+    const config = await fs.readFile(path.join(tmpDir, ".lh", "config.yml"), "utf-8");
+    // User content should be preserved with version updated
+    expect(config).toContain("# my custom config");
+    expect(config).toContain("version: \"1.2.1\"");
+    expect(config).toContain("name: myproject");
   });
 
   it("detects claude-code host", async () => {

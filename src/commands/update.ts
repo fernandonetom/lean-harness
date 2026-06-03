@@ -20,6 +20,21 @@ interface UpdateResult {
   warnings: string[];
 }
 
+
+function updateConfigVersion(yamlContent: string, version: string): string {
+  // Replace version: "X.Y.Z" with the current version
+  // Handles both quoted and unquoted version values
+  const lines = yamlContent.split("\n");
+  const result = lines.map(line => {
+    const match = line.match(/^(\s*)version:\s*["']?([^"'\n]+)["']?\s*$/);
+    if (match) {
+      return match[1] + 'version: "' + version + '"';
+    }
+    return line;
+  });
+  return result.join("\n");
+}
+
 export async function runUpdateCommand(options: UpdateOptions): Promise<void> {
   const { cwd, json = false } = options;
   const log = createLogger({ json });
@@ -64,11 +79,14 @@ export async function runUpdateCommand(options: UpdateOptions): Promise<void> {
   });
 
   if (userConfigBackup !== null) {
+    // Always restore user config with version updated (even if version didn't change)
+    // This preserves user customizations while ensuring version is current
+    const updatedConfig = updateConfigVersion(userConfigBackup, currentVersion);
     const { writeTextFile } = await import("../core/fs.js");
-    await writeTextFile(cfgPath, userConfigBackup, { overwrite: true });
+    await writeTextFile(cfgPath, updatedConfig, { overwrite: true });
     if (!json) {
       log.info("");
-      log.success("User config.yml preserved.");
+      log.success("User config.yml restored with current version.");
     }
   }
 
