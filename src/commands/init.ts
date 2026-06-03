@@ -7,7 +7,7 @@ import {
   createDefaultConfigYaml,
   createDefaultMemoryFile,
 } from "../core/config.js";
-import { harnessPath, featuresDir, memoryDir, templatesDir, policiesDir, protocolsDir, configPath, statePath, harnessGitignorePath, opencodePath, opencodeConfigPath, opencodeAgentsDir, opencodePluginsDir, opencodeCommandsDir, opencodePluginPath, opencodeGuardrailPluginPath } from "../core/paths.js";
+import { harnessPath, featuresDir, memoryDir, templatesDir, policiesDir, protocolsDir, configPath, statePath, harnessGitignorePath, opencodePath, opencodeConfigPath, opencodeAgentsDir, opencodePluginsDir, opencodeCommandsDir, opencodePluginPath } from "../core/paths.js";
 import { createLogger, printJson } from "../core/logger.js";
 import { installClaudeCodePack, installGlobalClaudeCodeStatusLine } from "./init-claude-code.js";
 import { createOpenCodeCommandFiles } from "./load-opencode-commands.js";
@@ -317,6 +317,9 @@ function createLhGitignore(team: boolean): string {
   if (team) {
     return `# LeanHarness — team mode
 # Feature artifacts are committed and shared with the team.
+
+# Runtime state (user-specific)
+/state.json
 
 # Runtime log (session-local, never commit)
 /memory/cave.md
@@ -1422,6 +1425,7 @@ function createOpenCodePluginFiles(): PluginFileEntry[] {
 function createPluginShared(): string {
   return `import fs from "node:fs";
 import path from "node:path";
+import { getVersion } from "../core/version.js";
 
 export function projectRoot(context) {
   if (context && context.project && typeof context.project.cwd === "string") return context.project.cwd;
@@ -1480,7 +1484,7 @@ export function listFeatureDirs(root) {
 
 export function loadState(root) {
   const state = readJsonFile(path.join(root, ".lh", "state.json"));
-  if (!state || typeof state !== "object") return { version: "0.1", activeFeature: null, features: [] };
+  if (!state || typeof state !== "object") return { version: getVersion(), activeFeature: null, features: [] };
   return state;
 }
 

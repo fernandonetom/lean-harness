@@ -1,6 +1,7 @@
 import { readJsonFile, readTextFile, writeJsonFile, writeTextFile } from "./fs.js";
 import { configPath, statePath } from "./paths.js";
 import type { HarnessConfig, HarnessState } from "./types.js";
+import { getVersion } from "./version.js";
 
 export async function loadHarnessConfig(
   root: string,
@@ -31,7 +32,7 @@ export async function saveHarnessState(
 
 export function createDefaultState(): HarnessState {
   return {
-    version: "0.1",
+    version: getVersion(),
     schema: "leanharness-state",
     activeFeature: null,
     nextFeatureNumber: 1,
@@ -43,10 +44,11 @@ export function createDefaultState(): HarnessState {
 }
 
 export function createDefaultConfigYaml(): string {
+  const version = getVersion();
   return `# LeanHarness configuration
 # Source of truth for project-wide harness behavior.
 
-version: "0.1"
+version: "${version}"
 
 project:
   name: auto

@@ -1,8 +1,13 @@
+import { getVersion } from "../../src/core/version.js";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import fsp from "node:fs/promises";
+import { getVersion } from "../../src/core/version.js";
 import { runDoctorCommand } from "../../src/commands/doctor.js";
+import { getVersion } from "../../src/core/version.js";
 import { createTempWorkspace, type TestWorkspace } from "../helpers/workspace.js";
+import { getVersion } from "../../src/core/version.js";
 import { ensureDir, writeTextFile } from "../../src/core/fs.js";
+import { getVersion } from "../../src/core/version.js";
 import { harnessPath, statePath } from "../../src/core/paths.js";
 
 let ws: TestWorkspace;
@@ -61,7 +66,7 @@ describe("doctor --fix", () => {
     }
 
     const content = JSON.parse(await fsp.readFile(statePath(ws.root), "utf8"));
-    expect(content.version).toBe("0.1");
+    expect(content.version).toBe(getVersion());
     expect(content.schema).toBe("leanharness-state");
   });
 
@@ -78,7 +83,7 @@ describe("doctor --fix", () => {
     }
 
     const content = JSON.parse(await fsp.readFile(statePath(ws.root), "utf8"));
-    expect(content.version).toBe("0.1");
+    expect(content.version).toBe(getVersion());
     expect(content.schema).toBe("leanharness-state");
   });
 
@@ -87,7 +92,7 @@ describe("doctor --fix", () => {
     await writeTextFile(harnessPath(ws.root, "config.yml"), "version: 0.1");
     await fsp.writeFile(
       statePath(ws.root),
-      JSON.stringify({ version: "0.1", schema: "leanharness-state" }),
+      JSON.stringify({ version: getVersion(), schema: "leanharness-state" }),
       "utf8",
     );
     await ensureDir(harnessPath(ws.root, "templates"));
@@ -110,7 +115,7 @@ describe("doctor --fix", () => {
   it("creates missing directories (templates, policies, features)", async () => {
     await ensureDir(harnessPath(ws.root));
     await writeTextFile(harnessPath(ws.root, "config.yml"), "version: 0.1");
-    await fsp.writeFile(statePath(ws.root), JSON.stringify({ version: "0.1" }), "utf8");
+    await fsp.writeFile(statePath(ws.root), JSON.stringify({ version: getVersion() }), "utf8");
 
     const templateDir = harnessPath(ws.root, "templates");
     const policiesDir = harnessPath(ws.root, "policies");

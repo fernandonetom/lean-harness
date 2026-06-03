@@ -1,8 +1,9 @@
+import { getVersion } from "../../src/core/version.js";
 import type { HarnessState, FeatureIndexEntry } from "../../src/core/types.js";
 
 export function createTestState(overrides?: Partial<HarnessState>): HarnessState {
   return {
-    version: "0.1",
+    version: getVersion(),
     schema: "leanharness-state",
     activeFeature: null,
     nextFeatureNumber: 1,

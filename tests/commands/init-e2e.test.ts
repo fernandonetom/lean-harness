@@ -175,14 +175,14 @@ describe("lh init — LH core artifacts", () => {
     expect(gitignore).toContain("config.local.yml");
   });
 
-  it("creates .lh/.gitignore without features/ when team=true", async () => {
+  it("creates .lh/.gitignore without features/ but with state.json when team=true", async () => {
     const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     await runInitCommand({ cwd: tmpDir, team: true });
     spy.mockRestore();
 
     const gitignore = await fs.readFile(path.join(tmpDir, ".lh", ".gitignore"), "utf-8");
     expect(gitignore).not.toContain("/features/");
-    expect(gitignore).not.toContain("/state.json");
+    expect(gitignore).toContain("/state.json"); // user-specific, never commit
     expect(gitignore).toContain("/memory/cave.md");
     expect(gitignore).toContain("config.local.yml");
   });

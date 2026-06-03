@@ -1,3 +1,4 @@
+import { getVersion } from "./version.js";
 import { readJsonFile, writeJsonFile } from "./fs.js";
 import { statePath } from "./paths.js";
 import type { HarnessState, FeatureIndexEntry } from "./types.js";
@@ -28,7 +29,7 @@ export function normalizeState(input: unknown): HarnessState {
 
   const data = input as Record<string, unknown>;
 
-  const version = typeof data["version"] === "string" ? data["version"] : "0.1";
+  const version = typeof data["version"] === "string" ? data["version"] : getVersion();
   const schema = typeof data["schema"] === "string" ? data["schema"] : "leanharness-state";
 
   const activeFeature =
@@ -110,7 +111,7 @@ export function setActiveFeature(state: HarnessState, featurePath: string | null
 
 function createDefaultState(): HarnessState {
   return {
-    version: "0.1",
+    version: getVersion(),
     schema: "leanharness-state",
     activeFeature: null,
     nextFeatureNumber: 1,

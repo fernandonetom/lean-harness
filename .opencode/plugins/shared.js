@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { getVersion } from "../core/version.js";
 
 export function projectRoot(context) {
   if (context && context.project && typeof context.project.cwd === "string") return context.project.cwd;
@@ -58,7 +59,7 @@ export function listFeatureDirs(root) {
 
 export function loadState(root) {
   const state = readJsonFile(path.join(root, ".lh", "state.json"));
-  if (!state || typeof state !== "object") return { version: "0.1", activeFeature: null, features: [] };
+  if (!state || typeof state !== "object") return { version: getVersion(), activeFeature: null, features: [] };
   return state;
 }
 
