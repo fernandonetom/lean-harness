@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { CLIError } from "../../src/core/errors.js";
+import { getVersion } from "../../src/core/version.js";
 import path from "node:path";
 import fs from "node:fs/promises";
 import os from "node:os";
@@ -55,7 +56,7 @@ describe("runUpdateCommand", () => {
 
     const config = await fs.readFile(path.join(tmpDir, ".lh", "config.yml"), "utf-8");
     // Version should be updated to current version, rest preserved
-    expect(config).toContain('version: "1.2.1"');
+    expect(config).toContain('version: "' + getVersion() + '"');
     expect(config).toContain("# my custom config");
     expect(config).toContain("name: myproject");
   });
@@ -72,7 +73,7 @@ describe("runUpdateCommand", () => {
     const config = await fs.readFile(path.join(tmpDir, ".lh", "config.yml"), "utf-8");
     // User content should be preserved with version updated
     expect(config).toContain("# my custom config");
-    expect(config).toContain("version: \"1.2.1\"");
+    expect(config).toContain('version: "' + getVersion() + '"');
     expect(config).toContain("name: myproject");
   });
 
