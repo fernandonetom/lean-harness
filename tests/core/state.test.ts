@@ -1,6 +1,5 @@
 import { getVersion } from "../../src/core/version.js";
 import { describe, it, expect, afterEach } from "vitest";
-import { getVersion } from "../../src/core/version.js";
 import {
   normalizeState,
   upsertFeatureEntry,
@@ -11,7 +10,6 @@ import {
   loadState,
   saveState,
 } from "../../src/core/state.js";
-import { getVersion } from "../../src/core/version.js";
 import { createTempWorkspace, initHarnessWorkspace } from "../helpers/workspace.js";
 import type { TestWorkspace } from "../helpers/workspace.js";
 import type { HarnessState, FeatureIndexEntry } from "../../src/core/types.js";

@@ -15,21 +15,13 @@ vi.mock("node:child_process", () => ({
   execSync: vi.fn(),
 }));
 import fs from "node:fs/promises";
-import { getVersion } from "../../src/core/version.js";
 import { createTempWorkspace, cleanupWorkspace, lhPath, featurePath, readJson, fileExists, readFile } from "../e2e/helpers.js";
-import { getVersion } from "../../src/core/version.js";
 import { runInitCommand } from "../../src/commands/init.js";
-import { getVersion } from "../../src/core/version.js";
 import { runSpecCommand } from "../../src/commands/spec.js";
-import { getVersion } from "../../src/core/version.js";
 import { runDiscoverCommand } from "../../src/commands/discover.js";
-import { getVersion } from "../../src/core/version.js";
 import { runCheckCommand } from "../../src/commands/check.js";
-import { getVersion } from "../../src/core/version.js";
 import { loadState, normalizeState, saveState } from "../../src/core/state.js";
-import { getVersion } from "../../src/core/version.js";
 import { reviewBoundaryCompliance, type ChangedFile, type BoundaryReview } from "../../src/verification/changed-files.js";
-import { getVersion } from "../../src/core/version.js";
 import { determineVerdict } from "../../src/verification/index.js";
 
 let tmpDir: string;

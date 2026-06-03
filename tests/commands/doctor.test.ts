@@ -1,13 +1,9 @@
 import { getVersion } from "../../src/core/version.js";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import fsp from "node:fs/promises";
-import { getVersion } from "../../src/core/version.js";
 import { runDoctorCommand } from "../../src/commands/doctor.js";
-import { getVersion } from "../../src/core/version.js";
 import { createTempWorkspace, type TestWorkspace } from "../helpers/workspace.js";
-import { getVersion } from "../../src/core/version.js";
 import { ensureDir, writeTextFile } from "../../src/core/fs.js";
-import { getVersion } from "../../src/core/version.js";
 import { harnessPath, statePath } from "../../src/core/paths.js";
 
 let ws: TestWorkspace;
