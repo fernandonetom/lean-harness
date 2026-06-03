@@ -133,6 +133,11 @@ build:
   # lh-plan groups tasks into waves that stay under this budget.
   session_budget: 15
 
+boundary_enforcement:
+  # mode: strict   # strict (default) | warn | off
+  # always_allow: []   # glob patterns always permitted regardless of boundary
+  # session_overrides: []   # file paths added at runtime via 'lh boundary allow'
+
 adapters:
   claude-cli:
     skills_dir: .claude/skills

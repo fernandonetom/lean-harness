@@ -3076,6 +3076,290 @@ function normalizeRelativePath(root, candidate) {
   return candidate;
 }
 
+// --- config ---
+
+var BOUNDARY_ENFORCEMENT_DEFAULTS = {
+  mode: 'strict',
+  always_allow: [],
+  session_overrides: []
+};
+
+/**
+ * Read and minimally parse \`.lh/config.yml\`.
+ * Returns the parsed object (as a plain JS object) or null if the file is
+ * missing, unreadable, or too malformed to extract any structure from.
+ *
+ * Only parses scalar values and sequences at the top two indent levels —
+ * enough to extract the \`boundary_enforcement\` block.
+ */
+function readConfig(root) {
+  try {
+    var configFilePath = path.join(root, '.lh', 'config.yml');
+    var raw = fs.readFileSync(configFilePath, 'utf8');
+    return parseConfigYaml(raw);
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * Minimal YAML parser for \`.lh/config.yml\`.
+ * Strategy:
+ *  1. Split into lines.
+ *  2. Walk lines; for each top-level key (indent === 0) build an entry.
+ *  3. For each top-level key, collect child lines (indent > 0) until
+ *     another non-blank, non-comment line returns to indent 0.
+ *  4. Parse child lines as a simple sub-block (key: scalar or sequences).
+ *
+ * Returns a plain object or null on catastrophic failure.
+ */
+function parseConfigYaml(text) {
+  try {
+    var lines = text.split('\\n');
+    var result = {};
+    var i = 0;
+
+    while (i < lines.length) {
+      var line = lines[i];
+      var stripped = line.trimStart();
+
+      // Skip blank lines and comments
+      if (stripped === '' || stripped.charAt(0) === '#') {
+        i++;
+        continue;
+      }
+
+      var indent = getLineIndent(line);
+
+      // Top-level keys are at indent 0
+      if (indent === 0) {
+        var colonIdx = stripped.indexOf(':');
+        if (colonIdx === -1) { i++; continue; }
+
+        var topKey = stripped.slice(0, colonIdx).trim();
+        var afterColon = stripped.slice(colonIdx + 1).trim();
+        // Strip inline comments from value
+        afterColon = stripInlineComment(afterColon).trim();
+
+        if (afterColon !== '') {
+          // Inline scalar value
+          result[topKey] = parseYamlScalar(afterColon);
+          i++;
+        } else {
+          // Block value — collect child lines
+          i++;
+          var childLines = [];
+          while (i < lines.length) {
+            var childLine = lines[i];
+            var childStripped = childLine.trimStart();
+            if (childStripped === '' || childStripped.charAt(0) === '#') {
+              i++;
+              continue;
+            }
+            var childIndent = getLineIndent(childLine);
+            if (childIndent === 0) break; // back to top level
+            childLines.push(childLine);
+            i++;
+          }
+          result[topKey] = parseYamlBlock(childLines);
+        }
+      } else {
+        // Should not reach here at indent > 0 at the top loop — skip
+        i++;
+      }
+    }
+
+    return result;
+  } catch (_) {
+    return null;
+  }
+}
+
+/** Count leading spaces. */
+function getLineIndent(line) {
+  var n = 0;
+  while (n < line.length && line.charAt(n) === ' ') n++;
+  return n;
+}
+
+/** Strip trailing inline comment from a value fragment (after key:). */
+function stripInlineComment(s) {
+  var inSingle = false;
+  var inDouble = false;
+  for (var i = 0; i < s.length; i++) {
+    var ch = s.charAt(i);
+    if (ch === "'" && !inDouble) inSingle = !inSingle;
+    else if (ch === '"' && !inSingle) inDouble = !inDouble;
+    else if (ch === '#' && !inSingle && !inDouble) {
+      if (i === 0 || s.charAt(i - 1) === ' ' || s.charAt(i - 1) === '\\t') {
+        return s.slice(0, i).trimEnd();
+      }
+    }
+  }
+  return s;
+}
+
+/** Parse a scalar YAML value string into a JS primitive. */
+function parseYamlScalar(raw) {
+  var s = raw.trim();
+  if (s === 'true') return true;
+  if (s === 'false') return false;
+  if (s === 'null' || s === '~') return null;
+  if (/^-?\\d+\$/.test(s)) return parseInt(s, 10);
+  if (/^-?\\d+\\.\\d+\$/.test(s)) return parseFloat(s);
+  if ((s.charAt(0) === '"' && s.charAt(s.length - 1) === '"') ||
+      (s.charAt(0) === "'" && s.charAt(s.length - 1) === "'")) {
+    return s.slice(1, -1);
+  }
+  return s;
+}
+
+/** Parse a flow sequence like \`[foo, bar, "baz"]\`. Returns array or null. */
+function parseFlowSequence(raw) {
+  var inner = raw.slice(1, raw.length - 1).trim();
+  if (inner === '') return [];
+  var items = [];
+  var current = '';
+  var inSingle = false;
+  var inDouble = false;
+  var depth = 0;
+  for (var i = 0; i < inner.length; i++) {
+    var ch = inner.charAt(i);
+    if (ch === "'" && !inDouble) inSingle = !inSingle;
+    else if (ch === '"' && !inSingle) inDouble = !inDouble;
+    else if (!inSingle && !inDouble) {
+      if (ch === '[') depth++;
+      else if (ch === ']') depth--;
+    }
+    if (ch === ',' && !inSingle && !inDouble && depth === 0) {
+      items.push(parseYamlScalar(current.trim()));
+      current = '';
+    } else {
+      current += ch;
+    }
+  }
+  if (current.trim() !== '') items.push(parseYamlScalar(current.trim()));
+  return items;
+}
+
+/**
+ * Parse a block of indented child lines into a plain JS object.
+ * Handles: scalar values, block sequences (\`- item\`), flow sequences.
+ * All child lines share the same base indent (the minimum non-blank indent).
+ */
+function parseYamlBlock(childLines) {
+  if (!childLines || childLines.length === 0) return {};
+
+  // Find base indent
+  var baseIndent = Infinity;
+  for (var i = 0; i < childLines.length; i++) {
+    var l = childLines[i];
+    if (l.trimStart() === '') continue;
+    var ind = getLineIndent(l);
+    if (ind < baseIndent) baseIndent = ind;
+  }
+  if (baseIndent === Infinity) return {};
+
+  var result = {};
+  var j = 0;
+
+  while (j < childLines.length) {
+    var line = childLines[j];
+    var stripped = line.trimStart();
+    if (stripped === '' || stripped.charAt(0) === '#') { j++; continue; }
+
+    var indent = getLineIndent(line);
+    if (indent !== baseIndent) { j++; continue; } // deeper or shallower — skip
+
+    var colonIdx = stripped.indexOf(':');
+    if (colonIdx === -1) { j++; continue; }
+
+    var key = stripped.slice(0, colonIdx).trim();
+    var afterColon = stripped.slice(colonIdx + 1).trim();
+    afterColon = stripInlineComment(afterColon).trim();
+
+    if (afterColon !== '') {
+      // Inline value: scalar or flow sequence
+      if (afterColon.charAt(0) === '[') {
+        result[key] = parseFlowSequence(afterColon);
+      } else {
+        result[key] = parseYamlScalar(afterColon);
+      }
+      j++;
+    } else {
+      // Look ahead for block sequence items at deeper indent
+      j++;
+      var seqItems = [];
+      var foundSeq = false;
+      while (j < childLines.length) {
+        var seqLine = childLines[j];
+        var seqStripped = seqLine.trimStart();
+        if (seqStripped === '' || seqStripped.charAt(0) === '#') { j++; continue; }
+        var seqIndent = getLineIndent(seqLine);
+        if (seqIndent <= baseIndent) break; // back to same or parent level
+        if (seqStripped.slice(0, 2) === '- ') {
+          var itemVal = seqStripped.slice(2).trim();
+          itemVal = stripInlineComment(itemVal).trim();
+          seqItems.push(parseYamlScalar(itemVal));
+          foundSeq = true;
+          j++;
+        } else {
+          // nested mapping — skip for our purposes, treat as null
+          j++;
+        }
+      }
+      result[key] = foundSeq ? seqItems : null;
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Load boundary enforcement settings from \`.lh/config.yml\`.
+ * Always returns \`{ mode, always_allow, session_overrides }\`.
+ * Falls back to strict defaults if config is missing, the
+ * \`boundary_enforcement\` block is absent, or the block is malformed.
+ * Unrecognized mode values also fall back to \`'strict'\` for safety.
+ */
+function loadBoundaryEnforcement(root) {
+  var defaults = {
+    mode: BOUNDARY_ENFORCEMENT_DEFAULTS.mode,
+    always_allow: BOUNDARY_ENFORCEMENT_DEFAULTS.always_allow.slice(),
+    session_overrides: BOUNDARY_ENFORCEMENT_DEFAULTS.session_overrides.slice()
+  };
+
+  try {
+    var config = readConfig(root);
+    if (!config || typeof config !== 'object') return defaults;
+
+    var block = config['boundary_enforcement'];
+    if (!block || typeof block !== 'object') return defaults;
+
+    // mode
+    var mode = defaults.mode;
+    if (block['mode'] === 'strict' || block['mode'] === 'warn' || block['mode'] === 'off') {
+      mode = block['mode'];
+    }
+
+    // always_allow
+    var always_allow = defaults.always_allow;
+    if (Array.isArray(block['always_allow'])) {
+      always_allow = block['always_allow'].filter(function(v) { return typeof v === 'string'; });
+    }
+
+    // session_overrides
+    var session_overrides = defaults.session_overrides;
+    if (Array.isArray(block['session_overrides'])) {
+      session_overrides = block['session_overrides'].filter(function(v) { return typeof v === 'string'; });
+    }
+
+    return { mode: mode, always_allow: always_allow, session_overrides: session_overrides };
+  } catch (_) {
+    return defaults;
+  }
+}
+
 // --- file I/O ---
 
 function readJsonFile(filePath) {
@@ -3555,6 +3839,8 @@ function safeString(val) {
 module.exports = {
   readStdinJson: readStdinJson,
   projectRoot: projectRoot,
+  readConfig: readConfig,
+  loadBoundaryEnforcement: loadBoundaryEnforcement,
   toPosixPath: toPosixPath,
   normalizeRelativePath: normalizeRelativePath,
   readJsonFile: readJsonFile,
@@ -3629,6 +3915,8 @@ function handleFileEdit(input, root, toolName) {
 
   if (paths.length === 0) return;
 
+  var enforcement = shared.loadBoundaryEnforcement(root);
+
   var featureRef = shared.findActiveFeature(root);
   var featureDir = featureRef ? shared.resolveFeatureDir(root, featureRef) : null;
   var boundary = featureDir ? shared.loadBoundary(root, featureDir) : null;
@@ -3636,6 +3924,7 @@ function handleFileEdit(input, root, toolName) {
   for (var i = 0; i < paths.length; i++) {
     var p = paths[i];
 
+    // Parent-escape check is unconditional — cannot be overridden by mode or always_allow
     if (p.startsWith('__PARENT_ESCAPE__')) {
       var escDecision = shared.preToolDecision(
         'PreToolUse',
@@ -3646,7 +3935,23 @@ function handleFileEdit(input, root, toolName) {
       return;
     }
 
+    // Bootstrap path check is unconditional — always allow
     if (shared.isHarnessBootstrapPath(p)) {
+      continue;
+    }
+
+    // always_allow globs — allow unconditionally regardless of mode or boundary
+    if (shared.matchesAnyPattern(enforcement.always_allow, p)) {
+      continue;
+    }
+
+    // session_overrides — allow unconditionally
+    if (enforcement.session_overrides.indexOf(p) !== -1) {
+      continue;
+    }
+
+    // mode: off — skip all boundary checks
+    if (enforcement.mode === 'off') {
       continue;
     }
 
@@ -3666,12 +3971,24 @@ function handleFileEdit(input, root, toolName) {
 
       if (!check.inside) {
         var featureName = featureRef || 'active feature';
+
+        if (enforcement.mode === 'warn') {
+          process.stderr.write(
+            'LeanHarness warning: \\\`' + p +
+            '\\\` is outside the active change boundary for ' + featureName +
+            '. Edit is allowed in warn mode.\\n'
+          );
+          continue;
+        }
+
+        // strict mode (default) — deny with CLI hint
         var oobDecision = shared.preToolDecision(
           'PreToolUse',
           'deny',
           'LeanHarness blocked this edit because \\\`' + p +
           '\\\` is outside the active change boundary for ' + featureName +
-          '. Update discovery and boundary before editing it.'
+          '. Update discovery and boundary before editing it.' +
+          '\\nTo allow this file, run: lh boundary allow ' + p
         );
         process.stdout.write(JSON.stringify(oobDecision));
         return;
