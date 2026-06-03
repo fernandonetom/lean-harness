@@ -103,6 +103,44 @@ build:
 
 Task weights: 1 = trivial, 2 = small, 3 = mid-size, 5 = complex/risky.
 
+### `boundary_enforcement`
+
+Controls how strictly LeanHarness enforces change boundaries.
+
+```yaml
+boundary_enforcement:
+  mode: warn           # strict | warn | off
+  always_allow: []     # glob patterns always permitted
+  session_overrides: [] # file paths added at runtime
+```
+
+| Mode | Behavior |
+|------|----------|
+| `strict` | Blocks edits outside boundary. Use `lh boundary allow <file>` to unblock specific files. |
+| `warn` | Logs warnings but allows edits (default). |
+| `off` | Boundary enforcement disabled. |
+
+**always_allow** — Glob patterns for files that are always allowed, regardless of boundary. Example:
+
+```yaml
+always_allow:
+  - "**/*.test.ts"
+  - "**/package.json"
+```
+
+**session_overrides** — File paths added at runtime via `lh boundary allow`. These persist until you remove them with `lh boundary exempt <file>`.
+
+Use the CLI to manage these settings:
+
+```bash
+lh boundary status          # view current config
+lh boundary set-mode strict # enable strict mode
+lh boundary set-mode warn   # warnings only (default)
+lh boundary set-mode off    # disable enforcement
+lh boundary allow <path>    # add to session_overrides
+lh boundary exempt <path>   # remove from session_overrides
+```
+
 ## `.lh/state.json`
 
 An index/cache that tracks feature IDs, slugs, statuses, and the active feature. Updated automatically by CLI commands.

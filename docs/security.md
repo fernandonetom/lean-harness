@@ -104,6 +104,43 @@ Change boundaries (`boundary.json`) define which files an agent can modify:
 
 Boundary enforcement is implemented by hooks (Claude Code) and plugins (OpenCode). Enforcement is best-effort — it depends on the host correctly reporting file operations to the guardrail layer.
 
+### Enforcement modes
+
+Boundary enforcement supports three modes, configurable via `boundary_enforcement.mode` in `.lh/config.yml` or via `lh boundary set-mode`:
+
+| Mode | Behavior |
+|------|----------|
+| `strict` | Blocks edits outside boundary. Use `lh boundary allow <file>` to unblock. |
+| `warn` | Logs warnings but allows edits (default). |
+| `off` | Boundary enforcement disabled. |
+
+```bash
+lh boundary set-mode strict  # block edits outside boundary
+lh boundary set-mode warn    # log warnings (default)
+lh boundary set-mode off     # disable enforcement
+```
+
+**Always allowed files** can be configured via `always_allow` glob patterns in `boundary_enforcement`:
+
+```yaml
+boundary_enforcement:
+  always_allow:
+    - "**/*.test.ts"
+    - "**/package.json"
+```
+
+**Session overrides** allow temporary unblocking during a session:
+
+```bash
+lh boundary allow src/legacy/file.ts
+```
+
+These overrides persist in `.lh/config.yml` until removed:
+
+```bash
+lh boundary exempt src/legacy/file.ts
+```
+
 ## Verification
 
 `lh check` produces evidence-based verdicts:
