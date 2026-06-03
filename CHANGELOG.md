@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.3.0
+
+### Minor Changes
+
+- 9e8fa10: Configurable boundary enforcement
+
+  - New `lh boundary` CLI command with allow/block/exempt/list/show subcommands
+  - Configurable enforcement modes: strict, warn, off
+  - Added always_allow glob patterns in config
+  - Enhanced pre-tool-use hooks with enforcement logic
+  - Removed obsolete state.json file
+
 ## 1.2.1
 
 ### Patch Changes
