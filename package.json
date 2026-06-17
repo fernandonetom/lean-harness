@@ -34,7 +34,6 @@
     "test:coverage": "vitest run --coverage",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "prepack": "npm run build && npm run typecheck && npm test",
     "pack:dry-run": "npm pack --dry-run",
     "release:check": "npm run build && npm run typecheck && npm test && npm run pack:dry-run",
     "release": "npm run release:check && npm publish --provenance --access public"
