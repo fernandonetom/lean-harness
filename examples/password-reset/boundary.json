@@ -34,14 +34,14 @@
   ],
   "riskGates": [
     {
-      "gate": "security_sensitive_change",
-      "status": "triggered",
-      "notes": "Password reset tokens require cryptographic randomness and timing-safe comparison."
+      "name": "security_sensitive_change",
+      "reason": "Password reset tokens require cryptographic randomness and timing-safe comparison.",
+      "status": "triggered"
     },
     {
-      "gate": "auth_rewrite",
-      "status": "unresolved",
-      "notes": "Spec preserves existing auth. Discovery confirms no rewrite needed. Gate left unresolved as a reminder to verify during check."
+      "name": "auth_rewrite",
+      "reason": "Spec preserves existing auth. Discovery confirms no rewrite needed. Gate left unresolved as a reminder to verify during check.",
+      "status": "unresolved"
     }
   ],
   "unknowns": [

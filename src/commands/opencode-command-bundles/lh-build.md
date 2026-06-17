@@ -9,6 +9,12 @@ agent: lh-builder
 
 Implement planned LeanHarness tasks with bounded context, boundary discipline, tests, compact summaries, and verification evidence. This is where code gets written.
 
+## OpenCode Notes
+
+- **No model selection.** On OpenCode, the build runs with the current session model. Do not ask the user which model to use (Sonnet/Haiku/other) — there is no per-task model choice. Subagents dispatched during the build (e.g., `lh-builder-fix`) inherit the current session model automatically.
+- **No exec-mode question.** This command runs the build as a single `lh-builder` agent with mandatory self-review per task. Do not ask the user to choose between "subagents" and "current agent" — that question is specific to the Claude Code lh-build skill and does not apply here.
+- **Do not read Claude Code skills.** Files under `.claude/skills/lh-*/SKILL.md` are for Claude Code hosts. Ignore them; the OpenCode command bundle (this file) is the source of truth for OpenCode builds.
+
 ## Inputs
 
 Accept any of:

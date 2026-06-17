@@ -54,15 +54,16 @@ export function isPathAllowedByBoundary(filePath: string, boundary: unknown): Bo
     }
   }
 
-  const touchFiles = b["touchFiles"];
-  if (Array.isArray(touchFiles)) {
-    for (const tf of touchFiles) {
-      if (typeof tf === "object" && tf !== null) {
-        const entry = tf as Record<string, unknown>;
-        if (typeof entry["path"] === "string" && entry["path"] === posix) {
-          return "in";
-        }
+  // accept touchFiles (current), touch (docs/migration), or files (older object form)
+  const touchFiles = readTouchList(b);
+  for (const tf of touchFiles) {
+    if (typeof tf === "object" && tf !== null) {
+      const entry = tf as Record<string, unknown>;
+      if (typeof entry["path"] === "string" && entry["path"] === posix) {
+        return "in";
       }
+    } else if (typeof tf === "string" && tf === posix) {
+      return "in";
     }
   }
 
@@ -76,6 +77,24 @@ export function isPathAllowedByBoundary(filePath: string, boundary: unknown): Bo
   }
 
   return "unknown";
+}
+
+function readTouchList(b: Record<string, unknown>): unknown[] {
+  let raw: unknown = b["touchFiles"];
+  if (raw == null) raw = b["touch"];
+  if (raw == null) {
+    const files = b["files"];
+    if (Array.isArray(files)) raw = files;
+    else if (files && typeof files === "object") {
+      const merged: unknown[] = [];
+      for (const key of ["modify", "create", "delete"]) {
+        const list = (files as Record<string, unknown>)[key];
+        if (Array.isArray(list)) merged.push(...list);
+      }
+      raw = merged;
+    }
+  }
+  return Array.isArray(raw) ? raw : [];
 }
 
 export async function detectChangedFiles(input: {
