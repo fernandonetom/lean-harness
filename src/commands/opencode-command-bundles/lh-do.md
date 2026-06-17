@@ -65,12 +65,23 @@ Before running any step, inspect the feature folder to determine the current pha
 - Do not skip check.
 - Respect risk gates from `.lh/config.yml`.
 - Use bounded context for implementation tasks.
-- For the **Specify step**: if subagents exist, delegate to the spec subagent; otherwise follow the lh-spec workflow directly from `.opencode/commands/lh-spec.md`. Do not skip it.
-- If subagents exist (e.g., `.opencode/agents/lh-*.md`), use them when helpful.
+- For the **Specify step**: follow the lh-spec workflow directly from `.opencode/commands/lh-spec.md`. Do not skip it.
+- For the **Build step**: follow the lh-build workflow directly from `.opencode/commands/lh-build.md`. Do not skip it.
+- For the **Check step**: follow the lh-check workflow directly from `.opencode/commands/lh-check.md`. Do not skip it.
+- For the **Discover step**: follow the lh-discover workflow directly from `.opencode/commands/lh-discover.md`. Do not skip it.
+- For the **Plan step**: follow the lh-plan workflow directly from `.opencode/commands/lh-plan.md`. Do not skip it.
+- Do NOT read or follow Claude Code skills under `.claude/skills/`. OpenCode uses its own commands and agents. The Claude Code lh-build skill asks about Claude-specific model choices (Sonnet/Haiku) and exec mode (subagents vs current agent) that do not apply on OpenCode — OpenCode uses the current session model and runs the build as a single lh-builder agent with self-review.
+- If subagents exist (e.g., `.opencode/agents/lh-*.md`), use them when helpful. Subagents inherit the current session model — there is no per-subagent model selection.
 - If subagents do not exist yet, perform the steps directly.
 - If guardrail plugin exists, respect its outcomes.
 - If CLI commands exist later, prefer them for deterministic file operations.
 - If CLI commands do not exist yet, manually create or update artifacts using templates from `.lh/templates/`.
+
+## Model and Execution Mode
+
+On OpenCode, the model is whatever the current session is using. There is no per-step or per-subagent model selection — do not ask the user which model to use. Subagents (e.g., `lh-builder-fix`) inherit the current session model automatically.
+
+Likewise, the OpenCode build workflow does not ask the user to choose between "subagents" and "current agent" — the build runs as the lh-builder agent with mandatory self-review per task. Do not surface exec-mode or model-choice questions during the build phase; they are Claude Code-specific.
 
 ## Question Format
 

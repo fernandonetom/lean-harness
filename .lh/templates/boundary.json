@@ -11,7 +11,7 @@
     { "path": "{{FILE_PATH}}", "reason": "{{REASON}}", "confidence": "{{low|medium|high}}" }
   ],
   "relevantTests": [
-    { "path": "{{TEST_FILE}}", "command": "{{TEST_COMMAND}}", "reason": "{{REASON}}", "confidence": "{{low|medium|high}}" }
+    { "path": "{{TEST_FILE}}", "reason": "{{REASON}}", "confidence": "{{low|medium|high}}" }
   ],
   "commands": [
     { "command": "{{COMMAND}}", "purpose": "{{PURPOSE}}", "confidence": "{{low|medium|high}}", "source": "{{package.json|Makefile|inferred}}" }
@@ -19,7 +19,7 @@
   "allowedEditGlobs": [],
   "blockedEditGlobs": [],
   "riskGates": [
-    { "gate": "{{GATE_NAME}}", "status": "{{triggered|clear}}", "notes": "{{NOTES}}" }
+    { "name": "{{GATE_NAME}}", "reason": "{{REASON}}", "status": "{{triggered|approved|resolved|unresolved}}" }
   ],
   "unknowns": [],
   "doNotTouch": [],

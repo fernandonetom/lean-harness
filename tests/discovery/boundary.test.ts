@@ -238,6 +238,75 @@ describe("buildBoundary", () => {
     expect(authGate).toBeDefined();
   });
 
+  it("emits riskGates entries in the canonical { name, reason, status } shape", () => {
+    const candidates: CandidateFile[] = [
+      {
+        path: "src/cobranca/charge.ts",
+        reason: "matches: billing",
+        confidence: "high",
+        score: 8,
+        kind: "source",
+        matchedTerms: ["billing", "payment"],
+      },
+    ];
+
+    const input = makeBuildInput({
+      search: makeSearch({ candidates }),
+    });
+
+    const boundary = buildBoundary(input);
+
+    // payment_logic should trigger from billing + payment keywords.
+    const paymentGate = boundary.riskGates.find(
+      (g) => g.name === "payment_logic",
+    );
+    expect(paymentGate).toBeDefined();
+    expect(paymentGate).not.toBeNull();
+    // canonical shape — never the legacy { gate, notes } shape
+    expect(paymentGate).toHaveProperty("name", "payment_logic");
+    expect(paymentGate).toHaveProperty("reason");
+    expect(paymentGate).toHaveProperty("status", "triggered");
+    expect(paymentGate).not.toHaveProperty("gate");
+    expect(paymentGate).not.toHaveProperty("notes");
+  });
+
+  it("every emitted riskGates status is a known value", () => {
+    const candidates: CandidateFile[] = [
+      {
+        path: "src/auth/login.ts",
+        reason: "matches: auth",
+        confidence: "high",
+        score: 8,
+        kind: "source",
+        matchedTerms: ["auth"],
+      },
+      {
+        path: "src/billing/invoice.ts",
+        reason: "matches: billing",
+        confidence: "high",
+        score: 8,
+        kind: "source",
+        matchedTerms: ["billing"],
+      },
+    ];
+
+    const input = makeBuildInput({
+      search: makeSearch({ candidates }),
+    });
+
+    const boundary = buildBoundary(input);
+
+    const validStatuses = new Set([
+      "triggered",
+      "approved",
+      "resolved",
+      "unresolved",
+    ]);
+    for (const gate of boundary.riskGates) {
+      expect(validStatuses.has(gate.status)).toBe(true);
+    }
+  });
+
   it("populates unknowns when no touch files found", () => {
     const input = makeBuildInput();
     const boundary = buildBoundary(input);

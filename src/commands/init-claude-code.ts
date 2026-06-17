@@ -3722,6 +3722,24 @@ function classifyPathRisk(p) {
 
 // --- boundary check ---
 
+function normalizeTouchList(boundary) {
+  if (!boundary || typeof boundary !== 'object') return [];
+  var raw = boundary.touchFiles;
+  if (raw == null) raw = boundary.touch;
+  if (raw == null) {
+    var files = boundary.files;
+    if (Array.isArray(files)) raw = files;
+    else if (files && typeof files === 'object') {
+      var merged = [];
+      ['modify', 'create', 'delete'].forEach(function(key) {
+        if (Array.isArray(files[key])) merged = merged.concat(files[key]);
+      });
+      raw = merged;
+    }
+  }
+  return Array.isArray(raw) ? raw : [];
+}
+
 function isPathInsideBoundary(p, boundary) {
   if (!p || !boundary) {
     return { inside: false, blocked: false, reason: 'No boundary loaded.' };
@@ -3745,30 +3763,16 @@ function isPathInsideBoundary(p, boundary) {
     return { inside: true, blocked: false, reason: 'Bootstrap path.' };
   }
 
-  // check touchFiles
-  var touchFiles = boundary.touchFiles || boundary.files || {};
+  // accept touchFiles (current), touch (docs/migration), or files (older object form)
+  var touchFiles = normalizeTouchList(boundary);
   var allTouchPaths = [];
-
-  // handle touchFiles as array of objects with .path
-  if (Array.isArray(touchFiles)) {
-    for (var t = 0; t < touchFiles.length; t++) {
-      if (touchFiles[t] && typeof touchFiles[t].path === 'string') {
-        allTouchPaths.push(toPosixPath(touchFiles[t].path));
-      } else if (typeof touchFiles[t] === 'string') {
-        allTouchPaths.push(toPosixPath(touchFiles[t]));
-      }
+  for (var t = 0; t < touchFiles.length; t++) {
+    var entry = touchFiles[t];
+    if (entry && typeof entry === 'object' && typeof entry.path === 'string') {
+      allTouchPaths.push(toPosixPath(entry.path));
+    } else if (typeof entry === 'string') {
+      allTouchPaths.push(toPosixPath(entry));
     }
-  }
-
-  // handle files.modify/create/delete from boundary template
-  if (touchFiles && typeof touchFiles === 'object' && !Array.isArray(touchFiles)) {
-    ['modify', 'create', 'delete'].forEach(function(key) {
-      if (Array.isArray(touchFiles[key])) {
-        touchFiles[key].forEach(function(fp) {
-          if (typeof fp === 'string') allTouchPaths.push(toPosixPath(fp));
-        });
-      }
-    });
   }
 
   for (var m = 0; m < allTouchPaths.length; m++) {

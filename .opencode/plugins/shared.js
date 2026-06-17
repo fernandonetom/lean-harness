@@ -200,14 +200,38 @@ export function classifyPathRisk(relativePath) {
   return { riskGate: null, reason: null };
 }
 
+function normalizeTouchList(boundary) {
+  if (!boundary || typeof boundary !== "object") return [];
+  let raw = boundary.touchFiles;
+  if (raw == null) raw = boundary.touch;
+  if (raw == null) {
+    const files = boundary.files;
+    if (Array.isArray(files)) raw = files;
+    else if (files && typeof files === "object") {
+      const merged = [];
+      for (const key of ["modify", "create", "delete"]) {
+        if (Array.isArray(files[key])) merged.push(...files[key]);
+      }
+      raw = merged;
+    }
+  }
+  return Array.isArray(raw) ? raw : [];
+}
+
+function entryPath(entry) {
+  if (typeof entry === "string") return entry;
+  if (entry && typeof entry === "object" && typeof entry.path === "string") return entry.path;
+  return null;
+}
+
 export function isPathInsideBoundary(relativePath, boundary) {
   if (!relativePath || !boundary) return { inside: false, blocked: false, reason: "No boundary loaded." };
   const p = toPosixPath(relativePath);
   if (matchesAnyPattern(boundary.blockedEditGlobs || [], p)) return { inside: false, blocked: true, reason: "Path matches blockedEditGlobs." };
   for (const d of (boundary.doNotTouch || [])) { if (toPosixPath(d) === p || matchesPattern(d, p)) return { inside: false, blocked: true, reason: "Path in doNotTouch." }; }
   if (isHarnessBootstrapPath(p)) return { inside: true, blocked: false, reason: "Bootstrap path." };
-  const touchFiles = boundary.touchFiles || [];
-  if (Array.isArray(touchFiles)) { for (const t of touchFiles) { const tp = typeof t === "string" ? t : (t && t.path); if (tp && toPosixPath(tp) === p) return { inside: true, blocked: false, reason: "In touchFiles." }; } }
+  const touchFiles = normalizeTouchList(boundary);
+  for (const t of touchFiles) { const tp = entryPath(t); if (tp && toPosixPath(tp) === p) return { inside: true, blocked: false, reason: "In touchFiles." }; }
   if (matchesAnyPattern(boundary.allowedEditGlobs || [], p)) return { inside: true, blocked: false, reason: "Matches allowedEditGlobs." };
   return { inside: false, blocked: false, reason: "Path not in boundary." };
 }

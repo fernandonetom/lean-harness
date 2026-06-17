@@ -374,8 +374,26 @@ function renderBoundarySection(boundary: unknown): string {
 
   const b = boundary as Record<string, unknown>;
 
-  const touchFiles = Array.isArray(b["touchFiles"]) ? b["touchFiles"] : [];
-  const readOnlyFiles = Array.isArray(b["readOnlyFiles"]) ? b["readOnlyFiles"] : [];
+  // accept touchFiles (current) or touch (docs/migration) or files (older object form)
+  let touchFilesRaw: unknown = b["touchFiles"];
+  if (touchFilesRaw == null) touchFilesRaw = b["touch"];
+  if (touchFilesRaw == null) {
+    const files = b["files"];
+    if (Array.isArray(files)) touchFilesRaw = files;
+    else if (files && typeof files === "object") {
+      const merged: unknown[] = [];
+      for (const key of ["modify", "create", "delete"]) {
+        const list = (files as Record<string, unknown>)[key];
+        if (Array.isArray(list)) merged.push(...list);
+      }
+      touchFilesRaw = merged;
+    }
+  }
+  const touchFiles = Array.isArray(touchFilesRaw) ? touchFilesRaw : [];
+
+  // accept readOnlyFiles (current) or readOnly (docs/migration)
+  const readOnlyRaw = b["readOnlyFiles"] != null ? b["readOnlyFiles"] : b["readOnly"];
+  const readOnlyFiles = Array.isArray(readOnlyRaw) ? readOnlyRaw : [];
   const allowedEditGlobs = Array.isArray(b["allowedEditGlobs"]) ? b["allowedEditGlobs"] : [];
   const blockedEditGlobs = Array.isArray(b["blockedEditGlobs"]) ? b["blockedEditGlobs"] : [];
   const doNotTouch = Array.isArray(b["doNotTouch"]) ? b["doNotTouch"] : [];

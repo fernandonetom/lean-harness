@@ -228,4 +228,140 @@ describe("runDiscovery", () => {
     expect(result.project.languages).toContain("typescript");
     expect(result.project.packageManagers).toContain("npm");
   });
+
+  it("writes boundary.json that conforms to the BoundaryJson schema", async () => {
+    const feature = await createFeature({
+      root: ws.root,
+      request: "Add cobranca charge endpoint",
+    });
+
+    // Add source files that discovery should pick up, with risk-gate triggers.
+    await fsp.mkdir(path.join(ws.root, "src", "cobranca"), { recursive: true });
+    await fsp.writeFile(
+      path.join(ws.root, "src", "cobranca", "charge.ts"),
+      "export function charge() {}\n",
+    );
+
+    const result = await runDiscovery({
+      root: ws.root,
+      featureRef: feature.id,
+      depth: "D2",
+    });
+
+    const featureDir = path.join(
+      ws.root,
+      ".lh",
+      "features",
+      feature.folderName,
+    );
+    const raw = await readTextFile(path.join(featureDir, "boundary.json"));
+    expect(raw).not.toBeNull();
+    const boundary = JSON.parse(raw!);
+
+    // top-level fields — every key defined in BoundaryJson MUST be present
+    const expectedTopLevelKeys = [
+      "featureId",
+      "featureTitle",
+      "status",
+      "confidence",
+      "discoveryDepth",
+      "touchFiles",
+      "readOnlyFiles",
+      "relevantTests",
+      "commands",
+      "allowedEditGlobs",
+      "blockedEditGlobs",
+      "riskGates",
+      "unknowns",
+      "doNotTouch",
+      "protectedTokens",
+      "closureGaps",
+      "lastUpdated",
+    ];
+    for (const key of expectedTopLevelKeys) {
+      expect(boundary, `missing top-level key: ${key}`).toHaveProperty(key);
+    }
+
+    // field types must match the schema
+    expect(typeof boundary.featureId).toBe("string");
+    expect(typeof boundary.featureTitle).toBe("string");
+    expect(typeof boundary.status).toBe("string");
+    expect(typeof boundary.confidence).toBe("string");
+    expect(typeof boundary.discoveryDepth).toBe("string");
+    expect(Array.isArray(boundary.touchFiles)).toBe(true);
+    expect(Array.isArray(boundary.readOnlyFiles)).toBe(true);
+    expect(Array.isArray(boundary.relevantTests)).toBe(true);
+    expect(Array.isArray(boundary.commands)).toBe(true);
+    expect(Array.isArray(boundary.allowedEditGlobs)).toBe(true);
+    expect(Array.isArray(boundary.blockedEditGlobs)).toBe(true);
+    expect(Array.isArray(boundary.riskGates)).toBe(true);
+    expect(Array.isArray(boundary.unknowns)).toBe(true);
+    expect(Array.isArray(boundary.doNotTouch)).toBe(true);
+    expect(Array.isArray(boundary.protectedTokens)).toBe(true);
+    expect(Array.isArray(boundary.closureGaps)).toBe(true);
+    expect(typeof boundary.lastUpdated).toBe("string");
+
+    // touchFiles entries use the canonical { path, reason, confidence } shape
+    for (const tf of boundary.touchFiles) {
+      expect(typeof tf.path).toBe("string");
+      expect(typeof tf.reason).toBe("string");
+      expect(["low", "medium", "high"]).toContain(tf.confidence);
+    }
+
+    // riskGates entries use the canonical { name, reason, status } shape —
+    // NOT the old { gate, notes } shape that the old template used.
+    for (const rg of boundary.riskGates) {
+      expect(typeof rg.name).toBe("string");
+      expect(typeof rg.reason).toBe("string");
+      expect(["triggered", "approved", "resolved", "unresolved"]).toContain(
+        rg.status,
+      );
+      expect(rg).not.toHaveProperty("gate");
+      expect(rg).not.toHaveProperty("notes");
+    }
+
+    // round-trip: the in-memory BoundaryJson the CLI returned is the same as
+    // what got written to disk (modulo lastUpdated ordering).
+    expect(boundary.featureId).toBe(result.boundary.featureId);
+    expect(boundary.touchFiles).toEqual(result.boundary.touchFiles);
+    expect(boundary.riskGates).toEqual(result.boundary.riskGates);
+  });
+
+  it("matches the bundled .lh/templates/boundary.json key set", async () => {
+    const { readFileSync } = await import("node:fs");
+    const template = JSON.parse(
+      readFileSync(
+        path.resolve(process.cwd(), ".lh/templates/boundary.json"),
+        "utf8",
+      ),
+    );
+    const templateKeys = Object.keys(template).sort();
+    // Strip placeholder-only fields that the runtime fills in.
+    const placeholders = new Set([
+      "featureId",
+      "featureTitle",
+      "confidence",
+      "discoveryDepth",
+      "lastUpdated",
+    ]);
+    const structuralTemplateKeys = templateKeys.filter(
+      (k) => !placeholders.has(k),
+    );
+
+    const feature = await createFeature({
+      root: ws.root,
+      request: "Schema shape check",
+    });
+    const result = await runDiscovery({
+      root: ws.root,
+      featureRef: feature.id,
+    });
+
+    const emittedKeys = Object.keys(result.boundary).sort();
+    const structuralEmittedKeys = emittedKeys.filter(
+      (k) => !placeholders.has(k),
+    );
+
+    expect(structuralEmittedKeys).toEqual(structuralTemplateKeys);
+  });
 });

@@ -209,6 +209,30 @@ export function findTask(tasks: ParsedTask[], taskId: string): ParsedTask | null
   return tasks.find((t) => t.id.toUpperCase() === normalized) ?? null;
 }
 
+function readTouchList(b: Record<string, unknown>): unknown[] {
+  let raw: unknown = b["touchFiles"];
+  if (raw == null) raw = b["touch"];
+  if (raw == null) {
+    const files = b["files"];
+    if (Array.isArray(files)) raw = files;
+    else if (files && typeof files === "object") {
+      const merged: unknown[] = [];
+      for (const key of ["modify", "create", "delete"]) {
+        const list = (files as Record<string, unknown>)[key];
+        if (Array.isArray(list)) merged.push(...list);
+      }
+      raw = merged;
+    }
+  }
+  return Array.isArray(raw) ? raw : [];
+}
+
+function readReadOnlyList(b: Record<string, unknown>): unknown[] {
+  let raw: unknown = b["readOnlyFiles"];
+  if (raw == null) raw = b["readOnly"];
+  return Array.isArray(raw) ? raw : [];
+}
+
 export function extractRelevantFilePaths(
   task: ParsedTask,
   boundary: unknown,
@@ -224,20 +248,22 @@ export function extractRelevantFilePaths(
 
   if (boundary && typeof boundary === "object") {
     const b = boundary as Record<string, unknown>;
-    const touchFiles = b["touchFiles"];
-    if (Array.isArray(touchFiles)) {
-      for (const tf of touchFiles) {
-        if (typeof tf === "object" && tf !== null && typeof (tf as Record<string, unknown>)["path"] === "string") {
-          paths.add((tf as Record<string, unknown>)["path"] as string);
-        }
+    // accept touchFiles (current) or touch (docs/migration) or files (older object form)
+    for (const tf of readTouchList(b)) {
+      if (typeof tf === "object" && tf !== null) {
+        const entry = tf as Record<string, unknown>;
+        if (typeof entry["path"] === "string") paths.add(entry["path"] as string);
+      } else if (typeof tf === "string") {
+        paths.add(tf);
       }
     }
-    const readOnlyFiles = b["readOnlyFiles"];
-    if (Array.isArray(readOnlyFiles)) {
-      for (const rf of readOnlyFiles) {
-        if (typeof rf === "object" && rf !== null && typeof (rf as Record<string, unknown>)["path"] === "string") {
-          paths.add((rf as Record<string, unknown>)["path"] as string);
-        }
+    // accept readOnlyFiles (current) or readOnly (docs/migration)
+    for (const rf of readReadOnlyList(b)) {
+      if (typeof rf === "object" && rf !== null) {
+        const entry = rf as Record<string, unknown>;
+        if (typeof entry["path"] === "string") paths.add(entry["path"] as string);
+      } else if (typeof rf === "string") {
+        paths.add(rf);
       }
     }
   }
