@@ -11,7 +11,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, Skill, TaskCreate, Ta
 
 Produce a focused discovery report and change boundary for a feature using graphify. Discovery identifies only the files, tests, commands, constraints, risks, and unknowns relevant to the active feature. It avoids full-repo mapping.
 
-All D1–D4 discovery is performed via the graphify skill — never via grep, glob, or a scout subagent.
+All D1–D4 discovery is performed via the graphify skill — never via grep or glob.
 
 ## Inputs
 
@@ -138,7 +138,7 @@ Use actual discovered values. Do not hardcode project-specific content.
 
 ## Non-Goals
 
-- Do not use a scout subagent for discovery.
+- Discovery uses graphify directly for D1–D4.
 - Do not implement the feature.
 - Do not refactor code.
 - Do not update dependencies.

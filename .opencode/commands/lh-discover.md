@@ -1,6 +1,6 @@
 ---
 description: Perform LeanHarness on-demand discovery for an existing codebase and produce a focused change boundary. Use when the user invokes /lh-discover or needs relevant files, tests, commands, constraints, risks, and unknowns before planning.
-agent: none
+agent: lh-scout
 ---
 
 # lh-discover
@@ -9,7 +9,7 @@ agent: none
 
 Produce a focused discovery report and change boundary for a feature using graphify. Discovery identifies only the files, tests, commands, constraints, risks, and unknowns relevant to the active feature. It avoids full-repo mapping.
 
-All D1–D4 discovery is performed via graphify — never via grep, glob, or a scout agent.
+All D1–D4 discovery runs via the lh-scout agent using graphify — never via grep or glob.
 
 ## Inputs
 
@@ -297,7 +297,7 @@ Use actual discovered values. Do not hardcode project-specific content.
 
 ## Non-Goals
 
-- Do not use a scout agent for discovery.
+- Discovery runs via lh-scout, which uses graphify.
 - Do not implement the feature.
 - Do not refactor code.
 - Do not update dependencies.
