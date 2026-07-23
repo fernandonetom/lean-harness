@@ -1748,7 +1748,7 @@ where N is the current step number and M is the total step count.
 - Use bounded context for implementation tasks.
 - **Use the Agent tool** to delegate each workflow step to the appropriate subagent (always include the required \`description\` field):
     - Specify step → spawn Agent with \`description: "Run lh-spec for <feature-id>"\` and prompt: \`"Read \`.claude/skills/lh-spec/SKILL.md\` and follow its workflow for: <request>"\`. **Never call \`Skill(lh-spec)\`** — lh-spec has \`disable-model-invocation: true\`.
-    - Discover step → runs \`/lh-discover\` which uses graphify directly (no scout subagent)
+    - Discover step → runs \`/lh-discover\` which uses graphify directly for D1–D4
     - Build step (per task) → \`subagent_type: "lh-builder"\`, \`description: "Build <task-id> for <feature-id>"\`
     - Review step (after each task) → \`subagent_type: "lh-reviewer"\`, \`description: "Review <task-id> for <feature-id>"\`
     - Check step → \`subagent_type: "lh-verifier"\`, \`description: "Verify feature <feature-id>"\`
@@ -2062,7 +2062,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, Skill, TaskCreate, Ta
 
 Produce a focused discovery report and change boundary for a feature using graphify. Discovery identifies only the files, tests, commands, constraints, risks, and unknowns relevant to the active feature. It avoids full-repo mapping.
 
-All D1–D4 discovery is performed via the graphify skill — never via grep, glob, or a scout subagent.
+All D1–D4 discovery is performed via the graphify skill — never via grep or glob.
 
 ## Inputs
 
@@ -2189,7 +2189,7 @@ Use actual discovered values. Do not hardcode project-specific content.
 
 ## Non-Goals
 
-- Do not use a scout subagent for discovery.
+- Discovery uses graphify directly for D1–D4.
 - Do not implement the feature.
 - Do not refactor code.
 - Do not update dependencies.
