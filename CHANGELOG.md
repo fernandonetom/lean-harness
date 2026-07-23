@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.2
+
+### Patch Changes
+
+- cb08253: Fix `lh-discover` `agent: none` → `lh-scout` in OpenCode command bundle frontmatter, matching the `opencode.json` command config. Update Claude Code skill body text to remove contradictory "no scout subagent" language.
+
 ## 1.3.1
 
 ### Patch Changes
