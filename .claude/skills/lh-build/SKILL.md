@@ -1,7 +1,6 @@
 ---
 name: lh-build
 description: Execute LeanHarness feature tasks with bounded context, boundary discipline, tests, compact summaries, and verification evidence. Use when the user invokes /lh-build or wants Claude Code to implement planned tasks.
-disable-model-invocation: true
 ---
 
 # lh-build

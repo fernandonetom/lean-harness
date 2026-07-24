@@ -1672,7 +1672,6 @@ function createCCSkillDo(): string {
   return `---
 name: lh-do
 description: Run the full LeanHarness feature workflow for an existing codebase: specify, discover, plan, build, and check. Use when the user invokes /lh-do with a feature request or asks Claude Code to complete a feature through LeanHarness.
-disable-model-invocation: true
 ---
 
 # lh-do
@@ -1747,7 +1746,7 @@ where N is the current step number and M is the total step count.
 - Respect risk gates from \`.lh/config.yml\`.
 - Use bounded context for implementation tasks.
 - **Use the Agent tool** to delegate each workflow step to the appropriate subagent (always include the required \`description\` field):
-    - Specify step → spawn Agent with \`description: "Run lh-spec for <feature-id>"\` and prompt: \`"Read \`.claude/skills/lh-spec/SKILL.md\` and follow its workflow for: <request>"\`. **Never call \`Skill(lh-spec)\`** — lh-spec has \`disable-model-invocation: true\`.
+    - Specify step → spawn Agent with \`description: "Run lh-spec for <feature-id>"\` and prompt: \`"Read \`.claude/skills/lh-spec/SKILL.md\` and follow its workflow for: <request>"\`. You may also use \`Skill(skill: "lh-spec")\` to load the skill directly.
     - Discover step → runs \`/lh-discover\` which uses graphify directly for D1–D4
     - Build step (per task) → \`subagent_type: "lh-builder"\`, \`description: "Build <task-id> for <feature-id>"\`
     - Review step (after each task) → \`subagent_type: "lh-reviewer"\`, \`description: "Review <task-id> for <feature-id>"\`
@@ -1875,7 +1874,6 @@ function createCCSkillSpec(): string {
   return `---
 name: lh-spec
 description: Create or update a LeanHarness feature specification from a user request. Use when the user invokes /lh-spec or wants to define goal, non-goals, acceptance criteria, constraints, assumptions, and verification expectations before implementation.
-disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, AskUserQuestion, TaskCreate, TaskUpdate
 ---
 
@@ -2052,7 +2050,6 @@ function createCCSkillDiscover(): string {
   return `---
 name: lh-discover
 description: Perform LeanHarness on-demand discovery for an existing codebase and produce a focused change boundary. Use when the user invokes /lh-discover or needs relevant files, tests, commands, constraints, risks, and unknowns before planning.
-disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, Skill, TaskCreate, TaskUpdate, AskUserQuestion
 ---
 
@@ -2228,7 +2225,6 @@ function createCCSkillPlan(): string {
   return `---
 name: lh-plan
 description: Create a LeanHarness implementation plan and task list from an existing feature spec, discovery report, and change boundary. Use when the user invokes /lh-plan or needs planned tasks before building.
-disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, TaskCreate, TaskUpdate
 ---
 
@@ -2376,7 +2372,6 @@ function createCCSkillBuild(): string {
   return `---
 name: lh-build
 description: Execute LeanHarness feature tasks with bounded context, boundary discipline, tests, compact summaries, and verification evidence. Use when the user invokes /lh-build or wants Claude Code to implement planned tasks.
-disable-model-invocation: true
 ---
 
 # lh-build
@@ -2724,7 +2719,6 @@ function createCCSkillCheck(): string {
   return `---
 name: lh-check
 description: Verify a LeanHarness feature against acceptance criteria, changed files, risk gates, review findings, and command evidence. Use when the user invokes /lh-check or wants a final pass, needs-fix, or blocked verdict.
-disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, TaskCreate, TaskUpdate
 ---
 
@@ -2902,7 +2896,6 @@ function createCCSkillStatus(): string {
   return `---
 name: lh-status
 description: Inspect LeanHarness feature state and summarize current specs, discovery, plans, tasks, checks, blockers, and next actions. Use when the user invokes /lh-status or asks what is happening in the current LeanHarness work.
-disable-model-invocation: true
 allowed-tools: Read, Glob, Grep, TaskCreate, TaskUpdate
 ---
 
