@@ -1,7 +1,6 @@
 ---
 name: lh-status
 description: Inspect LeanHarness feature state and summarize current specs, discovery, plans, tasks, checks, blockers, and next actions. Use when the user invokes /lh-status or asks what is happening in the current LeanHarness work.
-disable-model-invocation: true
 allowed-tools: Read, Glob, Grep, TaskCreate, TaskUpdate
 ---
 
