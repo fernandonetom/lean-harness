@@ -48,7 +48,7 @@ async function handleBefore(root, input, output) {
   }
 
   if (isShellTool(toolName) && command) {
-    const c = classifyCommand(command);
+    const c = classifyCommand(command, root);
     if (c.decision === "block") {
       if (ctx.featureDir) logPluginEvent(root, ctx.featureDir, { event: "guardrail.block", reason: "dangerous_command", tool: toolName, target: redactSecrets(safeString(command, 200)) });
       throw makeBlockError("LeanHarness blocked this OpenCode command because it is destructive: " + redactSecrets(safeString(command, 200)) + ".");

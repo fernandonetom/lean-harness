@@ -135,6 +135,9 @@ build:
   # lh-plan groups tasks into waves that stay under this budget.
   session_budget: 15
 
+command_enforcement:
+  # force_push: warn   # warn (default) | deny | off
+
 boundary_enforcement:
   # mode: strict   # strict (default) | warn | off
   # always_allow: []   # glob patterns always permitted regardless of boundary

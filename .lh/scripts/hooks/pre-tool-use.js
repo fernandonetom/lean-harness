@@ -22,7 +22,7 @@ function handleBash(input, root) {
   var command = shared.extractCommand(input);
   if (!command) return;
 
-  var result = shared.classifyCommand(command);
+  var result = shared.classifyCommand(command, root);
 
   if (result.decision === 'deny') {
     var decision = shared.preToolDecision(
@@ -34,6 +34,10 @@ function handleBash(input, root) {
     );
     process.stdout.write(JSON.stringify(decision));
     return;
+  }
+
+  if (result.decision === 'warn') {
+    process.stderr.write('[LeanHarness warn] ' + result.reason.replace(/\.$/, '') + ' Command: ' + command + '\n');
   }
 
 }

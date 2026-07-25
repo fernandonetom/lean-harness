@@ -129,6 +129,10 @@ export interface HarnessConfigBoundaryEnforcement {
   session_overrides?: string[];
 }
 
+export interface HarnessConfigCommandEnforcement {
+  force_push?: 'deny' | 'warn' | 'off';
+}
+
 export interface HarnessConfigAdapter {
   skills_dir?: string;
   hooks_enabled?: boolean;
@@ -153,6 +157,7 @@ export interface HarnessConfig {
   features?: HarnessConfigFeatures;
   build?: HarnessConfigBuild;
   boundary_enforcement?: HarnessConfigBoundaryEnforcement;
+  command_enforcement?: HarnessConfigCommandEnforcement;
   adapters?: Record<string, HarnessConfigAdapter>;
 }
 

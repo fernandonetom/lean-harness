@@ -18,10 +18,6 @@ deny:
     reason: "Refuses to delete git metadata."
   - pattern: "rm -rf .git/"
     reason: "Refuses to delete git metadata."
-  - pattern: "git push --force*"
-    reason: "Force push requires explicit manual control."
-  - pattern: "git push -f *"
-    reason: "Force push requires explicit manual control."
   - pattern: "git reset --hard*"
     reason: "Hard reset can destroy local work."
   - pattern: "git clean -fd*"
@@ -45,6 +41,18 @@ deny:
   - pattern: "env"
     reason: "Refuses to expose environment secrets."
   - pattern: "*> /dev/sd*"
+    reason: "Refuses to write directly to block devices."
+  - pattern: "dd if=*"
+    reason: "Refuses raw disk writes."
+  - pattern: "mkfs*"
+    reason: "Refuses filesystem creation on devices."
+  - pattern: ":(){ :|:& };:*"
+    reason: "Refuses fork bombs."
+
+# Force push (git push --force*, git push -f *) is now configurable via
+# command_enforcement.force_push in .lh/config.yml (since v1.4.0).
+# Default: warn (warns via hook but allows). Modes: deny | warn | off.
+# Use: lh command status, lh command set-force-push <mode>
     reason: "Refuses to write directly to block devices."
   - pattern: "dd if=*"
     reason: "Refuses raw disk writes."

@@ -43,7 +43,6 @@ commands:
     - rm -rf /
     - rm -rf ~
     - rm -rf .git
-    - git push --force*
     - git reset --hard*
     - git clean -fd*
     - "*DROP DATABASE*"

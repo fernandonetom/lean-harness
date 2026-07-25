@@ -603,8 +603,6 @@ var BUILTIN_DENY = [
   { pattern: 'rm -rf ~/*', reason: 'Refuses to delete home directory contents.' },
   { pattern: 'rm -rf .git', reason: 'Refuses to delete git metadata.' },
   { pattern: 'rm -rf .git/', reason: 'Refuses to delete git metadata.' },
-  { pattern: 'git push --force*', reason: 'Force push requires explicit manual control.' },
-  { pattern: 'git push -f *', reason: 'Force push requires explicit manual control.' },
   { pattern: 'git reset --hard*', reason: 'Hard reset can destroy local work.' },
   { pattern: 'git clean -fd*', reason: 'Git clean with force can delete untracked work.' },
   { pattern: 'git clean -fx*', reason: 'Git clean with force can delete untracked work.' },
@@ -631,7 +629,33 @@ var BUILTIN_SAFE = [
   'node --check*', 'python -m json.tool*', 'python -c *'
 ];
 
-function classifyCommand(command) {
+var FORCE_PUSH_PATTERNS = ['git push --force*', 'git push -f *'];
+
+/**
+ * Load command enforcement settings from `.lh/config.yml`.
+ * Always returns `{ force_push }`. Falls back to `'warn'` if config
+ * is missing, the `command_enforcement` block is absent, or the block
+ * is malformed.
+ */
+function loadCommandEnforcement(root) {
+  try {
+    var config = readConfig(root);
+    if (!config || typeof config !== 'object') return { force_push: 'warn' };
+
+    var block = config['command_enforcement'];
+    if (!block || typeof block !== 'object') return { force_push: 'warn' };
+
+    var mode = block['force_push'];
+    if (mode === 'deny' || mode === 'warn' || mode === 'off') {
+      return { force_push: mode };
+    }
+    return { force_push: 'warn' };
+  } catch (_) {
+    return { force_push: 'warn' };
+  }
+}
+
+function classifyCommand(command, root) {
   if (!command || typeof command !== 'string') {
     return { decision: 'none', reason: '', matchedPattern: null };
   }
@@ -653,6 +677,22 @@ function classifyCommand(command) {
   for (var s = 0; s < BUILTIN_SAFE.length; s++) {
     if (matchesPattern(BUILTIN_SAFE[s], trimmed)) {
       return { decision: 'none', reason: '', matchedPattern: null };
+    }
+  }
+
+  // Configurable: force push enforcement
+  if (root) {
+    var enforcement = loadCommandEnforcement(root);
+    if (enforcement.force_push === 'deny' || enforcement.force_push === 'warn') {
+      for (var j = 0; j < FORCE_PUSH_PATTERNS.length; j++) {
+        if (matchesPattern(FORCE_PUSH_PATTERNS[j], trimmed)) {
+          return {
+            decision: enforcement.force_push === 'deny' ? 'deny' : 'warn',
+            reason: 'Force push requires explicit manual control.',
+            matchedPattern: FORCE_PUSH_PATTERNS[j]
+          };
+        }
+      }
     }
   }
 
@@ -842,6 +882,7 @@ module.exports = {
   matchesAnyPattern: matchesAnyPattern,
   classifyCommand: classifyCommand,
   classifyPathRisk: classifyPathRisk,
+  loadCommandEnforcement: loadCommandEnforcement,
   isPathInsideBoundary: isPathInsideBoundary,
   preToolDecision: preToolDecision,
   postToolBlock: postToolBlock,
