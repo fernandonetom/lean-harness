@@ -1,7 +1,7 @@
 # LeanHarness configuration
 # Source of truth for project-wide harness behavior.
 
-version: "1.3.1"
+version: "1.3.3"
 
 project:
   name: auto
@@ -87,6 +87,9 @@ build:
   # Maximum complexity weight per session wave.
   # lh-plan groups tasks into waves that stay under this budget.
   session_budget: 15
+
+command_enforcement:
+  # force_push: warn   # warn (default) | deny | off
 
 boundary_enforcement:
   # mode: strict   # strict (default) | warn | off

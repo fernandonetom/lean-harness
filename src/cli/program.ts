@@ -18,6 +18,7 @@ import { runCaveBusCommand } from "../commands/cavebus.js";
 import { runMemoryCommand } from "../commands/memory.js";
 import { runUpdateCommand } from "../commands/update.js";
 import { runBoundaryAllow, runBoundarySetMode, runBoundaryStatus } from "../commands/boundary.js";
+import { runCommandStatus, runCommandSetForcePush } from "../commands/command-enforcement.js";
 import { runUninstallCommand } from "../commands/uninstall.js";
 import { runCompletionCommand } from "../commands/completion.js";
 import { runWatchCommand } from "../commands/watch.js";
@@ -404,6 +405,23 @@ export function buildProgram(): Command {
     .description("Print current boundary_enforcement configuration from .lh/config.yml")
     .action(async () => {
       await runBoundaryStatus(resolveCwd(boundary.optsWithGlobals()));
+    });
+
+  const commandEnf = program.command("command").description("Manage command enforcement config");
+
+  commandEnf
+    .command("set-force-push")
+    .argument("<mode>", "Enforcement mode for git push --force: deny, warn, or off")
+    .description("Set command_enforcement.force_push in .lh/config.yml")
+    .action(async (mode: string) => {
+      await runCommandSetForcePush(resolveCwd(commandEnf.optsWithGlobals()), mode);
+    });
+
+  commandEnf
+    .command("status")
+    .description("Print current command_enforcement configuration from .lh/config.yml")
+    .action(async () => {
+      await runCommandStatus(resolveCwd(commandEnf.optsWithGlobals()));
     });
 
   program

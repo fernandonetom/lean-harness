@@ -158,7 +158,6 @@ const BUILTIN_DENY = [
   { pattern: "rm -rf /", reason: "Refuses to delete filesystem root." },
   { pattern: "rm -rf ~", reason: "Refuses to delete home directory." },
   { pattern: "rm -rf .git", reason: "Refuses to delete git metadata." },
-  { pattern: "git push --force*", reason: "Force push requires explicit manual control." },
   { pattern: "git reset --hard*", reason: "Hard reset can destroy local work." },
   { pattern: "git clean -fd*", reason: "Git clean with force can delete untracked work." },
   { pattern: "*DROP DATABASE*", reason: "Destructive database command." },
@@ -179,13 +178,49 @@ const BUILTIN_RISKY = [
   { pattern: "*deploy*", reason: "Deployment requires approval.", riskGate: null },
 ];
 const BUILTIN_SAFE = ["git status*", "git diff*", "git log*", "ls*", "find*", "grep*", "rg*", "npm test*", "npm run test*", "npm run lint*", "pnpm test*", "yarn test*", "bun test*", "pytest*", "go test*", "cargo test*"];
+const FORCE_PUSH_PATTERNS = ["git push --force*", "git push -f *"];
 
-export function classifyCommand(command) {
+export function loadCommandEnforcement(root) {
+  try {
+    if (!root) return { force_push: "warn" };
+    const configPath = path.join(root, ".lh", "config.yml");
+    if (!fs.existsSync(configPath)) return { force_push: "warn" };
+    const raw = fs.readFileSync(configPath, "utf8");
+    const lines = raw.split("\n");
+    let inBlock = false;
+    for (const line of lines) {
+      const s = line.trim();
+      if (s === "command_enforcement:" || s.startsWith("command_enforcement:")) { inBlock = true; continue; }
+      if (!inBlock) continue;
+      if (s === "" || s.startsWith("#")) continue;
+      if (/^[a-zA-Z_]/.test(s) && !s.startsWith(" ") && !s.startsWith("\t")) break;
+      const m = s.match(/^force_push\s*:\s*(.+)$/);
+      if (m) {
+        const mode = m[1].trim().replace(/^["']|["']$/g, "");
+        if (mode === "deny" || mode === "warn" || mode === "off") return { force_push: mode };
+      }
+    }
+  } catch {}
+  return { force_push: "warn" };
+}
+
+export function classifyCommand(command, root) {
   if (!command || typeof command !== "string") return { decision: "allow", reason: "", matchedPattern: null, riskGate: null };
   const trimmed = command.trim();
   for (const e of BUILTIN_DENY) { if (matchesPattern(e.pattern, trimmed)) return { decision: "block", reason: e.reason, matchedPattern: e.pattern, riskGate: null }; }
   for (const s of BUILTIN_SAFE) { if (matchesPattern(s, trimmed)) return { decision: "allow", reason: "Safe command.", matchedPattern: s, riskGate: null }; }
   for (const e of BUILTIN_RISKY) { if (matchesPattern(e.pattern, trimmed)) return { decision: "warn", reason: e.reason, matchedPattern: e.pattern, riskGate: e.riskGate || null }; }
+  // Configurable: force push enforcement
+  if (root) {
+    const enforcement = loadCommandEnforcement(root);
+    if (enforcement.force_push === "deny" || enforcement.force_push === "warn") {
+      for (const p of FORCE_PUSH_PATTERNS) {
+        if (matchesPattern(p, trimmed)) {
+          return { decision: enforcement.force_push === "deny" ? "block" : "warn", reason: "Force push requires explicit manual control.", matchedPattern: p, riskGate: null };
+        }
+      }
+    }
+  }
   return { decision: "allow", reason: "", matchedPattern: null, riskGate: null };
 }
 
