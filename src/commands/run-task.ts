@@ -8,6 +8,8 @@ import { nowIso } from "../core/state.js";
 import { compileTaskContext } from "../context/compiler.js";
 import { normalizeAgentHost, getAgentAdapter } from "../adapters/registry.js";
 import { loadResolvedConfig } from "../core/resolved-config.js";
+import { loadHarnessConfig } from "../core/config.js";
+import { resolveModelForRole, type ResolvedModelConfig } from "../core/types.js";
 import type { AgentHost, AgentRunResult } from "../adapters/types.js";
 
 export interface RunTaskOptions {
@@ -44,7 +46,8 @@ export async function runRunTaskCommand(options: RunTaskOptions): Promise<void> 
 
   const resolved = await loadResolvedConfig(cwd, { host: options.host, model: options.model });
   const host: AgentHost = normalizeAgentHost(options.host ?? resolved.host.primary);
-  const effectiveModel = options.model ?? resolved.models.agent ?? undefined;
+  const { parsed: rawConfig } = await loadHarnessConfig(cwd);
+  const effectiveModel = resolveModelForRole(rawConfig?.models, "builder", host, options.model) ?? undefined;
 
   const compiled = await compileTaskContext({
     root: cwd,

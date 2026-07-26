@@ -22,6 +22,7 @@ export interface ResolvedConfig {
     require_acceptance_trace: boolean;
     require_changed_files: boolean;
     require_review: boolean;
+    allow_self_review: boolean;
   };
   risk_gates: {
     require_approval: string[];
@@ -29,6 +30,13 @@ export interface ResolvedConfig {
   models: {
     agent: string | null;
     subagent: string | null;
+  };
+  build: {
+    session_budget: number;
+    with_review: boolean;
+    max_fix_iterations: number;
+    model_profile: string | null;
+    exec_mode: "subagents" | "current" | "ask";
   };
 }
 
@@ -61,6 +69,7 @@ export function resolveConfig(
   const requireReview = overrides?.strict
     ? true
     : c.verification?.require_review !== false;
+  const allowSelfReview = c.verification?.allow_self_review !== false;
 
   const requireApproval = Array.isArray(c.risk_gates?.require_approval)
     ? c.risk_gates.require_approval.filter((v): v is string => typeof v === "string")
@@ -70,6 +79,18 @@ export function resolveConfig(
     ?? (typeof c.models?.agent === "string" ? c.models.agent : null);
   const subagentModel = typeof c.models?.subagent === "string" ? c.models.subagent : null;
 
+  const sessionBudget = typeof c.build?.session_budget === "number" && c.build.session_budget > 0
+    ? c.build.session_budget
+    : 15;
+  const withReview = c.build?.with_review === true;
+  const maxFixIterations = typeof c.build?.max_fix_iterations === "number" && c.build.max_fix_iterations >= 0
+    ? c.build.max_fix_iterations
+    : 3;
+  const modelProfile = typeof c.build?.model_profile === "string" ? c.build.model_profile : null;
+  const execMode = (c.build?.exec_mode === "subagents" || c.build?.exec_mode === "current" || c.build?.exec_mode === "ask")
+    ? c.build.exec_mode
+    : "subagents";
+
   return {
     host: { primary: hostPrimary },
     discovery: { default_depth: depth, max_initial_files: maxFiles },
@@ -78,9 +99,17 @@ export function resolveConfig(
       require_acceptance_trace: requireAcceptanceTrace,
       require_changed_files: requireChangedFiles,
       require_review: requireReview,
+      allow_self_review: allowSelfReview,
     },
     risk_gates: { require_approval: requireApproval },
     models: { agent: agentModel, subagent: subagentModel },
+    build: {
+      session_budget: sessionBudget,
+      with_review: withReview,
+      max_fix_iterations: maxFixIterations,
+      model_profile: modelProfile,
+      exec_mode: execMode,
+    },
   };
 }
 

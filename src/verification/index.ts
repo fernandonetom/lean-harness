@@ -44,6 +44,7 @@ export interface RunCheckOptions {
   requireAcceptanceTrace?: boolean | undefined;
   requireChangedFiles?: boolean | undefined;
   requireReview?: boolean | undefined;
+  allowSelfReview?: boolean | undefined;
 }
 
 export interface CheckResult {
@@ -159,10 +160,16 @@ export async function runCheck(options: RunCheckOptions): Promise<CheckResult> {
 
   const boundaryReview = reviewBoundaryCompliance(changedFiles, boundary);
 
-  const review = analyzeReviewEvidence({
+  const reviewsDir = path.join(featureDir, "reviews");
+  const allowSelfReview = options.allowSelfReview ?? false;
+
+  const review = await analyzeReviewEvidence({
     taskSummaries,
     cavebus: cavebusLog,
     events,
+    reviewsDir,
+    allowSelfReview,
+    requireReview: options.requireReview,
   });
 
   const riskGates = extractRiskGates(boundary);
@@ -176,6 +183,7 @@ export async function runCheck(options: RunCheckOptions): Promise<CheckResult> {
     riskGates,
     missingArtifacts,
     strict,
+    requireReview: options.requireReview,
   });
 
   const warnings: string[] = [];
@@ -298,6 +306,7 @@ export function determineVerdict(input: {
   riskGates: Array<{ name: string; status: string; reason: string }>;
   missingArtifacts: string[];
   strict: boolean;
+  requireReview?: boolean | undefined;
 }): { verdict: "pass" | "needs-fix" | "blocked"; unresolvedIssues: string[] } {
   const issues: string[] = [];
 
@@ -350,6 +359,10 @@ export function determineVerdict(input: {
     issues.push(`${input.review.blockingFindings.length} blocking review finding(s).`);
   }
 
+  if (input.requireReview && input.review.verdict === "unknown") {
+    issues.push("Review is required but no independent review evidence was found.");
+  }
+
   if (issues.length === 0) {
     const allAcPass = input.acceptance.every((a) => a.status === "pass");
     if (!allAcPass) {
@@ -366,6 +379,7 @@ export function determineVerdict(input: {
     input.missingArtifacts.includes("tasks.md") ||
     input.missingArtifacts.includes("boundary.json") ||
     input.review.verdict === "blocked" ||
+    (input.requireReview && input.review.verdict === "unknown" && input.missingArtifacts.length > 0) ||
     (input.strict && acNotChecked.length > 0) ||
     (input.strict && requiredNotRun.length > 0);
 

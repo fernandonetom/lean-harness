@@ -19,9 +19,11 @@ import { runMemoryCommand } from "../commands/memory.js";
 import { runUpdateCommand } from "../commands/update.js";
 import { runBoundaryAllow, runBoundarySetMode, runBoundaryStatus } from "../commands/boundary.js";
 import { runCommandStatus, runCommandSetForcePush } from "../commands/command-enforcement.js";
+import { runConfigCommand } from "../commands/config.js";
 import { runUninstallCommand } from "../commands/uninstall.js";
 import { runCompletionCommand } from "../commands/completion.js";
 import { runWatchCommand } from "../commands/watch.js";
+import { runReviewCommand } from "../commands/review.js";
 import { getVersion } from "../core/version.js";
 import { CLIError } from "../core/errors.js";
 import { renderBanner, shouldShowHelpHeader } from "./banner.js";
@@ -324,6 +326,27 @@ export function buildProgram(): Command {
     });
 
   program
+    .command("review")
+    .description("Run an independent code review on a feature or specific task")
+    .argument("<feature>", "Feature ID or slug")
+    .argument("[task]", "Task ID (optional)")
+    .option("--host <host>", "Agent host for model resolution")
+    .option("--model <provider/model>", "Model override for reviewer")
+    .option("--dry-run", "Preview without writing review artifacts")
+    .option("--json", "Print machine-readable JSON")
+    .action(async (feature: string, task: string | undefined, opts) => {
+      await runReviewCommand({
+        cwd: resolveCwd(opts),
+        featureRef: feature,
+        taskId: task,
+        host: opts.host,
+        model: opts.model,
+        dryRun: opts.dryRun,
+        json: opts.json,
+      });
+    });
+
+  program
     .command("compress")
     .description("Generate compact CaveBus summaries from feature artifacts")
     .argument("<feature>", "Feature ID or slug")
@@ -422,6 +445,88 @@ export function buildProgram(): Command {
     .description("Print current command_enforcement configuration from .lh/config.yml")
     .action(async () => {
       await runCommandStatus(resolveCwd(commandEnf.optsWithGlobals()));
+    });
+
+  const cfg = program.command("config").description("Manage LeanHarness configuration");
+
+  cfg
+    .command("get")
+    .argument("<dot.path>", "Config path (e.g., models.builder)")
+    .option("--json", "JSON output")
+    .description("Get a config value")
+    .action(async (dotPath: string, opts: Record<string, unknown>) => {
+      await runConfigCommand({
+        cwd: resolveCwd(cfg.optsWithGlobals()),
+        subcommand: "get",
+        dotPath,
+        json: opts.json as boolean | undefined,
+      });
+    });
+
+  cfg
+    .command("set")
+    .argument("<dot.path>", "Config path (e.g., models.builder)")
+    .argument("<value>", "Value to set")
+    .option("--json", "JSON output")
+    .description("Set a config value")
+    .action(async (dotPath: string, value: string, opts: Record<string, unknown>) => {
+      await runConfigCommand({
+        cwd: resolveCwd(cfg.optsWithGlobals()),
+        subcommand: "set",
+        dotPath,
+        value,
+        json: opts.json as boolean | undefined,
+      });
+    });
+
+  cfg
+    .command("unset")
+    .argument("<dot.path>", "Config path to unset")
+    .option("--json", "JSON output")
+    .description("Unset a config value (restore default)")
+    .action(async (dotPath: string, opts: Record<string, unknown>) => {
+      await runConfigCommand({
+        cwd: resolveCwd(cfg.optsWithGlobals()),
+        subcommand: "unset",
+        dotPath,
+        json: opts.json as boolean | undefined,
+      });
+    });
+
+  cfg
+    .command("list")
+    .option("--json", "JSON output")
+    .description("List all config paths")
+    .action(async (opts: Record<string, unknown>) => {
+      await runConfigCommand({
+        cwd: resolveCwd(cfg.optsWithGlobals()),
+        subcommand: "list",
+        json: opts.json as boolean | undefined,
+      });
+    });
+
+  cfg
+    .command("validate")
+    .option("--json", "JSON output")
+    .description("Validate config.yml")
+    .action(async (opts: Record<string, unknown>) => {
+      await runConfigCommand({
+        cwd: resolveCwd(cfg.optsWithGlobals()),
+        subcommand: "validate",
+        json: opts.json as boolean | undefined,
+      });
+    });
+
+  cfg
+    .command("show", { isDefault: true })
+    .option("--json", "JSON output")
+    .description("Show effective config summary")
+    .action(async (opts: Record<string, unknown>) => {
+      await runConfigCommand({
+        cwd: resolveCwd(cfg.optsWithGlobals()),
+        subcommand: "show",
+        json: opts.json as boolean | undefined,
+      });
     });
 
   program
