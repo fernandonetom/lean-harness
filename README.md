@@ -4,7 +4,7 @@ AI harness framework for brownfield feature work with on-demand discovery, bound
 
 ## Status
 
-**v1.5.0 — cheap build, strong review.** Role-based model routing, independent code review command, reviewer quality pack, adversarial reviewer prompts, touched-file quality gates, and configurable boundary enforcement.
+**v1.5.1 — cheap build, strong review.** Role-based model routing, independent code review command, reviewer quality pack, adversarial reviewer prompts, touched-file quality gates, and configurable boundary enforcement.
 
 ## What it does
 
