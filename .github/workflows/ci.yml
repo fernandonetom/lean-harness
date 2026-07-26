@@ -45,3 +45,18 @@ jobs:
 
       - name: Check for missing changeset
         run: npx changeset status --since=origin/main
+
+  readme-version-check:
+    name: README Version Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Verify README version matches package.json
+        run: node scripts/sync-readme-version.mjs

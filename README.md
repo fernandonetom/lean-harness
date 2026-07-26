@@ -4,7 +4,7 @@ AI harness framework for brownfield feature work with on-demand discovery, bound
 
 ## Status
 
-**v1.3.0 — configurable boundary enforcement.** The core workflow is implemented with a deterministic CLI, two agent host adapters (Claude Code, OpenCode), configurable boundary enforcement modes, and a comprehensive test suite.
+**v1.5.0 — cheap build, strong review.** Role-based model routing, independent code review command, reviewer quality pack, adversarial reviewer prompts, touched-file quality gates, and configurable boundary enforcement.
 
 ## What it does
 
