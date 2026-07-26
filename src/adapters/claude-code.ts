@@ -41,6 +41,10 @@ export function buildClaudeCodeArgs(input: AgentRunInput): string[] {
     args.push("--output-format", input.outputFormat);
   }
 
+  if (input.model) {
+    args.push("--model", input.model);
+  }
+
   return args;
 }
 

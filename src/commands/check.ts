@@ -62,6 +62,7 @@ export async function runCheckCommand(options: CheckOptions): Promise<void> {
       requireAcceptanceTrace: resolved.verification.require_acceptance_trace,
       requireChangedFiles: resolved.verification.require_changed_files,
       requireReview: resolved.verification.require_review,
+      allowSelfReview: resolved.verification.allow_self_review,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);

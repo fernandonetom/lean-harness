@@ -61,6 +61,51 @@ export async function runDoctorCommand(options: DoctorOptions): Promise<void> {
       : { name: ".lh/config.yml", status: "fail", message: "missing — run `lh init`" },
   );
 
+  if (config.parsed) {
+    const verification = config.parsed.verification;
+    const models = config.parsed.models;
+
+    if (verification?.require_review) {
+      const reviewerModel = models?.reviewer;
+      if (!reviewerModel || reviewerModel === "auto") {
+        checks.push({
+          name: "reviewer model",
+          status: "warn",
+          message: "require_review is enabled but reviewer model is unset. Run 'lh config set models.reviewer <model>'",
+        });
+      }
+      if (verification.allow_self_review === false) {
+        checks.push({
+          name: "independent review",
+          status: "warn",
+          message: "require_review is on but allow_self_review is false — independent review mandatory. Ensure lh-reviewer agent/skill exists.",
+        });
+      }
+    }
+
+    const builder = models?.builder;
+    const reviewer = models?.reviewer;
+    if (builder && reviewer && builder !== "auto" && reviewer !== "auto" && builder === reviewer) {
+      checks.push({
+        name: "builder===reviewer",
+        status: "warn",
+        message: `Builder and reviewer both set to "${builder}" — independent review may not be meaningful. Use different models.`,
+      });
+    }
+
+    const host = config.parsed.host;
+    if (host?.primary === "opencode") {
+      const ocReviewer = models?.by_host?.opencode?.["reviewer"];
+      if (ocReviewer && !ocReviewer.includes("/")) {
+        checks.push({
+          name: "OpenCode model format",
+          status: "warn",
+          message: `OpenCode reviewer model "${ocReviewer}" should use provider/model format (e.g., anthropic/claude-sonnet-4-20250514).`,
+        });
+      }
+    }
+  }
+
   let stateOk = false;
   try {
     await loadState(cwd);
@@ -408,6 +453,8 @@ export async function runDoctorCommand(options: DoctorOptions): Promise<void> {
         ".lh/templates/cavebus/error.cave",
         ".lh/templates/cavebus/summary.cave",
         ".lh/templates/cavebus-message.md",
+        ".lh/templates/review.json",
+        ".lh/templates/review.md",
         "CaveBus tooling",
         ".lh/policies/risk-gates.yml",
         ".lh/policies/boundary.yml",

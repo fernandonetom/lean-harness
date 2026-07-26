@@ -3,6 +3,8 @@ import { normalizeAgentHost } from "../adapters/registry.js";
 import type { AgentHost } from "../adapters/types.js";
 import { runBuild } from "../build/index.js";
 import { loadResolvedConfig } from "../core/resolved-config.js";
+import { loadHarnessConfig } from "../core/config.js";
+import { resolveModelForRole, type ResolvedModelConfig } from "../core/types.js";
 import { CLIError } from "../core/errors.js";
 
 export interface BuildOptions {
@@ -43,7 +45,8 @@ export async function runBuildCommand(options: BuildOptions): Promise<void> {
   const resolved = await loadResolvedConfig(cwd, { host: options.host, model: options.model });
 
   const host: AgentHost = normalizeAgentHost(options.host ?? resolved.host.primary);
-  const effectiveModel = options.model ?? resolved.models.agent ?? undefined;
+  const { parsed: rawConfig } = await loadHarnessConfig(cwd);
+  const effectiveModel = resolveModelForRole(rawConfig?.models, "builder", host, options.model) ?? undefined;
 
   if (options.maxTasks !== undefined) {
     if (isNaN(options.maxTasks) || options.maxTasks < 1) {

@@ -93,13 +93,37 @@ compression:
   mode: full
 
 models:
+  # Semantic role → model id (host-native strings or "auto").
+  # planner/builder/reviewer/verifier/compressor/fix
+  # Legacy agent/subagent map to builder/other fallbacks.
   agent: auto
   subagent: auto
+  # planner: auto
+  # builder: auto
+  # reviewer: auto
+  # verifier: auto
+  # compressor: auto
+  # fix: auto
+  # by_host:
+  #   opencode:
+  #     builder: "google/gemini-2.5-flash"
+  #     reviewer: "anthropic/claude-sonnet-4-20250514"
+  #   claude-code:
+  #     builder: haiku
+  #     reviewer: sonnet
+  # profiles:
+  #   cheap:
+  #     builder: "google/gemini-2.5-flash"
+  #   strong:
+  #     builder: "anthropic/claude-sonnet-4-20250514"
 
 verification:
   require_acceptance_trace: true
   require_changed_files: true
   require_review: true
+  # When false, mode:self reviews are ignored — independent review mandatory.
+  # Defaults to true for backward compatibility with pre-1.5.0 workflows.
+  allow_self_review: true
 
 risk_gates:
   require_approval:
@@ -134,6 +158,27 @@ build:
   # Maximum complexity weight per session wave.
   # lh-plan groups tasks into waves that stay under this budget.
   session_budget: 15
+  # When true, every task gets an independent review (default: true if require_review).
+  # with_review: true
+  # Maximum fix-then-re-review iterations per task (default: 3).
+  # max_fix_iterations: 3
+  # Active profile from models.profiles to use (null = use roles directly).
+  # model_profile: null
+  # Execution mode: subagents (recommended), current, ask.
+  # exec_mode: subagents
+  # gates:
+  #   enabled: true
+  #   when: after_task        # after_task | before_review | both
+  #   fail_task_on: error
+  #   include_globs:
+  #     - "**/*.{ts,tsx,js,jsx,mts,cts}"
+  #     - "**/*.{test,spec}.{ts,tsx,js}"
+  #   exclude_globs:
+  #     - "dist/**"
+  #     - "node_modules/**"
+  #   typecheck: touched      # touched | project | off
+  #   lint: touched
+  #   test: related
 
 command_enforcement:
   # force_push: warn   # warn (default) | deny | off

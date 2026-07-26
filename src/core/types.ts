@@ -88,6 +88,7 @@ export interface HarnessConfigVerification {
   require_acceptance_trace?: boolean;
   require_changed_files?: boolean;
   require_review?: boolean;
+  allow_self_review?: boolean;
 }
 
 export interface HarnessConfigRiskGates {
@@ -106,6 +107,17 @@ export interface HarnessConfigMemory {
 export interface HarnessConfigModels {
   agent?: string;
   subagent?: string;
+  planner?: string;
+  builder?: string;
+  reviewer?: string;
+  verifier?: string;
+  compressor?: string;
+  fix?: string;
+  by_host?: {
+    opencode?: Record<string, string>;
+    "claude-code"?: Record<string, string>;
+  };
+  profiles?: Record<string, Record<string, string>>;
 }
 
 export interface HarnessConfigLogging {
@@ -121,6 +133,22 @@ export interface HarnessConfigFeatures {
 
 export interface HarnessConfigBuild {
   session_budget?: number;
+  with_review?: boolean;
+  max_fix_iterations?: number;
+  model_profile?: string;
+  exec_mode?: "subagents" | "current" | "ask";
+  gates?: HarnessConfigGates;
+}
+
+export interface HarnessConfigGates {
+  enabled?: boolean;
+  when?: "after_task" | "before_review" | "both";
+  fail_task_on?: "error" | "warning";
+  include_globs?: string[];
+  exclude_globs?: string[];
+  typecheck?: "touched" | "project" | "off";
+  lint?: "touched" | "project" | "off";
+  test?: "related" | "off";
 }
 
 export interface HarnessConfigBoundaryEnforcement {
@@ -346,4 +374,91 @@ export interface BuildTaskRunSummary {
   summaryPath?: string | undefined;
   exitCode?: number | null | undefined;
   durationMs?: number | undefined;
+}
+
+export interface ReviewFinding {
+  severity: "critical" | "major" | "minor" | "note";
+  file?: string;
+  symbol?: string;
+  evidence?: string;
+  fix?: string;
+}
+
+export interface ReviewChecklist {
+  acceptanceCriteria: "pass" | "fail" | "partial";
+  boundary: "pass" | "fail";
+  tests: "pass" | "fail" | "missing";
+  security: "pass" | "fail" | "n/a";
+  riskGates: "pass" | "fail" | "n/a";
+}
+
+export interface ReviewArtifact {
+  schema: "v1";
+  featureId: string;
+  taskId: string;
+  verdict: "pass" | "needs-fix" | "blocked";
+  model: string;
+  mode: "independent" | "cli" | "self";
+  reviewedAt: string;
+  iteration: number;
+  filesReviewed: string[];
+  findings: ReviewFinding[];
+  checklist: ReviewChecklist;
+}
+
+export interface ResolvedModelConfig {
+  planner: string | null;
+  builder: string | null;
+  reviewer: string | null;
+  verifier: string | null;
+  compressor: string | null;
+  fix: string | null;
+}
+
+export function resolveModelForRole(
+  models: HarnessConfigModels | undefined,
+  role: "planner" | "builder" | "reviewer" | "verifier" | "compressor" | "fix",
+  host?: string,
+  cliOverride?: string,
+  profile?: string,
+): string | null {
+  if (cliOverride) return cliOverride;
+  if (profile && models?.profiles?.[profile]?.[role]) {
+    return models.profiles[profile][role]!;
+  }
+  if (host) {
+    const byHost = models?.by_host?.[host as keyof typeof models.by_host] as Record<string, string> | undefined;
+    if (byHost?.[role]) return byHost[role]!;
+  }
+  const roleVal = models?.[role];
+  if (typeof roleVal === "string" && roleVal !== "auto") return roleVal;
+  if (role === "builder" && typeof models?.agent === "string" && models.agent !== "auto") return models.agent;
+  if (role !== "builder" && typeof models?.subagent === "string" && models.subagent !== "auto") return models.subagent;
+  return null;
+}
+
+export interface GateArtifact {
+  schema: "v1";
+  featureId: string;
+  taskId?: string;
+  passedAt: string;
+  gates: GateResult[];
+  overallResult: "pass" | "fail" | "error";
+  touchedFiles: string[];
+}
+
+export interface GateResult {
+  id: string;
+  kind: "typecheck" | "lint" | "test";
+  result: "pass" | "fail" | "error" | "skipped";
+  evidence: string;
+  diagnostics?: GateDiagnostic[];
+}
+
+export interface GateDiagnostic {
+  file: string;
+  line?: number;
+  column?: number;
+  severity: "error" | "warning";
+  message: string;
 }
