@@ -1,6 +1,6 @@
 {
   "name": "@feneto/lh",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "AI harness framework for brownfield feature work with on-demand discovery, bounded context, multi-host adapters, CaveBus summaries, and verification evidence.",
   "repository": "https://github.com/fernandonetom/lean-harness",
   "type": "module",
