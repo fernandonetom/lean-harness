@@ -26,8 +26,6 @@
   - Doctor checks for reviewer model configuration, builder===reviewer warning, OC model format
   - Gate infrastructure with `lh gate` command
   - Review artifact templates and write helpers
-    </EOF>
-    echo "Changeset created"
 
 ## 1.4.0
 

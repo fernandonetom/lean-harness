@@ -4,6 +4,7 @@ import { getVersion } from "../../src/core/version.js";
 import path from "node:path";
 import fs from "node:fs/promises";
 import os from "node:os";
+import yaml from "js-yaml";
 import { runUpdateCommand } from "../../src/commands/update.js";
 import { runInitCommand } from "../../src/commands/init.js";
 
@@ -119,5 +120,76 @@ describe("runUpdateCommand", () => {
     spy.mockRestore();
 
     expect(await fs.access(path.join(tmpDir, ".claude")).then(() => true).catch(() => false)).toBe(true);
+  });
+
+  it.each([
+    { label: "policies/risk-gates.yml", rel: ["policies", "risk-gates.yml"], host: undefined, marker: "# custom-marker-risk-gates\n" },
+    { label: "policies/boundary.yml", rel: ["policies", "boundary.yml"], host: undefined, marker: "# custom-marker-boundary\nalways_allow:\n  - \"**/*.custom\"\n" },
+    { label: "policies/commands.yml", rel: ["policies", "commands.yml"], host: undefined, marker: "# custom-marker-commands\n" },
+    { label: "policies/claude-code.yml", rel: ["policies", "claude-code.yml"], host: "claude-code" as const, marker: "# custom-marker-claude-code\n" },
+    { label: "policies/opencode.yml", rel: ["policies", "opencode.yml"], host: "opencode" as const, marker: "# custom-marker-opencode\n" },
+    {
+      label: "state.json",
+      rel: ["state.json"],
+      host: undefined,
+      marker: JSON.stringify({ version: "1", activeFeature: "custom-marker", nextFeatureNumber: 7, features: {} }, null, 2) + "\n",
+    },
+  ])("preserves custom content in .lh/$label across update", async ({ rel, host, marker }) => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir, host });
+    const targetPath = path.join(tmpDir, ".lh", ...rel);
+    await fs.writeFile(targetPath, marker);
+    await runUpdateCommand({ cwd: tmpDir, host });
+    spy.mockRestore();
+
+    expect(await fs.readFile(targetPath, "utf-8")).toBe(marker);
+  });
+
+  it("still creates a freshly-added host's policy file with no prior backup during update", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir });
+    await runUpdateCommand({ cwd: tmpDir, host: "claude-code" });
+    spy.mockRestore();
+
+    const claudeCodePolicy = path.join(tmpDir, ".lh", "policies", "claude-code.yml");
+    expect(await fs.access(claudeCodePolicy).then(() => true).catch(() => false)).toBe(true);
+    const content = await fs.readFile(claudeCodePolicy, "utf-8");
+    expect(content.length).toBeGreaterThan(0);
+  });
+
+  it("reports preserved files in JSON output", async () => {
+    const chunks: string[] = [];
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation((c) => {
+      chunks.push(String(c));
+      return true;
+    });
+    await runInitCommand({ cwd: tmpDir, json: true });
+    await fs.writeFile(path.join(tmpDir, ".lh", "policies", "boundary.yml"), "# custom\n");
+    await runUpdateCommand({ cwd: tmpDir, json: true });
+    spy.mockRestore();
+
+    const lines = chunks.join("").trim().split("\n");
+    const lastJson = lines.slice(lines.lastIndexOf("{")).join("\n");
+    const parsed = JSON.parse(lastJson);
+    expect(parsed.preservedFiles).toContain("policies/boundary.yml");
+  });
+});
+
+describe("bundled commands.yml policy template", () => {
+  it("parses as valid YAML with no duplicate deny patterns", async () => {
+    const { resolvePackageLhRoot } = await import("../../src/core/bundled-scaffold.js");
+    const p = path.join(resolvePackageLhRoot(), "policies", "commands.yml");
+    const raw = await fs.readFile(p, "utf-8");
+
+    const parsed = yaml.load(raw) as { deny: Array<{ pattern: string; reason: string }>; ask: unknown[] };
+
+    expect(Array.isArray(parsed.deny)).toBe(true);
+    expect(Array.isArray(parsed.ask)).toBe(true);
+    for (const entry of parsed.deny) {
+      expect(typeof entry.pattern).toBe("string");
+      expect(typeof entry.reason).toBe("string");
+    }
+    const patterns = parsed.deny.map((e) => e.pattern);
+    expect(new Set(patterns).size).toBe(patterns.length);
   });
 });

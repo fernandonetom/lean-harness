@@ -103,6 +103,30 @@ build:
 
 Task weights: 1 = trivial, 2 = small, 3 = mid-size, 5 = complex/risky.
 
+### `command_enforcement`
+
+Controls how LeanHarness's Bash command guardrails treat `git push --force`.
+
+```yaml
+command_enforcement:
+  force_push: warn   # warn (default) | deny | off
+```
+
+| Mode | Behavior |
+|------|----------|
+| `deny` | Blocks `git push --force*` / `git push -f *` outright. |
+| `warn` | Warns via the guardrail hook but allows the push (default). |
+| `off` | No enforcement; force-push is allowed silently. |
+
+Use the CLI to manage this setting:
+
+```bash
+lh command status                    # view current command_enforcement config
+lh command set-force-push deny       # block force pushes
+lh command set-force-push warn       # warn only (default)
+lh command set-force-push off        # disable enforcement
+```
+
 ### `boundary_enforcement`
 
 Controls how strictly LeanHarness enforces change boundaries.
