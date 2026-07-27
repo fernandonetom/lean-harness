@@ -1,6 +1,6 @@
 import path from "node:path";
-import { fileExists, readTextFile, readJsonFile } from "../core/fs.js";
-import { statePath, configPath, harnessPath } from "../core/paths.js";
+import { fileExists, readTextFile, writeTextFile, readJsonFile } from "../core/fs.js";
+import { statePath, configPath, policiesDir } from "../core/paths.js";
 import { createLogger, printJson } from "../core/logger.js";
 import { CLIError } from "../core/errors.js";
 import { getVersion } from "../core/version.js";
@@ -35,6 +35,35 @@ function updateConfigVersion(yamlContent: string, version: string): string {
   return result.join("\n");
 }
 
+interface FileBackup {
+  label: string;
+  path: string;
+  content: string | null; // null = file did not exist before update
+}
+
+async function backupFile(label: string, filePath: string): Promise<FileBackup> {
+  return { label, path: filePath, content: await readTextFile(filePath) };
+}
+
+/** Restore a backed-up file verbatim if it existed pre-update. Returns true if restored. */
+async function restoreIfBackedUp(backup: FileBackup): Promise<boolean> {
+  if (backup.content === null) return false;
+  await writeTextFile(backup.path, backup.content, { overwrite: true });
+  return true;
+}
+
+function preservedFilePaths(cwd: string): Array<{ label: string; path: string }> {
+  const policies = policiesDir(cwd);
+  return [
+    { label: "policies/risk-gates.yml", path: path.join(policies, "risk-gates.yml") },
+    { label: "policies/boundary.yml", path: path.join(policies, "boundary.yml") },
+    { label: "policies/commands.yml", path: path.join(policies, "commands.yml") },
+    { label: "policies/claude-code.yml", path: path.join(policies, "claude-code.yml") },
+    { label: "policies/opencode.yml", path: path.join(policies, "opencode.yml") },
+    { label: "state.json", path: statePath(cwd) },
+  ];
+}
+
 export async function runUpdateCommand(options: UpdateOptions): Promise<void> {
   const { cwd, json = false } = options;
   const log = createLogger({ json });
@@ -64,6 +93,11 @@ export async function runUpdateCommand(options: UpdateOptions): Promise<void> {
     userConfigBackup = await readTextFile(cfgPath);
   }
 
+  const preservedTargets = preservedFilePaths(cwd);
+  const preservedBackups = await Promise.all(
+    preservedTargets.map(t => backupFile(t.label, t.path)),
+  );
+
   const host = options.host ?? await detectInstalledHost(cwd);
 
   if (!json) {
@@ -82,12 +116,20 @@ export async function runUpdateCommand(options: UpdateOptions): Promise<void> {
     // Always restore user config with version updated (even if version didn't change)
     // This preserves user customizations while ensuring version is current
     const updatedConfig = updateConfigVersion(userConfigBackup, currentVersion);
-    const { writeTextFile } = await import("../core/fs.js");
     await writeTextFile(cfgPath, updatedConfig, { overwrite: true });
     if (!json) {
       log.info("");
       log.success("User config.yml restored with current version.");
     }
+  }
+
+  const restoredLabels: string[] = [];
+  for (const backup of preservedBackups) {
+    if (await restoreIfBackedUp(backup)) restoredLabels.push(backup.label);
+  }
+  if (!json && restoredLabels.length > 0) {
+    log.info("");
+    log.success(`Preserved ${restoredLabels.length} customized file(s): ${restoredLabels.join(", ")}`);
   }
 
   if (json) {
@@ -97,6 +139,7 @@ export async function runUpdateCommand(options: UpdateOptions): Promise<void> {
       updated: true,
       host,
       configPreserved: hasUserConfig,
+      preservedFiles: restoredLabels,
       warnings,
     });
     return;
