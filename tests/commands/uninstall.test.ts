@@ -67,7 +67,7 @@ describe("lh uninstall — dry run", () => {
     spy.mockRestore();
 
     expect(await exists(path.join(tmpDir, ".lh", "config.yml"))).toBe(true);
-    expect(await exists(path.join(tmpDir, ".claude", "agents"))).toBe(true);
+    expect(await exists(path.join(tmpDir, ".claude"))).toBe(true);
     expect(await exists(path.join(tmpDir, ".opencode", "agents"))).toBe(true);
   });
 });
@@ -215,6 +215,25 @@ describe("lh uninstall — strips LH entries from shared config files", () => {
           }
         }
       }
+    }
+  });
+
+  it("strips the plugin registration (enabledPlugins, extraKnownMarketplaces) from settings.json", async () => {
+    await initAll();
+
+    const settingsPath = path.join(tmpDir, ".claude", "settings.json");
+    const before = JSON.parse(await fs.readFile(settingsPath, "utf-8"));
+    expect(before.enabledPlugins?.["lh@lean-harness"]).toBe(true);
+    expect(before.extraKnownMarketplaces?.["lean-harness"]).toBeDefined();
+
+    const spy = silenceOutput();
+    await runUninstallCommand({ cwd: tmpDir, yes: true });
+    spy.mockRestore();
+
+    if (await exists(settingsPath)) {
+      const result = JSON.parse(await fs.readFile(settingsPath, "utf-8"));
+      expect(result.enabledPlugins?.["lh@lean-harness"]).toBeUndefined();
+      expect(result.extraKnownMarketplaces?.["lean-harness"]).toBeUndefined();
     }
   });
 

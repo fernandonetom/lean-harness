@@ -3,6 +3,28 @@ import { readJsonFile, writeJsonFile } from "./fs.js";
 import { statePath } from "./paths.js";
 import type { HarnessState, FeatureIndexEntry } from "./types.js";
 
+export function normalizeFeatureEntry(raw: Record<string, unknown>): FeatureIndexEntry {
+  const entry = raw as unknown as FeatureIndexEntry;
+  const worktreePath =
+    typeof raw["worktreePath"] === "string" && raw["worktreePath"].length > 0
+      ? (raw["worktreePath"] as string)
+      : undefined;
+  const worktreeBranch =
+    typeof raw["worktreeBranch"] === "string" && raw["worktreeBranch"].length > 0
+      ? (raw["worktreeBranch"] as string)
+      : undefined;
+  const worktreeCreatedAt =
+    typeof raw["worktreeCreatedAt"] === "string" && raw["worktreeCreatedAt"].length > 0
+      ? (raw["worktreeCreatedAt"] as string)
+      : undefined;
+  return {
+    ...entry,
+    worktreePath,
+    worktreeBranch,
+    worktreeCreatedAt,
+  };
+}
+
 export function nowIso(): string {
   return new Date().toISOString();
 }
@@ -43,14 +65,16 @@ export function normalizeState(input: unknown): HarnessState {
   let features: FeatureIndexEntry[] = [];
 
   if (Array.isArray(rawFeatures)) {
-    features = rawFeatures.filter(
-      (f): f is FeatureIndexEntry =>
-        typeof f === "object" && f !== null && typeof f.id === "string",
-    );
+    features = rawFeatures
+      .filter(
+        (f): f is Record<string, unknown> =>
+          typeof f === "object" && f !== null && typeof (f as Record<string, unknown>)["id"] === "string",
+      )
+      .map((f) => normalizeFeatureEntry(f));
   } else if (typeof rawFeatures === "object" && rawFeatures !== null) {
     for (const val of Object.values(rawFeatures)) {
       if (typeof val === "object" && val !== null && typeof (val as Record<string, unknown>)["id"] === "string") {
-        features.push(val as FeatureIndexEntry);
+        features.push(normalizeFeatureEntry(val as Record<string, unknown>));
       }
     }
   }
@@ -95,6 +119,28 @@ export function upsertFeatureEntry(state: HarnessState, entry: FeatureIndexEntry
   }
   state.features.sort((a, b) => a.id.localeCompare(b.id));
   return state;
+}
+
+export function setFeatureWorktree(
+  state: HarnessState,
+  featureId: string,
+  rec: { path: string; branch: string; createdAt: string },
+): boolean {
+  const entry = state.features.find((f) => f.id === featureId);
+  if (!entry) return false;
+  entry.worktreePath = rec.path;
+  entry.worktreeBranch = rec.branch;
+  entry.worktreeCreatedAt = rec.createdAt;
+  return true;
+}
+
+export function clearFeatureWorktree(state: HarnessState, featureId: string): boolean {
+  const entry = state.features.find((f) => f.id === featureId);
+  if (!entry) return false;
+  delete entry.worktreePath;
+  delete entry.worktreeBranch;
+  delete entry.worktreeCreatedAt;
+  return true;
 }
 
 export function removeFeatureEntry(state: HarnessState, featureIdOrPath: string): HarnessState {

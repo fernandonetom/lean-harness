@@ -135,7 +135,7 @@ export async function runOpenCode(input: OpenCodeRunOptions): Promise<AgentRunRe
   return new Promise((resolve) => {
     const proc = spawn(cmd, args, {
       stdio: ["ignore", "pipe", "pipe"],
-      cwd: input.root,
+      cwd: input.workingDir ?? input.root,
     });
 
     let stdout = "";

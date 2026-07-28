@@ -144,7 +144,7 @@ function printConfigSummary(config: Record<string, unknown>, log: ReturnType<typ
   const sections: Array<[string, string[]]> = [
     ["project", ["name", "mode"]],
     ["host", ["primary", "adapter"]],
-    ["workflow", ["visible_steps", "require_review", "require_verification", "require_worktree"]],
+    ["workflow", ["visible_steps", "require_review", "require_verification", "require_worktree", "worktree_dir"]],
     ["discovery", ["strategy", "default_depth", "max_initial_files"]],
     ["compression", ["enabled", "protocol", "mode"]],
     ["verification", ["require_acceptance_trace", "require_changed_files", "require_review", "allow_self_review"]],

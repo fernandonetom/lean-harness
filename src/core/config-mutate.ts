@@ -37,6 +37,7 @@ const DOT_PATH_SCHEMA: Record<string, { type: string; enums?: string[] }> = {
   "workflow.visible_steps": { type: "array" },
   "workflow.one_command": { type: "string" },
   "workflow.require_worktree": { type: "boolean" },
+  "workflow.worktree_dir": { type: "string" },
   "workflow.require_review": { type: "boolean" },
   "workflow.require_verification": { type: "boolean" },
   "discovery.strategy": { type: "string" },
@@ -413,4 +414,18 @@ export function renderConfigYaml(obj: Record<string, unknown>, indent = 0): stri
   }
 
   return lines.join("\n");
+}
+
+export function updateConfigVersion(yamlContent: string, version: string): string {
+  // Replace version: "X.Y.Z" with the current version
+  // Handles both quoted and unquoted version values
+  const lines = yamlContent.split("\n");
+  const result = lines.map(line => {
+    const match = line.match(/^(\s*)version:\s*["']?([^"'\n]+)["']?\s*$/);
+    if (match) {
+      return match[1] + 'version: "' + version + '"';
+    }
+    return line;
+  });
+  return result.join("\n");
 }

@@ -1,0 +1,32 @@
+name: spec-invocation
+description: Plugin should invoke lh-spec skill when user requests a feature without jumping straight to implementation
+prompt: |
+  I need to add a rate limiter to the API. Help me get started.
+runs: 3
+graders:
+  - type: llm
+    prompt: |
+      You are grading whether the Claude Code plugin correctly engaged the LeanHarness workflow.
+
+      The user asked for help getting started with adding a rate limiter to an API.
+
+      Success criteria:
+      - The response mentions or invokes the `lh-spec` skill/workflow
+      - The response creates or references a feature specification
+      - The response discusses acceptance criteria, constraints, or non-goals
+      - The response does NOT jump straight into writing code
+      - The response treats the spec as the source of truth for requested behavior
+
+      Failure cases:
+      - Response provides code without discussing specification first
+      - Response improvises implementation without creating a bounded spec
+      - Response skips the discovery/planning phases entirely
+
+      Grade this response on a scale of 0-1 where:
+      - 1.0 = Perfect engagement of lh-spec workflow with clear spec creation
+      - 0.7-0.99 = Good engagement but missing some spec components (criteria, constraints)
+      - 0.4-0.69 = Mentions spec workflow but doesn't fully execute or engage it
+      - 0.1-0.39 = Minimal or vague spec engagement, partial code jumping
+      - 0.0 = No spec engagement, pure code implementation response
+
+      Return only a JSON object with "score" (0-1) and "reasoning" (one sentence explaining the score).

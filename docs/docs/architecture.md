@@ -188,15 +188,20 @@ Plugins discovered from `.lh/plugins/`, loaded at CLI startup, hooks dispatched 
 
 ### Memory system
 
-**Source:** `src/memory/`
+**Primary source:** Skills during normal workflow (`lh-discover`, `lh-check`, `lh-compressor`)
 
 Persistent project knowledge in `.lh/memory/`. Four memory files:
-- `project.md` — tech stack, structure, conventions
-- `decisions.md` — architectural decisions across features
-- `patterns.md` — recurring patterns and idioms
-- `cave.md` — CaveBus summary of recent work
+- `project.md` — tech stack, structure, conventions (seeded by lh-discover, one-time)
+- `decisions.md` — architectural decisions across features (appended by lh-check, deduplicated)
+- `patterns.md` — recurring patterns and idioms (appended by lh-check, deduplicated)
+- `cave.md` — CaveBus abbreviation map (appended by lh-compressor, capped at 60 lines)
 
-Memory populated after discovery (tech stack) and after check pass (patterns, decisions).
+In normal Claude Code / OpenCode usage, memory files are written directly by skills via Read/Write. Specifically:
+- `lh-discover` appends a `## Tech Stack` section to `project.md` on first discovery (once per project).
+- `lh-check` appends deduplicated entries from `result.md`'s "Decisions Made" and "Patterns Discovered" sections to `decisions.md` and `patterns.md` respectively (capped at 120 lines each).
+- `lh-compressor` appends new abbreviations to `cave.md` during CaveBus compression (capped at 60 lines).
+
+A secondary TypeScript module (`src/memory/`) exists for CLI-direct execution when users run `lh discover`/`lh check` from the command line manually, but skill-driven writes are the primary mechanism in typical Claude Code and OpenCode usage.
 
 ### Config resolution
 

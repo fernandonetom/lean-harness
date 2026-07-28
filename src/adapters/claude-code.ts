@@ -27,7 +27,7 @@ export function buildClaudeCodeArgs(input: AgentRunInput): string[] {
   const args: string[] = [];
 
   args.push("-p", input.prompt);
-  args.push("--cwd", input.root);
+  args.push("--cwd", input.workingDir ?? input.root);
 
   if (input.allowedTools && input.allowedTools.length > 0) {
     args.push("--allowedTools", input.allowedTools.join(","));
@@ -146,7 +146,7 @@ export async function runClaudeCode(input: ClaudeCodeRunOptions): Promise<AgentR
   return new Promise((resolve) => {
     const proc = spawn(cmd, args, {
       stdio: ["ignore", "pipe", "pipe"],
-      cwd: input.root,
+      cwd: input.workingDir ?? input.root,
       detached: process.platform !== "win32",
     });
 

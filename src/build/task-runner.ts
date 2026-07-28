@@ -11,6 +11,7 @@ import { renderTaskSummary, renderTaskCavebusSummary } from "./task-summary.js";
 
 export interface RunBuildTaskOptions {
   root: string;
+  workingDir?: string | undefined;
   featureRef: string;
   task: ParsedTask;
   host: AgentHost;
@@ -76,6 +77,7 @@ export async function runBuildTask(options: RunBuildTaskOptions): Promise<BuildT
     const result = await adapter.run({
       host,
       root,
+      workingDir: options.workingDir,
       prompt: compiled.content,
       featureRef,
       taskId: task.id,
@@ -147,6 +149,7 @@ export async function runBuildTask(options: RunBuildTaskOptions): Promise<BuildT
   const result = await adapter.run({
     host,
     root,
+    workingDir: options.workingDir,
     prompt: compiled.content,
     featureRef,
     taskId: task.id,

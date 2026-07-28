@@ -5,6 +5,9 @@ on:
     branches: [main, develop]
   pull_request:
     branches: [main, develop]
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 6 * * *"
 
 jobs:
   build-and-test:
@@ -60,3 +63,39 @@ jobs:
 
       - name: Verify README version matches package.json
         run: node scripts/sync-readme-version.mjs
+
+  plugin-check:
+    name: Plugin Manifest & Smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: node scripts/sync-plugin-version.mjs --check
+      - run: npm i -g @anthropic-ai/claude-code
+      - run: claude plugin validate . --strict
+
+  plugin-eval:
+    name: Plugin Eval Suite
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm i -g @anthropic-ai/claude-code
+      - name: Plugin smoke test
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/plugin-smoke.mjs
+      - name: Plugin eval suite
+        if: env.ANTHROPIC_API_KEY != ''
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: claude plugin eval . --judge-model haiku --threshold 0.8

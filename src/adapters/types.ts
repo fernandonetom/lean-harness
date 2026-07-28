@@ -11,6 +11,8 @@ export interface AgentDetection {
 export interface AgentRunInput {
   host?: AgentHost | undefined;
   root: string;
+  /** Directory the agent process runs in. Defaults to `root`. Set when building inside a git worktree. */
+  workingDir?: string | undefined;
   prompt: string;
   featureRef: string;
   taskId: string;

@@ -12,12 +12,7 @@
 
 _What was delivered._
 
-## Acceptance Results
-
-| AC | Description | Status |
-|----|-------------|--------|
-| AC-01 | _description_ | passed/failed |
-| AC-02 | _description_ | passed/failed |
+> Acceptance criteria evidence lives in `checks.md`. This file does not repeat it.
 
 ## Changed Files
 
@@ -29,20 +24,22 @@ _What was delivered._
 
 ## Decisions Made
 
-<!-- Decisions recorded during this feature (references to decisions.md) -->
+<!-- Required output — feeds into `.lh/memory/decisions.md` after feature completion -->
 
 _None._
 
 ## Patterns Discovered
 
-<!-- New patterns added to memory/patterns.md -->
+<!-- Required output — feeds into `.lh/memory/patterns.md` after feature completion -->
 
 _None._
 
 ## Risks Encountered
 
-_Risk gates triggered and how they were resolved._
+_Summary of risk gates triggered and how they were resolved. (See `checks.md` for full risk-gate detail.)_
 
 ## Lessons
+
+<!-- Required output — informs future feature planning and execution strategy -->
 
 _What went well, what didn't, what to carry forward._

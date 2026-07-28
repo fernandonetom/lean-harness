@@ -37,6 +37,11 @@ export interface FeatureIndexEntry {
   status: FeatureStatus;
   createdAt?: string | undefined;
   updatedAt?: string | undefined;
+  /** Worktree directory, posix, relative to the harness root. Absent = no worktree. */
+  worktreePath?: string | undefined;
+  /** Branch checked out in that worktree. */
+  worktreeBranch?: string | undefined;
+  worktreeCreatedAt?: string | undefined;
 }
 
 export interface HarnessConfigProject {
@@ -53,6 +58,7 @@ export interface HarnessConfigWorkflow {
   visible_steps?: string[];
   one_command?: string;
   require_worktree?: boolean;
+  worktree_dir?: string;
   require_review?: boolean;
   require_verification?: boolean;
 }

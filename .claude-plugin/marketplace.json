@@ -1,0 +1,20 @@
+{
+  "name": "lean-harness",
+  "description": "LeanHarness plugin marketplace",
+  "owner": {
+    "name": "Fernando Neto"
+  },
+  "plugins": [
+    {
+      "name": "lh",
+      "description": "LeanHarness — bounded-context AI harness for brownfield feature work.",
+      "version": "1.5.2",
+      "source": "./",
+      "author": {
+        "name": "Fernando Neto"
+      },
+      "category": "workflow",
+      "homepage": "https://github.com/fernandonetom/lean-harness"
+    }
+  ]
+}

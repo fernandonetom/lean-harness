@@ -45,14 +45,15 @@ Before running, inspect the feature folder:
 | # | Subject |
 |---|---------|
 | 1 | Read spec + config + memory |
-| 2 | Graphify — build or verify |
-| 3 | D1 — Seed files via graphify |
-| 4 | Coverage check + user prompt |
-| 5 | Conditional research — web + deeper discovery |
-| 6 | D2–D3 — Dependency + risk probes |
-| 7 | Risk gate review + user prompt |
-| 8 | Aggregate → write artifacts |
-| 9 | Report |
+| 2 | Seed project memory |
+| 3 | Graphify — build or verify |
+| 4 | D1 — Seed files via graphify |
+| 5 | Coverage check + user prompt |
+| 6 | Conditional research — web + deeper discovery |
+| 7 | D2–D3 — Dependency + risk probes |
+| 8 | Risk gate review + user prompt |
+| 9 | Aggregate → write artifacts |
+| 10 | Report |
 
 ---
 
@@ -66,8 +67,9 @@ Before running, inspect the feature folder:
    - `.lh/memory/decisions.md`
    - `.lh/memory/patterns.md`
    - `.lh/memory/cave.md`
+5. **Seed project memory.** If `.lh/memory/project.md` does not yet have a `## Tech Stack` section, append one summarizing what discovery established: language, framework, test runner, package manager, and the build/verification commands. Skip this entirely if the section is already present — this is a one-time seed per project, not something to repeat or duplicate on every feature's discovery run.
 
-### Step 2 — Graphify Setup
+### Step 3 — Graphify Setup
 
 Check if graphify graph exists:
 
@@ -76,9 +78,9 @@ test -f graphify-out/graph.json && echo "exists" || echo "missing"
 ```
 
 - **If missing:** Run `graphify .` to build the graph. This may take a while on large codebases — inform the user.
-- **If present:** Continue to Step 3.
+- **If present:** Continue to Step 4.
 
-### Step 3 — D1 Seed Discovery via Graphify
+### Step 4 — D1 Seed Discovery via Graphify
 
 Run graphify to find seed files related to the feature:
 
@@ -88,7 +90,7 @@ graphify query "<feature description from spec.md>"
 
 Use the feature's goal or title from `spec.md` as the query. Extract file paths and node labels from the graphify output.
 
-### Step 4 — Coverage Check
+### Step 5 — Coverage Check
 
 Evaluate graphify results. Ask for graph update if:
 
@@ -108,9 +110,9 @@ If the user selects "Update graph":
 graphify --update
 ```
 
-Then re-run the D1 query from Step 3. If results are still sparse after update, record the gap as an `unknown` in the discovery report and proceed.
+Then re-run the D1 query from Step 4. If results are still sparse after update, record the gap as an `unknown` in the discovery report and proceed.
 
-### Step 5 — Conditional Research
+### Step 6 — Conditional Research
 
 After initial graphify discovery, evaluate whether additional research is needed. **Ask the user if research should proceed** — never assume. Use the question format with AI-recommended options.
 
@@ -164,7 +166,7 @@ When the user approves research, use web search/fetch to find:
 
 Record findings in the discovery report under each relevant section.
 
-### Step 6 — D2 Dependency Boundary + D3 Risk Probes
+### Step 7 — D2 Dependency Boundary + D3 Risk Probes
 
 **D2 — Dependency boundary:** Run graphify to find import relationships and callers:
 
@@ -183,7 +185,7 @@ graphify explain "<symbol>"
 
 Also run targeted test commands to detect failures in risk-relevant areas.
 
-### Step 7 — Risk Gate Review
+### Step 8 — Risk Gate Review
 
 After completing D2-D3 discovery, check if any risk gates were triggered:
 
@@ -199,7 +201,7 @@ When the user approves research, use web search/fetch to find:
 - Implementation patterns that mitigate the risk
 - Recent CVEs or issues related to the technology
 
-### Step 8 — Aggregate and Write Artifacts
+### Step 9 — Aggregate and Write Artifacts
 
 From all graphify results, classify files into:
 
@@ -213,7 +215,7 @@ Identify risk gates from `.lh/config.yml` based on paths touched.
 Write `discovery.md` using `.lh/templates/discovery.md`.
 Write `boundary.json` using `.lh/templates/boundary.json`.
 
-### Step 9 — Append CaveBus + Report
+### Step 10 — Append CaveBus + Report
 
 Append a compact discovery summary to `cavebus.log` following `.lh/templates/cavebus-message.md`:
 

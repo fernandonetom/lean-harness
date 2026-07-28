@@ -16,6 +16,7 @@ import {
   HARNESS_DIR,
 } from "../core/paths.js";
 import { createLogger, printJson } from "../core/logger.js";
+import { isClaudePluginEnabled } from "./detect-install.js";
 import type { DiscoveryArtifactSummary, TaskContextArtifactSummary, PlanningArtifactSummary, HostSupportSummary, BuildArtifactSummary, CheckArtifactSummary, CaveBusArtifactSummary, OpenCodeIntegrationSummary, OpenCodePluginSummary } from "../core/types.js";
 import { readTextFile } from "../core/fs.js";
 import { parseTasksMarkdown } from "../context/task-context.js";
@@ -41,6 +42,9 @@ export async function runStatusCommand(options: StatusOptions): Promise<void> {
   const activeFeatures = allFeatures.filter((f) => f.status !== "archived");
   const archivedFeatures = allFeatures.filter((f) => f.status === "archived");
 
+  // v2.0.0+: skills, agents, and hooks ship via the lh@lean-harness Claude Code plugin
+  // instead of project-local .claude/ files. skills/agents/hooksConfigured below reflect
+  // legacy v1.x project-local files only; pluginEnabled reflects the current install path.
   const claudeExists = await dirExists(claudePath(cwd));
   const skillsDir = claudePath(cwd, "skills");
   const agentsDir = claudePath(cwd, "agents");
@@ -48,7 +52,9 @@ export async function runStatusCommand(options: StatusOptions): Promise<void> {
   const agentsExist = await dirExists(agentsDir);
   const skills = skillsExist ? await listDirs(skillsDir) : [];
   const agents = agentsExist ? await listFiles(agentsDir) : [];
-  const hooksConfigured = await fileExists(claudePath(cwd, "hooks", "leanharness-hooks.json"));
+  const legacyHooksConfigured = await fileExists(claudePath(cwd, "hooks", "leanharness-hooks.json"));
+  const pluginEnabled = await isClaudePluginEnabled(cwd);
+  const hooksConfigured = legacyHooksConfigured || pluginEnabled;
 
   const policiesDirPath = harnessPath(cwd, "policies");
   const policiesExist = await dirExists(policiesDirPath);
@@ -219,6 +225,7 @@ export async function runStatusCommand(options: StatusOptions): Promise<void> {
       },
       claude: {
         exists: claudeExists,
+        pluginEnabled,
         skillCount: skills.length,
         agentCount: agents.length,
       },
@@ -302,13 +309,13 @@ export async function runStatusCommand(options: StatusOptions): Promise<void> {
   log.info("");
 
   log.info(
-    `Claude integration: ${claudeExists ? "present" : "not found"}`,
+    `Claude plugin:    ${pluginEnabled ? "enabled (lh@lean-harness)" : "not enabled"}`,
   );
-  if (claudeExists) {
-    log.info(`  Skills:         ${skills.length > 0 ? skills.join(", ") : "none"}`);
-    log.info(`  Agents:         ${agents.length > 0 ? agents.map((a) => a.replace(/\.md$/, "")).join(", ") : "none"}`);
+  if (skillsExist || agentsExist) {
+    log.info(`  Skills:         ${skills.length > 0 ? skills.join(", ") : "none"} (legacy v1.x — run \`lh migrate\`)`);
+    log.info(`  Agents:         ${agents.length > 0 ? agents.map((a) => a.replace(/\.md$/, "")).join(", ") : "none"} (legacy v1.x — run \`lh migrate\`)`);
   }
-  log.info(`Hooks:            ${hooksConfigured ? "configured" : "not configured"}`);
+  log.info(`Hooks:            ${hooksConfigured ? (pluginEnabled ? "configured (via plugin)" : "configured (legacy v1.x)") : "not configured"}`);
   log.info(`Policies:         ${policyFiles.length > 0 ? policyFiles.join(", ") : "none"}`);
   log.info("");
 

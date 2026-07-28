@@ -32,6 +32,7 @@ export interface BuildOptions {
 
   approveRisk?: string[] | undefined;
   strict?: boolean | undefined;
+  noWorktree?: boolean | undefined;
 }
 
 export async function runBuildCommand(options: BuildOptions): Promise<void> {
@@ -92,6 +93,7 @@ export async function runBuildCommand(options: BuildOptions): Promise<void> {
       approveRisk: options.approveRisk,
       strict: options.strict,
       resolvedConfig: resolved,
+      noWorktree: options.noWorktree,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);

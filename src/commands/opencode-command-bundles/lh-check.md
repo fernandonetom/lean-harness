@@ -48,8 +48,11 @@ Examples:
 9. **Check risk gates.** Confirm all triggered risk gates were resolved or approved.
 10. **Check review findings.** Confirm no blocking review findings remain.
 11. **Write checks.** Write `checks.md` using `.lh/templates/checks.md`.
-12. **Write result.** Write or update `result.md` using `.lh/templates/result.md`.
-13. **Set verdict.** Assign final verdict: `pass`, `needs-fix`, or `blocked`.
+12. **Write result.** Write or update `result.md` using `.lh/templates/result.md`. Do not duplicate the Acceptance Results table, verification-commands table, or risk-gate section — these live only in `checks.md`; instead, include a one-line pointer back to `checks.md` for AC-level evidence. The "Decisions Made", "Patterns Discovered", and "Lessons" sections (from `.lh/templates/result.md`) are now required output — do not leave them as "_None._" placeholders unless genuinely empty after real consideration.
+13. **Update project memory.** Read `.lh/memory/decisions.md` and `.lh/memory/patterns.md`. For each entry in `result.md`'s "Decisions Made" and "Patterns Discovered" sections, append it to the corresponding memory file **only if an equivalent entry is not already present** — check existing content before appending, do not blindly append. Each entry is one line, two at most, prefixed with the feature ID (e.g. `- F003: <fact>`). Record only facts that would matter to a *different* future feature — keep feature-specific detail in the feature folder, not in memory. **Hard cap: 120 lines per memory file.** If a file is already at or near the cap, consolidate/rewrite related entries into fewer lines instead of appending — do not let the file grow past 120 lines.
+14. **Append CaveBus.** Append a compact verification summary to `cavebus.log`.
+15. **Set verdict.** Assign final verdict: `pass`, `needs-fix`, or `blocked`.
+16. **Close out stale status fields.** Once the verdict is decided: update `spec.md`'s `Status:` header (no longer `planned`) and tick each acceptance-criterion checkbox that passed. Update `boundary.json`'s `status` field, its `lastUpdated` timestamp, and resolve any `riskGates` entries still marked `unresolved` if the checks show them as passed or not-applicable. Do not leave these artifacts frozen at their pre-verification state after a `pass` or `needs-fix` verdict.
 
 ## Verdict Rules
 
@@ -115,6 +118,10 @@ Create or update:
 .lh/features/<feature-id>-<slug>/checks.md
 .lh/features/<feature-id>-<slug>/result.md
 .lh/features/<feature-id>-<slug>/cavebus.log
+.lh/features/<feature-id>-<slug>/spec.md          # status + AC checkboxes only
+.lh/features/<feature-id>-<slug>/boundary.json    # status/lastUpdated/riskGates only
+.lh/memory/decisions.md                           # append-only, deduped
+.lh/memory/patterns.md                            # append-only, deduped
 .lh/state.json
 ```
 

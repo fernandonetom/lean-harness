@@ -35,11 +35,11 @@ Remove filler words, hedging, and verbose explanations. Keep every file path, fu
 
 ## Where CaveBus Is Used
 
-- `cavebus.log` in feature folders.
-- Task summaries (compact sections in `task-summaries/T-XX.md`).
-- Discovery summaries passed between lh-scout and the orchestrator.
+- `cavebus.log` in feature folders (phase-level summaries only: DISC, PLAN, VERIFY).
+- Task summaries (human-readable sections in `task-summaries/T-XX.md` for task-level handoff detail).
+- Discovery summaries passed between lh-discover and the orchestrator.
 - Review summaries from lh-reviewer.
-- Verification summaries from lh-verifier.
+- Verification summaries from lh-check.
 - Subagent handoff messages.
 - Memory compaction in `.lh/memory/`.
 - Context compiler inputs (future CLI).
@@ -222,7 +222,7 @@ next:
 
 Task result summary. Records what a task changed and whether it succeeded.
 
-**When to use:** After a task completes. Written to `task-summaries/T-XX.md` and `cavebus.log`.
+**When to use:** After a task completes. Written to `task-summaries/T-XX.md` (human-readable format only, not to cavebus.log).
 
 **Required fields:** feature ID, task ID, status.
 
@@ -258,6 +258,8 @@ Review result. Records findings from lh-reviewer.
 **Optional fields:** crit, major, minor, miss, boundary, risk, fix, next.
 
 **Verdict values:** `pass`, `needs-fix`, `blocked`.
+
+**Destination:** Returned in lh-reviewer's response and recorded in the task's Review Iterations table in `task-summaries/<task-id>.md` — not appended to `cavebus.log`. Reviews are per-task; `cavebus.log` stays phase-level.
 
 **Example:**
 
@@ -639,6 +641,8 @@ next:
 
 ### Review result
 
+_(returned in lh-reviewer's response, not appended to `cavebus.log`)_
+
 ```
 REV F005 T-01 verdict:pass
 minor:
@@ -743,7 +747,7 @@ CaveBus supports each phase of the LeanHarness workflow:
 
 **Discover:** `DISC` messages carry discovery results between lh-scout and the orchestrator. `BOUNDARY` messages record boundary changes. `RISK` messages flag risk gates. The canonical `discovery.md` and `boundary.json` remain sources of truth.
 
-**Build:** `TASK` messages define bounded context for each task. `SUM` messages record task results. `ERR` messages capture failures. `BLOCK` messages halt progress when needed. `CMD` messages record command executions. `REV` messages carry review findings. The canonical `tasks.md` and task summaries remain sources of truth.
+**Build:** Task-level handoff information lives in human-readable `task-summaries/<task-id>.md` files. `REV` messages from lh-reviewer are returned in its response and recorded in each task summary's Review Iterations table — not appended to `cavebus.log`. `BLOCK` messages (when auto-fix max iterations reached) are written to `cavebus.log`. `ERR` messages capture failures. `CMD` messages record command executions. The canonical `tasks.md` and task summaries remain sources of truth. CaveBus in the build phase is phase-level only (the `PLAN` entry, carried over from the plan phase) — per-task detail does not appear in `cavebus.log`.
 
 **Check:** `VERIFY` messages carry final verification results. `CMD` messages record verification command runs. The canonical `checks.md` and `result.md` remain sources of truth.
 
