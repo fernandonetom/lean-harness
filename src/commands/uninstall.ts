@@ -27,6 +27,12 @@ import {
 } from "../core/paths.js";
 import { createClaudeCodeSettingsObject } from "./init-claude-code.js";
 
+export const LEGACY_HOOK_COMMANDS = new Set([
+  "node \"$CLAUDE_PROJECT_DIR/.lh/scripts/hooks/pre-tool-use.js\"",
+  "node \"$CLAUDE_PROJECT_DIR/.lh/scripts/hooks/post-tool-use.js\"",
+  "node \"$CLAUDE_PROJECT_DIR/.lh/scripts/hooks/session-end.js\"",
+]);
+
 export interface UninstallOptions {
   cwd: string;
   yes?: boolean;
@@ -139,7 +145,39 @@ async function cleanEmptyDir(p: string): Promise<boolean> {
   return false;
 }
 
-async function stripLhFromSettings(cwd: string): Promise<boolean> {
+export async function stripLhHooksFromSettings(cwd: string): Promise<boolean> {
+  const cfgPath = claudeSettingsPath(cwd);
+  const raw = await readJsonFile<Record<string, unknown>>(cfgPath);
+  if (!raw) return false;
+
+  const result = { ...raw };
+
+  const hooks = (result["hooks"] ?? {}) as Record<string, unknown>;
+  const newHooks: Record<string, unknown> = {};
+  let hooksChanged = false;
+  for (const [hookName, entries] of Object.entries(hooks)) {
+    if (!Array.isArray(entries)) {
+      newHooks[hookName] = entries;
+      continue;
+    }
+    const filtered = entries.filter((entry: unknown) => {
+      if (!entry || typeof entry !== "object") return true;
+      const e = entry as Record<string, unknown>;
+      const hookList = (Array.isArray(e["hooks"]) ? e["hooks"] : []) as Array<Record<string, unknown>>;
+      return !hookList.some((h) => typeof h["command"] === "string" && LEGACY_HOOK_COMMANDS.has(h["command"]));
+    });
+    if (filtered.length !== entries.length) hooksChanged = true;
+    if (filtered.length > 0) newHooks[hookName] = filtered;
+    else hooksChanged = true;
+  }
+
+  if (!hooksChanged) return false;
+  result["hooks"] = newHooks;
+  await writeJsonFile(cfgPath, result, { overwrite: true });
+  return true;
+}
+
+export async function stripLhPermissionsFromSettings(cwd: string): Promise<boolean> {
   const cfgPath = claudeSettingsPath(cwd);
   const raw = await readJsonFile<Record<string, unknown>>(cfgPath);
   if (!raw) return false;
@@ -149,16 +187,10 @@ async function stripLhFromSettings(cwd: string): Promise<boolean> {
   const lhAllow = new Set((lhPerms["allow"] ?? []) as string[]);
   const lhDeny = new Set((lhPerms["deny"] ?? []) as string[]);
   const lhEnv = Object.keys((lhSettings["env"] ?? {}) as Record<string, unknown>);
-  const lhHookCommands = new Set([
-    "node \"$CLAUDE_PROJECT_DIR/.lh/scripts/hooks/pre-tool-use.js\"",
-    "node \"$CLAUDE_PROJECT_DIR/.lh/scripts/hooks/post-tool-use.js\"",
-    "node \"$CLAUDE_PROJECT_DIR/.lh/scripts/hooks/session-end.js\"",
-  ]);
 
   const result = { ...raw };
   let changed = false;
 
-  // Strip permissions
   const perms = (result["permissions"] ?? {}) as Record<string, unknown>;
   const newPerms = { ...perms };
   for (const key of ["allow", "deny", "ask"] as const) {
@@ -172,7 +204,6 @@ async function stripLhFromSettings(cwd: string): Promise<boolean> {
   }
   result["permissions"] = newPerms;
 
-  // Strip env
   const env = (result["env"] ?? {}) as Record<string, unknown>;
   const newEnv = { ...env };
   for (const key of lhEnv) {
@@ -183,28 +214,36 @@ async function stripLhFromSettings(cwd: string): Promise<boolean> {
   }
   if (changed) result["env"] = newEnv;
 
-  // Strip hooks
-  const hooks = (result["hooks"] ?? {}) as Record<string, unknown>;
-  const newHooks: Record<string, unknown> = {};
-  let hooksChanged = false;
-  for (const [hookName, entries] of Object.entries(hooks)) {
-    if (!Array.isArray(entries)) {
-      newHooks[hookName] = entries;
-      continue;
+  // v2.0.0+: the Claude Code plugin registration (enabledPlugins, extraKnownMarketplaces)
+  // is also LH-added state — remove it so uninstall fully reverses `lh init --host claude-code`.
+  const lhPlugins = Object.keys((lhSettings["enabledPlugins"] ?? {}) as Record<string, unknown>);
+  const enabledPlugins = (result["enabledPlugins"] ?? {}) as Record<string, unknown>;
+  const newEnabledPlugins = { ...enabledPlugins };
+  for (const key of lhPlugins) {
+    if (key in newEnabledPlugins) {
+      delete newEnabledPlugins[key];
+      changed = true;
     }
-    const filtered = entries.filter((entry: unknown) => {
-      if (!entry || typeof entry !== "object") return true;
-      const e = entry as Record<string, unknown>;
-      const hookList = (Array.isArray(e["hooks"]) ? e["hooks"] : []) as Array<Record<string, unknown>>;
-      return !hookList.some((h) => typeof h["command"] === "string" && lhHookCommands.has(h["command"]));
-    });
-    if (filtered.length !== entries.length) hooksChanged = true;
-    if (filtered.length > 0) newHooks[hookName] = filtered;
-    else hooksChanged = true;
   }
-  if (hooksChanged) {
-    result["hooks"] = newHooks;
-    changed = true;
+  if (Object.keys(newEnabledPlugins).length > 0) {
+    result["enabledPlugins"] = newEnabledPlugins;
+  } else if ("enabledPlugins" in result) {
+    delete result["enabledPlugins"];
+  }
+
+  const lhMarketplaces = Object.keys((lhSettings["extraKnownMarketplaces"] ?? {}) as Record<string, unknown>);
+  const marketplaces = (result["extraKnownMarketplaces"] ?? {}) as Record<string, unknown>;
+  const newMarketplaces = { ...marketplaces };
+  for (const key of lhMarketplaces) {
+    if (key in newMarketplaces) {
+      delete newMarketplaces[key];
+      changed = true;
+    }
+  }
+  if (Object.keys(newMarketplaces).length > 0) {
+    result["extraKnownMarketplaces"] = newMarketplaces;
+  } else if ("extraKnownMarketplaces" in result) {
+    delete result["extraKnownMarketplaces"];
   }
 
   if (!changed) return false;
@@ -358,12 +397,14 @@ export async function runUninstallCommand(options: UninstallOptions): Promise<vo
 
   // Strip shared config files
   for (const f of plan.stripFiles) {
-    const stripped =
-      f === claudeSettingsPath(cwd)
-        ? await stripLhFromSettings(cwd)
-        : f === opencodeConfigPath(cwd)
-          ? await stripLhFromOpencodeConfig(cwd)
-          : false;
+    let stripped = false;
+    if (f === claudeSettingsPath(cwd)) {
+      const hooksResult = await stripLhHooksFromSettings(cwd);
+      const permsResult = await stripLhPermissionsFromSettings(cwd);
+      stripped = hooksResult || permsResult;
+    } else if (f === opencodeConfigPath(cwd)) {
+      stripped = await stripLhFromOpencodeConfig(cwd);
+    }
     if (stripped) result.stripped.push(path.relative(cwd, f));
     else result.skipped.push(path.relative(cwd, f));
   }

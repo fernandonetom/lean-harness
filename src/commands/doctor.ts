@@ -6,6 +6,7 @@ import { harnessPath, claudePath, resolveProjectPath, statePath, templatesDir, p
 import { createLogger, printJson } from "../core/logger.js";
 import { detectAllAgentHosts } from "../adapters/registry.js";
 import { installBundledScaffold } from "../core/bundled-scaffold.js";
+import { isClaudePluginEnabled } from "./detect-install.js";
 import type { DoctorCheck } from "../core/types.js";
 import type { AgentDetection } from "../adapters/types.js";
 
@@ -294,23 +295,42 @@ export async function runDoctorCommand(options: DoctorOptions): Promise<void> {
     }
   }
 
+  // v2.0.0+: skills, agents, and hooks ship via the lh@lean-harness Claude Code plugin
+  // instead of project-local .claude/ files. Only flag these as missing when the plugin
+  // isn't enabled and no legacy v1.x files are present either.
+  const pluginEnabled = await isClaudePluginEnabled(cwd);
   checks.push(
-    (await dirExists(claudePath(cwd, "skills")))
-      ? { name: ".claude/skills/", status: "pass", message: "present" }
-      : { name: ".claude/skills/", status: "warn", message: "missing" },
+    pluginEnabled
+      ? { name: "Claude Code plugin", status: "pass", message: "enabled (lh@lean-harness)" }
+      : { name: "Claude Code plugin", status: "warn", message: "not enabled — run `/plugin install lh@lean-harness` in Claude Code" },
   );
 
+  const legacySkillsExist = await dirExists(claudePath(cwd, "skills"));
   checks.push(
-    (await dirExists(claudePath(cwd, "agents")))
-      ? { name: ".claude/agents/", status: "pass", message: "present" }
-      : { name: ".claude/agents/", status: "warn", message: "missing" },
+    legacySkillsExist
+      ? { name: ".claude/skills/", status: "pass", message: "present (legacy v1.x — run `lh migrate` to remove)" }
+      : pluginEnabled
+        ? { name: ".claude/skills/", status: "pass", message: "provided by lh@lean-harness plugin" }
+        : { name: ".claude/skills/", status: "warn", message: "missing" },
+  );
+
+  const legacyAgentsExist = await dirExists(claudePath(cwd, "agents"));
+  checks.push(
+    legacyAgentsExist
+      ? { name: ".claude/agents/", status: "pass", message: "present (legacy v1.x — run `lh migrate` to remove)" }
+      : pluginEnabled
+        ? { name: ".claude/agents/", status: "pass", message: "provided by lh@lean-harness plugin" }
+        : { name: ".claude/agents/", status: "warn", message: "missing" },
   );
 
   const hooksJson = claudePath(cwd, "hooks", "leanharness-hooks.json");
+  const legacyHooksJsonExists = await fileExists(hooksJson);
   checks.push(
-    (await fileExists(hooksJson))
-      ? { name: ".claude/hooks/leanharness-hooks.json", status: "pass", message: "present" }
-      : { name: ".claude/hooks/leanharness-hooks.json", status: "warn", message: "missing" },
+    legacyHooksJsonExists
+      ? { name: ".claude/hooks/leanharness-hooks.json", status: "pass", message: "present (legacy v1.x — run `lh migrate` to remove)" }
+      : pluginEnabled
+        ? { name: ".claude/hooks/leanharness-hooks.json", status: "pass", message: "provided by lh@lean-harness plugin (hooks/hooks.json)" }
+        : { name: ".claude/hooks/leanharness-hooks.json", status: "warn", message: "missing" },
   );
 
   // --- OpenCode integration ---
@@ -387,6 +407,8 @@ export async function runDoctorCommand(options: DoctorOptions): Promise<void> {
   }
 
   // --- Hook scripts ---
+  // v2.0.0+: hook scripts ship via the lh@lean-harness plugin (${CLAUDE_PLUGIN_ROOT}/hooks/),
+  // not as project-local .lh/scripts/hooks/ files. Only these legacy v1.x paths are checked here.
   const hookScripts = [
     ".lh/scripts/hooks/package.json",
     ".lh/scripts/hooks/pre-tool-use.js",
@@ -398,8 +420,10 @@ export async function runDoctorCommand(options: DoctorOptions): Promise<void> {
     const p = resolveProjectPath(cwd, script);
     checks.push(
       (await fileExists(p))
-        ? { name: script, status: "pass", message: "present" }
-        : { name: script, status: "warn", message: "missing" },
+        ? { name: script, status: "pass", message: "present (legacy v1.x — run `lh migrate` to remove)" }
+        : pluginEnabled
+          ? { name: script, status: "pass", message: "not needed — provided by lh@lean-harness plugin" }
+          : { name: script, status: "warn", message: "missing" },
     );
   }
 
@@ -469,6 +493,7 @@ export async function runDoctorCommand(options: DoctorOptions): Promise<void> {
       label: "Claude Code integration",
       names: [
         ".claude/settings.json",
+        "Claude Code plugin",
         ".claude/skills/",
         ".claude/agents/",
         ".claude/hooks/leanharness-hooks.json",

@@ -67,8 +67,7 @@ Do not require exact flag parsing. Interpret natural language flexibly.
    e. Run task verification commands when available.
    f. Record commands and results.
    g. Write task summary to `task-summaries/<task-id>.md`.
-   h. Append CaveBus summary to `cavebus.log`.
-   i. Update task status in `tasks.md`.
+   h. Update task status in `tasks.md` (BOTH the task's row in the summary table AND its own detail block, together in the same edit — updating only one location is a workflow bug and must not happen).
 
    4j. **Write checkpoint.** After each task completes, write `.lh/features/<id>/checkpoint.md`:
 
@@ -97,10 +96,9 @@ Do not require exact flag parsing. Interpret natural language flexibly.
 ## Bounded Context Rules
 
 - Start from the task, not the whole repo.
-- Include only: relevant spec sections, boundary entries, memory entries, files listed in the task, and prior task summaries.
+- Include only: relevant spec sections, boundary entries, memory entries, files listed in the task, and prior task summaries (only the "Context for Next Task" section of the immediately preceding completed task and any tasks this one directly depends on per the plan's dependency graph — do NOT include full summary bodies of unrelated or non-adjacent tasks or summaries from unrelated waves).
 - Avoid pulling in unrelated architecture.
 - Preserve exact paths, symbols, commands, and errors (protected tokens).
-- Use compact summaries after each task for handoffs.
 
 ## Question Format
 
@@ -136,7 +134,6 @@ Write each task summary to:
 Use `.lh/templates/task-summary.md` as the template. Include:
 
 - Status
-- CaveBus summary
 - Human-readable summary
 - Files changed
 - Tests added or updated
@@ -144,23 +141,6 @@ Use `.lh/templates/task-summary.md` as the template. Include:
 - Acceptance criteria covered
 - Review findings
 - Follow-ups
-
-## CaveBus Task Summary
-
-Append a compact task summary to `cavebus.log`:
-
-```
-SUM F001 T-01 status:done
-add: src/routes/reset.ts
-chg: src/routes/index.ts
-test: tests/routes/reset.test.ts
-pass: pnpm test
-fail: none
-risk: none
-next: T-02
-```
-
-Use actual values. Do not hardcode project-specific content.
 
 ## Review Behavior
 

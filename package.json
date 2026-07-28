@@ -12,7 +12,8 @@
     "./types": "./dist/core/types.js",
     "./adapters": "./dist/adapters/types.js",
     "./plugins": "./dist/plugins/types.js",
-    "./config": "./dist/core/resolved-config.js"
+    "./config": "./dist/core/resolved-config.js",
+    "./opencode": "./dist/commands/opencode-plugin-bundles/leanharness-guardrails.js"
   },
   "files": [
     "dist",
@@ -24,7 +25,7 @@
     ".lh/policies"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json && rm -rf dist/commands/opencode-command-bundles && cp -r src/commands/opencode-command-bundles dist/commands/opencode-command-bundles",
+    "build": "tsc -p tsconfig.json && rm -rf dist/commands/opencode-command-bundles dist/commands/opencode-agent-bundles dist/commands/opencode-plugin-bundles && cp -r src/commands/opencode-command-bundles src/commands/opencode-agent-bundles src/commands/opencode-plugin-bundles dist/commands/ && chmod +x dist/index.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "start": "node dist/index.js",
     "dev": "tsc -p tsconfig.json --watch",
@@ -33,7 +34,7 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "changeset": "changeset",
-    "version-packages": "changeset version && node scripts/sync-readme-version.mjs",
+    "version-packages": "changeset version && node scripts/sync-readme-version.mjs && node scripts/sync-plugin-version.mjs",
     "pack:dry-run": "npm pack --dry-run",
     "release:check": "npm run build && npm run typecheck && npm test && npm run pack:dry-run",
     "release": "npm run release:check && npm publish --provenance --access public"

@@ -4,7 +4,8 @@ import path from "node:path";
 
 /**
  * Regression tests for the deployed boundary enforcement code in
- * `.opencode/plugins/shared.js` and `.lh/scripts/hooks/shared.js`.
+ * `.opencode/plugins/shared.js` and `hooks/shared.js` (the Claude Code
+ * plugin's canonical hook shared module, at the repo root).
  *
  * These are the JS files that run inside agent hosts. They must accept
  * `boundary.json` field aliases (`touch`, `touchFiles`, `files`, and
@@ -29,7 +30,7 @@ let hookModule: { isPathInsideBoundary: (...args: unknown[]) => CheckResult } | 
 const coreDir = path.resolve(process.cwd(), ".opencode/core");
 const versionFile = path.join(coreDir, "version.js");
 const pluginPath = path.resolve(process.cwd(), ".opencode/plugins/shared.js");
-const hookPath = path.resolve(process.cwd(), ".lh/scripts/hooks/shared.js");
+const hookPath = path.resolve(process.cwd(), "hooks/shared.js");
 
 beforeAll(async () => {
   // Materialize a temporary version.js stub so the plugin can resolve its
@@ -129,7 +130,7 @@ describe("deployed .opencode/plugins/shared.js - field aliases", () => {
   });
 });
 
-describe("deployed .lh/scripts/hooks/shared.js - field aliases", () => {
+describe("deployed hooks/shared.js - field aliases", () => {
   it("accepts touchFiles (current canonical form)", () => {
     const boundary = { touchFiles: [{ path: "src/auth/login.ts" }] };
     const r = hookModule!.isPathInsideBoundary("src/auth/login.ts", boundary) as CheckResult;

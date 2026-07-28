@@ -103,6 +103,31 @@ build:
 
 Task weights: 1 = trivial, 2 = small, 3 = mid-size, 5 = complex/risky.
 
+### `memory`
+
+Controls where and how LeanHarness stores project knowledge.
+
+```yaml
+memory:
+  store: local                                # local | remote (default: local)
+  scope: feature                              # feature | project (default: feature)
+  project_file: .lh/memory/project.md
+  decisions_file: .lh/memory/decisions.md
+  patterns_file: .lh/memory/patterns.md
+  cave_file: .lh/memory/cave.md
+```
+
+| Key | Purpose |
+|-----|---------|
+| `store` | Where memory is persisted (`local` in the repo, or remote storage in future) |
+| `scope` | Memory scope (`feature` = per-feature learning, `project` = shared across team) |
+| `project_file` | Path to tech stack and structure notes (seeded by lh-discover) |
+| `decisions_file` | Path to architectural decisions (appended by lh-check, capped at 120 lines) |
+| `patterns_file` | Path to recurring patterns and idioms (appended by lh-check, capped at 120 lines) |
+| `cave_file` | Path to CaveBus abbreviation map (appended by lh-compressor, capped at 60 lines) |
+
+These files are populated automatically by the lh-discover, lh-check, and lh-compressor skills during normal workflow — you do not edit them directly. However, you can commit `project.md`, `decisions.md`, and `patterns.md` to share team knowledge across features. Keep `cave.md` gitignored (session-specific abbreviations).
+
 ### `command_enforcement`
 
 Controls how LeanHarness's Bash command guardrails treat `git push --force`.

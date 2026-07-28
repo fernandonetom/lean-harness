@@ -30,6 +30,7 @@ Feature branch (with .changeset/*.md)
 - Git repository with a `main` branch
 - `changesets` configured in the project
 - `gh` CLI authenticated and available (`gh auth status`)
+- `claude` CLI authenticated and available (required for plugin manifest validation: `claude plugin validate`, `claude plugin tag`, `claude plugin marketplace add`)
 - Clean working tree (no uncommitted changes)
 - `NPM_TOKEN` configured in GitHub repository secrets
 
@@ -48,6 +49,14 @@ Then:
 ```bash
 git status               # must be clean
 gh auth status           # must be authenticated
+```
+
+Validate Claude Code plugin manifests (requires `claude` CLI installed and authenticated):
+
+```bash
+claude plugin validate . --strict
+node scripts/sync-plugin-version.mjs --check
+claude plugin tag . --dry-run
 ```
 
 If any check fails, report the issue and do not proceed.
@@ -163,7 +172,11 @@ gh pr view <version-pr-number>
 Verify:
 - `package.json` version bump is correct
 - `CHANGELOG.md` entry is accurate
+- `.claude-plugin/plugin.json` version matches `package.json` (required for Claude Code plugin registry)
+- `.claude-plugin/marketplace.json` version matches `package.json` (required for Claude Code plugin registry)
 - Changeset files consumed (deleted from `.changeset/`)
+
+If `plugin.json` or `marketplace.json` were NOT bumped, investigate and abort: this indicates `sync-plugin-version.mjs` did not run as part of `version-packages`, a regression that must be fixed before merging.
 
 ### Step 14: Wait for CI on Version PR
 
@@ -177,12 +190,20 @@ gh pr checks <version-pr-number> --watch
 gh pr merge <version-pr-number> --rebase --delete-branch
 ```
 
-Merging triggers the `changesets/action` workflow on main, which automatically:
-- Creates a git tag
-- Creates a GitHub Release with release notes
-- Publishes to npm via `NPM_TOKEN`
+Merging triggers the `changesets/action` workflow on main (`.github/workflows/release.yml`), which:
+- Publishes to npm via `NPM_TOKEN` (via `changesets/action`)
+- **If publish succeeds** (`steps.changesets.outputs.published == 'true'`), the workflow's own explicit steps then:
+  - Create two git tags: `v{version}` and `lh--v{version}` (Claude Code plugin version-tag format)
+  - Create a GitHub Release with changelog notes extracted by `scripts/extract-changelog-entry.mjs`
+  - Push both tags to origin
+
+If `steps.changesets.outputs.published` is `false`, nothing was published in that run and no tags/release are created (correct, expected behavior — this happens when there are no version changes).
+
+**Historical note on missing tags:** Git tags for versions 1.0.0 through 1.5.2 do not exist in this repository's history. The root cause was a bug in the previous release workflow where tag/release creation never fired. These versions were successfully published to npm but have no corresponding git tags or GitHub Releases. For changelog and `git describe` continuity, consider backfilling a `v1.5.2` tag against its actual merge commit using `git tag -a v1.5.2 <commit-sha> && git push origin v1.5.2`. Earlier versions (1.0.0–1.5.1) are not worth reconstructing.
 
 ### Step 16: Verify Release
+
+Run all four checks:
 
 ```bash
 npm info @feneto/lh version
@@ -192,7 +213,19 @@ npm info @feneto/lh version
 gh release list --limit 3
 ```
 
-Confirm version matches, npm package and GitHub Release are live.
+```bash
+git ls-remote --tags origin | grep -E "v[0-9]|lh--v"
+```
+
+```bash
+claude plugin marketplace add fernandonetom/lean-harness
+```
+
+Confirm:
+- npm package version matches the released version
+- GitHub Release is created with correct changelog notes
+- Both `v{version}` and `lh--v{version}` git tags exist on origin
+- Claude Code plugin marketplace resolves the plugin at the tagged commit
 
 ## PR Template
 
@@ -209,7 +242,6 @@ Confirm version matches, npm package and GitHub Release are live.
 
 - [ ] Tests pass
 - [ ] Typecheck passes
-- [ ] Lint passes
 - [ ] Documentation updated (if applicable)
 - [ ] CHANGELOG updated
 ```
@@ -224,6 +256,7 @@ If `.github/PULL_REQUEST_TEMPLATE.md` exists, use it and append release notes.
 - **gh not authenticated**: Prompt user to `gh auth login`.
 - **CI fails**: Do NOT proceed. Fix, amend, re-push.
 - **Version Packages PR not created**: Check `NPM_TOKEN` secret and GitHub Action permissions in `.github/workflows/release.yml`.
+- **No git tag / GitHub Release appears after a publish**: Check the workflow run's `steps.changesets.outputs.published` value in the Actions log. If it is `false`, nothing was actually published in that run (correct, expected behavior — no changes detected). Only investigate further if it was `true` and the tag/release steps are missing from the log entirely.
 
 ## Rules
 

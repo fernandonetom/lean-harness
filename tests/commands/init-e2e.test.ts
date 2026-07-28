@@ -195,59 +195,49 @@ describe("lh init --host claude-code — Claude Code integration", () => {
     spy.mockRestore();
 
     expect(await exists(path.join(tmpDir, ".claude"))).toBe(true);
-    expect(await exists(path.join(tmpDir, ".claude", "agents"))).toBe(true);
-    expect(await exists(path.join(tmpDir, ".claude", "skills"))).toBe(true);
-    expect(await exists(path.join(tmpDir, ".claude", "hooks"))).toBe(true);
+    expect(await exists(path.join(tmpDir, ".claude", "settings.json"))).toBe(true);
+    expect(await exists(path.join(tmpDir, ".lh", "policies", "claude-code.yml"))).toBe(true);
   });
 
-  it("creates skill directories", async () => {
+  it("does not create agent directories", async () => {
     const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     await runInitCommand({ cwd: tmpDir, host: "claude-code" });
     spy.mockRestore();
 
-    const expectedSkills = ["lh-do", "lh-spec", "lh-discover", "lh-plan", "lh-build", "lh-check", "lh-status"];
-    for (const skill of expectedSkills) {
-      expect(await exists(path.join(tmpDir, ".claude", "skills", skill))).toBe(true);
-    }
+    expect(await exists(path.join(tmpDir, ".claude", "agents"))).toBe(false);
   });
 
-  it("includes Task Tooling section in generated skill files", async () => {
+  it("does not create skill directories", async () => {
     const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     await runInitCommand({ cwd: tmpDir, host: "claude-code" });
     spy.mockRestore();
 
-    const skillsToCheck = ["lh-spec", "lh-discover", "lh-plan", "lh-build", "lh-check", "lh-status", "lh-do"];
-    for (const skill of skillsToCheck) {
-      const skillPath = path.join(tmpDir, ".claude", "skills", skill, "SKILL.md");
-      const content = await fs.readFile(skillPath, "utf-8");
-      expect(content, `${skill}/SKILL.md should contain Task Tooling section`).toContain("## Task Tooling");
-    }
+    expect(await exists(path.join(tmpDir, ".claude", "skills"))).toBe(false);
   });
 
-  it("includes two-phase task tooling in lh-build", async () => {
+  it("does not create hooks directory", async () => {
     const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     await runInitCommand({ cwd: tmpDir, host: "claude-code" });
     spy.mockRestore();
 
-    const skillPath = path.join(tmpDir, ".claude", "skills", "lh-build", "SKILL.md");
-    const content = await fs.readFile(skillPath, "utf-8");
-    expect(content).toContain("Phase 1");
-    expect(content).toContain("Phase 2");
-    expect(content).toContain("Verify + build summary");
+    expect(await exists(path.join(tmpDir, ".claude", "hooks"))).toBe(false);
   });
 
-  it("includes TaskCreate and TaskUpdate in allowed-tools for skills with explicit tool lists", async () => {
+  it("creates necessary settings files", async () => {
     const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     await runInitCommand({ cwd: tmpDir, host: "claude-code" });
     spy.mockRestore();
 
-    const skillsWithAllowedTools = ["lh-spec", "lh-discover", "lh-plan", "lh-check", "lh-status"];
-    for (const skill of skillsWithAllowedTools) {
-      const skillPath = path.join(tmpDir, ".claude", "skills", skill, "SKILL.md");
-      const content = await fs.readFile(skillPath, "utf-8");
-      expect(content, `${skill}/SKILL.md allowed-tools should include TaskCreate`).toContain("TaskCreate");
-      expect(content, `${skill}/SKILL.md allowed-tools should include TaskUpdate`).toContain("TaskUpdate");
-    }
+    expect(await exists(path.join(tmpDir, ".claude", "settings.json"))).toBe(true);
+    expect(await exists(path.join(tmpDir, ".claude", "settings.local.json"))).toBe(true);
+  });
+
+  it("creates claude-code policy", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir, host: "claude-code" });
+    spy.mockRestore();
+
+    expect(await exists(path.join(tmpDir, ".lh", "policies", "claude-code.yml"))).toBe(true);
   });
 
   it("creates settings.json", async () => {
@@ -262,12 +252,12 @@ describe("lh init --host claude-code — Claude Code integration", () => {
     expect(settings).toBeTruthy();
   });
 
-  it("creates hook scripts", async () => {
+  it("does not create hook scripts", async () => {
     const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     await runInitCommand({ cwd: tmpDir, host: "claude-code" });
     spy.mockRestore();
 
-    expect(await exists(path.join(tmpDir, ".lh", "scripts", "hooks"))).toBe(true);
+    expect(await exists(path.join(tmpDir, ".lh", "scripts", "hooks"))).toBe(false);
   });
 
   it("produces JSON output", async () => {

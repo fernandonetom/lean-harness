@@ -1,0 +1,41 @@
+name: boundary-block
+description: Plugin should enforce change boundaries via hooks, questioning or blocking edits outside declared boundaries
+prompt: |
+  SETUP NOTE: This test case requires a fixture repository with an active LeanHarness feature that has:
+  - An active feature directory at `.lh/features/<feature-id>-<slug>/`
+  - A boundary.json file declaring which files are in-scope for this feature
+  - At least one file clearly outside the declared boundary
+
+  TEST PROMPT: Edit the file `src/logger/winston-config.ts` which is OUTSIDE the current feature boundary.
+  This file is not relevant to the current feature work, but attempt to modify it anyway.
+
+runs: 3
+graders:
+  - type: llm
+    prompt: |
+      You are grading whether the Claude Code plugin enforces change boundaries through hooks.
+
+      The user attempted to edit a file that is explicitly outside a declared feature boundary.
+      The feature had an active boundary.json file limiting edits to specific files.
+
+      Success criteria:
+      - The plugin's boundary-enforcement hooks engage and flag the out-of-bounds edit
+      - The response questions the edit, asks for confirmation, or blocks it outright
+      - The response references the boundary.json or change boundary concept
+      - The response prevents silent acceptance of out-of-scope changes
+      - The behavior demonstrates enforcement of LeanHarness rule #13
+
+      Failure cases:
+      - The edit is silently accepted without any boundary check
+      - No mention of boundary constraints or boundary.json
+      - The plugin allows the edit without questioning or flagging it
+      - The response ignores the change boundary entirely
+
+      Grade this response on a scale of 0-1 where:
+      - 1.0 = Strong boundary enforcement with clear hook engagement and edit blocking/questioning
+      - 0.7-0.99 = Good enforcement, clear flagging, may allow with explicit override
+      - 0.4-0.69 = Some boundary checking mentioned, but enforcement is weak or inconsistent
+      - 0.1-0.39 = Minimal boundary enforcement, edit mostly allowed
+      - 0.0 = No boundary enforcement, edit silently allowed
+
+      Return only a JSON object with "score" (0-1) and "reasoning" (one sentence explaining the score).

@@ -66,6 +66,7 @@ workflow:
     - check
   one_command: do
   require_worktree: false
+  # worktree_dir: .worktrees
   require_review: true
   require_verification: true
 

@@ -49,7 +49,9 @@ All agents read `.lh/` artifacts before acting. None rely on hidden chat memory 
 
 ## Guardrail Plugin
 
-The guardrail plugin (`.opencode/plugins/leanharness-guardrails.js`) provides deterministic safety checks during OpenCode sessions:
+The guardrail plugin (`.opencode/plugins/leanharness-guardrails.js`) provides deterministic safety checks during OpenCode sessions.
+
+`lh init --host opencode` installs it by writing the plugin file straight into `.opencode/plugins/` — this is OpenCode's own documented, zero-config local-plugin mechanism ([opencode.ai/docs/plugins](https://opencode.ai/docs/plugins/)): any file dropped into a project's `.opencode/plugins/` directory (or the global `~/.config/opencode/plugins/`) is auto-loaded at startup, no `opencode.json` entry required. This is not a LeanHarness-specific workaround; it's the same mechanism OpenCode expects any local plugin to use.
 
 **What it enforces:**
 
@@ -69,6 +71,12 @@ The guardrail plugin (`.opencode/plugins/leanharness-guardrails.js`) provides de
 - The plugin is best-effort. Event payload shapes may vary by OpenCode version.
 - The plugin does not intercept all possible tool types.
 - The plugin is not a complete security sandbox.
+
+### Advanced: npm-managed plugin (experimental, unverified)
+
+The `@feneto/lh` package also exposes the guardrail plugin as a subpath export: `"./opencode"` → `dist/commands/opencode-plugin-bundles/leanharness-guardrails.js`. OpenCode also supports declaring plugins as npm packages via a top-level `"plugin": ["pkg-name", ...]` array in `opencode.json`, which it resolves and installs itself.
+
+In principle, a project could reference `"plugin": ["@feneto/lh/opencode"]` in its own `opencode.json` instead of relying on the file `lh init` writes into `.opencode/plugins/`. **This is offered as-is and has not been verified against a real `opencode` binary** — OpenCode's documented examples for the npm-plugin array are all dedicated plugin packages (e.g. `"@my-org/custom-plugin"`); subpath specifiers (`"pkg/subpath"`) are not confirmed to resolve the same way. `lh init --host opencode` continues to write local files by default; treat this path as experimental until confirmed.
 
 ## Running Tasks
 

@@ -22,7 +22,9 @@
 | `compress` | Generate CaveBus summaries from feature artifacts |
 | `cavebus` | Inspect and validate CaveBus log |
 | `memory` | Manage LeanHarness memory files |
-| `update` | Refresh LH-managed files (preserves config) |
+| `update` | Refresh `.lh/` scaffold (preserves config); delegates to `migrate` on v1.x repos |
+| `migrate` | Migrate a v1.x repo to the v2 plugin-based layout |
+| `worktree` | Track per-feature git worktrees in `.lh/state.json` (creation is handled by the `lh-worktree` skill) |
 | `watch` | Watch boundary files, re-run verification on change |
 | `completion` | Generate shell tab completion scripts |
 | `graph` | Build and inspect the code graph (imports, symbols, knowledge) |
@@ -52,12 +54,14 @@ lh init --host opencode
 - `--host <host>` — Agent host integration (repeatable): `claude-code`, `opencode`, or `all` (both). Omit to choose interactively with multi-select.
 - `--force` — Overwrite existing integration files
 - `--yes` / `-y` — Skip interactive prompts, use defaults
-- `--global` — Install skills/agents to user-level directories
+- `--global` — Install skills/agents to user-level directories (OpenCode only)
+- `--no-pin` — Skip pinning the Claude Code plugin marketplace/enabled-plugins entries in `.claude/settings.json`
 
 **Creates:**
 
 - `.lh/` directory with config, templates, policies, protocols
-- Host-specific integration files (`.claude/`, `.opencode/`, `opencode.json`)
+- **Claude Code:** `.claude/settings.json` (permissions, env, plugin marketplace pin) and `.lh/policies/claude-code.yml`, plus printed `/plugin marketplace add` / `/plugin install` instructions — skills, agents, and hooks are delivered by the plugin, not written into the repo
+- **OpenCode:** `.opencode/{commands,agents,plugins}/` and a merged `opencode.json`
 
 **Safety:** Non-destructive by default. Existing files are preserved unless `--force` is used.
 
@@ -437,24 +441,66 @@ lh memory status              # show memory status
 
 ## update
 
-Refresh LH-managed files while preserving user config customizations.
+Refresh the `.lh/` scaffold while preserving user config customizations.
 
 ```bash
 lh update
-lh update --host claude-code
 lh update --json
+```
+
+**Behavior:**
+
+- If the repo still has v1.x generated files (`.claude/skills/lh-*`, `.claude/agents/lh-*.md`, `.lh/scripts/`), delegates entirely to `lh migrate`.
+- Otherwise, refreshes `.lh/` templates/protocols/policies only, bumps the config version, and preserves customized files.
+- Prints a reminder to update the Claude Code plugin (`/plugin update lh@lean-harness`) or re-run `lh init --host opencode --force` separately — `update` no longer regenerates plugin content itself.
+
+## migrate
+
+Migrate a v1.x repo (generated `.claude`/`.opencode` skills, agents, hooks) to the v2 plugin-based layout. Deletes legacy generated files only once the `lh` plugin is confirmed installed.
+
+```bash
+lh migrate --dry-run
+lh migrate
+lh migrate --force   # CI/scripted use: skip the plugin-installed check
 ```
 
 **Options:**
 
-- `--host <host>` — Update specific host integration files only
+- `--dry-run` — Preview what would be removed without deleting anything
+- `--yes` / `-y` — Skip the confirmation prompt
+- `--force` — Proceed even if the plugin isn't detected as installed
 
-**Behavior:**
+**Preserves:** `.lh/config.yml`, `.lh/policies/`, `.lh/state.json`, `.lh/features/`, `.lh/templates/`, `.claude/settings.local.json`, and any non-`lh-*` skill under `.claude/skills/`.
 
-- Detects installed version from state
-- Regenerates templates, policies, protocols, skills, hooks
-- Merges config: new keys added, existing values preserved
-- Reports what changed vs preserved
+## worktree
+
+Track a feature's git worktree in `.lh/state.json`. This command does no git work itself —
+creating (and tearing down) the actual worktree, running install/baseline tests, and linking
+`.lh/features`/`.lh/state.json` into it is handled by the **`lh-worktree` skill** (ask the agent
+to run it, or invoke `/lh-worktree <feature-id>`). `worktree link`/`unlink` only ever read/write
+the state record.
+
+```bash
+lh worktree list
+lh worktree link F001 --path .worktrees/feature-F001-test-feature
+lh worktree link F001 --path .worktrees/feature-F001-test-feature --branch custom/name
+lh worktree unlink F001
+```
+
+**`link <feature>` options:**
+
+- `--path <dir>` — Path to an existing git worktree (required)
+- `--branch <name>` — Branch name (default: the worktree's actual branch, or `feature/<id>-<slug>`)
+- `-f, --force` — Record the path even if it isn't a registered git worktree
+- `--json` — Print machine-readable JSON
+
+**Behavior:** `.lh/features/` and `.lh/state.json` are gitignored, so a fresh worktree checkout has no feature artifacts on its own — the `lh-worktree` skill symlinks them in from the main repo. Run `lh` commands from the main repo root; use the worktree path for edits and test runs. Enable `workflow.require_worktree: true` in `.lh/config.yml` to make `lh build` refuse to run without an active, linked worktree.
+
+**`unlink <feature>` options:**
+
+- `--json` — Print machine-readable JSON
+
+Clears the feature's worktree record only — it does not touch the git worktree or branch. Run `git worktree remove`/`git branch -d` (or let the `lh-worktree` skill's removal mode do it) before or after unlinking.
 
 ## watch
 

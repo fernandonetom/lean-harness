@@ -4,7 +4,10 @@ import { statePath, configPath, policiesDir } from "../core/paths.js";
 import { createLogger, printJson } from "../core/logger.js";
 import { CLIError } from "../core/errors.js";
 import { getVersion } from "../core/version.js";
-import { runInitCommand } from "./init.js";
+import { updateConfigVersion } from "../core/config-mutate.js";
+import { detectLegacyFootprint } from "./legacy-footprint.js";
+import { runMigrateCommand } from "./migrate.js";
+import { installBundledScaffold } from "../core/bundled-scaffold.js";
 
 export interface UpdateOptions {
   cwd: string;
@@ -20,20 +23,6 @@ interface UpdateResult {
   warnings: string[];
 }
 
-
-function updateConfigVersion(yamlContent: string, version: string): string {
-  // Replace version: "X.Y.Z" with the current version
-  // Handles both quoted and unquoted version values
-  const lines = yamlContent.split("\n");
-  const result = lines.map(line => {
-    const match = line.match(/^(\s*)version:\s*["']?([^"'\n]+)["']?\s*$/);
-    if (match) {
-      return match[1] + 'version: "' + version + '"';
-    }
-    return line;
-  });
-  return result.join("\n");
-}
 
 interface FileBackup {
   label: string;
@@ -74,6 +63,16 @@ export async function runUpdateCommand(options: UpdateOptions): Promise<void> {
     throw new CLIError("LeanHarness not initialized. Run `lh init` first.");
   }
 
+  // Step 1: Detect if this repo still has v1.x generated files
+  const legacyFootprint = await detectLegacyFootprint(cwd);
+
+  if (legacyFootprint.paths.length > 0) {
+    // Delegate entirely to migration for repos still on v1.x layout
+    await runMigrateCommand({ cwd, json, yes: true });
+    return;
+  }
+
+  // Step 2: Already on v2 layout — refresh .lh/ content only
   const state = await readJsonFile<Record<string, unknown>>(stateFile);
   const installedVersion = state && typeof state["version"] === "string" ? state["version"] : null;
   const currentVersion = getVersion();
@@ -101,16 +100,12 @@ export async function runUpdateCommand(options: UpdateOptions): Promise<void> {
   const host = options.host ?? await detectInstalledHost(cwd);
 
   if (!json) {
-    log.info(`Refreshing LH-managed files (host: ${host ?? "none"})...`);
+    log.info(`Refreshing .lh/ scaffold (host: ${host ?? "none"})...`);
     log.info("");
   }
 
-  await runInitCommand({
-    cwd,
-    force: true,
-    json,
-    host: host ?? undefined,
-  });
+  // Refresh .lh/ templates, protocols, and host-neutral policies only
+  await installBundledScaffold(cwd, { overwrite: true });
 
   if (userConfigBackup !== null) {
     // Always restore user config with version updated (even if version didn't change)
@@ -146,13 +141,16 @@ export async function runUpdateCommand(options: UpdateOptions): Promise<void> {
   }
 
   log.info("");
-  log.success(`Update complete. Templates/skills/hooks refreshed.`);
+  log.success(`Update complete. Templates/protocols refreshed.`);
   if (installedVersion && installedVersion !== currentVersion) {
     log.info(`Version bumped: ${installedVersion} → ${currentVersion}`);
   }
   for (const w of warnings) {
     log.warn(w);
   }
+
+  log.info("");
+  log.info("Plugin content updates separately: /plugin update lh@lean-harness (Claude Code) or re-run `lh init --host opencode --force` (OpenCode).");
 }
 
 async function detectInstalledHost(cwd: string): Promise<string | null> {

@@ -31,16 +31,32 @@ Greenfield projects work too — they are the simpler case.
 
 ## Quick start
 
+### Claude Code
+
 ```bash
-npm install -g @feneto/lh
-lh --help
-lh doctor
+/plugin marketplace add fernandonetom/lean-harness
+/plugin install lh@lean-harness
 ```
 
-Initialize in a target project:
+### OpenCode
 
 ```bash
-lh init --host all
+npm install -g @feneto/lh
+lh init --host opencode
+```
+
+Or for a shared cross-project install:
+
+```bash
+npm install -g @feneto/lh
+lh init --host opencode --global
+```
+
+### Verify setup
+
+```bash
+lh --help
+lh doctor
 ```
 
 ## Graph System

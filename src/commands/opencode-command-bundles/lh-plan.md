@@ -41,7 +41,7 @@ Examples:
    - Acceptance criteria mapping
    - Risk mitigations
    - Open questions
-5. **Create tasks.** Write `tasks.md` using `.lh/templates/tasks.md`. Map every task to acceptance criteria or a technical prerequisite.
+5. **Create tasks.** Write `tasks.md` using `.lh/templates/tasks.md`. Map every task to acceptance criteria or a technical prerequisite. Reference `boundary.json` by path for the full change boundary and protected tokens rather than inlining them; per-task "Expected files" sections remain intact for task-specific scoping.
 6. **Prefer vertical slices** when feature work is large enough to warrant them.
 7. **Size tasks for bounded context.** Each task should be small enough that an agent can hold its full context without loading the entire codebase.
 8. **Update status.** Set feature status to `planned` when the plan is actionable.

@@ -4,7 +4,7 @@
 # Runtime state — user-specific, contains machine paths
 .lh/graph/
 .lh/state.json
-.lh/memory/
+.lh/memory/cave.md
 
 # Tool-generated output with absolute local paths
 graphify-out/

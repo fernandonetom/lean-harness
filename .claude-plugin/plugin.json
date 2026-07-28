@@ -1,0 +1,19 @@
+{
+  "name": "lh",
+  "description": "LeanHarness — bounded-context AI harness for brownfield feature work: spec, discover, plan, build, check with verification evidence.",
+  "version": "1.5.2",
+  "author": {
+    "name": "Fernando Neto"
+  },
+  "homepage": "https://github.com/fernandonetom/lean-harness",
+  "repository": "https://github.com/fernandonetom/lean-harness",
+  "license": "MIT",
+  "keywords": [
+    "harness",
+    "brownfield",
+    "spec",
+    "verification",
+    "bounded-context",
+    "cavebus"
+  ]
+}

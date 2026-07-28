@@ -1,0 +1,33 @@
+name: status-readout
+description: Plugin should use lh-status skill to read feature state instead of improvising from unrelated files
+prompt: |
+  What's the current state of my LeanHarness work?
+runs: 3
+graders:
+  - type: llm
+    prompt: |
+      You are grading whether the Claude Code plugin correctly used the LeanHarness status workflow.
+
+      The user asked for the current state of their LeanHarness work.
+
+      Success criteria:
+      - The response invokes or references the `lh-status` skill
+      - The response reads state from `.lh/features/*/` directories
+      - The response examines feature artifacts (specs, plans, checks, discovery)
+      - The response provides information about active features, their current phase, and any blockers
+      - The response is based on actual feature state files, not improvisation
+
+      Failure cases:
+      - Response provides generic status info without reading feature files
+      - Response reads unrelated project files instead of `.lh/` state
+      - Response improvises a status answer without using the lh-status skill
+      - Response doesn't mention or reference any .lh/ feature artifacts
+
+      Grade this response on a scale of 0-1 where:
+      - 1.0 = Perfect use of lh-status skill with detailed feature state analysis
+      - 0.7-0.99 = Good skill invocation, reads feature state with minor gaps
+      - 0.4-0.69 = Mentions status skill but relies partially on improvisation
+      - 0.1-0.39 = Minimal status engagement, mostly improvised answer
+      - 0.0 = No status skill use, pure improvisation
+
+      Return only a JSON object with "score" (0-1) and "reasoning" (one sentence explaining the score).

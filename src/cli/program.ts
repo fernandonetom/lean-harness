@@ -17,6 +17,8 @@ import { runCompressCommand } from "../commands/compress.js";
 import { runCaveBusCommand } from "../commands/cavebus.js";
 import { runMemoryCommand } from "../commands/memory.js";
 import { runUpdateCommand } from "../commands/update.js";
+import { runMigrateCommand } from "../commands/migrate.js";
+import { runWorktreeLinkCommand, runWorktreeListCommand, runWorktreeUnlinkCommand } from "../commands/worktree.js";
 import { runBoundaryAllow, runBoundarySetMode, runBoundaryStatus } from "../commands/boundary.js";
 import { runCommandStatus, runCommandSetForcePush } from "../commands/command-enforcement.js";
 import { runConfigCommand } from "../commands/config.js";
@@ -273,6 +275,7 @@ export function buildProgram(): Command {
     .option("--session <session-id>", "OpenCode session ID")
     .option("--approve-risk <gate>", "Approve a risk gate (repeatable)", collectString, [])
     .option("--strict", "Require strong evidence during build")
+    .option("--no-worktree", "Bypass workflow.require_worktree and build in the main working tree")
     .option("--json", "Print machine-readable JSON")
     .action(async (feature: string, task: string | undefined, opts) => {
       await runBuildCommand({
@@ -297,6 +300,7 @@ export function buildProgram(): Command {
         session: opts.session,
         approveRisk: opts.approveRisk?.length ? opts.approveRisk : undefined,
         strict: opts.strict || undefined,
+        noWorktree: opts.worktree === false,
       });
     });
 
@@ -538,6 +542,70 @@ export function buildProgram(): Command {
       await runUpdateCommand({
         cwd: resolveCwd(opts),
         host: opts.host,
+        json: opts.json,
+      });
+    });
+
+  program
+    .command("migrate")
+    .description("Migrate a v1.x repo to the v2 plugin-based layout (deletes legacy generated files once the lh plugin is confirmed installed)")
+    .option("-y, --yes", "Skip confirmation prompt")
+    .option("--dry-run", "Preview what would be removed without deleting anything")
+    .option("--force", "Proceed even if the plugin isn't detected as installed (for CI/scripted use)")
+    .option("--json", "Print machine-readable JSON")
+    .action(async (opts) => {
+      await runMigrateCommand({
+        cwd: resolveCwd(opts),
+        yes: opts.yes,
+        dryRun: opts.dryRun,
+        force: opts.force,
+        json: opts.json,
+      });
+    });
+
+  const worktree = program
+    .command("worktree")
+    .description("Track per-feature git worktrees in .lh/state.json (creation/removal is handled by the lh-worktree skill)");
+
+  worktree
+    .command("link")
+    .argument("<feature>", "Feature ID or slug")
+    .requiredOption("--path <dir>", "Path to an existing git worktree")
+    .option("--branch <name>", "Branch name (default: the worktree's actual branch, or feature/<id>-<slug>)")
+    .option("-f, --force", "Record the path even if it isn't a registered git worktree")
+    .option("--json", "Print machine-readable JSON")
+    .description("Record an existing git worktree against a feature")
+    .action(async (feature: string, opts) => {
+      await runWorktreeLinkCommand({
+        cwd: resolveCwd(worktree.optsWithGlobals()),
+        ref: feature,
+        path: opts.path,
+        branch: opts.branch,
+        force: opts.force,
+        json: opts.json,
+      });
+    });
+
+  worktree
+    .command("list")
+    .option("--json", "Print machine-readable JSON")
+    .description("List feature worktrees")
+    .action(async (opts) => {
+      await runWorktreeListCommand({
+        cwd: resolveCwd(worktree.optsWithGlobals()),
+        json: opts.json,
+      });
+    });
+
+  worktree
+    .command("unlink")
+    .argument("<feature>", "Feature ID or slug")
+    .option("--json", "Print machine-readable JSON")
+    .description("Clear a feature's worktree record (does not touch the git worktree itself)")
+    .action(async (feature: string, opts) => {
+      await runWorktreeUnlinkCommand({
+        cwd: resolveCwd(worktree.optsWithGlobals()),
+        ref: feature,
         json: opts.json,
       });
     });

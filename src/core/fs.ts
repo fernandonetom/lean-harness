@@ -33,6 +33,21 @@ export async function ensureDir(p: string): Promise<void> {
   await fsp.mkdir(p, { recursive: true });
 }
 
+/**
+ * Resolve `p` to its canonical, symlink-free real path, falling back to `p` itself if it
+ * doesn't exist (or realpath otherwise fails). Needed to compare our own path math against
+ * `git worktree list` output, which git always reports as a canonical real path — on systems
+ * where the working directory sits behind a symlink (e.g. macOS's /tmp -> /private/tmp), a
+ * plain `path.resolve` would never match git's output.
+ */
+export async function realpathOrSelf(p: string): Promise<string> {
+  try {
+    return await fsp.realpath(p);
+  } catch {
+    return p;
+  }
+}
+
 export async function readTextFile(p: string): Promise<string | null> {
   try {
     return await fsp.readFile(p, "utf-8");

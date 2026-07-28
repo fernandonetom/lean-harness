@@ -13,6 +13,8 @@ import { selectTasks, updateTaskStatusInMarkdown, normalizeTaskStatus } from "./
 import type { BuildTaskStatus } from "./task-status.js";
 import { checkRiskGates, loadApprovals, saveApproval, enforceRiskGates } from "../core/risk-gates.js";
 import type { ResolvedConfig } from "../core/resolved-config.js";
+import { resolveFeatureWorktree, type WorktreeResolution } from "../core/worktree.js";
+import type { FeatureIndexEntry } from "../core/types.js";
 
 export interface RunBuildOptions {
   root: string;
@@ -39,6 +41,28 @@ export interface RunBuildOptions {
   approveRisk?: string[] | undefined;
   strict?: boolean | undefined;
   resolvedConfig?: ResolvedConfig | undefined;
+  noWorktree?: boolean | undefined;
+}
+
+function worktreeGateMessage(entry: FeatureIndexEntry, wt: WorktreeResolution): string {
+  if (wt.status === "missing-dir") {
+    return (
+      `Build blocked: the worktree recorded for ${entry.id} no longer exists at ${wt.absolutePath}.\n` +
+      `Ask the agent to run the lh-worktree skill for ${entry.id}, or if you already recreated it: lh worktree link ${entry.id} --path <dir>\n` +
+      `Or clear the stale record: lh worktree unlink ${entry.id}`
+    );
+  }
+  if (wt.status === "not-registered") {
+    return (
+      `Build blocked: ${wt.absolutePath} exists but git no longer tracks it as a worktree (pruned or manually deleted).\n` +
+      `Run: lh worktree unlink ${entry.id}, then ask the agent to run the lh-worktree skill for ${entry.id}`
+    );
+  }
+  return (
+    `Build blocked: workflow.require_worktree is true and no worktree is recorded for ${entry.id}.\n` +
+    `Ask the agent to run the lh-worktree skill for ${entry.id}, or if you already have a worktree: lh worktree link ${entry.id} --path <dir>\n` +
+    `Or disable the gate: lh config set workflow.require_worktree false`
+  );
 }
 
 export interface BuildResult {
@@ -101,6 +125,26 @@ export async function runBuild(options: RunBuildOptions): Promise<BuildResult> {
   const planPath = path.join(featureDir, "plan.md");
   if (!(await fileExists(planPath))) {
     warnings.push("plan.md is missing. Tasks are the executable unit; proceeding with tasks.md.");
+  }
+
+  const requireWorktree = options.resolvedConfig?.workflow.require_worktree === true;
+  let workingDir: string | undefined;
+  if (options.noWorktree !== true) {
+    const wt = await resolveFeatureWorktree(root, entry);
+    if (wt.status === "ok") {
+      workingDir = wt.absolutePath;
+    } else if (requireWorktree) {
+      if (!dryRun) {
+        throw new CLIError(worktreeGateMessage(entry, wt));
+      }
+      warnings.push(
+        `workflow.require_worktree is true; a real build will require a worktree for ${entry.id} (${wt.status}).`,
+      );
+    } else if (wt.status !== "none") {
+      warnings.push(
+        `Recorded worktree for ${entry.id} is unusable (${wt.status}); building in the main working tree.`,
+      );
+    }
   }
 
   const parsedTasks = parseTasksMarkdown(tasksContent);
@@ -189,6 +233,7 @@ export async function runBuild(options: RunBuildOptions): Promise<BuildResult> {
       task,
       host,
       dryRun,
+      workingDir,
       maxBytes: options.maxBytes,
       allowedTools: options.allowedTools,
       permissionMode: options.permissionMode,

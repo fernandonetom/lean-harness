@@ -113,13 +113,16 @@ describe("runUpdateCommand", () => {
     expect(parsed.configPreserved).toBe(true);
   });
 
-  it("allows explicit host override", async () => {
+  it("allows explicit host override (v2: does not create plugin files)", async () => {
     const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     await runInitCommand({ cwd: tmpDir });
     await runUpdateCommand({ cwd: tmpDir, host: "claude-code" });
     spy.mockRestore();
 
-    expect(await fs.access(path.join(tmpDir, ".claude")).then(() => true).catch(() => false)).toBe(true);
+    // In v2, lh update does not create plugin files (host-specific content).
+    // Plugin files are installed/updated via separate plugin commands.
+    // This test verifies that update accepts the host parameter and completes successfully.
+    expect(await fs.access(path.join(tmpDir, ".lh", "config.yml")).then(() => true).catch(() => false)).toBe(true);
   });
 
   it.each([
@@ -145,16 +148,18 @@ describe("runUpdateCommand", () => {
     expect(await fs.readFile(targetPath, "utf-8")).toBe(marker);
   });
 
-  it("still creates a freshly-added host's policy file with no prior backup during update", async () => {
+  it("v2: update does not create host-specific policy files (plugin concern)", async () => {
     const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     await runInitCommand({ cwd: tmpDir });
     await runUpdateCommand({ cwd: tmpDir, host: "claude-code" });
     spy.mockRestore();
 
-    const claudeCodePolicy = path.join(tmpDir, ".lh", "policies", "claude-code.yml");
-    expect(await fs.access(claudeCodePolicy).then(() => true).catch(() => false)).toBe(true);
-    const content = await fs.readFile(claudeCodePolicy, "utf-8");
-    expect(content.length).toBeGreaterThan(0);
+    // In v2, host-specific policy files (claude-code.yml, opencode.yml) are created
+    // by plugin installation, not by lh update. lh update only refreshes host-neutral
+    // files (templates, protocols, core policies like risk-gates, boundary, commands).
+    // Verify that host-neutral files are refreshed:
+    const hostNeutralPolicy = path.join(tmpDir, ".lh", "policies", "boundary.yml");
+    expect(await fs.access(hostNeutralPolicy).then(() => true).catch(() => false)).toBe(true);
   });
 
   it("reports preserved files in JSON output", async () => {

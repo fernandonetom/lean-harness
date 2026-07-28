@@ -25,6 +25,8 @@ _Tests added or modified. Commands to run them._
 
 ## Context for Next Task
 
+<!-- This section is the ONLY part of this file passed forward as context to later tasks' subagents — keep it self-contained and assume the reader has no other context from this file. -->
+
 _What the next subagent needs to know. Gotchas, state left behind, open threads._
 
 ## Acceptance Criteria Covered

@@ -20,12 +20,9 @@ This file is committed to the repository. All contributors share the same guardr
 
 Per-developer overrides. Add personal permissions, environment variables, or user-specific settings here. This file is gitignored and not shared with other contributors.
 
-## Planned directories (not yet created)
+### skills/
 
-These will be added in later prompts:
-
-- `skills/` — Claude Code skills encoding LeanHarness workflows (specify, discover, build, check).
-- `commands/` — Slash commands for common operations.
+Only `lh-release/` lives here — a project-local skill for releasing LeanHarness itself, not shipped to consumers. The LeanHarness workflow skills (`lh-do`, `lh-spec`, `lh-discover`, `lh-plan`, `lh-build`, `lh-check`, `lh-status`), agents, and hooks are delivered by the Claude Code plugin (`/plugin install lh@lean-harness`) — their canonical source is `skills/`, `agents/`, and `hooks/` at the repo root, not this directory. See `CLAUDE.md`'s file-ownership table.
 
 ## Permission design notes
 

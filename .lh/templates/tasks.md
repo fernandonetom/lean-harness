@@ -30,3 +30,5 @@
 ## Notes
 
 _Task-level context that doesn't belong in individual task summaries._
+
+> Change boundary and protected tokens: see `boundary.json`. Do not duplicate them here.

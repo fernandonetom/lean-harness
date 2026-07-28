@@ -18,6 +18,10 @@ export interface ResolvedConfig {
     enabled: boolean;
     mode: CompressionMode;
   };
+  workflow: {
+    require_worktree: boolean;
+    worktree_dir: string | null;
+  };
   verification: {
     require_acceptance_trace: boolean;
     require_changed_files: boolean;
@@ -64,6 +68,10 @@ export function resolveConfig(
   const maxFiles = resolveMaxFiles(c, overrides?.maxFiles);
   const compressionEnabled = c.compression?.enabled !== false;
   const compressionMode = resolveCompressionMode(c, overrides?.mode);
+  const requireWorktree = c.workflow?.require_worktree === true;
+  const worktreeDir = typeof c.workflow?.worktree_dir === "string" && c.workflow.worktree_dir.length > 0
+    ? c.workflow.worktree_dir
+    : null;
   const requireAcceptanceTrace = c.verification?.require_acceptance_trace !== false;
   const requireChangedFiles = c.verification?.require_changed_files !== false;
   const requireReview = overrides?.strict
@@ -95,6 +103,7 @@ export function resolveConfig(
     host: { primary: hostPrimary },
     discovery: { default_depth: depth, max_initial_files: maxFiles },
     compression: { enabled: compressionEnabled, mode: compressionMode },
+    workflow: { require_worktree: requireWorktree, worktree_dir: worktreeDir },
     verification: {
       require_acceptance_trace: requireAcceptanceTrace,
       require_changed_files: requireChangedFiles,

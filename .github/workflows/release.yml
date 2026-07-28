@@ -30,11 +30,33 @@ jobs:
         with:
           version: npm run version-packages
           publish: npm run release
-          createGithubReleases: true
           setupGitUser: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Resolve published version
+        id: ver
+        if: steps.changesets.outputs.published == 'true'
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Create git tags
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          V: ${{ steps.ver.outputs.version }}
+        run: |
+          git tag -f "v$V"
+          git tag -f "lh--v$V"
+          git push origin "v$V" "lh--v$V"
+
+      - name: Create GitHub Release
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          V: ${{ steps.ver.outputs.version }}
+        run: |
+          node scripts/extract-changelog-entry.mjs "$V" > /tmp/notes.md
+          gh release create "v$V" --title "v$V" --notes-file /tmp/notes.md --verify-tag
 
     env:
       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
