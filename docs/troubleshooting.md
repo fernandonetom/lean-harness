@@ -3,53 +3,54 @@
 ## CLI does not run
 
 ```bash
-node dist/index.js --help
+node packages/cli/dist/index.js --help
 ```
 
 If this fails:
 
 - Check Node.js version: `node --version` (must be 20+)
-- Rebuild: `npm run build`
-- Verify build output: `ls dist/index.js`
-- Check TypeScript errors: `npm run typecheck`
+- Rebuild: `pnpm -r run build` (builds `hosts/opencode` before `packages/cli`, since the CLI vendors OpenCode's built output — a stale `hosts/opencode/dist/` means stale vendored content)
+- Verify build output: `ls packages/cli/dist/index.js`
+- Check TypeScript errors: `pnpm -r run typecheck`
 
 If using `npm link` and `lh` is not found:
 
 ```bash
-npm link
+pnpm --filter @feneto/lh exec npm link
 which lh
 ```
 
 ## Build fails
 
 ```bash
-npm run build
+pnpm -r run build
 ```
 
 Common causes:
 
-- Missing `node_modules/`: run `npm install`
-- TypeScript version mismatch: check `devDependencies` in `package.json`
+- Missing `node_modules/`: run `pnpm install` from the repo root (this is a pnpm workspace — `npm install` will not set up cross-package symlinks correctly)
+- TypeScript version mismatch: check `devDependencies` in the relevant package's `package.json` (`packages/cli/`, `hosts/opencode/`, `hosts/claude-code/`)
 - Import path errors: ensure `.js` extensions in imports (ESM requirement)
+- `hosts/opencode` not built yet: `packages/cli`'s build vendors its *built* `dist/`, so build it first — `pnpm -r run build` handles ordering automatically, but `pnpm --filter @feneto/lh run build` alone will fail if `hosts/opencode/dist/` doesn't exist
 
 ## Typecheck fails
 
 ```bash
-npm run typecheck
+pnpm -r run typecheck
 ```
 
-Typecheck runs `tsc --noEmit`. It catches type errors without producing output files. Fix all errors before proceeding.
+Typecheck runs `tsc --noEmit` per package. It catches type errors without producing output files. Fix all errors before proceeding. Scope to one package with `pnpm --filter @feneto/lh run typecheck`.
 
 ## Tests fail
 
 ```bash
-npm test
+pnpm -r run test
 ```
 
 - Check test output for specific failures
-- Ensure `npm run build` succeeds first (some tests may depend on compiled output)
-- Run individual test files: `npx vitest run tests/core/fs.test.ts`
-- Run in watch mode for faster iteration: `npm run test:watch`
+- Ensure `pnpm -r run build` succeeds first (some tests may depend on compiled output)
+- Run individual test files: `pnpm --filter @feneto/lh exec vitest run tests/core/fs.test.ts`
+- Run in watch mode for faster iteration: `pnpm --filter @feneto/lh run test:watch`
 
 ## `lh init` did not install host files
 
@@ -67,12 +68,15 @@ If files exist but need regeneration:
 lh init --host all --force
 ```
 
-Check the expected files:
+Check the expected files. For Claude Code, `lh init` only writes `.claude/settings.json` (skills, agents, and hooks come from the plugin, not from `lh init` — see [docs/hosts/claude-code.md](hosts/claude-code.md)):
 
 ```bash
-ls .claude/settings.json .claude/skills/ .claude/agents/ .claude/hooks/
-ls opencode.json .opencode/agents/ .opencode/plugins/
+ls .claude/settings.json
+lh doctor    # reports whether the Claude Code plugin is enabled
+ls opencode.json .opencode/agents/
 ```
+
+`.opencode/plugins/` only exists if you passed `--local-plugin`; by default the guardrail plugin is the npm-published `@feneto/lh-opencode` package registered in `opencode.json`'s `"plugin"` array (see [docs/hosts/opencode.md](hosts/opencode.md)).
 
 ## Claude Code CLI not found
 
@@ -199,7 +203,7 @@ Risk gates trigger when changes touch security-sensitive, payment, auth, or othe
 
 **Claude Code:** Review `.claude/settings.json`. Add safe read-only commands to the allow list.
 
-**OpenCode:** Review `opencode.json` permissions. Check `.opencode/plugins/leanharness-guardrails.js` for boundary blocks.
+**OpenCode:** Review `opencode.json` permissions. The guardrail plugin enforcing boundary blocks is `@feneto/lh-opencode` (npm-installed by default) or, with `--local-plugin`, `.opencode/plugins/leanharness-guardrails.js`.
 
 Guardrails are best-effort. The final completion gate is `lh check`.
 
@@ -222,7 +226,7 @@ Do not delete `.lh/` unless you want to lose all feature artifacts, templates, a
 lh init --host all --force
 ```
 
-This regenerates integration files but does not restore deleted feature artifacts.
+This regenerates `.lh/` scaffold files and host-neutral project settings, but does not restore deleted feature artifacts, and does not reinstall the Claude Code plugin — reinstall that separately with `/plugin install lh@lean-harness` if needed.
 
 ## Watch mode not detecting changes
 
@@ -252,8 +256,10 @@ This regenerates integration files but does not restore deleted feature artifact
 Update preserves user config by merging. If something was lost:
 
 - Config keys you added are preserved; only new LH-managed keys are added
-- Integration files (skills, hooks, agents) are fully regenerated
-- If you customized a skill or hook, back it up before running `lh update`
+- `.lh/` policy YAML and `state.json` are preserved across update, not overwritten
+- Claude Code skills, subagents, and hooks come from the installed plugin, not from `lh update` — `lh update` only touches `.claude/settings.json` for that host
+- OpenCode's `.opencode/{agents,commands,plugins}/` files are **not** refreshed by `lh update` — re-run `lh init --host opencode --force` to pick up new agent/command templates
+- If you're on a v1.x layout with skills/agents/hooks generated directly into `.claude/`, `lh update` delegates to `lh migrate` instead of regenerating them — see [docs/migration.md](migration.md)
 
 ## Reporting issues
 

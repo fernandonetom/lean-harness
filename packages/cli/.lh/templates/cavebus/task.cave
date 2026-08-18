@@ -1,0 +1,24 @@
+# CaveBus Task Packet Template
+# Preserve all protected tokens exactly: paths, commands, symbols, IDs, errors.
+# Each task gets bounded context. Include only files relevant to this task.
+
+TASK {{FEATURE_ID}} {{TASK_ID}}
+ac:
+- {{AC_ID}}
+goal:
+- {{GOAL}}
+files:
+- {{PATH}} action:{{read|edit|create|delete}}
+read:
+- {{PATH}} reason:{{REASON}}
+test:
+- {{TEST_PATH_OR_COMMAND}}
+verify:
+- {{COMMAND}}
+risk:
+- {{RISK_GATE}} reason:{{REASON}}
+rules:
+- stay inside boundary
+- preserve protected tokens
+next:
+- {{NEXT_ACTION}}

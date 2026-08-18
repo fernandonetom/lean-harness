@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1",
+    "title": "The Pragmatic Programmer",
+    "status": "to-read"
+  },
+  {
+    "id": "2",
+    "title": "Designing Data-Intensive Applications",
+    "status": "reading"
+  },
+  {
+    "id": "3",
+    "title": "A Philosophy of Software Design",
+    "status": "done"
+  }
+]

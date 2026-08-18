@@ -104,9 +104,9 @@ LeanHarness v2.0 transitions from generated integration files to a plugin-based 
 1. **Reinstall:**
    ```bash
    npm i -g @feneto/lh@latest
-   lh init --host opencode
+   lh init --host opencode --force
    ```
-   Your `.lh/` config is preserved.
+   Your `.lh/` config is preserved. **Use `--force`** on this first re-init after upgrading — v1.x (and pre-v2 `--local-plugin`) installs wrote the guardrail plugin directly into `.opencode/plugins/shared.js` and `.opencode/plugins/leanharness-guardrails.js`; v2's default now registers the npm-published `@feneto/lh-opencode` package in `opencode.json` instead. `--force` removes those now-superseded local files. Without `--force`, `lh init` warns instead of deleting them — leaving both distribution modes active would double-register the guardrail hooks, since OpenCode auto-loads every `.js` file dropped into `.opencode/plugins/` regardless of what's registered in `opencode.json`. `lh doctor` also flags this double-registration state directly if it happens. If you intend to keep the old local-file distribution (e.g. offline/air-gapped), pass `--local-plugin` instead and skip `--force`.
 
 #### For dual-host users (Claude Code + OpenCode):
 
@@ -169,6 +169,37 @@ Enforce worktree usage project-wide via `.lh/config.yml`:
 workflow:
   require_worktree: true  # lh build refuses to proceed without an active worktree
 ```
+
+---
+
+## Migrating to the pnpm monorepo (v2.x)
+
+This repository's *own* source layout changed to a pnpm workspace publishing three packages instead of one. This section is about the LeanHarness *repo*, not your project — read it if you're upgrading `@feneto/lh` and want to know what, if anything, changes for you as a consumer.
+
+### What changed internally
+
+- `packages/cli/` — the `@feneto/lh` CLI (was the repo root).
+- `hosts/opencode/` — a new, real, spec-compliant [OpenCode plugin](https://opencode.ai/docs/plugins/), published as `@feneto/lh-opencode`.
+- `hosts/claude-code/` — the Claude Code plugin (skills, agents, hooks, `.claude-plugin/plugin.json`; was at the repo root). Still private, still distributed via git + `/plugin marketplace add`, never published to npm.
+
+### Is this a breaking change for you?
+
+**No, for the CLI and Claude Code plugin:**
+
+- `@feneto/lh`'s commands, `bin`, and `.` / `./types` / `./adapters` / `./plugins` / `./config` exports are unchanged.
+- `/plugin marketplace add fernandonetom/lean-harness` + `/plugin install lh@lean-harness` still work unchanged — the root `.claude-plugin/marketplace.json` stays at the repo root (required by Claude Code's convention); only its internal `source` field now points at `./hosts/claude-code` instead of `./`.
+- `.lh/` (config, policies, templates, feature artifacts) in your project is untouched by this change.
+
+**Yes, two disclosed changes:**
+
+1. **Removed:** the experimental `@feneto/lh` `"./opencode"` subpath export (`docs/hosts/opencode.md` previously flagged it "experimental, unverified"). It's superseded by the real `@feneto/lh-opencode` npm package — if you were referencing `"@feneto/lh/opencode"` anywhere, switch to `"@feneto/lh-opencode"`.
+2. **Behavior change:** `lh init --host opencode`'s default now registers `@feneto/lh-opencode` in your `opencode.json`'s `"plugin"` array (OpenCode auto-installs it via Bun) instead of copying the guardrail plugin's raw JS into `.opencode/plugins/`. If you need the old file-copy behavior (offline/air-gapped/restricted environments), pass `--local-plugin`. See [docs/hosts/opencode.md](hosts/opencode.md) for details. Re-run `lh init --host opencode --force` (optionally with `--local-plugin`) to pick up the new default on an existing project.
+
+### If you're contributing to this repo
+
+- Install with `pnpm install` (not `npm install`) — a `pnpm-lock.yaml` is now the source of truth; `package-lock.json` was removed.
+- Build/test everything with `pnpm -r run build` / `pnpm -r run typecheck` / `pnpm -r run test`, or scope to one package with `pnpm --filter @feneto/lh <script>`.
+- See [CLAUDE.md](../CLAUDE.md)'s "Monorepo layout" and "File ownership" sections for exactly which package owns which source files.
 
 ---
 
@@ -243,6 +274,7 @@ Update preserves your config customizations. Only LH-managed files are regenerat
 .lh/state.json           # rebuilt automatically
 .lh/features/*/tasks/    # per-task runtime artifacts
 .lh/memory/              # optional — commit if sharing knowledge
+.worktrees/              # git worktree checkouts created by the lh-worktree skill
 ```
 
 Feature artifacts (`spec.md`, `discovery.md`, `plan.md`, `checks.md`, `result.md`) are up to team preference. They serve as audit trail if committed.

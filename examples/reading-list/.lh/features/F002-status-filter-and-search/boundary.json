@@ -1,0 +1,152 @@
+{
+  "featureId": "F002",
+  "featureTitle": "Status filter and search",
+  "status": "discovered",
+  "confidence": "high",
+  "discoveryDepth": "D2",
+  "touchFiles": [
+    {
+      "path": "web/app/page.tsx",
+      "reason": "matches: web, app, page, tsx, ts, hint:web/app/page.tsx; source file; existing list page that renders items and must gain status filter + text search UI",
+      "confidence": "high"
+    },
+    {
+      "path": "web/lib/filter.ts",
+      "reason": "new optional helper file (does not exist yet) to hold a pure filterItems(items, {status, query}) function per spec Constraints; only create if the builder judges it clearer than inlining in page.tsx",
+      "confidence": "medium"
+    }
+  ],
+  "readOnlyFiles": [
+    {
+      "path": "web/lib/store.ts",
+      "reason": "matches: web, lib, store, ts, hint:web/lib/store.ts; provides getItems() read by page.tsx; spec AC-05 says no persistence changes required, so read-only context, not a touch file",
+      "confidence": "high"
+    },
+    {
+      "path": "web/lib/types.ts",
+      "reason": "matches: web, lib, ts, types, hint:web/lib/types.ts; defines ReadingListItem/ReadingListStatus already used for status values; read-only reference, no change expected",
+      "confidence": "high"
+    },
+    {
+      "path": "web/data/reading-list.json",
+      "reason": "matches: reading, list, read, web, data, json, hint:web/data/reading-list.json; sample data, read-only",
+      "confidence": "high"
+    },
+    {
+      "path": "README.md",
+      "reason": "matches: read",
+      "confidence": "medium"
+    },
+    {
+      "path": "opencode.json",
+      "reason": "matches: json; config file",
+      "confidence": "medium"
+    },
+    {
+      "path": "web/tsconfig.json",
+      "reason": "matches: web, ts, json; config file",
+      "confidence": "high"
+    },
+    {
+      "path": "web/README.md",
+      "reason": "matches: read, web",
+      "confidence": "medium"
+    },
+    {
+      "path": "web/package.json",
+      "reason": "matches: web, json; config file",
+      "confidence": "medium"
+    },
+    {
+      "path": "web/pnpm-lock.yaml",
+      "reason": "matches: web; config file",
+      "confidence": "medium"
+    },
+    {
+      "path": ".opencode/README.md",
+      "reason": "matches: read",
+      "confidence": "medium"
+    },
+    {
+      "path": "web/.gitignore",
+      "reason": "matches: web; config file",
+      "confidence": "medium"
+    },
+    {
+      "path": "web/pnpm-workspace.yaml",
+      "reason": "matches: web; config file",
+      "confidence": "medium"
+    }
+  ],
+  "relevantTests": [],
+  "commands": [
+    {
+      "command": "pnpm --dir web run lint",
+      "purpose": "lint the web app after the change",
+      "confidence": "high",
+      "source": "web/package.json scripts.lint"
+    },
+    {
+      "command": "pnpm --dir web run build",
+      "purpose": "verify the web app still builds (typecheck + Next.js production build)",
+      "confidence": "high",
+      "source": "web/package.json scripts.build"
+    }
+  ],
+  "allowedEditGlobs": [
+    "web/app/page.tsx",
+    "web/lib/filter.ts"
+  ],
+  "blockedEditGlobs": [
+    "node_modules/**",
+    "dist/**",
+    "build/**",
+    "coverage/**",
+    ".next/**",
+    ".nuxt/**",
+    ".svelte-kit/**",
+    ".turbo/**",
+    ".cache/**",
+    "out/**",
+    "vendor/**",
+    "target/**",
+    ".git/**",
+    "web/app/api/**",
+    "web/app/add/**",
+    "web/app/layout.tsx",
+    "web/next.config.ts",
+    "web/eslint.config.mjs",
+    "web/next-env.d.ts",
+    "web/lib/store.ts",
+    "web/lib/types.ts"
+  ],
+  "riskGates": [],
+  "unknowns": [
+    "No relevant tests found. Tests may need to be created."
+  ],
+  "doNotTouch": [
+    "node_modules/",
+    "dist/",
+    "build/",
+    "coverage/",
+    ".git/",
+    "vendor/",
+    "target/",
+    "web/app/api/",
+    "web/app/add/",
+    "web/app/layout.tsx",
+    "web/next.config.ts",
+    "web/eslint.config.mjs",
+    "web/next-env.d.ts"
+  ],
+  "protectedTokens": [
+    "F002",
+    "web/app/page.tsx",
+    "web/lib/filter.ts",
+    "web/lib/store.ts",
+    "web/lib/types.ts"
+  ],
+  "closureGaps": [],
+  "lastUpdated": "2026-07-29T16:35:53.190Z",
+  "manualCorrectionNote": "Automated discovery (lh discover --hint ...) initially swept in web/app/add/page.tsx, web/app/layout.tsx, web/app/api/items/route.ts, web/next-env.d.ts, web/eslint.config.mjs, web/next.config.ts, and web/.next/types/routes.d.ts due to generic path-substring keyword matching (tokens like 'app', 'ts', 'tsx' derived from hint paths match nearly every TypeScript file under web/app/**), and falsely triggered a public_api_break risk gate on that basis. This was manually corrected after investigation (see packages/cli/src/discovery/search.ts scoreFile and boundary.ts detectRiskGates) to match the tight scope explicitly stated in spec.md's Constraints section: web/app/page.tsx plus an optional new web/lib/filter.ts helper only. web/lib/store.ts and web/lib/types.ts were real, correctly-discovered candidates but are moved to read-only context since spec AC-05 requires no persistence/type changes."
+}

@@ -1,0 +1,73 @@
+# CaveBus Summary, Memory, Note, Risk, Boundary, and Command Templates
+# Preserve all protected tokens exactly: paths, commands, symbols, IDs, errors.
+# Compact summaries should be short enough to reuse in bounded context.
+
+# --- Task result summary ---
+
+SUM {{FEATURE_ID}} {{TASK_ID}} status:{{done|needs-fix|blocked}}
+add:
+- {{PATH_OR_SYMBOL}}
+chg:
+- {{PATH_OR_SYMBOL}}
+test:
+- {{TEST_PATH_OR_COMMAND}}
+pass:
+- {{COMMAND_OR_AC}}
+fail:
+- {{COMMAND_OR_AC}}
+risk:
+- {{RISK_GATE}} status:{{STATUS}}
+next:
+- {{NEXT_ACTION}}
+
+# --- Memory entry ---
+
+MEM {{SCOPE}} {{TOPIC}}
+fact:
+- {{FACT}}
+src:
+- {{SOURCE_PATH_OR_FEATURE}}
+use:
+- {{WHEN_TO_REUSE}}
+
+# --- Note ---
+
+NOTE {{FEATURE_ID}} scope:{{SCOPE}}
+note:
+- {{NOTE}}
+src:
+- {{SOURCE}}
+next:
+- {{NEXT_ACTION}}
+
+# --- Risk gate ---
+
+RISK {{FEATURE_ID}} gate:{{RISK_GATE}} status:{{triggered|approved|resolved|unresolved}}
+reason:
+- {{REASON}}
+evidence:
+- {{EVIDENCE}}
+next:
+- {{NEXT_ACTION}}
+
+# --- Boundary update ---
+
+BOUNDARY {{FEATURE_ID}} status:{{expanded|reduced|unchanged|needs-update}}
+add:
+- {{PATH_OR_GLOB}} reason:{{REASON}}
+remove:
+- {{PATH_OR_GLOB}} reason:{{REASON}}
+avoid:
+- {{PATH_OR_GLOB}} reason:{{REASON}}
+next:
+- {{NEXT_ACTION}}
+
+# --- Command result ---
+
+CMD {{FEATURE_ID}} {{TASK_ID_OR_CHECK}} result:{{pass|fail|skipped|not-run}}
+cmd:
+- {{COMMAND}}
+evidence:
+- {{EVIDENCE}}
+next:
+- {{NEXT_ACTION}}

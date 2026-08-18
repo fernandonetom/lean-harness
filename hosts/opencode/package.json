@@ -1,0 +1,40 @@
+{
+  "name": "@feneto/lh-opencode",
+  "version": "0.1.0",
+  "description": "LeanHarness guardrail plugin for OpenCode — boundary enforcement, dangerous-command blocking, and secret-path protection as a real OpenCode plugin (https://opencode.ai/docs/plugins/).",
+  "repository": "https://github.com/fernandonetom/lean-harness",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "leanharness",
+    "guardrails"
+  ],
+  "devDependencies": {
+    "@opencode-ai/plugin": "^1.18.9",
+    "@types/node": "^25.6.0",
+    "vitest": "^3.2.1"
+  }
+}

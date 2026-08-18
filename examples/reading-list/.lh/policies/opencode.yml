@@ -1,0 +1,122 @@
+version: 0.1
+name: opencode-guardrails
+purpose: enforce LeanHarness guardrails for OpenCode sessions
+
+plugin:
+  path: .opencode/plugins/leanharness-guardrails.js
+  shared: .opencode/plugins/shared.js
+  mode: project-local
+  runtime_dependencies: none
+
+active_feature:
+  source_order:
+    - LEANHARNESS_ACTIVE_FEATURE
+    - .lh/state.json activeFeature
+    - single feature folder fallback
+
+bootstrap_allow:
+  - .lh/**
+  - .claude/**
+  - .opencode/**
+  - docs/**
+  - README.md
+  - CLAUDE.md
+  - opencode.json
+
+boundary:
+  source: .lh/features/<feature>/boundary.json
+  with_active_boundary:
+    out_of_boundary_edit: block
+    blocked_path_edit: block
+  without_active_boundary:
+    implementation_edit: warn
+    risky_edit: block_or_warn
+  allowed_fields:
+    - touchFiles[].path
+    - allowedEditGlobs[]
+  blocked_fields:
+    - blockedEditGlobs[]
+    - doNotTouch[]
+
+commands:
+  deny:
+    - rm -rf /
+    - rm -rf ~
+    - rm -rf .git
+    - git reset --hard*
+    - git clean -fd*
+    - "*DROP DATABASE*"
+    - "*drop database*"
+    - cat .env*
+    - printenv*
+    - env
+  risky:
+    - npm install*
+    - npm update*
+    - pnpm add*
+    - pnpm update*
+    - yarn add*
+    - bun add*
+    - pip install*
+    - poetry add*
+    - cargo add*
+    - git push*
+    - git reset*
+    - git clean*
+    - "*migrate reset*"
+    - "*db reset*"
+    - "*deploy*"
+    - "*curl*|*sh*"
+  safe_verification:
+    - npm test*
+    - npm run test*
+    - npm run lint*
+    - npm run typecheck*
+    - pnpm test*
+    - pnpm lint*
+    - pnpm typecheck*
+    - yarn test*
+    - yarn lint*
+    - bun test*
+    - pytest*
+    - go test*
+    - cargo test*
+
+risk_gates:
+  detect:
+    - auth_rewrite
+    - payment_logic
+    - destructive_migration
+    - new_dependency
+    - public_api_break
+    - broad_refactor
+    - security_sensitive_change
+
+secrets:
+  block_paths:
+    - .env
+    - .env.*
+    - "**/.env"
+    - "**/.env.*"
+    - "**/secrets/**"
+  redact_patterns:
+    - "sk-*"
+    - "ghp_*"
+    - "AKIA*"
+    - "BEGIN PRIVATE KEY"
+    - "DATABASE_URL=*"
+    - "TOKEN=*"
+    - "SECRET=*"
+    - "PASSWORD=*"
+
+logging:
+  events_jsonl: .lh/features/<feature>/events.jsonl
+  cavebus_log: .lh/features/<feature>/cavebus.log
+  event_source: leanharness-opencode-plugin
+
+limitations:
+  - OpenCode permissions and the plugin are guardrails, not a complete security sandbox.
+  - The plugin is best-effort because event payload shapes may vary by OpenCode version.
+  - Final feature completion is still determined by lh check.
+  - Boundary enforcement works best when .lh/features/<feature>/boundary.json exists.
+  - If no active feature or boundary exists, the plugin blocks only clearly risky operations.

@@ -1,0 +1,28 @@
+{
+  "version": "1.5.2",
+  "schema": "leanharness-state",
+  "activeFeature": "F002-status-filter-and-search",
+  "nextFeatureNumber": 3,
+  "features": [
+    {
+      "id": "F001",
+      "slug": "reading-list-app-scaffold",
+      "title": "Reading list app scaffold",
+      "path": "F001-reading-list-app-scaffold",
+      "status": "needs-fix",
+      "createdAt": "2026-07-29T14:58:01.430Z",
+      "updatedAt": "2026-07-29T15:21:36.546Z"
+    },
+    {
+      "id": "F002",
+      "slug": "status-filter-and-search",
+      "title": "Status filter and search",
+      "path": "F002-status-filter-and-search",
+      "status": "needs-fix",
+      "createdAt": "2026-07-29T16:31:43.860Z",
+      "updatedAt": "2026-07-29T16:44:14.354Z"
+    }
+  ],
+  "lastUpdated": "2026-07-29T16:44:14.354Z",
+  "notes": "State is a cache/index. Feature artifacts under .lh/features are the source of truth."
+}

@@ -1,0 +1,22 @@
+# CaveBus Discovery Template
+# Preserve all protected tokens exactly: paths, commands, symbols, IDs, errors.
+# Do not abbreviate file paths or function names.
+# Keep unknowns and risks visible.
+
+DISC {{FEATURE_ID}} conf:{{CONFIDENCE}} depth:{{DEPTH}}
+touch:
+- {{PATH}} reason:{{REASON}} conf:{{CONFIDENCE}}
+read:
+- {{PATH}} reason:{{REASON}}
+tests:
+- {{TEST_PATH_OR_COMMAND}} reason:{{REASON}}
+cmd:
+- {{COMMAND}} purpose:{{PURPOSE}} status:{{STATUS}}
+risk:
+- {{RISK_GATE}} reason:{{REASON}}
+unknown:
+- {{UNKNOWN}}
+avoid:
+- {{PATH_OR_AREA}} reason:{{REASON}}
+next:
+- {{NEXT_ACTION}}

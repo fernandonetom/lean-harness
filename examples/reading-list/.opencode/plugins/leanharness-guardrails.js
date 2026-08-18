@@ -1,0 +1,1 @@
+../../../../hosts/opencode/dist/leanharness-guardrails.js

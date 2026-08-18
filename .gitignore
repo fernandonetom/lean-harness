@@ -1,10 +1,13 @@
-/node_modules
-/dist
+node_modules/
+dist/
 
 # Runtime state — user-specific, contains machine paths
 .lh/graph/
 .lh/state.json
 .lh/memory/cave.md
+
+# Git worktrees created by the lh-worktree skill (feature/<id>-<slug> checkouts)
+.worktrees/
 
 # Tool-generated output with absolute local paths
 graphify-out/

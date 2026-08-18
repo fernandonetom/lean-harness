@@ -1,0 +1,461 @@
+version: "0.1"
+name: cavebus
+purpose: Compact internal communication protocol for LeanHarness
+
+syntax:
+  line_oriented: true
+  header: "TYPE FEATURE [TASK] key:value"
+  multiline_sections: true
+  comment_prefix: "#"
+  key_value_separator: ":"
+  list_prefix: "- "
+
+protected_tokens:
+  - file_paths
+  - directory_paths
+  - commands
+  - symbols
+  - class_names
+  - function_names
+  - method_names
+  - api_routes
+  - environment_variables
+  - error_messages
+  - test_names
+  - urls
+  - migration_names
+  - database_table_names
+  - database_column_names
+  - configuration_keys
+  - feature_ids
+  - task_ids
+  - acceptance_criteria_ids
+  - risk_gate_names
+  - package_names
+  - branch_names
+  - commit_hashes
+
+message_types:
+  REQ:
+    purpose: Compact user requirement or feature intent
+    required_fields:
+      - feature_id
+      - goal
+    optional_fields:
+      - constraints
+      - non_goals
+      - risk
+    example: |
+      REQ F001 goal:add user profile page
+      constraints:
+      - reuse existing user service
+      risk:
+      - public_api_break
+
+  DISC:
+    purpose: Discovery result summary
+    required_fields:
+      - feature_id
+      - conf
+      - depth
+    optional_fields:
+      - touch
+      - read
+      - tests
+      - cmd
+      - risk
+      - unknown
+      - avoid
+      - next
+    example: |
+      DISC F001 conf:high depth:D2
+      touch:
+      - src/pages/profile.tsx reason:new page conf:high
+      read:
+      - src/services/user.ts reason:data fetching
+      tests:
+      - tests/pages/profile.test.tsx
+      risk:
+      - security_sensitive_change
+      unknown:
+      - image upload size limit
+      next:
+      - plan 2 tasks
+
+  PLAN:
+    purpose: Plan summary
+    required_fields:
+      - feature_id
+      - task_count
+    optional_fields:
+      - tasks
+      - dependencies
+      - risk
+      - boundary
+    example: |
+      PLAN F001 tasks:2
+      tasks:
+      - T-01 goal:create profile component ac:AC-01
+      - T-02 goal:add profile route ac:AC-02 dep:T-01
+      risk:
+      - security_sensitive_change scope:T-01
+
+  TASK:
+    purpose: Task packet or task assignment with bounded context
+    required_fields:
+      - feature_id
+      - task_id
+    optional_fields:
+      - ac
+      - goal
+      - files
+      - read
+      - test
+      - verify
+      - risk
+      - rules
+      - next
+    example: |
+      TASK F001 T-01
+      ac:
+      - AC-01
+      goal:
+      - create profile component with user data display
+      files:
+      - src/pages/profile.tsx action:create
+      read:
+      - src/services/user.ts reason:data fetch pattern
+      test:
+      - tests/pages/profile.test.tsx
+      verify:
+      - npm test -- --testPathPattern=profile
+      rules:
+      - stay inside boundary
+      - preserve protected tokens
+      next:
+      - T-02 after verification
+
+  SUM:
+    purpose: Task result summary
+    required_fields:
+      - feature_id
+      - task_id
+      - status
+    optional_fields:
+      - add
+      - chg
+      - test
+      - pass
+      - fail
+      - risk
+      - next
+    example: |
+      SUM F001 T-01 status:done
+      add:
+      - src/pages/profile.tsx
+      - tests/pages/profile.test.tsx
+      pass:
+      - npm test -- --testPathPattern=profile
+      next:
+      - T-02
+
+  REV:
+    purpose: Review result from lh-reviewer
+    required_fields:
+      - feature_id
+      - scope
+      - verdict
+    optional_fields:
+      - crit
+      - major
+      - minor
+      - miss
+      - boundary
+      - risk
+      - fix
+      - next
+    verdict_values:
+      - pass
+      - needs-fix
+      - blocked
+    example: |
+      REV F001 T-01 verdict:pass
+      minor:
+      - missing error boundary file:src/pages/profile.tsx evidence:line 12
+      fix:
+      - add ErrorBoundary wrapper
+
+  VERIFY:
+    purpose: Verification result from lh-verifier
+    required_fields:
+      - feature_id
+      - verdict
+    optional_fields:
+      - ac
+      - cmd
+      - chg
+      - boundary
+      - risk
+      - review
+      - miss
+      - next
+    verdict_values:
+      - pass
+      - needs-fix
+      - blocked
+    example: |
+      VERIFY F001 verdict:pass
+      ac:
+      - AC-01 status:pass evidence:profile.test.tsx 5/5 pass
+      - AC-02 status:pass evidence:route /profile renders correctly
+      cmd:
+      - npm test result:pass evidence:28 pass 0 fail
+      boundary:
+      - status:pass
+      risk:
+      - security_sensitive_change status:resolved
+
+  ERR:
+    purpose: Error, failed command, exception, or unexpected output
+    required_fields:
+      - feature_id
+      - scope
+    optional_fields:
+      - cmd
+      - err
+      - cause
+      - scope_type
+      - next
+    example: |
+      ERR F001 T-01
+      cmd:
+      - npm test -- --testPathPattern=profile
+      err:
+      - TypeError: Cannot read properties of undefined (reading 'name')
+      cause:
+      - user service returns null when user not found
+      scope:
+      - in-scope
+      next:
+      - add null check in profile component
+
+  BLOCK:
+    purpose: Blocker that prevents safe progress
+    required_fields:
+      - feature_id
+      - reason
+    optional_fields:
+      - need
+      - risk
+      - evidence
+      - next
+    example: |
+      BLOCK F001 reason:user service endpoint not deployed
+      need:
+      - deploy user service to staging
+      evidence:
+      - GET /api/users/me returns 404
+      next:
+      - wait for deployment, then resume T-01
+
+  MEM:
+    purpose: Reusable memory entry for cross-feature knowledge
+    required_fields:
+      - scope
+      - topic
+    optional_fields:
+      - fact
+      - src
+      - use
+    example: |
+      MEM project auth
+      fact:
+      - JWT tokens expire after 24h
+      - refresh tokens stored in httpOnly cookie
+      src:
+      - F001 discovery
+      - src/auth/jwt.ts
+      use:
+      - any feature touching authentication
+
+  NOTE:
+    purpose: Non-blocking observation
+    required_fields:
+      - feature_id
+      - scope
+    optional_fields:
+      - note
+      - src
+      - next
+    example: |
+      NOTE F001 scope:test-coverage
+      note:
+      - src/services/user.ts has 40% coverage, unrelated to this feature
+      src:
+      - discovery D2
+      next:
+      - consider separate coverage improvement feature
+
+  RISK:
+    purpose: Risk gate or risk note
+    required_fields:
+      - feature_id
+      - gate
+      - status
+    optional_fields:
+      - reason
+      - evidence
+      - next
+    status_values:
+      - triggered
+      - approved
+      - resolved
+      - unresolved
+    example: |
+      RISK F001 gate:security_sensitive_change status:triggered
+      reason:
+      - profile page displays PII (email, phone)
+      evidence:
+      - spec AC-01 requires showing email
+      next:
+      - request user approval before proceeding
+
+  BOUNDARY:
+    purpose: Change boundary update
+    required_fields:
+      - feature_id
+      - status
+    optional_fields:
+      - add
+      - remove
+      - avoid
+      - next
+    status_values:
+      - expanded
+      - reduced
+      - unchanged
+      - needs-update
+    example: |
+      BOUNDARY F001 status:expanded
+      add:
+      - src/components/Avatar.tsx reason:profile needs avatar display
+      avoid:
+      - src/admin/ reason:out of scope
+      next:
+      - update boundary.json
+
+  CMD:
+    purpose: Command run and result
+    required_fields:
+      - feature_id
+      - scope
+      - result
+    optional_fields:
+      - cmd
+      - evidence
+      - next
+    result_values:
+      - pass
+      - fail
+      - skipped
+      - not-run
+    example: |
+      CMD F001 T-01 result:pass
+      cmd:
+      - npm test -- --testPathPattern=profile
+      evidence:
+      - 5 tests passed, 0 failed
+      next:
+      - proceed to review
+
+common_keys:
+  status: Current state of task, feature, or check
+  verdict: "Final assessment: pass, needs-fix, blocked"
+  conf: "Confidence: low, med, high, unknown"
+  depth: "Discovery depth: D0-D4"
+  ac: Acceptance criteria reference
+  goal: Task or feature goal
+  ctx: Context reference
+  touch: Files to modify
+  read: Files to read but not modify
+  files: Files involved (general)
+  tests: Test files or test commands
+  cmd: Command executed
+  pass: Items that passed
+  fail: Items that failed
+  risk: Risk gate or risk note
+  unknown: Items with unknown status
+  avoid: Files or areas to avoid
+  block: Blocker description
+  miss: Missing evidence or coverage
+  fix: Recommended fix
+  next: Next action
+  src: Source or origin of information
+  evidence: Verification evidence
+  boundary: Change boundary reference
+  review: Review reference
+  notes: Additional notes
+
+status_values:
+  draft: Incomplete, blocking questions remain
+  specified: Spec ready for discovery
+  discovered: Discovery complete, boundary locked
+  planned: Plan and tasks ready
+  building: Tasks in progress
+  done: Task or feature complete
+  needs-fix: Issues found, action required
+  blocked: Cannot proceed without intervention
+  verified: Verification complete
+  archived: No longer active
+  pass: Passed verification or check
+  fail: Failed verification or check
+  partial: Partially passed
+  not-checked: Not yet checked
+  skipped: Intentionally skipped
+  unknown: Status cannot be determined
+
+confidence_values:
+  low: Limited evidence, may need deeper discovery
+  med: Reasonable evidence, some uncertainty remains
+  high: Strong evidence, high certainty
+  unknown: Cannot assess confidence
+
+discovery_depths:
+  D0: "Repo shape: package manager, major folders, test commands"
+  D1: "Candidate surfaces: relevant files, routes, components, services"
+  D2: "Dependency boundary: imports, callers, callees, neighboring tests"
+  D3: "Risk probes: focused test runs, security checks, auth/payment inspection"
+  D4: "Deep dive: broader architecture when D0-D3 insufficient"
+
+compression_rules:
+  - Remove filler words
+  - Keep causal meaning
+  - Preserve commands exactly
+  - Preserve error text exactly
+  - Preserve file paths exactly
+  - Preserve IDs exactly
+  - Keep unknowns visible
+  - Keep blockers visible
+  - Keep failures visible
+  - Never turn uncertainty into certainty
+  - Never turn needs-fix into pass
+  - Never drop security or data-loss risks
+  - Prefer omission over vague filler
+
+validation_rules:
+  - Protected tokens preserved exactly
+  - Failures retained
+  - Blockers retained
+  - Risk gates retained
+  - Next action clear when applicable
+  - Message type correct for content
+  - Feature ID correct
+  - Task ID correct when present
+  - Canonical artifact still exists alongside CaveBus summary
+
+destinations:
+  cavebus_log: ".lh/features/<feature>/cavebus.log"
+  task_summaries: ".lh/features/<feature>/task-summaries/"
+  memory: ".lh/memory/"
+  subagent_handoffs: "passed between agents via tool results"
+  context_compiler: "future CLI input source"

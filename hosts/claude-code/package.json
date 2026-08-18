@@ -1,0 +1,21 @@
+{
+  "name": "@feneto/lh-claude-code-plugin",
+  "version": "1.5.2",
+  "private": true,
+  "description": "LeanHarness Claude Code plugin — skills, agents, and guardrail hooks, distributed via git + /plugin marketplace add. Never published to npm.",
+  "repository": "https://github.com/fernandonetom/lean-harness",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^25.6.0",
+    "js-yaml": "^4.1.0",
+    "vitest": "^3.2.1"
+  }
+}

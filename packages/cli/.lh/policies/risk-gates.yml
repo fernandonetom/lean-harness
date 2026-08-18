@@ -1,0 +1,115 @@
+# LeanHarness risk gate policy
+# Defines high-risk change categories that require deliberate approval.
+
+version: "0.1"
+name: risk-gates
+purpose: require deliberate approval for high-risk changes
+
+require_approval:
+  auth_rewrite:
+    description: Replacing or broadly restructuring authentication/session behavior.
+    path_patterns:
+      - "**/auth/**"
+      - "**/session/**"
+      - "**/*auth*"
+      - "**/*session*"
+    command_patterns: []
+    behavior: ask
+
+  payment_logic:
+    description: Changing payment, billing, checkout, invoice, or subscription behavior.
+    path_patterns:
+      - "**/billing/**"
+      - "**/payment/**"
+      - "**/checkout/**"
+      - "**/*billing*"
+      - "**/*payment*"
+      - "**/*checkout*"
+    command_patterns: []
+    behavior: ask
+
+  destructive_migration:
+    description: Destructive schema or data migration.
+    path_patterns:
+      - "**/migrations/**"
+      - "**/migration/**"
+      - "**/schema.*"
+    command_patterns:
+      - "*drop*"
+      - "*migrate reset*"
+      - "*db reset*"
+      - "*prisma migrate reset*"
+    behavior: ask
+
+  new_dependency:
+    description: Adding, removing, or upgrading dependencies.
+    path_patterns:
+      - "package.json"
+      - "package-lock.json"
+      - "pnpm-lock.yaml"
+      - "yarn.lock"
+      - "bun.lockb"
+      - "requirements.txt"
+      - "pyproject.toml"
+      - "poetry.lock"
+      - "Gemfile"
+      - "Gemfile.lock"
+      - "go.mod"
+      - "go.sum"
+      - "Cargo.toml"
+      - "Cargo.lock"
+    command_patterns:
+      - "npm install*"
+      - "npm update*"
+      - "pnpm add*"
+      - "pnpm update*"
+      - "yarn add*"
+      - "bun add*"
+      - "pip install*"
+      - "poetry add*"
+      - "cargo add*"
+    behavior: ask
+
+  public_api_break:
+    description: Changing public API behavior, routes, exported contracts, schemas, or SDK interfaces.
+    path_patterns:
+      - "**/api/**"
+      - "**/routes/**"
+      - "**/controllers/**"
+      - "**/schema/**"
+      - "**/*schema*"
+      - "**/*contract*"
+    command_patterns: []
+    behavior: ask
+
+  broad_refactor:
+    description: Large refactors across many unrelated files.
+    path_patterns: []
+    command_patterns: []
+    behavior: ask
+
+  security_sensitive_change:
+    description: Security, permissions, secrets, encryption, token, or authorization behavior.
+    path_patterns:
+      - "**/security/**"
+      - "**/permissions/**"
+      - "**/authorization/**"
+      - "**/secrets/**"
+      - "**/*token*"
+      - "**/*permission*"
+      - "**/*secret*"
+    command_patterns:
+      - "*chmod 777*"
+      - "*chown*"
+    behavior: ask
+
+approval_sources:
+  - ".lh/features/<feature>/risk-approvals.json"
+  - "boundary.json riskGates[] with status approved"
+  - "explicit user approval in current session, when available to Claude"
+
+enforcement_notes:
+  - "Risk gates cause ask, not deny, unless the operation is clearly destructive."
+  - "Multiple risk gates may trigger for a single path or command."
+  - "Approval detection is conservative in v0.1; hooks may re-ask even after approval."
+  - "The broad_refactor gate has no path patterns and is detected by heuristic or explicit trigger."

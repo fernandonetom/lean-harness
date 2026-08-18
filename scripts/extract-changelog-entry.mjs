@@ -1,5 +1,9 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(scriptDir, '..');
 
 const version = process.argv[2];
 
@@ -8,7 +12,9 @@ if (!version) {
   process.exit(1);
 }
 
-const changelogPath = path.join(process.cwd(), 'CHANGELOG.md');
+// CHANGELOG.md lives in packages/cli/ — changesets generates/appends entries there for
+// @feneto/lh (the "fixed" version shared with @feneto/lh-claude-code-plugin).
+const changelogPath = path.join(repoRoot, 'packages/cli/CHANGELOG.md');
 
 let content;
 try {

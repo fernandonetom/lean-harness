@@ -1,0 +1,151 @@
+{
+  "featureId": "F001",
+  "featureTitle": "Reading list app scaffold",
+  "status": "discovered",
+  "confidence": "medium",
+  "discoveryDepth": "D1",
+  "touchFiles": [
+    {
+      "path": "web/package.json",
+      "reason": "manual: new Next.js app manifest and dependencies (create-next-app scaffold)",
+      "confidence": "high"
+    },
+    {
+      "path": "web/tsconfig.json",
+      "reason": "manual: TypeScript config for the App Router project",
+      "confidence": "high"
+    },
+    {
+      "path": "web/next.config.ts",
+      "reason": "manual: Next.js project config",
+      "confidence": "medium"
+    },
+    {
+      "path": "web/app/layout.tsx",
+      "reason": "manual: App Router root layout",
+      "confidence": "high"
+    },
+    {
+      "path": "web/app/page.tsx",
+      "reason": "manual: list page rendering reading-list items (AC-01)",
+      "confidence": "high"
+    },
+    {
+      "path": "web/app/add/page.tsx",
+      "reason": "manual: add-item form page (AC-02)",
+      "confidence": "high"
+    },
+    {
+      "path": "web/app/api/items/route.ts",
+      "reason": "manual: API route backing list reads and add-item writes (AC-01, AC-02)",
+      "confidence": "high"
+    },
+    {
+      "path": "web/lib/store.ts",
+      "reason": "manual: JSON-file-backed store for reading list items (AC-03, AC-04)",
+      "confidence": "high"
+    },
+    {
+      "path": "web/lib/types.ts",
+      "reason": "manual: shared ReadingListItem type and status union (AC-03)",
+      "confidence": "high"
+    },
+    {
+      "path": "web/data/reading-list.json",
+      "reason": "manual: JSON data file backing the store (AC-04)",
+      "confidence": "high"
+    }
+  ],
+  "readOnlyFiles": [
+    {
+      "path": "README.md",
+      "reason": "matches: read",
+      "confidence": "medium"
+    },
+    {
+      "path": "opencode.json",
+      "reason": "matches: js, json; config file",
+      "confidence": "medium"
+    },
+    {
+      "path": ".opencode/README.md",
+      "reason": "matches: read",
+      "confidence": "medium"
+    }
+  ],
+  "relevantTests": [],
+  "commands": [
+  ],
+  "allowedEditGlobs": [
+    "web/package.json",
+    "web/tsconfig.json",
+    "web/next.config.ts",
+    "web/app/layout.tsx",
+    "web/app/page.tsx",
+    "web/app/add/page.tsx",
+    "web/app/api/items/route.ts",
+    "web/lib/store.ts",
+    "web/lib/types.ts",
+    "web/data/reading-list.json",
+    "web/**"
+  ],
+  "blockedEditGlobs": [
+    "node_modules/**",
+    "dist/**",
+    "build/**",
+    "coverage/**",
+    ".next/**",
+    ".nuxt/**",
+    ".svelte-kit/**",
+    ".turbo/**",
+    ".cache/**",
+    "out/**",
+    "vendor/**",
+    "target/**",
+    ".git/**",
+    "hosts/**",
+    "packages/**",
+    ".claude/**",
+    ".opencode/**",
+    "../../hosts/**",
+    "../../packages/**"
+  ],
+  "riskGates": [
+    {
+      "name": "new_dependency",
+      "reason": "Scaffold adds a new package.json under web/ with Next.js/React dependencies; pre-approved by the task owner for this dogfooding demo",
+      "status": "approved"
+    }
+  ],
+  "unknowns": [
+    "Discovery found no existing files (expected: this is a greenfield scaffold bootstrap in an empty example directory, not a brownfield discovery run). touchFiles above were seeded manually from the spec since create-next-app will generate files that do not exist yet for keyword-based discovery to find."
+  ],
+  "doNotTouch": [
+    "node_modules/",
+    "dist/",
+    "build/",
+    "coverage/",
+    ".git/",
+    "vendor/",
+    "target/",
+    "hosts/",
+    "packages/",
+    ".claude/",
+    ".opencode/"
+  ],
+  "protectedTokens": [
+    "F001",
+    "web/package.json",
+    "web/tsconfig.json",
+    "web/next.config.ts",
+    "web/app/layout.tsx",
+    "web/app/page.tsx",
+    "web/app/add/page.tsx",
+    "web/app/api/items/route.ts",
+    "web/lib/store.ts",
+    "web/lib/types.ts",
+    "web/data/reading-list.json"
+  ],
+  "closureGaps": [],
+  "lastUpdated": "2026-07-29T15:01:48.567Z"
+}

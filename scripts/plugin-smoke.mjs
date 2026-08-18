@@ -4,6 +4,7 @@ import path from 'path';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, '..');
+const pluginDir = path.join(repoRoot, 'hosts', 'claude-code');
 
 // Check if claude CLI is available
 try {
@@ -18,7 +19,7 @@ const prompt = 'What LeanHarness skills are available? List their names only, on
 const timeout = 60 * 1000; // 60 seconds
 
 const result = spawnSync('claude', [
-  '--plugin-dir', repoRoot,
+  '--plugin-dir', pluginDir,
   '-p', prompt,
   '--output-format', 'json'
 ], {
@@ -27,7 +28,7 @@ const result = spawnSync('claude', [
 });
 
 // Check for timeout
-if (result.error && result.error.code === 'ETIMEDOUT') {
+if (result.error && 'code' in result.error && result.error.code === 'ETIMEDOUT') {
   console.error('Plugin smoke test timed out after 60 seconds');
   process.exit(1);
 }

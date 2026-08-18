@@ -1,0 +1,22 @@
+# CaveBus Review Template
+# Preserve all protected tokens exactly: paths, commands, symbols, IDs, errors.
+# Review must be evidence-based. Every finding must cite a file and evidence.
+# Never upgrade verdict. needs-fix must not become pass without fixes applied.
+
+REV {{FEATURE_ID}} {{TASK_ID_OR_FEATURE}} verdict:{{pass|needs-fix|blocked}}
+crit:
+- {{FINDING}} file:{{PATH}} evidence:{{EVIDENCE}}
+major:
+- {{FINDING}} file:{{PATH}} evidence:{{EVIDENCE}}
+minor:
+- {{FINDING}} file:{{PATH}} evidence:{{EVIDENCE}}
+miss:
+- {{MISSING_EVIDENCE}}
+boundary:
+- {{BOUNDARY_ISSUE}}
+risk:
+- {{RISK_GATE}} status:{{STATUS}}
+fix:
+- {{RECOMMENDED_FIX}}
+next:
+- {{NEXT_ACTION}}

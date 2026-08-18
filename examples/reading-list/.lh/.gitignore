@@ -1,0 +1,8 @@
+# LeanHarness — team mode
+# Feature artifacts are committed and shared with the team.
+
+# Runtime log (session-local, never commit)
+/memory/cave.md
+
+# Local config overrides (personal, never commit)
+config.local.yml
