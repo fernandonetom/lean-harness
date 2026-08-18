@@ -36,7 +36,12 @@ jobs:
   changeset-check:
     name: Changeset Check
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    # The changesets action's own "Version Packages" PR (head branch
+    # changeset-release/main) has already consumed every pending changeset to produce its
+    # version bump, so `changeset status` always reports "changes with no changeset" there —
+    # a false positive by design, not a real missing changeset. Every prior Version Packages
+    # PR has failed this check for exactly that reason.
+    if: github.event_name == 'pull_request' && github.head_ref != 'changeset-release/main'
     steps:
       - uses: actions/checkout@v4
         with:
