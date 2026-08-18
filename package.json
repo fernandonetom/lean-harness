@@ -14,7 +14,7 @@
     "sync:example": "node scripts/sync-example-hosts.mjs",
     "version-packages": "changeset version && node scripts/sync-readme-version.mjs && node scripts/sync-plugin-version.mjs",
     "release:check": "pnpm run build && pnpm run typecheck && pnpm run test && pnpm -r publish --dry-run --no-git-checks",
-    "release": "pnpm run release:check && pnpm exec changeset publish --access public"
+    "release": "pnpm run release:check && pnpm exec changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
