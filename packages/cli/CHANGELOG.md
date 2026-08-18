@@ -1,5 +1,52 @@
 # Changelog
 
+## 2.0.0
+
+### Major Changes
+
+- b5b055f: Restructured the repo into a pnpm monorepo (`packages/cli`, `hosts/opencode`, `hosts/claude-code`) and replaced the experimental OpenCode plugin export with a real, spec-compliant one published as its own package.
+
+  **Monorepo layout:** `@feneto/lh` now lives in `packages/cli/`. The Claude Code plugin (skills, agents, hooks, `.claude-plugin/plugin.json`) moved from the repo root into `hosts/claude-code/` — a private, unpublished workspace package, still distributed via git + `/plugin marketplace add` with no behavior change for consumers (the root `.claude-plugin/marketplace.json` stays at the repo root, its `source` now points at `./hosts/claude-code`).
+
+  **Real OpenCode plugin:** `hosts/opencode/` is a new package, published as [`@feneto/lh-opencode`](https://www.npmjs.com/package/@feneto/lh-opencode) — a real [OpenCode plugin](https://opencode.ai/docs/plugins/) (typed against `@opencode-ai/plugin`), replacing the previous `@feneto/lh` `"./opencode"` subpath export that was documented as "experimental, unverified." **Breaking:** that subpath export is removed.
+
+  **`lh init --host opencode` default behavior change:** now registers `@feneto/lh-opencode` (version-pinned) in the target project's `opencode.json` `"plugin"` array by default, instead of copying the guardrail plugin's raw JS into `.opencode/plugins/`. OpenCode installs the npm package automatically via Bun at startup — no manual install step. Pass `--local-plugin` to restore the previous copy-files behavior for offline/air-gapped/restricted environments.
+
+  **Additive guardrail enforcement layer:** the OpenCode plugin now also implements `permission.ask` (returning `status: "deny"`), a spec-documented deny mechanism, alongside the existing throw-based blocking in `tool.execute.before` (kept as the enforcement backbone — `lh init`'s generated `opencode.json` sets `permission.edit: "allow"` for the primary builder agent, so `permission.ask` alone would under-enforce for that agent).
+
+  **Bug fixes found during the restructure:**
+
+  - `lh-do`'s Claude Code skill (`hosts/claude-code/skills/lh-do/SKILL.md`) had a YAML frontmatter parse error (an unquoted colon-space sequence in its `description`) that made `claude plugin validate --strict` fail and would have loaded the skill with all frontmatter silently dropped at runtime.
+  - A stray, agent-shaped file (`lh-builder-fix.md`, with `mode`/`permission` fields instead of `agent`) had been mis-copied into the OpenCode command-templates bundle; it was dead weight, never wired into `opencode.json`'s `command` map. Removed.
+
+  **Testing:** added real coverage that was previously missing — OpenCode plugin blocking behavior (`tool.execute.before` and `permission.ask`), OpenCode agent/command template frontmatter validation cross-checked against the CLI's loader wiring, Claude Code skill/agent frontmatter validation, and `hooks/post-tool-use.js` / `hooks/session-end.js` (previously untested). Added `hosts/opencode/scripts/opencode-smoke.mjs`, an empirical check (gated on a real `opencode` binary being present) that the built plugin loads cleanly with no double-registration.
+
+  **CI/release:** `ci.yml` and `release.yml` are now pnpm-workspace-aware (`pnpm -r run build/typecheck/test`, `pnpm -r publish --dry-run` for pack hygiene). The release job publishes through `pnpm exec changeset publish` instead of a bare `npm publish`, since a bare `npm publish` does not understand pnpm's `workspace:*` protocol.
+
+- 8c649d2: LeanHarness v2.0.0 — plugin-based distribution, git worktree support, and a fixed release pipeline.
+
+  **Distribution:** `lh` no longer writes generated skills, agents, and hooks into `.claude/`/`.opencode/` on every `lh init`. This repo now ships as a self-hosted Claude Code plugin (`/plugin marketplace add fernandonetom/lean-harness`, `/plugin install lh@lean-harness`) plus the standalone `@feneto/lh` CLI. `.lh/` (config, policies, templates, feature artifacts) stays project-local and untouched. `lh init --host opencode` now writes from real source files instead of embedded template strings.
+
+  **Migration:** `lh migrate` (new) detects a v1.x repo's generated files, confirms the plugin is installed, then deletes the legacy `.claude/skills/lh-*`, `.claude/agents/lh-*.md`, and `.lh/scripts/hooks/` files — never deleting until the plugin install is confirmed. `lh update` now delegates to `lh migrate` automatically when it detects a v1.x layout, instead of force-reinitializing (its previous, more destructive behavior).
+
+  **Git worktrees:** worktree creation is agent-driven via the new `lh-worktree` skill (ask Claude Code to run it, or `/lh-worktree <feature-id>`) instead of a CLI command — it creates the isolated worktree, symlinks `.lh/features` and `.lh/state.json` in from the main repo (they're gitignored, so a bare worktree checkout wouldn't otherwise see them), and runs install/baseline tests. The CLI's role shrinks to tracking the result: `lh worktree link|list|unlink <feature>` only reads/writes `.lh/state.json`'s worktree record — it does no git work itself. `lh build` can still require an active, linked worktree via `.lh/config.yml`'s `workflow.require_worktree`. This also fixes two related hook bugs: an absolute file path inside a worktree was incorrectly denied as outside the change boundary, and boundary lookups from inside a worktree could silently fail open (stop enforcing) instead of resolving against the main repo's `.lh/features/`.
+
+  **OpenCode plugin fix:** the guardrail plugin bundle (`.opencode/plugins/shared.js`) imported `getVersion` from a path (`../core/version.js`) that only exists inside the `lh` package's own source tree, not wherever the bundle gets copied to (`.opencode/plugins/` in a consumer project) — this made the plugin fail to load entirely for every OpenCode user. Fixed by inlining a self-contained fallback instead of importing across the bundle boundary. Also removed a stale, unreferenced `scripts/extract-opencode-plugin-assets.mjs` and corrected doc claims (`lh update --host opencode` does not refresh OpenCode plugin/agent/command files in v2 — re-run `lh init --host opencode --force` instead).
+
+  **Release pipeline:** Every release from 1.0.0 through 1.5.2 published to npm successfully but created no git tag and no GitHub Release — `changesets/action`'s tag/release creation only fires on a code path this repo's workflow never took. `.github/workflows/release.yml` now creates `v{version}` and `lh--v{version}` tags and a GitHub Release itself, gated on the action's own `published` output.
+
+  **Diagnostics fixes:** `lh doctor` and `lh status` previously checked for the old generated `.claude/skills/`, `.claude/agents/`, and `.claude/hooks/leanharness-hooks.json` paths, so a healthy plugin-based v2.0.0 install was misreported as missing hooks/skills/agents. Both commands now check plugin-enabled state (`enabledPlugins["lh@lean-harness"]`) and only flag legacy v1.x project-local files as such. `lh init --host claude-code`'s `.lh/policies/claude-code.yml` reference doc and `docs/hosts/claude-code.md` are updated to describe the plugin architecture instead of the old generated-file layout. `lh uninstall` now also removes the plugin's `enabledPlugins`/`extraKnownMarketplaces` registration from `.claude/settings.json`.
+
+### Patch Changes
+
+- 13b76c9: Fixed `lh build --host claude-code` unconditionally passing an unsupported `--cwd` flag to the `claude` CLI, causing every real (non-dry-run) Claude Code build to fail with `error: unknown option '--cwd'`. The working directory is already set via the child process's `cwd` spawn option, so the flag was redundant as well as unsupported — removed it.
+- 0656c44: Fixed `lh doctor` unconditionally warning `.opencode/plugins/shared.js` and `.opencode/plugins/leanharness-guardrails.js` as "missing" for every v2 default-mode OpenCode install — those files are only written with `--local-plugin`; the default registers the npm-published `@feneto/lh-opencode` package in `opencode.json` instead, so their absence there is expected, not an error. `lh doctor` now also detects and `fail`s when both distribution modes are active at once (the npm plugin registered in `opencode.json` _and_ local files present in `.opencode/plugins/`), since OpenCode auto-loads every `.js` file dropped into that directory regardless of `opencode.json`, causing the guardrail hooks to double-register.
+
+  Fixed the underlying cause: `lh init --host opencode` (default, non-`--local-plugin` mode) previously never cleaned up `.opencode/plugins/shared.js` / `leanharness-guardrails.js` left over from a v1.x install or a prior `--local-plugin` run — every v1.x-to-v2 OpenCode migration would silently end up in the double-registration state above. `lh init --host opencode --force` now removes those stale, LeanHarness-managed local files when defaulting to the npm-registered plugin; without `--force` it warns instead of deleting.
+
+- 72a2b58: Fixed the task-context compiler's field-header regex (`packages/cli/src/context/task-context.ts`) rejecting hyphenated field names like `Read-only context:`. Unrecognized headers silently fell through and got merged into the following field's value, which could cause read-only reference files to be misclassified as touch files — surfacing as spurious risk-gate triggers (e.g. `public_api_break`, `new_dependency`) on tasks that never actually touched those files.
+- 361f411: Fixed `lh worktree list` reporting a worktree as `linked` instead of `stale` when its directory was deleted without running `git worktree remove`/`prune` first. `git worktree list --porcelain` can keep listing such a worktree until it's explicitly pruned, and that behavior was observed to vary across git versions/platforms (surfaced as a CI-only test failure on Linux/git 2.54.0 that didn't reproduce locally). Staleness is now determined by whether the worktree's directory actually still exists on disk, not solely by whether git's own bookkeeping still lists it.
+
 ## 1.5.2
 
 ### Patch Changes

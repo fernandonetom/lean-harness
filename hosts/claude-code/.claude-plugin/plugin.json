@@ -1,7 +1,7 @@
 {
   "name": "lh",
   "description": "LeanHarness — bounded-context AI harness for brownfield feature work: spec, discover, plan, build, check with verification evidence.",
-  "version": "1.5.2",
+  "version": "2.0.0",
   "author": {
     "name": "Fernando Neto"
   },
