@@ -1,6 +1,6 @@
 {
   "name": "@feneto/lh-opencode",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "LeanHarness guardrail plugin for OpenCode — boundary enforcement, dangerous-command blocking, and secret-path protection as a real OpenCode plugin (https://opencode.ai/docs/plugins/).",
   "repository": "https://github.com/fernandonetom/lean-harness",
   "type": "module",
