@@ -117,10 +117,15 @@ export async function runWorktreeListCommand(
       if (feature.worktreePath) {
         const featurePath = await realpathOrSelf(path.resolve(root, feature.worktreePath));
         if (featurePath === resolvedPath) {
+          // git's own worktree bookkeeping (`git worktree list`) can keep listing a worktree
+          // whose directory was deleted out from under it until `git worktree prune` runs —
+          // observed to vary by git version. Treat a missing directory as stale regardless of
+          // what git still reports, since that's what "stale" means from LH's perspective.
+          const dirStillExists = await dirExists(resolvedPath);
           infos.push({
             path: wt.path,
             branch: wt.branch,
-            status: "linked",
+            status: dirStillExists ? "linked" : "stale",
             featureId: feature.id,
           });
           found = true;
