@@ -24,15 +24,14 @@ lh init --host opencode --force
 
 | File | Purpose |
 |------|---------|
-| `opencode.json` | Root OpenCode project configuration |
+| `opencode.json` | Root OpenCode project configuration — includes `"plugin": ["@feneto/lh-opencode@^X.Y.Z"]` by default |
 | `.opencode/README.md` | Integration documentation |
 | `.opencode/agents/lh-scout.md` | Discovery agent |
 | `.opencode/agents/lh-builder.md` | Implementation agent |
 | `.opencode/agents/lh-reviewer.md` | Review agent |
 | `.opencode/agents/lh-verifier.md` | Verification agent |
 | `.opencode/agents/lh-compressor.md` | CaveBus compression agent |
-| `.opencode/plugins/shared.js` | Shared utility module for guardrail plugin |
-| `.opencode/plugins/leanharness-guardrails.js` | Main guardrail plugin |
+| `.opencode/plugins/shared.js`, `.opencode/plugins/leanharness-guardrails.js` | Guardrail plugin — **only written with `--local-plugin`**; the default installs the npm-published `@feneto/lh-opencode` package instead (see "Guardrail Plugin" below) |
 | `.lh/policies/opencode.yml` | Policy file documenting guardrail behavior |
 
 ## Agents
@@ -49,9 +48,30 @@ All agents read `.lh/` artifacts before acting. None rely on hidden chat memory 
 
 ## Guardrail Plugin
 
-The guardrail plugin (`.opencode/plugins/leanharness-guardrails.js`) provides deterministic safety checks during OpenCode sessions.
+The guardrail plugin is a real, spec-compliant [OpenCode plugin](https://opencode.ai/docs/plugins/), published to npm as [`@feneto/lh-opencode`](https://www.npmjs.com/package/@feneto/lh-opencode). It provides deterministic safety checks during OpenCode sessions.
 
-`lh init --host opencode` installs it by writing the plugin file straight into `.opencode/plugins/` — this is OpenCode's own documented, zero-config local-plugin mechanism ([opencode.ai/docs/plugins](https://opencode.ai/docs/plugins/)): any file dropped into a project's `.opencode/plugins/` directory (or the global `~/.config/opencode/plugins/`) is auto-loaded at startup, no `opencode.json` entry required. This is not a LeanHarness-specific workaround; it's the same mechanism OpenCode expects any local plugin to use.
+**By default**, `lh init --host opencode` registers it in `opencode.json`:
+
+```json
+{
+  "plugin": ["@feneto/lh-opencode@^0.1.0"]
+}
+```
+
+OpenCode installs it automatically via Bun at startup (cached in `~/.cache/opencode/node_modules/`) — no manual `npm install` step, and no local files written into `.opencode/plugins/`. The version pin tracks whatever `@feneto/lh-opencode` version was current when your `@feneto/lh` CLI was built.
+
+**`--local-plugin` fallback** — for offline/air-gapped/restricted environments where OpenCode's npm-plugin auto-install isn't viable:
+
+```bash
+lh init --host opencode --local-plugin
+```
+
+This restores the pre-npm-package behavior: writing `.opencode/plugins/shared.js` and `.opencode/plugins/leanharness-guardrails.js` directly, using OpenCode's documented zero-config local-plugin mechanism (any file dropped into `.opencode/plugins/` is auto-loaded at startup, no `opencode.json` entry required). When using this fallback, do **not** also register the npm package in `opencode.json` — OpenCode's local-plugin loader treats every `.js` file in that directory as an independent plugin module, so mixing both distribution modes would register the guardrail hooks twice.
+
+**Enforcement is layered:**
+
+1. **`tool.execute.before`** (primary) — throws to abort the tool call. This is undocumented-but-relied-upon OpenCode behavior (the plugin API's published types show no deny field on this hook's output), kept as the enforcement backbone because it's what's been verified to work in production.
+2. **`permission.ask`** (additive) — sets `output.status = "deny"` for the same violations, using the hook's documented deny mechanism. This does **not** replace layer 1: `lh init`'s generated `opencode.json` sets `permission.edit: "allow"` for the primary `lh-builder` agent, so relying on `permission.ask` alone would silently under-enforce for exactly the agent guardrails exist to catch.
 
 **What it enforces:**
 
@@ -71,12 +91,7 @@ The guardrail plugin (`.opencode/plugins/leanharness-guardrails.js`) provides de
 - The plugin is best-effort. Event payload shapes may vary by OpenCode version.
 - The plugin does not intercept all possible tool types.
 - The plugin is not a complete security sandbox.
-
-### Advanced: npm-managed plugin (experimental, unverified)
-
-The `@feneto/lh` package also exposes the guardrail plugin as a subpath export: `"./opencode"` → `dist/commands/opencode-plugin-bundles/leanharness-guardrails.js`. OpenCode also supports declaring plugins as npm packages via a top-level `"plugin": ["pkg-name", ...]` array in `opencode.json`, which it resolves and installs itself.
-
-In principle, a project could reference `"plugin": ["@feneto/lh/opencode"]` in its own `opencode.json` instead of relying on the file `lh init` writes into `.opencode/plugins/`. **This is offered as-is and has not been verified against a real `opencode` binary** — OpenCode's documented examples for the npm-plugin array are all dedicated plugin packages (e.g. `"@my-org/custom-plugin"`); subpath specifiers (`"pkg/subpath"`) are not confirmed to resolve the same way. `lh init --host opencode` continues to write local files by default; treat this path as experimental until confirmed.
+- Whether `permission.ask` actually fires for `permission.edit: "allow"`-tier calls is unverified against real agent sessions (it's exercised structurally by `hosts/opencode`'s test suite and a startup smoke check against a real `opencode` binary, but not by a full agent run driving real tool calls, which needs a configured LLM provider).
 
 ## Running Tasks
 
@@ -133,13 +148,21 @@ opencode --version
 
 Ensure OpenCode is installed and in your PATH.
 
-**Plugin not loading:** Check that `.opencode/plugins/leanharness-guardrails.js` exists. Reinstall:
+**Plugin not loading (default, npm-registered path):** Check `opencode.json`'s `"plugin"` array contains `@feneto/lh-opencode`, then inspect what OpenCode actually resolved:
 
 ```bash
-lh init --host opencode --force
+opencode debug config
 ```
 
-**Plugin syntax errors:**
+Look for `@feneto/lh-opencode` under `plugin_origins`. If it's missing, confirm network access to the npm registry (OpenCode installs npm plugins via Bun at startup) or fall back to `lh init --host opencode --local-plugin --force`.
+
+**Plugin not loading (`--local-plugin` path):** Check that `.opencode/plugins/leanharness-guardrails.js` exists. Reinstall:
+
+```bash
+lh init --host opencode --local-plugin --force
+```
+
+**Plugin syntax errors (`--local-plugin` path only):**
 
 ```bash
 node --check .opencode/plugins/shared.js && node --check .opencode/plugins/leanharness-guardrails.js

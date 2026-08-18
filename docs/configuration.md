@@ -234,11 +234,8 @@ Claude Code integration surface. Created by `lh init --host claude-code`.
 | File | Purpose |
 |------|---------|
 | `settings.json` | Project-level permissions (allow, ask, deny) |
-| `skills/` | LeanHarness workflow skills (slash commands) |
-| `agents/` | LeanHarness subagent definitions |
-| `hooks/` | Lifecycle hook definitions |
 
-See [docs/hosts/claude-code.md](hosts/claude-code.md) for details.
+Skills, subagents, and hooks are **not** generated here — they're installed as the Claude Code plugin itself (`/plugin marketplace add` + `/plugin install lh@lean-harness`), sourced from `hosts/claude-code/` in the LeanHarness repo. See [docs/hosts/claude-code.md](hosts/claude-code.md) for details.
 
 ## `opencode.json`
 
@@ -253,7 +250,7 @@ OpenCode integration surface. Created by `lh init --host opencode`.
 | Directory | Purpose |
 |-----------|---------|
 | `agents/` | LeanHarness agent definitions |
-| `plugins/` | Guardrail plugin (boundary enforcement, risk gate detection) |
+| `plugins/` | Guardrail plugin (boundary enforcement, risk gate detection) — only populated with `--local-plugin`; by default the guardrail plugin is the npm-published `@feneto/lh-opencode` package, registered in `opencode.json`'s `"plugin"` array instead |
 
 See [docs/hosts/opencode.md](hosts/opencode.md) for details.
 

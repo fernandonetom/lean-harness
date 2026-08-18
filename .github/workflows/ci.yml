@@ -19,16 +19,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
+          cache: pnpm
 
-      - run: npm ci
-      - run: npm run build
-      - run: npm run typecheck
-      - run: npm test
-      - run: npm run pack:dry-run
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      - run: pnpm run typecheck
+      - run: pnpm run test
+      - name: Pack dry-run (per-package hygiene + workspace:* rewrite check)
+        run: pnpm -r publish --dry-run --no-git-checks
 
   changeset-check:
     name: Changeset Check
@@ -39,15 +42,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
+          cache: pnpm
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
       - name: Check for missing changeset
-        run: npx changeset status --since=origin/main
+        run: pnpm exec changeset status --since=origin/main
 
   readme-version-check:
     name: README Version Check
@@ -56,27 +61,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
+          cache: pnpm
 
-      - name: Verify README version matches package.json
-        run: node scripts/sync-readme-version.mjs
+      - name: Verify README versions match packages/cli/package.json
+        run: node scripts/sync-readme-version.mjs --check
 
   plugin-check:
     name: Plugin Manifest & Smoke
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
-      - run: npm ci
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
       - run: node scripts/sync-plugin-version.mjs --check
       - run: npm i -g @anthropic-ai/claude-code
-      - run: claude plugin validate . --strict
+      - run: claude plugin validate hosts/claude-code --strict
 
   plugin-eval:
     name: Plugin Eval Suite
@@ -84,18 +92,22 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
-      - run: npm ci
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
       - run: npm i -g @anthropic-ai/claude-code
-      - name: Plugin smoke test
+      - name: Claude Code plugin smoke test
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/plugin-smoke.mjs
-      - name: Plugin eval suite
+      - name: Claude Code plugin eval suite
         if: env.ANTHROPIC_API_KEY != ''
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: claude plugin eval . --judge-model haiku --threshold 0.8
+        run: claude plugin eval hosts/claude-code --judge-model haiku --threshold 0.8
+      - name: OpenCode plugin smoke test
+        run: node hosts/opencode/scripts/opencode-smoke.mjs

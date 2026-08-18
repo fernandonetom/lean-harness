@@ -41,7 +41,7 @@ Feature branch (with .changeset/*.md)
 Run:
 
 ```bash
-npm run build && npm run typecheck && npm test
+pnpm run build && pnpm run typecheck && pnpm run test
 ```
 
 Then:
@@ -54,9 +54,9 @@ gh auth status           # must be authenticated
 Validate Claude Code plugin manifests (requires `claude` CLI installed and authenticated):
 
 ```bash
-claude plugin validate . --strict
+claude plugin validate hosts/claude-code --strict
 node scripts/sync-plugin-version.mjs --check
-claude plugin tag . --dry-run
+claude plugin tag hosts/claude-code --dry-run
 ```
 
 If any check fails, report the issue and do not proceed.
@@ -74,7 +74,7 @@ git log origin/main..HEAD --oneline
 git diff --stat origin/main
 ```
 
-Read `CHANGELOG.md` for current state and last release version.
+Read `packages/cli/CHANGELOG.md` for current state and last release version.
 
 ### Step 4: Determine Recommended Version
 
@@ -105,7 +105,7 @@ Present the analysis. Use `AskUserQuestion` tool:
 ### Step 6: Run Changeset
 
 ```bash
-npm run changeset
+pnpm run changeset
 ```
 
 Follow the CLI prompts. If no changesets exist, inform the user and abort.
@@ -170,10 +170,10 @@ gh pr view <version-pr-number>
 ```
 
 Verify:
-- `package.json` version bump is correct
-- `CHANGELOG.md` entry is accurate
-- `.claude-plugin/plugin.json` version matches `package.json` (required for Claude Code plugin registry)
-- `.claude-plugin/marketplace.json` version matches `package.json` (required for Claude Code plugin registry)
+- `packages/cli/package.json` version bump is correct (fixed alongside `hosts/claude-code/package.json`)
+- `packages/cli/CHANGELOG.md` entry is accurate
+- `hosts/claude-code/.claude-plugin/plugin.json` version matches `packages/cli/package.json` (required for Claude Code plugin registry)
+- `.claude-plugin/marketplace.json` version matches `packages/cli/package.json` (required for Claude Code plugin registry)
 - Changeset files consumed (deleted from `.changeset/`)
 
 If `plugin.json` or `marketplace.json` were NOT bumped, investigate and abort: this indicates `sync-plugin-version.mjs` did not run as part of `version-packages`, a regression that must be fixed before merging.
@@ -261,7 +261,7 @@ If `.github/PULL_REQUEST_TEMPLATE.md` exists, use it and append release notes.
 ## Rules
 
 - Do not proceed if working tree is not clean.
-- Always run `npm run build && npm run typecheck && npm test` before creating a changeset.
+- Always run `pnpm run build && pnpm run typecheck && pnpm run test` before creating a changeset.
 - Do not force-push during release.
 - Preserve all changeset content exactly as generated.
 - **Never skip CI waiting steps**.

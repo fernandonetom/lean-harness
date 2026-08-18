@@ -20,7 +20,9 @@ Avoid:
 - Large refactors (too many unknowns for a first dogfood).
 - Anything touching production infrastructure.
 
-You can also dogfood LeanHarness on LeanHarness itself — adding a small CLI feature, fixing a bug, or improving documentation. The password reset example in `examples/password-reset/` shows what the artifacts look like.
+You can also dogfood LeanHarness on LeanHarness itself — adding a small CLI feature, fixing a bug, or improving documentation. The password reset example in `examples/password-reset/` shows what the artifacts look like — but note that example is static: no agent was ever invoked, and its artifacts must never be copied into `.lh/features/`.
+
+For a real, committed dogfood run, see `examples/reading-list/` — its `.lh/features/` directory is committed straight from actual `lh` command runs against real Claude Code and OpenCode agents (team mode, `features.commit: true`). Its F001 feature (scaffolding the app itself) is a **deliberate greenfield exception** to this doc's "avoid greenfield projects" guidance above — it exists only to bootstrap a real app for F002 to build on, not as a brownfield-discovery example. F002 (adding a status filter and search) is the normal brownfield case and is the one worth studying for what real discovery, planning, and check output look like. See [docs/examples/reading-list.md](examples/reading-list.md) for the full walkthrough.
 
 ## Before You Start
 

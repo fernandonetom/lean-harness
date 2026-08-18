@@ -1,0 +1,164 @@
+version: 0.2
+name: claude-code-guardrails
+purpose: enforce LeanHarness guardrails for Claude Code sessions
+
+hooks:
+  source: lh@lean-harness Claude Code plugin
+  config: ${CLAUDE_PLUGIN_ROOT}/hooks/hooks.json
+  scripts: ${CLAUDE_PLUGIN_ROOT}/hooks/*.js
+  settings: .claude/settings.json (enabledPlugins."lh@lean-harness")
+  mode: plugin-distributed
+  runtime_dependencies: none
+
+active_feature:
+  source_order:
+    - LEANHARNESS_ACTIVE_FEATURE
+    - .lh/state.json activeFeature
+    - single feature folder fallback
+
+bootstrap_allow:
+  - .lh/**
+  - .claude/**
+  - docs/**
+  - README.md
+  - CLAUDE.md
+
+boundary:
+  source: .lh/features/<feature>/boundary.json
+  with_active_boundary:
+    out_of_boundary_edit: block
+    blocked_path_edit: block
+  without_active_boundary:
+    implementation_edit: ask
+    risky_edit: block_or_ask
+  allowed_fields:
+    - touchFiles[].path
+    - allowedEditGlobs[]
+  blocked_fields:
+    - blockedEditGlobs[]
+    - doNotTouch[]
+
+permissions:
+  allow:
+    - Read
+    - Grep
+    - Glob
+    - "Bash(find *)"
+    - "Bash(ls *)"
+    - "Bash(cat .lh/*)"
+    - "Bash(git status*)"
+    - "Bash(git log*)"
+    - "Bash(git diff*)"
+    - "Bash(git branch*)"
+    - "Bash(git show*)"
+    - "Bash(git blame*)"
+  ask:
+    - Edit
+    - Write
+    - "Bash(npm install*)"
+    - "Bash(npm update*)"
+    - "Bash(pnpm add*)"
+    - "Bash(pnpm update*)"
+    - "Bash(yarn add*)"
+    - "Bash(bun add*)"
+    - "Bash(git push*)"
+    - "Bash(git reset*)"
+    - "Bash(git clean*)"
+    - "Bash(*migrate*)"
+    - "Bash(*deploy*)"
+    - "Bash(rm -r*)"
+  deny:
+    - "Bash(rm -rf /)"
+    - "Bash(rm -rf ~)"
+    - "Bash(rm -rf .git)"
+    - "Bash(git reset --hard*)"
+    - "Bash(git clean -fd*)"
+    - "Bash(git clean -fx*)"
+    - "Bash(*DROP DATABASE*)"
+    - "Bash(*drop database*)"
+    - "Bash(cat .env*)"
+    - "Bash(printenv*)"
+    - "Bash(env | *)"
+
+hooks_config:
+  PreToolUse:
+    matcher: "Bash|Edit|Write|MultiEdit"
+    script: ${CLAUDE_PLUGIN_ROOT}/hooks/pre-tool-use.js
+    timeout: 10
+  PostToolUse:
+    matcher: "Bash|Edit|Write|MultiEdit"
+    script: ${CLAUDE_PLUGIN_ROOT}/hooks/post-tool-use.js
+    timeout: 10
+  PostToolUseFailure:
+    matcher: "Bash|Edit|Write|MultiEdit"
+    script: ${CLAUDE_PLUGIN_ROOT}/hooks/post-tool-use.js
+    timeout: 10
+  Stop:
+    script: ${CLAUDE_PLUGIN_ROOT}/hooks/session-end.js
+    timeout: 10
+  SubagentStop:
+    script: ${CLAUDE_PLUGIN_ROOT}/hooks/session-end.js
+    timeout: 10
+  SessionEnd:
+    script: ${CLAUDE_PLUGIN_ROOT}/hooks/session-end.js
+    timeout: 10
+
+risk_gates:
+  detect:
+    - auth_rewrite
+    - payment_logic
+    - destructive_migration
+    - new_dependency
+    - public_api_break
+    - broad_refactor
+    - security_sensitive_change
+
+secrets:
+  block_paths:
+    - .env
+    - .env.*
+    - "**/.env"
+    - "**/.env.*"
+    - "**/secrets/**"
+  redact_patterns:
+    - "sk-*"
+    - "ghp_*"
+    - "AKIA*"
+    - "BEGIN PRIVATE KEY"
+    - "DATABASE_URL=*"
+    - "TOKEN=*"
+    - "SECRET=*"
+    - "PASSWORD=*"
+
+logging:
+  events_jsonl: .lh/features/<feature>/events.jsonl
+  cavebus_log: .lh/features/<feature>/cavebus.log
+  event_source: leanharness-hook
+
+agents:
+  source: lh@lean-harness Claude Code plugin
+  names:
+    - lh-scout
+    - lh-builder
+    - lh-builder-fix
+    - lh-reviewer
+    - lh-verifier
+    - lh-compressor
+
+skills:
+  source: lh@lean-harness Claude Code plugin
+  names:
+    - lh-do
+    - lh-spec
+    - lh-discover
+    - lh-plan
+    - lh-build
+    - lh-check
+    - lh-status
+
+limitations:
+  - Claude Code permissions, hooks, and settings are guardrails, not a complete security sandbox.
+  - Hooks are best-effort because event payload shapes may vary by Claude Code version.
+  - Final feature completion is still determined by lh check.
+  - Boundary enforcement works best when .lh/features/<feature>/boundary.json exists.
+  - If no active feature or boundary exists, the hooks block only clearly risky operations.

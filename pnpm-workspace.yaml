@@ -1,0 +1,9 @@
+packages:
+  - "packages/*"
+  - "hosts/*"
+allowBuilds:
+  esbuild: true
+  msgpackr-extract: true
+minimumReleaseAgeExclude:
+  - '@opencode-ai/plugin@1.18.9'
+  - '@opencode-ai/sdk@1.18.9'

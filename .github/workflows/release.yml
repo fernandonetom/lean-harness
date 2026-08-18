@@ -16,29 +16,35 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
+          cache: pnpm
           registry-url: https://registry.npmjs.org
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
       - name: Create release PR or publish to npm
         id: changesets
         uses: changesets/action@v1
         with:
-          version: npm run version-packages
-          publish: npm run release
+          version: pnpm run version-packages
+          publish: pnpm run release
           setupGitUser: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # changesets' publish step calls `npm publish` per package under the hood (not a raw
+          # `pnpm -r publish` loop) — this is how --provenance survives the switch from the old
+          # single-package `npm publish --provenance` to `changeset publish`.
+          NPM_CONFIG_PROVENANCE: "true"
 
       - name: Resolve published version
         id: ver
         if: steps.changesets.outputs.published == 'true'
-        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(node -p "require('./packages/cli/package.json').version")" >> "$GITHUB_OUTPUT"
 
       - name: Create git tags
         if: steps.changesets.outputs.published == 'true'

@@ -45,6 +45,8 @@ npm install -g @feneto/lh
 lh init --host opencode
 ```
 
+By default this registers the real [OpenCode plugin](https://opencode.ai/docs/plugins/), [`@feneto/lh-opencode`](https://www.npmjs.com/package/@feneto/lh-opencode), in your `opencode.json` — OpenCode installs it automatically via Bun at startup. For offline/restricted environments, pass `--local-plugin` to write the guardrail plugin as local files under `.opencode/plugins/` instead (see [docs/hosts/opencode.md](docs/hosts/opencode.md)).
+
 Or for a shared cross-project install:
 
 ```bash
@@ -152,10 +154,10 @@ boundary_enforcement:
 
 LeanHarness supports multiple agent hosts through adapters:
 
-| Host | Adapter | Integration |
-|------|---------|-------------|
-| Claude Code | `src/adapters/claude-code.ts` | Skills, subagents, hooks |
-| OpenCode | `src/adapters/opencode.ts` | Agents, guardrail plugin |
+| Host | CLI adapter | Distribution package | Integration |
+|------|---------|---------|-------------|
+| Claude Code | `packages/cli/src/adapters/claude-code.ts` | `@feneto/lh-claude-code-plugin` (`hosts/claude-code/`, git/marketplace only) | Skills, subagents, hooks |
+| OpenCode | `packages/cli/src/adapters/opencode.ts` | [`@feneto/lh-opencode`](https://www.npmjs.com/package/@feneto/lh-opencode) (`hosts/opencode/`, published to npm) | Agents, real OpenCode plugin |
 
 Both hosts read and write the same `.lh/` artifact store and use the same `lh` CLI for deterministic operations.
 
@@ -170,6 +172,11 @@ The password reset example shows a complete feature lifecycle with all artifacts
 
 - [Password reset walkthrough](docs/examples/password-reset.md)
 - [Password reset example artifacts](examples/password-reset/README.md)
+
+The reading list example is a real, live-running feature history (not static) built with both Claude Code and OpenCode:
+
+- [Reading list walkthrough](docs/examples/reading-list.md)
+- [Reading list example artifacts](examples/reading-list/README.md)
 
 ## Documentation
 
@@ -237,7 +244,7 @@ LeanHarness guardrails are best-effort safety measures, not a security sandbox:
 - **Secret protection** blocks reads of `.env` and credential files.
 - **`lh check`** requires evidence before a feature can pass.
 
-Guardrails are enforced by hooks (Claude Code) and plugins (OpenCode). Agent hosts can still execute code if users approve actions. Use dry-runs before real agent execution.
+Guardrails are enforced by hooks (Claude Code, `hosts/claude-code/hooks/`) and a real OpenCode plugin (`@feneto/lh-opencode`, see [docs/hosts/opencode.md](docs/hosts/opencode.md)). Agent hosts can still execute code if users approve actions. Use dry-runs before real agent execution.
 
 See [docs/security.md](docs/security.md) for the full safety model.
 

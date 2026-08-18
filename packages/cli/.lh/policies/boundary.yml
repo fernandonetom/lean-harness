@@ -1,0 +1,53 @@
+# LeanHarness boundary enforcement policy
+# Governs how change boundaries are detected, loaded, and enforced by hooks.
+
+version: "0.1"
+name: boundary-policy
+purpose: enforce LeanHarness change boundary discipline
+
+defaults:
+  mode: ask-when-unknown
+  active_feature_source_order:
+    - LEANHARNESS_ACTIVE_FEATURE
+    - .lh/state.json activeFeature
+    - single feature folder fallback
+
+bootstrap_allow:
+  - ".lh/**"
+  - ".claude/**"
+  - "docs/**"
+  - "scripts/hooks/**"
+  - "README.md"
+  - "CLAUDE.md"
+
+boundary_sources:
+  - ".lh/features/<feature>/boundary.json"
+
+allowed_when_in_boundary:
+  - "touchFiles[].path"
+  - "allowedEditGlobs[]"
+
+blocked_when_in_boundary:
+  - "blockedEditGlobs[]"
+  - "doNotTouch[]"
+
+out_of_boundary_behavior:
+  with_active_boundary: deny
+  without_active_boundary: ask
+
+artifact_edit_behavior:
+  harness_artifacts: allow
+  claude_integration: allow
+  docs: allow
+  hook_scripts: allow
+
+path_normalization:
+  use_posix_separators: true
+  reject_parent_escape: true
+
+enforcement_notes:
+  - "Bootstrap paths are always allowed unless the command is destructive."
+  - "When no active feature exists, implementation edits trigger ask, not deny."
+  - "When an active boundary exists, out-of-boundary implementation edits are denied."
+  - "Blocked paths in the boundary are always denied regardless of other rules."
+  - "Risk gates trigger ask, not deny, unless the operation is clearly destructive."

@@ -1,0 +1,266 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "read": "allow",
+    "list": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "edit": "allow",
+    "bash": {
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "git branch*": "allow",
+      "git show*": "allow",
+      "git blame*": "allow",
+      "ls*": "allow",
+      "find*": "allow",
+      "grep*": "allow",
+      "rg*": "allow",
+      "npm test*": "allow",
+      "npm run test*": "allow",
+      "npm run lint*": "allow",
+      "npm run typecheck*": "allow",
+      "pnpm test*": "allow",
+      "pnpm lint*": "allow",
+      "pnpm typecheck*": "allow",
+      "pnpm run test*": "allow",
+      "pnpm run lint*": "allow",
+      "yarn test*": "allow",
+      "yarn lint*": "allow",
+      "bun test*": "allow",
+      "pytest*": "allow",
+      "go test*": "allow",
+      "cargo test*": "allow",
+      "node --check*": "allow",
+      "python -m json.tool*": "allow",
+      "sed -n*": "allow",
+      "wc *": "allow",
+      "head *": "allow",
+      "tail *": "allow",
+      "rm -rf*": "deny",
+      "git push*": "ask",
+      "git reset*": "ask",
+      "git clean*": "ask",
+      "npm install*": "ask",
+      "npm update*": "ask",
+      "pnpm add*": "ask",
+      "pnpm update*": "ask",
+      "yarn add*": "ask",
+      "bun add*": "ask",
+      "*deploy*": "ask",
+      "*migrate reset*": "ask",
+      "*db reset*": "ask",
+      "cat .env*": "deny",
+      "printenv*": "deny",
+      "env": "deny"
+    },
+    "webfetch": "ask"
+  },
+  "agent": {
+    "lh-scout": {
+      "description": "LeanHarness targeted brownfield discovery agent. Reads and searches the project to find relevant files, tests, commands, constraints, risks, and change-boundary candidates without editing code.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "ls*": "allow",
+          "find*": "allow",
+          "grep*": "allow",
+          "rg*": "allow"
+        },
+        "webfetch": "deny"
+      }
+    },
+    "lh-builder": {
+      "description": "LeanHarness bounded implementation agent. Implements assigned tasks from compiled LeanHarness context while staying inside the approved change boundary.",
+      "mode": "primary",
+      "permission": {
+        "edit": "allow",
+        "bash": {
+          "npm test*": "allow",
+          "npm run test*": "allow",
+          "npm run lint*": "allow",
+          "npm run typecheck*": "allow",
+          "pnpm test*": "allow",
+          "pnpm lint*": "allow",
+          "pnpm typecheck*": "allow",
+          "pnpm run test*": "allow",
+          "pnpm run lint*": "allow",
+          "yarn test*": "allow",
+          "yarn lint*": "allow",
+          "bun test*": "allow",
+          "pytest*": "allow",
+          "go test*": "allow",
+          "cargo test*": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "rm -rf*": "deny",
+          "npm install*": "ask",
+          "npm update*": "ask",
+          "pnpm add*": "ask",
+          "pnpm update*": "ask",
+          "yarn add*": "ask",
+          "bun add*": "ask",
+          "git push*": "ask",
+          "git reset*": "ask",
+          "git clean*": "ask",
+          "cat .env*": "deny",
+          "printenv*": "deny"
+        }
+      }
+    },
+    "lh-builder-fix": {
+      "description": "LeanHarness bounded fix agent. Addresses specific review findings from lh-reviewer without re-implementing the entire task.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "allow",
+        "bash": {
+          "npm test*": "allow",
+          "npm run test*": "allow",
+          "npm run lint*": "allow",
+          "npm run typecheck*": "allow",
+          "pnpm test*": "allow",
+          "pnpm lint*": "allow",
+          "pnpm typecheck*": "allow",
+          "yarn test*": "allow",
+          "yarn lint*": "allow",
+          "bun test*": "allow",
+          "pytest*": "allow",
+          "go test*": "allow",
+          "cargo test*": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "rm -rf*": "deny",
+          "npm install*": "ask",
+          "npm update*": "ask",
+          "pnpm add*": "ask",
+          "pnpm update*": "ask",
+          "yarn add*": "ask",
+          "bun add*": "ask",
+          "git push*": "ask",
+          "git reset*": "ask",
+          "git clean*": "ask",
+          "cat .env*": "deny",
+          "printenv*": "deny"
+        },
+        "webfetch": "ask"
+      }
+    },
+    "lh-reviewer": {
+      "description": "LeanHarness read-only review agent. Reviews implementation changes against spec, tasks, boundary, risk gates, tests, and verification evidence.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "npm test*": "allow",
+          "pnpm test*": "allow",
+          "yarn test*": "allow",
+          "bun test*": "allow",
+          "pytest*": "allow",
+          "go test*": "allow",
+          "cargo test*": "allow"
+        },
+        "webfetch": "deny"
+      }
+    },
+    "lh-verifier": {
+      "description": "LeanHarness final verification agent. Checks acceptance criteria, changed files, command evidence, boundary compliance, review findings, and risk gates before a feature can be marked done.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "deny",
+        "bash": {
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "npm test*": "allow",
+          "npm run test*": "allow",
+          "npm run lint*": "allow",
+          "npm run typecheck*": "allow",
+          "pnpm test*": "allow",
+          "pnpm lint*": "allow",
+          "pnpm typecheck*": "allow",
+          "yarn test*": "allow",
+          "yarn lint*": "allow",
+          "bun test*": "allow",
+          "pytest*": "allow",
+          "go test*": "allow",
+          "cargo test*": "allow",
+          "rm -rf*": "deny",
+          "git push*": "ask",
+          "git reset*": "ask",
+          "git clean*": "ask"
+        },
+        "webfetch": "deny"
+      }
+    },
+    "lh-compressor": {
+      "description": "LeanHarness CaveBus compression agent. Converts verbose feature notes into compact CaveBus summaries while preserving protected tokens exactly.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "allow",
+        "bash": {
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow"
+        },
+        "webfetch": "deny"
+      }
+    }
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true
+  },
+  "instructions": [
+    "CLAUDE.md",
+    "README.md",
+    "docs/*.md",
+    ".lh/memory/*.md"
+  ],
+  "command": {
+    "lh-spec": {
+      "description": "Create or update a LeanHarness feature specification",
+      "agent": "lh-builder",
+      "template": ".opencode/commands/lh-spec.md"
+    },
+    "lh-discover": {
+      "description": "Perform LeanHarness on-demand discovery for a feature",
+      "agent": "lh-scout",
+      "template": ".opencode/commands/lh-discover.md"
+    },
+    "lh-plan": {
+      "description": "Create a LeanHarness implementation plan and task list",
+      "agent": "lh-builder",
+      "template": ".opencode/commands/lh-plan.md"
+    },
+    "lh-build": {
+      "description": "Execute LeanHarness feature tasks with bounded context",
+      "agent": "lh-builder",
+      "template": ".opencode/commands/lh-build.md"
+    },
+    "lh-check": {
+      "description": "Verify a LeanHarness feature against acceptance criteria",
+      "agent": "lh-verifier",
+      "template": ".opencode/commands/lh-check.md"
+    },
+    "lh-status": {
+      "description": "Inspect LeanHarness feature state and summarize current work",
+      "agent": "lh-builder",
+      "template": ".opencode/commands/lh-status.md"
+    },
+    "lh-do": {
+      "description": "Run the full LeanHarness workflow end-to-end",
+      "agent": "lh-builder",
+      "template": ".opencode/commands/lh-do.md"
+    }
+  }
+}

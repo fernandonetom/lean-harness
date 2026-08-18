@@ -1,0 +1,30 @@
+# CaveBus Error and Blocker Template
+# Preserve all protected tokens exactly: paths, commands, symbols, IDs, errors.
+# Errors and blockers must NEVER be compressed away.
+# Preserve error text and command output exactly as produced.
+
+# --- Error format ---
+
+ERR {{FEATURE_ID}} {{TASK_ID_OR_CHECK}}
+cmd:
+- {{COMMAND}}
+err:
+- {{ERROR_TEXT}}
+cause:
+- {{KNOWN_OR_SUSPECTED_CAUSE}}
+scope:
+- {{in-scope|out-of-scope|unknown}}
+next:
+- {{NEXT_ACTION}}
+
+# --- Blocker format ---
+
+BLOCK {{FEATURE_ID}} reason:{{SHORT_REASON}}
+need:
+- {{WHAT_IS_NEEDED}}
+risk:
+- {{RISK_GATE_OR_RISK}}
+evidence:
+- {{EVIDENCE}}
+next:
+- {{NEXT_ACTION}}

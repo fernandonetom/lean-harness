@@ -1,0 +1,655 @@
+# F001 Result
+
+## Final Status
+
+needs-fix
+
+## Outcome
+
+Feature F001 (Reading list app scaffold) needs fixes.
+
+## What Changed
+
+- ../../.changeset/config.json (modified)
+- ../../.changeset/opencode-plugin-initial-release.md (created)
+- ../../.changeset/pnpm-monorepo-and-real-opencode-plugin.md (created)
+- ../../.claude-plugin/marketplace.json (modified)
+- ../../.github/workflows/ci.yml (modified)
+- ../../.github/workflows/release.yml (modified)
+- ../../.gitignore (modified)
+- ../../.npmignore (deleted)
+- ../../CLAUDE.md (modified)
+- ../../README.md (modified)
+- ../../docs/configuration.md (modified)
+- ../../docs/hosts/opencode.md (modified)
+- ../../docs/migration.md (modified)
+- ../../.claude-plugin/plugin.json -> ../../hosts/claude-code/.claude-plugin/plugin.json (renamed)
+- ../../agents/lh-builder-fix.md -> ../../hosts/claude-code/agents/lh-builder-fix.md (renamed)
+- ../../agents/lh-builder.md -> ../../hosts/claude-code/agents/lh-builder.md (renamed)
+- ../../agents/lh-compressor.md -> ../../hosts/claude-code/agents/lh-compressor.md (renamed)
+- ../../agents/lh-reviewer.md -> ../../hosts/claude-code/agents/lh-reviewer.md (renamed)
+- ../../agents/lh-scout.md -> ../../hosts/claude-code/agents/lh-scout.md (renamed)
+- ../../agents/lh-verifier.md -> ../../hosts/claude-code/agents/lh-verifier.md (renamed)
+- ../../hooks/hooks.json -> ../../hosts/claude-code/hooks/hooks.json (renamed)
+- ../../hooks/package.json -> ../../hosts/claude-code/hooks/package.json (renamed)
+- ../../hooks/post-tool-use.js -> ../../hosts/claude-code/hooks/post-tool-use.js (renamed)
+- ../../hooks/pre-tool-use.js -> ../../hosts/claude-code/hooks/pre-tool-use.js (renamed)
+- ../../hooks/session-end.js -> ../../hosts/claude-code/hooks/session-end.js (renamed)
+- ../../hooks/shared.js -> ../../hosts/claude-code/hooks/shared.js (renamed)
+- ../../hosts/claude-code/package.json (created)
+- ../../skills/lh-build/SKILL.md -> ../../hosts/claude-code/skills/lh-build/SKILL.md (renamed)
+- ../../skills/lh-check/SKILL.md -> ../../hosts/claude-code/skills/lh-check/SKILL.md (renamed)
+- ../../skills/lh-discover/SKILL.md -> ../../hosts/claude-code/skills/lh-discover/SKILL.md (renamed)
+- ../../skills/lh-do/SKILL.md -> ../../hosts/claude-code/skills/lh-do/SKILL.md (renamed)
+- ../../skills/lh-plan/SKILL.md -> ../../hosts/claude-code/skills/lh-plan/SKILL.md (renamed)
+- ../../skills/lh-spec/SKILL.md -> ../../hosts/claude-code/skills/lh-spec/SKILL.md (renamed)
+- ../../skills/lh-status/SKILL.md -> ../../hosts/claude-code/skills/lh-status/SKILL.md (renamed)
+- ../../skills/lh-worktree/SKILL.md -> ../../hosts/claude-code/skills/lh-worktree/SKILL.md (renamed)
+- ../../hosts/claude-code/tests/frontmatter.test.ts (created)
+- ../../hosts/claude-code/tests/post-tool-use.test.ts (created)
+- ../../hosts/claude-code/tests/session-end.test.ts (created)
+- ../../hosts/claude-code/vitest.config.ts (created)
+- ../../hosts/opencode/LICENSE (created)
+- ../../hosts/opencode/README.md (created)
+- ../../hosts/opencode/package.json (created)
+- ../../hosts/opencode/scripts/opencode-smoke.mjs (created)
+- ../../hosts/opencode/src/index.ts (created)
+- ../../hosts/opencode/src/leanharness-guardrails.ts (created)
+- ../../hosts/opencode/src/shared.ts (created)
+- ../../src/commands/opencode-agent-bundles/lh-builder-fix.md -> ../../hosts/opencode/templates/agents/lh-builder-fix.md (renamed)
+- ../../src/commands/opencode-agent-bundles/lh-builder.md -> ../../hosts/opencode/templates/agents/lh-builder.md (renamed)
+- ../../src/commands/opencode-agent-bundles/lh-compressor.md -> ../../hosts/opencode/templates/agents/lh-compressor.md (renamed)
+- ../../src/commands/opencode-agent-bundles/lh-reviewer.md -> ../../hosts/opencode/templates/agents/lh-reviewer.md (renamed)
+- ../../src/commands/opencode-agent-bundles/lh-scout.md -> ../../hosts/opencode/templates/agents/lh-scout.md (renamed)
+- ../../src/commands/opencode-agent-bundles/lh-verifier.md -> ../../hosts/opencode/templates/agents/lh-verifier.md (renamed)
+- ../../src/commands/opencode-command-bundles/lh-build.md -> ../../hosts/opencode/templates/commands/lh-build.md (renamed)
+- ../../src/commands/opencode-command-bundles/lh-check.md -> ../../hosts/opencode/templates/commands/lh-check.md (renamed)
+- ../../src/commands/opencode-command-bundles/lh-discover.md -> ../../hosts/opencode/templates/commands/lh-discover.md (renamed)
+- ../../src/commands/opencode-command-bundles/lh-do.md -> ../../hosts/opencode/templates/commands/lh-do.md (renamed)
+- ../../src/commands/opencode-command-bundles/lh-plan.md -> ../../hosts/opencode/templates/commands/lh-plan.md (renamed)
+- ../../src/commands/opencode-command-bundles/lh-spec.md -> ../../hosts/opencode/templates/commands/lh-spec.md (renamed)
+- ../../src/commands/opencode-command-bundles/lh-status.md -> ../../hosts/opencode/templates/commands/lh-status.md (renamed)
+- ../../hosts/opencode/tests/frontmatter.test.ts (created)
+- ../../hosts/opencode/tests/guardrails-export.test.ts (created)
+- ../../hosts/opencode/tests/permission-ask.test.ts (created)
+- ../../hosts/opencode/tests/tool-execute-before.test.ts (created)
+- ../../hosts/opencode/tsconfig.json (created)
+- ../../hosts/opencode/vitest.config.ts (created)
+- ../../package-lock.json (deleted)
+- ../../package.json (modified)
+- ../../.lh/policies/boundary.yml -> ../../packages/cli/.lh/policies/boundary.yml (renamed)
+- ../../.lh/policies/commands.yml -> ../../packages/cli/.lh/policies/commands.yml (renamed)
+- ../../.lh/policies/risk-gates.yml -> ../../packages/cli/.lh/policies/risk-gates.yml (renamed)
+- ../../.lh/protocols/cavebus.yml -> ../../packages/cli/.lh/protocols/cavebus.yml (renamed)
+- ../../.lh/templates/boundary.json -> ../../packages/cli/.lh/templates/boundary.json (renamed)
+- ../../.lh/templates/cavebus-message.md -> ../../packages/cli/.lh/templates/cavebus-message.md (renamed)
+- ../../.lh/templates/cavebus/discovery.cave -> ../../packages/cli/.lh/templates/cavebus/discovery.cave (renamed)
+- ../../.lh/templates/cavebus/error.cave -> ../../packages/cli/.lh/templates/cavebus/error.cave (renamed)
+- ../../.lh/templates/cavebus/review.cave -> ../../packages/cli/.lh/templates/cavebus/review.cave (renamed)
+- ../../.lh/templates/cavebus/summary.cave -> ../../packages/cli/.lh/templates/cavebus/summary.cave (renamed)
+- ../../.lh/templates/cavebus/task.cave -> ../../packages/cli/.lh/templates/cavebus/task.cave (renamed)
+- ../../.lh/templates/cavebus/verify.cave -> ../../packages/cli/.lh/templates/cavebus/verify.cave (renamed)
+- ../../.lh/templates/checks.md -> ../../packages/cli/.lh/templates/checks.md (renamed)
+- ../../.lh/templates/discovery.md -> ../../packages/cli/.lh/templates/discovery.md (renamed)
+- ../../.lh/templates/plan.md -> ../../packages/cli/.lh/templates/plan.md (renamed)
+- ../../.lh/templates/result.md -> ../../packages/cli/.lh/templates/result.md (renamed)
+- ../../.lh/templates/review.json -> ../../packages/cli/.lh/templates/review.json (renamed)
+- ../../.lh/templates/review.md -> ../../packages/cli/.lh/templates/review.md (renamed)
+- ../../.lh/templates/spec.md -> ../../packages/cli/.lh/templates/spec.md (renamed)
+- ../../.lh/templates/task-summary.md -> ../../packages/cli/.lh/templates/task-summary.md (renamed)
+- ../../.lh/templates/tasks.md -> ../../packages/cli/.lh/templates/tasks.md (renamed)
+- ../../CHANGELOG.md -> ../../packages/cli/CHANGELOG.md (renamed)
+- ../../packages/cli/LICENSE (created)
+- ../../packages/cli/README.md (created)
+- ../../packages/cli/package.json (created)
+- ../../packages/cli/scripts/copy-opencode-vendor.mjs (created)
+- ../../src/adapters/claude-code.ts -> ../../packages/cli/src/adapters/claude-code.ts (modified)
+- ../../src/adapters/opencode.ts -> ../../packages/cli/src/adapters/opencode.ts (renamed)
+- ../../src/adapters/registry.ts -> ../../packages/cli/src/adapters/registry.ts (renamed)
+- ../../src/adapters/types.ts -> ../../packages/cli/src/adapters/types.ts (renamed)
+- ../../src/build/index.ts -> ../../packages/cli/src/build/index.ts (renamed)
+- ../../src/build/task-runner.ts -> ../../packages/cli/src/build/task-runner.ts (renamed)
+- ../../src/build/task-status.ts -> ../../packages/cli/src/build/task-status.ts (renamed)
+- ../../src/build/task-summary.ts -> ../../packages/cli/src/build/task-summary.ts (renamed)
+- ../../src/cavebus/compress.ts -> ../../packages/cli/src/cavebus/compress.ts (renamed)
+- ../../src/cavebus/index.ts -> ../../packages/cli/src/cavebus/index.ts (renamed)
+- ../../src/cavebus/protected.ts -> ../../packages/cli/src/cavebus/protected.ts (renamed)
+- ../../src/cavebus/schema.ts -> ../../packages/cli/src/cavebus/schema.ts (renamed)
+- ../../src/cavebus/validate.ts -> ../../packages/cli/src/cavebus/validate.ts (renamed)
+- ../../src/cli.ts -> ../../packages/cli/src/cli.ts (renamed)
+- ../../src/cli/banner.ts -> ../../packages/cli/src/cli/banner.ts (renamed)
+- ../../src/cli/init-hosts.ts -> ../../packages/cli/src/cli/init-hosts.ts (renamed)
+- ../../src/cli/options.ts -> ../../packages/cli/src/cli/options.ts (renamed)
+- ../../src/cli/program.ts -> ../../packages/cli/src/cli/program.ts (renamed)
+- ../../src/commands/archive.ts -> ../../packages/cli/src/commands/archive.ts (renamed)
+- ../../src/commands/boundary.ts -> ../../packages/cli/src/commands/boundary.ts (renamed)
+- ../../src/commands/build.ts -> ../../packages/cli/src/commands/build.ts (renamed)
+- ../../src/commands/cavebus.ts -> ../../packages/cli/src/commands/cavebus.ts (renamed)
+- ../../src/commands/check.ts -> ../../packages/cli/src/commands/check.ts (renamed)
+- ../../src/commands/command-enforcement.ts -> ../../packages/cli/src/commands/command-enforcement.ts (renamed)
+- ../../src/commands/compile-task.ts -> ../../packages/cli/src/commands/compile-task.ts (renamed)
+- ../../src/commands/completion.ts -> ../../packages/cli/src/commands/completion.ts (renamed)
+- ../../src/commands/compress.ts -> ../../packages/cli/src/commands/compress.ts (renamed)
+- ../../src/commands/config.ts -> ../../packages/cli/src/commands/config.ts (renamed)
+- ../../src/commands/detect-install.ts -> ../../packages/cli/src/commands/detect-install.ts (renamed)
+- ../../src/commands/discover.ts -> ../../packages/cli/src/commands/discover.ts (renamed)
+- ../../src/commands/doctor.ts -> ../../packages/cli/src/commands/doctor.ts (renamed)
+- ../../src/commands/init-claude-code.ts -> ../../packages/cli/src/commands/init-claude-code.ts (renamed)
+- ../../src/commands/init.ts -> ../../packages/cli/src/commands/init.ts (renamed)
+- ../../src/commands/legacy-footprint.ts -> ../../packages/cli/src/commands/legacy-footprint.ts (renamed)
+- ../../src/commands/list.ts -> ../../packages/cli/src/commands/list.ts (renamed)
+- ../../src/commands/load-opencode-agents.ts -> ../../packages/cli/src/commands/load-opencode-agents.ts (renamed)
+- ../../src/commands/load-opencode-commands.ts -> ../../packages/cli/src/commands/load-opencode-commands.ts (renamed)
+- ../../packages/cli/src/commands/load-opencode-plugins.ts (created)
+- ../../src/commands/memory.ts -> ../../packages/cli/src/commands/memory.ts (renamed)
+- ../../src/commands/migrate.ts -> ../../packages/cli/src/commands/migrate.ts (renamed)
+- ../../src/commands/new.ts -> ../../packages/cli/src/commands/new.ts (renamed)
+- ../../packages/cli/src/commands/opencode-vendor-resolve.ts (created)
+- ../../src/commands/plan.ts -> ../../packages/cli/src/commands/plan.ts (renamed)
+- ../../src/commands/review.ts -> ../../packages/cli/src/commands/review.ts (renamed)
+- ../../src/commands/run-task.ts -> ../../packages/cli/src/commands/run-task.ts (renamed)
+- ../../src/commands/show.ts -> ../../packages/cli/src/commands/show.ts (renamed)
+- ../../src/commands/spec.ts -> ../../packages/cli/src/commands/spec.ts (renamed)
+- ../../src/commands/status.ts -> ../../packages/cli/src/commands/status.ts (renamed)
+- ../../src/commands/uninstall.ts -> ../../packages/cli/src/commands/uninstall.ts (renamed)
+- ../../src/commands/update.ts -> ../../packages/cli/src/commands/update.ts (renamed)
+- ../../src/commands/watch.ts -> ../../packages/cli/src/commands/watch.ts (renamed)
+- ../../src/commands/worktree.ts -> ../../packages/cli/src/commands/worktree.ts (renamed)
+- ../../src/context/compiler.ts -> ../../packages/cli/src/context/compiler.ts (renamed)
+- ../../src/context/protected-tokens.ts -> ../../packages/cli/src/context/protected-tokens.ts (renamed)
+- ../../src/context/task-context.ts -> ../../packages/cli/src/context/task-context.ts (renamed)
+- ../../src/core/bundled-scaffold.ts -> ../../packages/cli/src/core/bundled-scaffold.ts (renamed)
+- ../../src/core/colors.ts -> ../../packages/cli/src/core/colors.ts (renamed)
+- ../../src/core/config-mutate.ts -> ../../packages/cli/src/core/config-mutate.ts (renamed)
+- ../../src/core/config.ts -> ../../packages/cli/src/core/config.ts (renamed)
+- ../../src/core/errors.ts -> ../../packages/cli/src/core/errors.ts (renamed)
+- ../../src/core/features.ts -> ../../packages/cli/src/core/features.ts (renamed)
+- ../../src/core/fs.ts -> ../../packages/cli/src/core/fs.ts (renamed)
+- ../../src/core/git.ts -> ../../packages/cli/src/core/git.ts (renamed)
+- ../../src/core/harness-root.ts -> ../../packages/cli/src/core/harness-root.ts (renamed)
+- ../../src/core/logger.ts -> ../../packages/cli/src/core/logger.ts (renamed)
+- ../../src/core/paths.ts -> ../../packages/cli/src/core/paths.ts (renamed)
+- ../../src/core/prompt.ts -> ../../packages/cli/src/core/prompt.ts (renamed)
+- ../../src/core/resolved-config.ts -> ../../packages/cli/src/core/resolved-config.ts (renamed)
+- ../../src/core/risk-gates.ts -> ../../packages/cli/src/core/risk-gates.ts (renamed)
+- ../../src/core/spinner.ts -> ../../packages/cli/src/core/spinner.ts (renamed)
+- ../../src/core/state.ts -> ../../packages/cli/src/core/state.ts (renamed)
+- ../../src/core/templates.ts -> ../../packages/cli/src/core/templates.ts (renamed)
+- ../../src/core/types.ts -> ../../packages/cli/src/core/types.ts (renamed)
+- ../../src/core/version.ts -> ../../packages/cli/src/core/version.ts (renamed)
+- ../../src/core/worktree.ts -> ../../packages/cli/src/core/worktree.ts (renamed)
+- ../../src/discovery/boundary.ts -> ../../packages/cli/src/discovery/boundary.ts (renamed)
+- ../../src/discovery/import-resolver.ts -> ../../packages/cli/src/discovery/import-resolver.ts (renamed)
+- ../../src/discovery/index.ts -> ../../packages/cli/src/discovery/index.ts (renamed)
+- ../../src/discovery/package-detector.ts -> ../../packages/cli/src/discovery/package-detector.ts (renamed)
+- ../../src/discovery/project-detector.ts -> ../../packages/cli/src/discovery/project-detector.ts (renamed)
+- ../../src/discovery/search.ts -> ../../packages/cli/src/discovery/search.ts (renamed)
+- ../../src/discovery/test-detector.ts -> ../../packages/cli/src/discovery/test-detector.ts (renamed)
+- ../../src/gates/index.ts -> ../../packages/cli/src/gates/index.ts (renamed)
+- ../../src/gates/run-gates.ts -> ../../packages/cli/src/gates/run-gates.ts (renamed)
+- ../../src/gates/types.ts -> ../../packages/cli/src/gates/types.ts (renamed)
+- ../../src/index.ts -> ../../packages/cli/src/index.ts (renamed)
+- ../../src/memory/index.ts -> ../../packages/cli/src/memory/index.ts (renamed)
+- ../../src/planning/acceptance.ts -> ../../packages/cli/src/planning/acceptance.ts (renamed)
+- ../../src/planning/index.ts -> ../../packages/cli/src/planning/index.ts (renamed)
+- ../../src/planning/plan-renderer.ts -> ../../packages/cli/src/planning/plan-renderer.ts (renamed)
+- ../../src/planning/task-generator.ts -> ../../packages/cli/src/planning/task-generator.ts (renamed)
+- ../../src/plugins/loader.ts -> ../../packages/cli/src/plugins/loader.ts (renamed)
+- ../../src/plugins/registry.ts -> ../../packages/cli/src/plugins/registry.ts (renamed)
+- ../../src/plugins/types.ts -> ../../packages/cli/src/plugins/types.ts (renamed)
+- ../../src/verification/acceptance.ts -> ../../packages/cli/src/verification/acceptance.ts (renamed)
+- ../../src/verification/changed-files.ts -> ../../packages/cli/src/verification/changed-files.ts (renamed)
+- ../../src/verification/commands.ts -> ../../packages/cli/src/verification/commands.ts (renamed)
+- ../../src/verification/index.ts -> ../../packages/cli/src/verification/index.ts (renamed)
+- ../../src/verification/review-artifact.ts -> ../../packages/cli/src/verification/review-artifact.ts (renamed)
+- ../../src/verification/review.ts -> ../../packages/cli/src/verification/review.ts (renamed)
+- ../../tests/adapters/claude-code.test.ts -> ../../packages/cli/tests/adapters/claude-code.test.ts (modified)
+- ../../tests/adapters/opencode.test.ts -> ../../packages/cli/tests/adapters/opencode.test.ts (renamed)
+- ../../tests/adapters/registry.test.ts -> ../../packages/cli/tests/adapters/registry.test.ts (renamed)
+- ../../tests/adapters/working-dir.test.ts -> ../../packages/cli/tests/adapters/working-dir.test.ts (renamed)
+- ../../tests/build/build-flow.test.ts -> ../../packages/cli/tests/build/build-flow.test.ts (renamed)
+- ../../tests/build/require-worktree.test.ts -> ../../packages/cli/tests/build/require-worktree.test.ts (renamed)
+- ../../tests/build/task-status.test.ts -> ../../packages/cli/tests/build/task-status.test.ts (renamed)
+- ../../tests/cavebus/compress.test.ts -> ../../packages/cli/tests/cavebus/compress.test.ts (renamed)
+- ../../tests/cavebus/protected.test.ts -> ../../packages/cli/tests/cavebus/protected.test.ts (renamed)
+- ../../tests/cavebus/schema.test.ts -> ../../packages/cli/tests/cavebus/schema.test.ts (renamed)
+- ../../tests/cavebus/validate.test.ts -> ../../packages/cli/tests/cavebus/validate.test.ts (renamed)
+- ../../tests/cli/banner.test.ts -> ../../packages/cli/tests/cli/banner.test.ts (renamed)
+- ../../tests/cli/program.test.ts -> ../../packages/cli/tests/cli/program.test.ts (renamed)
+- ../../tests/cli/worktree-program.test.ts -> ../../packages/cli/tests/cli/worktree-program.test.ts (renamed)
+- ../../tests/commands/completion.test.ts -> ../../packages/cli/tests/commands/completion.test.ts (renamed)
+- ../../tests/commands/doctor.test.ts -> ../../packages/cli/tests/commands/doctor.test.ts (renamed)
+- ../../tests/commands/init-e2e.test.ts -> ../../packages/cli/tests/commands/init-e2e.test.ts (renamed)
+- ../../tests/commands/init-global.test.ts -> ../../packages/cli/tests/commands/init-global.test.ts (renamed)
+- ../../tests/commands/init-graphify.test.ts -> ../../packages/cli/tests/commands/init-graphify.test.ts (renamed)
+- ../../tests/commands/legacy-footprint.test.ts -> ../../packages/cli/tests/commands/legacy-footprint.test.ts (renamed)
+- ../../tests/commands/memory.test.ts -> ../../packages/cli/tests/commands/memory.test.ts (renamed)
+- ../../tests/commands/migrate.test.ts -> ../../packages/cli/tests/commands/migrate.test.ts (renamed)
+- ../../tests/commands/uninstall.test.ts -> ../../packages/cli/tests/commands/uninstall.test.ts (renamed)
+- ../../tests/commands/update.test.ts -> ../../packages/cli/tests/commands/update.test.ts (renamed)
+- ../../tests/commands/watch.test.ts -> ../../packages/cli/tests/commands/watch.test.ts (renamed)
+- ../../tests/commands/worktree-list-remove.test.ts -> ../../packages/cli/tests/commands/worktree-list-remove.test.ts (renamed)
+- ../../tests/context/compiler.test.ts -> ../../packages/cli/tests/context/compiler.test.ts (renamed)
+- ../../tests/context/protected-tokens.test.ts -> ../../packages/cli/tests/context/protected-tokens.test.ts (renamed)
+- ../../tests/core/bundled-scaffold.test.ts -> ../../packages/cli/tests/core/bundled-scaffold.test.ts (renamed)
+- ../../tests/core/colors.test.ts -> ../../packages/cli/tests/core/colors.test.ts (renamed)
+- ../../tests/core/config.test.ts -> ../../packages/cli/tests/core/config.test.ts (renamed)
+- ../../tests/core/errors.test.ts -> ../../packages/cli/tests/core/errors.test.ts (renamed)
+- ../../tests/core/features.test.ts -> ../../packages/cli/tests/core/features.test.ts (renamed)
+- ../../tests/core/fs.test.ts -> ../../packages/cli/tests/core/fs.test.ts (renamed)
+- ../../tests/core/git.test.ts -> ../../packages/cli/tests/core/git.test.ts (renamed)
+- ../../tests/core/harness-root.test.ts -> ../../packages/cli/tests/core/harness-root.test.ts (renamed)
+- ../../tests/core/logger.test.ts -> ../../packages/cli/tests/core/logger.test.ts (renamed)
+- ../../tests/core/paths.test.ts -> ../../packages/cli/tests/core/paths.test.ts (renamed)
+- ../../tests/core/prompt.test.ts -> ../../packages/cli/tests/core/prompt.test.ts (renamed)
+- ../../tests/core/resolved-config.test.ts -> ../../packages/cli/tests/core/resolved-config.test.ts (renamed)
+- ../../tests/core/risk-gates.test.ts -> ../../packages/cli/tests/core/risk-gates.test.ts (renamed)
+- ../../tests/core/spinner.test.ts -> ../../packages/cli/tests/core/spinner.test.ts (renamed)
+- ../../tests/core/state-worktree.test.ts -> ../../packages/cli/tests/core/state-worktree.test.ts (renamed)
+- ../../tests/core/state.test.ts -> ../../packages/cli/tests/core/state.test.ts (renamed)
+- ../../tests/core/templates.test.ts -> ../../packages/cli/tests/core/templates.test.ts (renamed)
+- ../../tests/core/worktree-paths.test.ts -> ../../packages/cli/tests/core/worktree-paths.test.ts (renamed)
+- ../../tests/discovery/boundary.test.ts -> ../../packages/cli/tests/discovery/boundary.test.ts (renamed)
+- ../../tests/discovery/discovery-flow.test.ts -> ../../packages/cli/tests/discovery/discovery-flow.test.ts (renamed)
+- ../../tests/discovery/import-resolver.test.ts -> ../../packages/cli/tests/discovery/import-resolver.test.ts (renamed)
+- ../../tests/discovery/project-detector.test.ts -> ../../packages/cli/tests/discovery/project-detector.test.ts (renamed)
+- ../../tests/discovery/search.test.ts -> ../../packages/cli/tests/discovery/search.test.ts (renamed)
+- ../../tests/e2e/helpers.ts -> ../../packages/cli/tests/e2e/helpers.ts (renamed)
+- ../../tests/e2e/workflow.test.ts -> ../../packages/cli/tests/e2e/workflow.test.ts (renamed)
+- ../../tests/fixtures/graph-projects/simple-imports/src/a.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/a.ts (renamed)
+- ../../tests/fixtures/graph-projects/simple-imports/src/b.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/b.ts (renamed)
+- ../../tests/fixtures/graph-projects/simple-imports/src/c.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/c.ts (renamed)
+- ../../tests/fixtures/graph-projects/symbols/src/types.ts -> ../../packages/cli/tests/fixtures/graph-projects/symbols/src/types.ts (renamed)
+- ../../tests/fixtures/sample-project/package.json -> ../../packages/cli/tests/fixtures/sample-project/package.json (renamed)
+- ../../tests/fixtures/sample-project/src/auth/password.ts -> ../../packages/cli/tests/fixtures/sample-project/src/auth/password.ts (renamed)
+- ../../tests/fixtures/sample-project/src/auth/session.ts -> ../../packages/cli/tests/fixtures/sample-project/src/auth/session.ts (renamed)
+- ../../tests/fixtures/sample-project/src/email/send.ts -> ../../packages/cli/tests/fixtures/sample-project/src/email/send.ts (renamed)
+- ../../tests/fixtures/sample-project/tests/auth/password.test.ts -> ../../packages/cli/tests/fixtures/sample-project/tests/auth/password.test.ts (renamed)
+- ../../tests/gates/run-gates.test.ts -> ../../packages/cli/tests/gates/run-gates.test.ts (renamed)
+- ../../tests/helpers/assertions.ts -> ../../packages/cli/tests/helpers/assertions.ts (renamed)
+- ../../tests/helpers/cli.ts -> ../../packages/cli/tests/helpers/cli.ts (renamed)
+- ../../tests/helpers/fixture.ts -> ../../packages/cli/tests/helpers/fixture.ts (renamed)
+- ../../tests/helpers/git.ts -> ../../packages/cli/tests/helpers/git.ts (renamed)
+- ../../tests/helpers/workspace.ts -> ../../packages/cli/tests/helpers/workspace.ts (renamed)
+- ../../packages/cli/tests/hooks/boundary-aliases.test.ts (created)
+- ../../tests/hooks/root-resolution.test.ts -> ../../packages/cli/tests/hooks/root-resolution.test.ts (renamed)
+- ../../tests/memory/memory.test.ts -> ../../packages/cli/tests/memory/memory.test.ts (renamed)
+- ../../tests/planning/acceptance.test.ts -> ../../packages/cli/tests/planning/acceptance.test.ts (renamed)
+- ../../tests/planning/plan-renderer.test.ts -> ../../packages/cli/tests/planning/plan-renderer.test.ts (renamed)
+- ../../tests/planning/planning-flow.test.ts -> ../../packages/cli/tests/planning/planning-flow.test.ts (renamed)
+- ../../tests/planning/task-generator.test.ts -> ../../packages/cli/tests/planning/task-generator.test.ts (renamed)
+- ../../tests/plugins/loader.test.ts -> ../../packages/cli/tests/plugins/loader.test.ts (renamed)
+- ../../tests/plugins/registry.test.ts -> ../../packages/cli/tests/plugins/registry.test.ts (renamed)
+- ../../tests/stress/concurrency.test.ts -> ../../packages/cli/tests/stress/concurrency.test.ts (renamed)
+- ../../tests/stress/corruption.test.ts -> ../../packages/cli/tests/stress/corruption.test.ts (renamed)
+- ../../tests/stress/scale.test.ts -> ../../packages/cli/tests/stress/scale.test.ts (renamed)
+- ../../tests/stress/workflow.test.ts -> ../../packages/cli/tests/stress/workflow.test.ts (renamed)
+- ../../tests/verification/boundary-aliases.test.ts -> ../../packages/cli/tests/verification/boundary-aliases.test.ts (renamed)
+- ../../tests/verification/check-flow.test.ts -> ../../packages/cli/tests/verification/check-flow.test.ts (renamed)
+- ../../tests/verification/commands.test.ts -> ../../packages/cli/tests/verification/commands.test.ts (renamed)
+- ../../tests/verification/require-flags.test.ts -> ../../packages/cli/tests/verification/require-flags.test.ts (renamed)
+- ../../packages/cli/tsconfig.json (created)
+- ../../vitest.config.ts -> ../../packages/cli/vitest.config.ts (renamed)
+- ../../pnpm-lock.yaml (created)
+- ../../pnpm-workspace.yaml (created)
+- ../../scripts/extract-changelog-entry.mjs (modified)
+- ../../scripts/plugin-smoke.mjs (modified)
+- ../../scripts/sync-plugin-version.mjs (modified)
+- ../../scripts/sync-readme-version.mjs (modified)
+- ../../src/commands/load-opencode-plugins.ts (deleted)
+- ../../src/commands/opencode-command-bundles/lh-builder-fix.md (deleted)
+- ../../src/commands/opencode-plugin-bundles/leanharness-guardrails.js (deleted)
+- ../../src/commands/opencode-plugin-bundles/shared.js (deleted)
+- ../../tests/hooks/boundary-aliases.test.ts (deleted)
+- ../../tests/plugins/opencode-guardrails-export.test.ts (deleted)
+- ../../tsconfig.json -> ../../tsconfig.base.json (renamed)
+- ./ (created)
+- ../../scripts/sync-example-hosts.mjs (created)
+
+## Acceptance Criteria Result
+
+- [x] AC1: **AC-01:** A list page (`/`) renders all reading-list items from the JSON-file-backed store, showing at least title and status for each item. — pass
+- [x] AC2: **AC-02:** An add-item form lets a user submit a new item (at minimum a title); the new item is persisted to the JSON file store and appears on the list page afterward. — pass
+- [x] AC3: **AC-03:** Each item has a `status` field constrained to one of `to-read`, `reading`, or `done`; new items default to `to-read`. — pass
+- [x] AC4: **AC-04:** The store reads from and writes to a JSON file on disk (e.g. `data/reading-list.json`) — no external database or network service is used. — pass
+- [x] AC5: **AC-05:** The app is a valid Next.js App Router + TypeScript project: `pnpm install`, `pnpm run lint`, and `pnpm run build` all succeed with no errors. — pass
+
+## Verification Evidence
+
+- `pnpm install`: skipped — skipped: installs dependencies
+- `pnpm run lint`: fail — command exited 1 in 181ms
+- `pnpm run build`: skipped — skipped: command not recognized as safe and not explicitly provided
+- `pnpm --dir web run lint`: skipped — skipped: command not recognized as safe and not explicitly provided
+- `Risk gate: new_dependency`: skipped — skipped: command not recognized as safe and not explicitly provided
+- `pnpm --dir web run build`: skipped — skipped: command not recognized as safe and not explicitly provided
+- `claude -p # LeanHarness Task Context`: skipped — skipped: command not recognized as safe and not explicitly provided
+- `cd web && pnpm run lint`: pass — command exited 0 in 1196ms
+- `cd web && pnpm run build`: pass — command exited 0 in 3388ms
+
+## Known Follow-Ups
+
+- 1 verification command(s) failed: pnpm run lint
+- 26 file(s) changed outside boundary.
+- Review is required but no independent review evidence was found.
+
+## Files Changed
+
+- ../../.changeset/config.json
+- ../../.changeset/opencode-plugin-initial-release.md
+- ../../.changeset/pnpm-monorepo-and-real-opencode-plugin.md
+- ../../.claude-plugin/marketplace.json
+- ../../.github/workflows/ci.yml
+- ../../.github/workflows/release.yml
+- ../../.gitignore
+- ../../.npmignore
+- ../../CLAUDE.md
+- ../../README.md
+- ../../docs/configuration.md
+- ../../docs/hosts/opencode.md
+- ../../docs/migration.md
+- ../../.claude-plugin/plugin.json -> ../../hosts/claude-code/.claude-plugin/plugin.json
+- ../../agents/lh-builder-fix.md -> ../../hosts/claude-code/agents/lh-builder-fix.md
+- ../../agents/lh-builder.md -> ../../hosts/claude-code/agents/lh-builder.md
+- ../../agents/lh-compressor.md -> ../../hosts/claude-code/agents/lh-compressor.md
+- ../../agents/lh-reviewer.md -> ../../hosts/claude-code/agents/lh-reviewer.md
+- ../../agents/lh-scout.md -> ../../hosts/claude-code/agents/lh-scout.md
+- ../../agents/lh-verifier.md -> ../../hosts/claude-code/agents/lh-verifier.md
+- ../../hooks/hooks.json -> ../../hosts/claude-code/hooks/hooks.json
+- ../../hooks/package.json -> ../../hosts/claude-code/hooks/package.json
+- ../../hooks/post-tool-use.js -> ../../hosts/claude-code/hooks/post-tool-use.js
+- ../../hooks/pre-tool-use.js -> ../../hosts/claude-code/hooks/pre-tool-use.js
+- ../../hooks/session-end.js -> ../../hosts/claude-code/hooks/session-end.js
+- ../../hooks/shared.js -> ../../hosts/claude-code/hooks/shared.js
+- ../../hosts/claude-code/package.json
+- ../../skills/lh-build/SKILL.md -> ../../hosts/claude-code/skills/lh-build/SKILL.md
+- ../../skills/lh-check/SKILL.md -> ../../hosts/claude-code/skills/lh-check/SKILL.md
+- ../../skills/lh-discover/SKILL.md -> ../../hosts/claude-code/skills/lh-discover/SKILL.md
+- ../../skills/lh-do/SKILL.md -> ../../hosts/claude-code/skills/lh-do/SKILL.md
+- ../../skills/lh-plan/SKILL.md -> ../../hosts/claude-code/skills/lh-plan/SKILL.md
+- ../../skills/lh-spec/SKILL.md -> ../../hosts/claude-code/skills/lh-spec/SKILL.md
+- ../../skills/lh-status/SKILL.md -> ../../hosts/claude-code/skills/lh-status/SKILL.md
+- ../../skills/lh-worktree/SKILL.md -> ../../hosts/claude-code/skills/lh-worktree/SKILL.md
+- ../../hosts/claude-code/tests/frontmatter.test.ts
+- ../../hosts/claude-code/tests/post-tool-use.test.ts
+- ../../hosts/claude-code/tests/session-end.test.ts
+- ../../hosts/claude-code/vitest.config.ts
+- ../../hosts/opencode/LICENSE
+- ../../hosts/opencode/README.md
+- ../../hosts/opencode/package.json
+- ../../hosts/opencode/scripts/opencode-smoke.mjs
+- ../../hosts/opencode/src/index.ts
+- ../../hosts/opencode/src/leanharness-guardrails.ts
+- ../../hosts/opencode/src/shared.ts
+- ../../src/commands/opencode-agent-bundles/lh-builder-fix.md -> ../../hosts/opencode/templates/agents/lh-builder-fix.md
+- ../../src/commands/opencode-agent-bundles/lh-builder.md -> ../../hosts/opencode/templates/agents/lh-builder.md
+- ../../src/commands/opencode-agent-bundles/lh-compressor.md -> ../../hosts/opencode/templates/agents/lh-compressor.md
+- ../../src/commands/opencode-agent-bundles/lh-reviewer.md -> ../../hosts/opencode/templates/agents/lh-reviewer.md
+- ../../src/commands/opencode-agent-bundles/lh-scout.md -> ../../hosts/opencode/templates/agents/lh-scout.md
+- ../../src/commands/opencode-agent-bundles/lh-verifier.md -> ../../hosts/opencode/templates/agents/lh-verifier.md
+- ../../src/commands/opencode-command-bundles/lh-build.md -> ../../hosts/opencode/templates/commands/lh-build.md
+- ../../src/commands/opencode-command-bundles/lh-check.md -> ../../hosts/opencode/templates/commands/lh-check.md
+- ../../src/commands/opencode-command-bundles/lh-discover.md -> ../../hosts/opencode/templates/commands/lh-discover.md
+- ../../src/commands/opencode-command-bundles/lh-do.md -> ../../hosts/opencode/templates/commands/lh-do.md
+- ../../src/commands/opencode-command-bundles/lh-plan.md -> ../../hosts/opencode/templates/commands/lh-plan.md
+- ../../src/commands/opencode-command-bundles/lh-spec.md -> ../../hosts/opencode/templates/commands/lh-spec.md
+- ../../src/commands/opencode-command-bundles/lh-status.md -> ../../hosts/opencode/templates/commands/lh-status.md
+- ../../hosts/opencode/tests/frontmatter.test.ts
+- ../../hosts/opencode/tests/guardrails-export.test.ts
+- ../../hosts/opencode/tests/permission-ask.test.ts
+- ../../hosts/opencode/tests/tool-execute-before.test.ts
+- ../../hosts/opencode/tsconfig.json
+- ../../hosts/opencode/vitest.config.ts
+- ../../package-lock.json
+- ../../package.json
+- ../../.lh/policies/boundary.yml -> ../../packages/cli/.lh/policies/boundary.yml
+- ../../.lh/policies/commands.yml -> ../../packages/cli/.lh/policies/commands.yml
+- ../../.lh/policies/risk-gates.yml -> ../../packages/cli/.lh/policies/risk-gates.yml
+- ../../.lh/protocols/cavebus.yml -> ../../packages/cli/.lh/protocols/cavebus.yml
+- ../../.lh/templates/boundary.json -> ../../packages/cli/.lh/templates/boundary.json
+- ../../.lh/templates/cavebus-message.md -> ../../packages/cli/.lh/templates/cavebus-message.md
+- ../../.lh/templates/cavebus/discovery.cave -> ../../packages/cli/.lh/templates/cavebus/discovery.cave
+- ../../.lh/templates/cavebus/error.cave -> ../../packages/cli/.lh/templates/cavebus/error.cave
+- ../../.lh/templates/cavebus/review.cave -> ../../packages/cli/.lh/templates/cavebus/review.cave
+- ../../.lh/templates/cavebus/summary.cave -> ../../packages/cli/.lh/templates/cavebus/summary.cave
+- ../../.lh/templates/cavebus/task.cave -> ../../packages/cli/.lh/templates/cavebus/task.cave
+- ../../.lh/templates/cavebus/verify.cave -> ../../packages/cli/.lh/templates/cavebus/verify.cave
+- ../../.lh/templates/checks.md -> ../../packages/cli/.lh/templates/checks.md
+- ../../.lh/templates/discovery.md -> ../../packages/cli/.lh/templates/discovery.md
+- ../../.lh/templates/plan.md -> ../../packages/cli/.lh/templates/plan.md
+- ../../.lh/templates/result.md -> ../../packages/cli/.lh/templates/result.md
+- ../../.lh/templates/review.json -> ../../packages/cli/.lh/templates/review.json
+- ../../.lh/templates/review.md -> ../../packages/cli/.lh/templates/review.md
+- ../../.lh/templates/spec.md -> ../../packages/cli/.lh/templates/spec.md
+- ../../.lh/templates/task-summary.md -> ../../packages/cli/.lh/templates/task-summary.md
+- ../../.lh/templates/tasks.md -> ../../packages/cli/.lh/templates/tasks.md
+- ../../CHANGELOG.md -> ../../packages/cli/CHANGELOG.md
+- ../../packages/cli/LICENSE
+- ../../packages/cli/README.md
+- ../../packages/cli/package.json
+- ../../packages/cli/scripts/copy-opencode-vendor.mjs
+- ../../src/adapters/claude-code.ts -> ../../packages/cli/src/adapters/claude-code.ts
+- ../../src/adapters/opencode.ts -> ../../packages/cli/src/adapters/opencode.ts
+- ../../src/adapters/registry.ts -> ../../packages/cli/src/adapters/registry.ts
+- ../../src/adapters/types.ts -> ../../packages/cli/src/adapters/types.ts
+- ../../src/build/index.ts -> ../../packages/cli/src/build/index.ts
+- ../../src/build/task-runner.ts -> ../../packages/cli/src/build/task-runner.ts
+- ../../src/build/task-status.ts -> ../../packages/cli/src/build/task-status.ts
+- ../../src/build/task-summary.ts -> ../../packages/cli/src/build/task-summary.ts
+- ../../src/cavebus/compress.ts -> ../../packages/cli/src/cavebus/compress.ts
+- ../../src/cavebus/index.ts -> ../../packages/cli/src/cavebus/index.ts
+- ../../src/cavebus/protected.ts -> ../../packages/cli/src/cavebus/protected.ts
+- ../../src/cavebus/schema.ts -> ../../packages/cli/src/cavebus/schema.ts
+- ../../src/cavebus/validate.ts -> ../../packages/cli/src/cavebus/validate.ts
+- ../../src/cli.ts -> ../../packages/cli/src/cli.ts
+- ../../src/cli/banner.ts -> ../../packages/cli/src/cli/banner.ts
+- ../../src/cli/init-hosts.ts -> ../../packages/cli/src/cli/init-hosts.ts
+- ../../src/cli/options.ts -> ../../packages/cli/src/cli/options.ts
+- ../../src/cli/program.ts -> ../../packages/cli/src/cli/program.ts
+- ../../src/commands/archive.ts -> ../../packages/cli/src/commands/archive.ts
+- ../../src/commands/boundary.ts -> ../../packages/cli/src/commands/boundary.ts
+- ../../src/commands/build.ts -> ../../packages/cli/src/commands/build.ts
+- ../../src/commands/cavebus.ts -> ../../packages/cli/src/commands/cavebus.ts
+- ../../src/commands/check.ts -> ../../packages/cli/src/commands/check.ts
+- ../../src/commands/command-enforcement.ts -> ../../packages/cli/src/commands/command-enforcement.ts
+- ../../src/commands/compile-task.ts -> ../../packages/cli/src/commands/compile-task.ts
+- ../../src/commands/completion.ts -> ../../packages/cli/src/commands/completion.ts
+- ../../src/commands/compress.ts -> ../../packages/cli/src/commands/compress.ts
+- ../../src/commands/config.ts -> ../../packages/cli/src/commands/config.ts
+- ../../src/commands/detect-install.ts -> ../../packages/cli/src/commands/detect-install.ts
+- ../../src/commands/discover.ts -> ../../packages/cli/src/commands/discover.ts
+- ../../src/commands/doctor.ts -> ../../packages/cli/src/commands/doctor.ts
+- ../../src/commands/init-claude-code.ts -> ../../packages/cli/src/commands/init-claude-code.ts
+- ../../src/commands/init.ts -> ../../packages/cli/src/commands/init.ts
+- ../../src/commands/legacy-footprint.ts -> ../../packages/cli/src/commands/legacy-footprint.ts
+- ../../src/commands/list.ts -> ../../packages/cli/src/commands/list.ts
+- ../../src/commands/load-opencode-agents.ts -> ../../packages/cli/src/commands/load-opencode-agents.ts
+- ../../src/commands/load-opencode-commands.ts -> ../../packages/cli/src/commands/load-opencode-commands.ts
+- ../../packages/cli/src/commands/load-opencode-plugins.ts
+- ../../src/commands/memory.ts -> ../../packages/cli/src/commands/memory.ts
+- ../../src/commands/migrate.ts -> ../../packages/cli/src/commands/migrate.ts
+- ../../src/commands/new.ts -> ../../packages/cli/src/commands/new.ts
+- ../../packages/cli/src/commands/opencode-vendor-resolve.ts
+- ../../src/commands/plan.ts -> ../../packages/cli/src/commands/plan.ts
+- ../../src/commands/review.ts -> ../../packages/cli/src/commands/review.ts
+- ../../src/commands/run-task.ts -> ../../packages/cli/src/commands/run-task.ts
+- ../../src/commands/show.ts -> ../../packages/cli/src/commands/show.ts
+- ../../src/commands/spec.ts -> ../../packages/cli/src/commands/spec.ts
+- ../../src/commands/status.ts -> ../../packages/cli/src/commands/status.ts
+- ../../src/commands/uninstall.ts -> ../../packages/cli/src/commands/uninstall.ts
+- ../../src/commands/update.ts -> ../../packages/cli/src/commands/update.ts
+- ../../src/commands/watch.ts -> ../../packages/cli/src/commands/watch.ts
+- ../../src/commands/worktree.ts -> ../../packages/cli/src/commands/worktree.ts
+- ../../src/context/compiler.ts -> ../../packages/cli/src/context/compiler.ts
+- ../../src/context/protected-tokens.ts -> ../../packages/cli/src/context/protected-tokens.ts
+- ../../src/context/task-context.ts -> ../../packages/cli/src/context/task-context.ts
+- ../../src/core/bundled-scaffold.ts -> ../../packages/cli/src/core/bundled-scaffold.ts
+- ../../src/core/colors.ts -> ../../packages/cli/src/core/colors.ts
+- ../../src/core/config-mutate.ts -> ../../packages/cli/src/core/config-mutate.ts
+- ../../src/core/config.ts -> ../../packages/cli/src/core/config.ts
+- ../../src/core/errors.ts -> ../../packages/cli/src/core/errors.ts
+- ../../src/core/features.ts -> ../../packages/cli/src/core/features.ts
+- ../../src/core/fs.ts -> ../../packages/cli/src/core/fs.ts
+- ../../src/core/git.ts -> ../../packages/cli/src/core/git.ts
+- ../../src/core/harness-root.ts -> ../../packages/cli/src/core/harness-root.ts
+- ../../src/core/logger.ts -> ../../packages/cli/src/core/logger.ts
+- ../../src/core/paths.ts -> ../../packages/cli/src/core/paths.ts
+- ../../src/core/prompt.ts -> ../../packages/cli/src/core/prompt.ts
+- ../../src/core/resolved-config.ts -> ../../packages/cli/src/core/resolved-config.ts
+- ../../src/core/risk-gates.ts -> ../../packages/cli/src/core/risk-gates.ts
+- ../../src/core/spinner.ts -> ../../packages/cli/src/core/spinner.ts
+- ../../src/core/state.ts -> ../../packages/cli/src/core/state.ts
+- ../../src/core/templates.ts -> ../../packages/cli/src/core/templates.ts
+- ../../src/core/types.ts -> ../../packages/cli/src/core/types.ts
+- ../../src/core/version.ts -> ../../packages/cli/src/core/version.ts
+- ../../src/core/worktree.ts -> ../../packages/cli/src/core/worktree.ts
+- ../../src/discovery/boundary.ts -> ../../packages/cli/src/discovery/boundary.ts
+- ../../src/discovery/import-resolver.ts -> ../../packages/cli/src/discovery/import-resolver.ts
+- ../../src/discovery/index.ts -> ../../packages/cli/src/discovery/index.ts
+- ../../src/discovery/package-detector.ts -> ../../packages/cli/src/discovery/package-detector.ts
+- ../../src/discovery/project-detector.ts -> ../../packages/cli/src/discovery/project-detector.ts
+- ../../src/discovery/search.ts -> ../../packages/cli/src/discovery/search.ts
+- ../../src/discovery/test-detector.ts -> ../../packages/cli/src/discovery/test-detector.ts
+- ../../src/gates/index.ts -> ../../packages/cli/src/gates/index.ts
+- ../../src/gates/run-gates.ts -> ../../packages/cli/src/gates/run-gates.ts
+- ../../src/gates/types.ts -> ../../packages/cli/src/gates/types.ts
+- ../../src/index.ts -> ../../packages/cli/src/index.ts
+- ../../src/memory/index.ts -> ../../packages/cli/src/memory/index.ts
+- ../../src/planning/acceptance.ts -> ../../packages/cli/src/planning/acceptance.ts
+- ../../src/planning/index.ts -> ../../packages/cli/src/planning/index.ts
+- ../../src/planning/plan-renderer.ts -> ../../packages/cli/src/planning/plan-renderer.ts
+- ../../src/planning/task-generator.ts -> ../../packages/cli/src/planning/task-generator.ts
+- ../../src/plugins/loader.ts -> ../../packages/cli/src/plugins/loader.ts
+- ../../src/plugins/registry.ts -> ../../packages/cli/src/plugins/registry.ts
+- ../../src/plugins/types.ts -> ../../packages/cli/src/plugins/types.ts
+- ../../src/verification/acceptance.ts -> ../../packages/cli/src/verification/acceptance.ts
+- ../../src/verification/changed-files.ts -> ../../packages/cli/src/verification/changed-files.ts
+- ../../src/verification/commands.ts -> ../../packages/cli/src/verification/commands.ts
+- ../../src/verification/index.ts -> ../../packages/cli/src/verification/index.ts
+- ../../src/verification/review-artifact.ts -> ../../packages/cli/src/verification/review-artifact.ts
+- ../../src/verification/review.ts -> ../../packages/cli/src/verification/review.ts
+- ../../tests/adapters/claude-code.test.ts -> ../../packages/cli/tests/adapters/claude-code.test.ts
+- ../../tests/adapters/opencode.test.ts -> ../../packages/cli/tests/adapters/opencode.test.ts
+- ../../tests/adapters/registry.test.ts -> ../../packages/cli/tests/adapters/registry.test.ts
+- ../../tests/adapters/working-dir.test.ts -> ../../packages/cli/tests/adapters/working-dir.test.ts
+- ../../tests/build/build-flow.test.ts -> ../../packages/cli/tests/build/build-flow.test.ts
+- ../../tests/build/require-worktree.test.ts -> ../../packages/cli/tests/build/require-worktree.test.ts
+- ../../tests/build/task-status.test.ts -> ../../packages/cli/tests/build/task-status.test.ts
+- ../../tests/cavebus/compress.test.ts -> ../../packages/cli/tests/cavebus/compress.test.ts
+- ../../tests/cavebus/protected.test.ts -> ../../packages/cli/tests/cavebus/protected.test.ts
+- ../../tests/cavebus/schema.test.ts -> ../../packages/cli/tests/cavebus/schema.test.ts
+- ../../tests/cavebus/validate.test.ts -> ../../packages/cli/tests/cavebus/validate.test.ts
+- ../../tests/cli/banner.test.ts -> ../../packages/cli/tests/cli/banner.test.ts
+- ../../tests/cli/program.test.ts -> ../../packages/cli/tests/cli/program.test.ts
+- ../../tests/cli/worktree-program.test.ts -> ../../packages/cli/tests/cli/worktree-program.test.ts
+- ../../tests/commands/completion.test.ts -> ../../packages/cli/tests/commands/completion.test.ts
+- ../../tests/commands/doctor.test.ts -> ../../packages/cli/tests/commands/doctor.test.ts
+- ../../tests/commands/init-e2e.test.ts -> ../../packages/cli/tests/commands/init-e2e.test.ts
+- ../../tests/commands/init-global.test.ts -> ../../packages/cli/tests/commands/init-global.test.ts
+- ../../tests/commands/init-graphify.test.ts -> ../../packages/cli/tests/commands/init-graphify.test.ts
+- ../../tests/commands/legacy-footprint.test.ts -> ../../packages/cli/tests/commands/legacy-footprint.test.ts
+- ../../tests/commands/memory.test.ts -> ../../packages/cli/tests/commands/memory.test.ts
+- ../../tests/commands/migrate.test.ts -> ../../packages/cli/tests/commands/migrate.test.ts
+- ../../tests/commands/uninstall.test.ts -> ../../packages/cli/tests/commands/uninstall.test.ts
+- ../../tests/commands/update.test.ts -> ../../packages/cli/tests/commands/update.test.ts
+- ../../tests/commands/watch.test.ts -> ../../packages/cli/tests/commands/watch.test.ts
+- ../../tests/commands/worktree-list-remove.test.ts -> ../../packages/cli/tests/commands/worktree-list-remove.test.ts
+- ../../tests/context/compiler.test.ts -> ../../packages/cli/tests/context/compiler.test.ts
+- ../../tests/context/protected-tokens.test.ts -> ../../packages/cli/tests/context/protected-tokens.test.ts
+- ../../tests/core/bundled-scaffold.test.ts -> ../../packages/cli/tests/core/bundled-scaffold.test.ts
+- ../../tests/core/colors.test.ts -> ../../packages/cli/tests/core/colors.test.ts
+- ../../tests/core/config.test.ts -> ../../packages/cli/tests/core/config.test.ts
+- ../../tests/core/errors.test.ts -> ../../packages/cli/tests/core/errors.test.ts
+- ../../tests/core/features.test.ts -> ../../packages/cli/tests/core/features.test.ts
+- ../../tests/core/fs.test.ts -> ../../packages/cli/tests/core/fs.test.ts
+- ../../tests/core/git.test.ts -> ../../packages/cli/tests/core/git.test.ts
+- ../../tests/core/harness-root.test.ts -> ../../packages/cli/tests/core/harness-root.test.ts
+- ../../tests/core/logger.test.ts -> ../../packages/cli/tests/core/logger.test.ts
+- ../../tests/core/paths.test.ts -> ../../packages/cli/tests/core/paths.test.ts
+- ../../tests/core/prompt.test.ts -> ../../packages/cli/tests/core/prompt.test.ts
+- ../../tests/core/resolved-config.test.ts -> ../../packages/cli/tests/core/resolved-config.test.ts
+- ../../tests/core/risk-gates.test.ts -> ../../packages/cli/tests/core/risk-gates.test.ts
+- ../../tests/core/spinner.test.ts -> ../../packages/cli/tests/core/spinner.test.ts
+- ../../tests/core/state-worktree.test.ts -> ../../packages/cli/tests/core/state-worktree.test.ts
+- ../../tests/core/state.test.ts -> ../../packages/cli/tests/core/state.test.ts
+- ../../tests/core/templates.test.ts -> ../../packages/cli/tests/core/templates.test.ts
+- ../../tests/core/worktree-paths.test.ts -> ../../packages/cli/tests/core/worktree-paths.test.ts
+- ../../tests/discovery/boundary.test.ts -> ../../packages/cli/tests/discovery/boundary.test.ts
+- ../../tests/discovery/discovery-flow.test.ts -> ../../packages/cli/tests/discovery/discovery-flow.test.ts
+- ../../tests/discovery/import-resolver.test.ts -> ../../packages/cli/tests/discovery/import-resolver.test.ts
+- ../../tests/discovery/project-detector.test.ts -> ../../packages/cli/tests/discovery/project-detector.test.ts
+- ../../tests/discovery/search.test.ts -> ../../packages/cli/tests/discovery/search.test.ts
+- ../../tests/e2e/helpers.ts -> ../../packages/cli/tests/e2e/helpers.ts
+- ../../tests/e2e/workflow.test.ts -> ../../packages/cli/tests/e2e/workflow.test.ts
+- ../../tests/fixtures/graph-projects/simple-imports/src/a.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/a.ts
+- ../../tests/fixtures/graph-projects/simple-imports/src/b.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/b.ts
+- ../../tests/fixtures/graph-projects/simple-imports/src/c.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/c.ts
+- ../../tests/fixtures/graph-projects/symbols/src/types.ts -> ../../packages/cli/tests/fixtures/graph-projects/symbols/src/types.ts
+- ../../tests/fixtures/sample-project/package.json -> ../../packages/cli/tests/fixtures/sample-project/package.json
+- ../../tests/fixtures/sample-project/src/auth/password.ts -> ../../packages/cli/tests/fixtures/sample-project/src/auth/password.ts
+- ../../tests/fixtures/sample-project/src/auth/session.ts -> ../../packages/cli/tests/fixtures/sample-project/src/auth/session.ts
+- ../../tests/fixtures/sample-project/src/email/send.ts -> ../../packages/cli/tests/fixtures/sample-project/src/email/send.ts
+- ../../tests/fixtures/sample-project/tests/auth/password.test.ts -> ../../packages/cli/tests/fixtures/sample-project/tests/auth/password.test.ts
+- ../../tests/gates/run-gates.test.ts -> ../../packages/cli/tests/gates/run-gates.test.ts
+- ../../tests/helpers/assertions.ts -> ../../packages/cli/tests/helpers/assertions.ts
+- ../../tests/helpers/cli.ts -> ../../packages/cli/tests/helpers/cli.ts
+- ../../tests/helpers/fixture.ts -> ../../packages/cli/tests/helpers/fixture.ts
+- ../../tests/helpers/git.ts -> ../../packages/cli/tests/helpers/git.ts
+- ../../tests/helpers/workspace.ts -> ../../packages/cli/tests/helpers/workspace.ts
+- ../../packages/cli/tests/hooks/boundary-aliases.test.ts
+- ../../tests/hooks/root-resolution.test.ts -> ../../packages/cli/tests/hooks/root-resolution.test.ts
+- ../../tests/memory/memory.test.ts -> ../../packages/cli/tests/memory/memory.test.ts
+- ../../tests/planning/acceptance.test.ts -> ../../packages/cli/tests/planning/acceptance.test.ts
+- ../../tests/planning/plan-renderer.test.ts -> ../../packages/cli/tests/planning/plan-renderer.test.ts
+- ../../tests/planning/planning-flow.test.ts -> ../../packages/cli/tests/planning/planning-flow.test.ts
+- ../../tests/planning/task-generator.test.ts -> ../../packages/cli/tests/planning/task-generator.test.ts
+- ../../tests/plugins/loader.test.ts -> ../../packages/cli/tests/plugins/loader.test.ts
+- ../../tests/plugins/registry.test.ts -> ../../packages/cli/tests/plugins/registry.test.ts
+- ../../tests/stress/concurrency.test.ts -> ../../packages/cli/tests/stress/concurrency.test.ts
+- ../../tests/stress/corruption.test.ts -> ../../packages/cli/tests/stress/corruption.test.ts
+- ../../tests/stress/scale.test.ts -> ../../packages/cli/tests/stress/scale.test.ts
+- ../../tests/stress/workflow.test.ts -> ../../packages/cli/tests/stress/workflow.test.ts
+- ../../tests/verification/boundary-aliases.test.ts -> ../../packages/cli/tests/verification/boundary-aliases.test.ts
+- ../../tests/verification/check-flow.test.ts -> ../../packages/cli/tests/verification/check-flow.test.ts
+- ../../tests/verification/commands.test.ts -> ../../packages/cli/tests/verification/commands.test.ts
+- ../../tests/verification/require-flags.test.ts -> ../../packages/cli/tests/verification/require-flags.test.ts
+- ../../packages/cli/tsconfig.json
+- ../../vitest.config.ts -> ../../packages/cli/vitest.config.ts
+- ../../pnpm-lock.yaml
+- ../../pnpm-workspace.yaml
+- ../../scripts/extract-changelog-entry.mjs
+- ../../scripts/plugin-smoke.mjs
+- ../../scripts/sync-plugin-version.mjs
+- ../../scripts/sync-readme-version.mjs
+- ../../src/commands/load-opencode-plugins.ts
+- ../../src/commands/opencode-command-bundles/lh-builder-fix.md
+- ../../src/commands/opencode-plugin-bundles/leanharness-guardrails.js
+- ../../src/commands/opencode-plugin-bundles/shared.js
+- ../../tests/hooks/boundary-aliases.test.ts
+- ../../tests/plugins/opencode-guardrails-export.test.ts
+- ../../tsconfig.json -> ../../tsconfig.base.json
+- ./
+- ../../scripts/sync-example-hosts.mjs
+
+## Commands Run
+
+- `pnpm install` — skipped
+- `pnpm run lint` — fail
+- `pnpm run build` — skipped
+- `pnpm --dir web run lint` — skipped
+- `Risk gate: new_dependency` — skipped
+- `pnpm --dir web run build` — skipped
+- `claude -p # LeanHarness Task Context` — skipped
+- `cd web && pnpm run lint` — pass
+- `cd web && pnpm run build` — pass
+
+## Review Notes
+
+Review verdict: unknown
+
+## Lessons Learned
+
+No reusable memory updates identified by deterministic check.
+
+## Reusable Memory Updates
+
+No reusable memory updates identified by deterministic check.

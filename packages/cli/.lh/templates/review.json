@@ -1,0 +1,19 @@
+{
+  "schema": "v1",
+  "featureId": "",
+  "taskId": "",
+  "verdict": "pass",
+  "model": "",
+  "mode": "independent",
+  "reviewedAt": "",
+  "iteration": 1,
+  "filesReviewed": [],
+  "findings": [],
+  "checklist": {
+    "acceptanceCriteria": "pass",
+    "boundary": "pass",
+    "tests": "pass",
+    "security": "n/a",
+    "riskGates": "n/a"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "cleanupPeriodDays": 30,
+  "env": {
+    "LEANHARNESS_CONFIG": ".lh/config.yml"
+  },
+  "permissions": {
+    "allow": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash(find *)",
+      "Bash(ls *)",
+      "Bash(cat .lh/*)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(git branch*)",
+      "Bash(git show*)",
+      "Bash(git blame*)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~)",
+      "Bash(rm -rf ~/*)",
+      "Bash(rm -rf .git)",
+      "Bash(rm -rf .git/)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -fd*)",
+      "Bash(git clean -fx*)",
+      "Bash(git clean -fxd*)",
+      "Bash(*drop database*)",
+      "Bash(*DROP DATABASE*)",
+      "Bash(*DROP TABLE*)",
+      "Bash(*drop table*)",
+      "Bash(cat .env*)",
+      "Bash(printenv*)",
+      "Bash(env | *)",
+      "Bash(*> /dev/sd*)",
+      "Bash(dd if=*)",
+      "Bash(mkfs*)"
+    ],
+    "ask": []
+  },
+  "enabledPlugins": {
+    "lh@lean-harness": true
+  },
+  "extraKnownMarketplaces": {
+    "lean-harness": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/feneto/Repositories/personal/lean-harness"
+      }
+    }
+  }
+}

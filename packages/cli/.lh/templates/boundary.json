@@ -1,0 +1,29 @@
+{
+  "featureId": "{{FEATURE_ID}}",
+  "featureTitle": "{{FEATURE_TITLE}}",
+  "status": "discovered",
+  "confidence": "{{low|medium|high}}",
+  "discoveryDepth": "{{D0-D4}}",
+  "touchFiles": [
+    { "path": "{{FILE_PATH}}", "reason": "{{REASON}}", "confidence": "{{low|medium|high}}" }
+  ],
+  "readOnlyFiles": [
+    { "path": "{{FILE_PATH}}", "reason": "{{REASON}}", "confidence": "{{low|medium|high}}" }
+  ],
+  "relevantTests": [
+    { "path": "{{TEST_FILE}}", "reason": "{{REASON}}", "confidence": "{{low|medium|high}}" }
+  ],
+  "commands": [
+    { "command": "{{COMMAND}}", "purpose": "{{PURPOSE}}", "confidence": "{{low|medium|high}}", "source": "{{package.json|Makefile|inferred}}" }
+  ],
+  "allowedEditGlobs": [],
+  "blockedEditGlobs": [],
+  "riskGates": [
+    { "name": "{{GATE_NAME}}", "reason": "{{REASON}}", "status": "{{triggered|approved|resolved|unresolved}}" }
+  ],
+  "unknowns": [],
+  "doNotTouch": [],
+  "protectedTokens": [],
+  "closureGaps": [],
+  "lastUpdated": "{{ISO_DATE}}"
+}

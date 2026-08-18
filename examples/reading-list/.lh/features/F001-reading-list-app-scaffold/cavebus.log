@@ -1,0 +1,1828 @@
+REQ F001 status:draft
+goal:
+- Reading list app scaffold
+next:
+- refine spec; run /lh-spec F001 or lh show F001
+
+DISC F001 conf:unknown depth:D1
+touch:
+- none found
+read:
+- README.md reason:matches: read
+- opencode.json reason:matches: js, json; config file
+- .opencode/README.md reason:matches: read
+tests:
+- none found
+cmd:
+- none discovered
+risk:
+- none
+unknown:
+- No likely touch files found. Add --hint paths or refine the spec.
+- No relevant tests found. Tests may need to be created.
+avoid:
+- node_modules/ reason:generated/vendor
+- dist/ reason:generated/vendor
+- build/ reason:generated/vendor
+- coverage/ reason:generated/vendor
+- .git/ reason:generated/vendor
+next:
+- review boundary.json then plan F001
+PLAN F001 status:blocked
+tasks:T01
+ac:AC1->T01 AC2->T01
+risk:
+- none
+verify:
+- none specified
+next:
+- Resolve blockers, then retry: lh plan F001 --force
+PLAN F001 status:draft
+tasks:T01,T02,T03
+ac:AC1->T01 AC2->T01 AC1->T03 AC2->T03
+risk:
+- none
+verify:
+- lh discover F001 --depth D2
+- lh plan F001 --force
+next:
+- Run: lh discover F001 --depth D2
+
+DISC F001 conf:unknown depth:D1
+touch:
+- none found
+read:
+- README.md reason:matches: read
+- opencode.json reason:matches: js, json; config file
+- .opencode/README.md reason:matches: read
+tests:
+- none found
+cmd:
+- none discovered
+risk:
+- none
+unknown:
+- No likely touch files found. Add --hint paths or refine the spec.
+- No relevant tests found. Tests may need to be created.
+avoid:
+- node_modules/ reason:generated/vendor
+- dist/ reason:generated/vendor
+- build/ reason:generated/vendor
+- coverage/ reason:generated/vendor
+- .git/ reason:generated/vendor
+next:
+- review boundary.json then plan F001
+
+DISC F001 conf:unknown depth:D1
+touch:
+- none found
+read:
+- README.md reason:matches: read
+- opencode.json reason:matches: js, json; config file
+- .opencode/README.md reason:matches: read
+tests:
+- none found
+cmd:
+- none discovered
+risk:
+- none
+unknown:
+- No likely touch files found. Add --hint paths or refine the spec.
+- No relevant tests found. Tests may need to be created.
+avoid:
+- node_modules/ reason:generated/vendor
+- dist/ reason:generated/vendor
+- build/ reason:generated/vendor
+- coverage/ reason:generated/vendor
+- .git/ reason:generated/vendor
+next:
+- review boundary.json then plan F001
+PLAN F001 status:planned
+tasks:T01,T02,T03
+ac:AC1->T01 AC2->T01 AC3->T02 AC4->T02 AC5->T03
+risk:
+- new_dependency
+verify:
+- pnpm run lint
+next:
+- Run: lh compile-task F001 T01
+TASK F001 T01
+ac:
+- AC1
+- AC2
+goal:
+- Do NOT run `create-next-app .` in this directory.
+files:
+- web/package.json action:edit
+- web/tsconfig.json action:edit
+- web/next.config.ts action:edit
+- web/app/layout.tsx action:edit
+- README.md action:edit
+- opencode.json action:edit
+- .opencode/README.md action:edit
+read:
+- none
+verify:
+- pnpm run lint
+risk:
+- none
+next:
+- run-task T01
+TASK F001 T01
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T01.md
+next:
+- dry run (no host invocation)
+TASK F001 T01
+ac:
+- AC1
+- AC2
+goal:
+- Do NOT run `create-next-app .` in this directory.
+files:
+- web/package.json action:edit
+- web/tsconfig.json action:edit
+- web/next.config.ts action:edit
+- web/app/layout.tsx action:edit
+- README.md action:edit
+- opencode.json action:edit
+- .opencode/README.md action:edit
+read:
+- none
+verify:
+- pnpm run lint
+risk:
+- none
+next:
+- run-task T01
+TASK F001 T01
+host:
+- opencode
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T01.md
+next:
+- dry run (no host invocation)
+TASK F001 T01
+ac:
+- AC1
+- AC2
+goal:
+- Do NOT run `create-next-app .` in this directory.
+files:
+- web/package.json action:edit
+- web/tsconfig.json action:edit
+- web/next.config.ts action:edit
+- web/app/layout.tsx action:edit
+- README.md action:edit
+- opencode.json action:edit
+- .opencode/README.md action:edit
+read:
+- none
+verify:
+- pnpm run lint
+risk:
+- none
+next:
+- run-task T01
+TASK F001 T01
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T01.md
+next:
+- run host
+SUM F001 T01 status:needs-fix
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T01.md
+result:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T01.claude-result.json
+pass:
+fail:
+- host exit 1
+risk:
+next:
+- inspect result; fix task or rerun build
+TASK F001 T01
+ac:
+- AC1
+- AC2
+goal:
+- Do NOT run `create-next-app .` in this directory.
+files:
+- web/package.json action:edit
+- web/tsconfig.json action:edit
+- web/next.config.ts action:edit
+- web/app/layout.tsx action:edit
+- README.md action:edit
+- opencode.json action:edit
+- .opencode/README.md action:edit
+read:
+- none
+verify:
+- pnpm run lint
+risk:
+- none
+next:
+- run-task T01
+TASK F001 T01
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T01.md
+next:
+- run host
+SUM F001 T01 status:done
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T01.md
+result:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T01.claude-result.json
+pass:
+- host exit 0
+fail:
+risk:
+next:
+- review summary; collect verification evidence
+TASK F001 T02
+ac:
+- AC3
+- AC4
+goal:
+- Implement changes in web/app/page.tsx, web/app/add/page.tsx, web/app/api/items/route.ts, web/data/reading-list.json.
+files:
+- web/app/page.tsx action:edit
+- web/app/add/page.tsx action:edit
+- web/app/api/items/route.ts action:edit
+- web/data/reading-list.json action:edit
+- README.md action:edit
+- opencode.json action:edit
+- .opencode/README.md action:edit
+read:
+- none
+verify:
+- pnpm run lint
+risk:
+- none
+next:
+- run-task T02
+TASK F001 T02
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T02.md
+next:
+- run host
+SUM F001 T02 status:done
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T02.md
+result:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T02.claude-result.json
+pass:
+- host exit 0
+fail:
+risk:
+next:
+- review summary; collect verification evidence
+TASK F001 T01
+ac:
+- AC1
+- AC2
+goal:
+- Do NOT run `create-next-app .` in this directory.
+files:
+- web/package.json action:edit
+- web/tsconfig.json action:edit
+- web/next.config.ts action:edit
+- web/app/layout.tsx action:edit
+- README.md action:edit
+- opencode.json action:edit
+- .opencode/README.md action:edit
+read:
+- none
+verify:
+- pnpm run lint
+risk:
+- none
+next:
+- run-task T01
+TASK F001 T01
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T01.md
+next:
+- run host
+SUM F001 T01 status:done
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T01.md
+result:
+- .lh/features/F001-reading-list-app-scaffold/task-summaries/T01.md
+pass:
+- pnpm run lint exit 0
+fail:
+risk:
+next:
+- run T02 (data files), then T03 (page/add-form UI, pnpm run build)
+SUM F001 T01 status:done
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T01.md
+result:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T01.claude-result.json
+pass:
+- host exit 0
+fail:
+risk:
+next:
+- review summary; collect verification evidence
+TASK F001 T02
+ac:
+- AC3
+- AC4
+goal:
+- Implement changes in web/app/page.tsx, web/app/add/page.tsx, web/app/api/items/route.ts, web/data/reading-list.json.
+files:
+- web/app/page.tsx action:edit
+- web/app/add/page.tsx action:edit
+- web/app/api/items/route.ts action:edit
+- web/data/reading-list.json action:edit
+- README.md action:edit
+- opencode.json action:edit
+- .opencode/README.md action:edit
+read:
+- none
+verify:
+- pnpm run lint
+risk:
+- none
+next:
+- run-task T02
+TASK F001 T02
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T02.md
+next:
+- run host
+SUM F001 T02 status:done
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T02.md
+files:
+- web/lib/types.ts action:create note:technically T03's assigned file (AC5); created early, T02 needs it
+- web/lib/store.ts action:create note:technically T03's assigned file (AC5); created early, T02 needs it
+- web/data/reading-list.json action:create
+- web/app/page.tsx action:edit
+- web/app/add/page.tsx action:create
+- web/app/api/items/route.ts action:create
+verify:
+- pnpm run lint exit:0
+pass:
+- AC3
+- AC4
+fail:
+risk:
+next:
+- run-task T03 (lib files already exist; focus on pnpm run lint / pnpm run build verification); then lh check F001
+SUM F001 T02 status:done
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T02.md
+result:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T02.claude-result.json
+pass:
+- host exit 0
+fail:
+risk:
+next:
+- review summary; collect verification evidence
+TASK F001 T03
+ac:
+- AC5
+goal:
+- Implement changes in web/lib/store.ts, web/lib/types.ts.
+files:
+- web/lib/store.ts action:edit
+- web/lib/types.ts action:edit
+- README.md action:edit
+- opencode.json action:edit
+- .opencode/README.md action:edit
+read:
+- none
+verify:
+- pnpm run lint
+- pnpm run build
+risk:
+- none
+next:
+- run-task T03
+TASK F001 T03
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T03.md
+next:
+- run host
+SUM F001 T03 status:done
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T03.md
+result:
+- .lh/features/F001-reading-list-app-scaffold/task-summaries/T03.md
+pass:
+- pnpm run lint exit 0
+- pnpm run build exit 0
+fail:
+risk:
+next:
+- run lh check F001
+SUM F001 T03 status:done
+host:
+- claude-code
+ctx:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T03.md
+result:
+- .lh/features/F001-reading-list-app-scaffold/task-context/T03.claude-result.json
+pass:
+- host exit 0
+fail:
+risk:
+next:
+- review summary; collect verification evidence
+
+VERIFY F001 verdict:needs-fix
+ac:
+- AC1 pass evidence:task summary task-summaries/T01.md mentions AC1
+- AC2 pass evidence:task summary task-summaries/T01.md mentions AC2
+- AC3 pass evidence:task summary task-summaries/T01.md mentions AC3
+- AC4 pass evidence:task summary task-summaries/T01.md mentions AC4
+- AC5 pass evidence:task summary task-summaries/T01.md mentions AC5
+cmd:
+- pnpm install result:skipped
+- pnpm run lint result:fail
+- pnpm run build result:skipped
+- Risk gate: new_dependency result:skipped
+- claude -p # LeanHarness Task Context result:skipped
+chg:
+- ../../.changeset/config.json boundary:unknown
+- ../../.changeset/opencode-plugin-initial-release.md boundary:unknown
+- ../../.changeset/pnpm-monorepo-and-real-opencode-plugin.md boundary:unknown
+- ../../.claude-plugin/marketplace.json boundary:unknown
+- ../../.github/workflows/ci.yml boundary:unknown
+- ../../.github/workflows/release.yml boundary:unknown
+- ../../.gitignore boundary:unknown
+- ../../.npmignore boundary:unknown
+- ../../CLAUDE.md boundary:unknown
+- ../../README.md boundary:unknown
+- ../../docs/configuration.md boundary:unknown
+- ../../docs/hosts/opencode.md boundary:unknown
+- ../../docs/migration.md boundary:unknown
+- ../../.claude-plugin/plugin.json -> ../../hosts/claude-code/.claude-plugin/plugin.json boundary:unknown
+- ../../agents/lh-builder-fix.md -> ../../hosts/claude-code/agents/lh-builder-fix.md boundary:unknown
+- ../../agents/lh-builder.md -> ../../hosts/claude-code/agents/lh-builder.md boundary:unknown
+- ../../agents/lh-compressor.md -> ../../hosts/claude-code/agents/lh-compressor.md boundary:unknown
+- ../../agents/lh-reviewer.md -> ../../hosts/claude-code/agents/lh-reviewer.md boundary:unknown
+- ../../agents/lh-scout.md -> ../../hosts/claude-code/agents/lh-scout.md boundary:unknown
+- ../../agents/lh-verifier.md -> ../../hosts/claude-code/agents/lh-verifier.md boundary:unknown
+- ../../hooks/hooks.json -> ../../hosts/claude-code/hooks/hooks.json boundary:unknown
+- ../../hooks/package.json -> ../../hosts/claude-code/hooks/package.json boundary:unknown
+- ../../hooks/post-tool-use.js -> ../../hosts/claude-code/hooks/post-tool-use.js boundary:unknown
+- ../../hooks/pre-tool-use.js -> ../../hosts/claude-code/hooks/pre-tool-use.js boundary:unknown
+- ../../hooks/session-end.js -> ../../hosts/claude-code/hooks/session-end.js boundary:unknown
+- ../../hooks/shared.js -> ../../hosts/claude-code/hooks/shared.js boundary:unknown
+- ../../hosts/claude-code/package.json boundary:out
+- ../../skills/lh-build/SKILL.md -> ../../hosts/claude-code/skills/lh-build/SKILL.md boundary:unknown
+- ../../skills/lh-check/SKILL.md -> ../../hosts/claude-code/skills/lh-check/SKILL.md boundary:unknown
+- ../../skills/lh-discover/SKILL.md -> ../../hosts/claude-code/skills/lh-discover/SKILL.md boundary:unknown
+- ../../skills/lh-do/SKILL.md -> ../../hosts/claude-code/skills/lh-do/SKILL.md boundary:unknown
+- ../../skills/lh-plan/SKILL.md -> ../../hosts/claude-code/skills/lh-plan/SKILL.md boundary:unknown
+- ../../skills/lh-spec/SKILL.md -> ../../hosts/claude-code/skills/lh-spec/SKILL.md boundary:unknown
+- ../../skills/lh-status/SKILL.md -> ../../hosts/claude-code/skills/lh-status/SKILL.md boundary:unknown
+- ../../skills/lh-worktree/SKILL.md -> ../../hosts/claude-code/skills/lh-worktree/SKILL.md boundary:unknown
+- ../../hosts/claude-code/tests/frontmatter.test.ts boundary:out
+- ../../hosts/claude-code/tests/post-tool-use.test.ts boundary:out
+- ../../hosts/claude-code/tests/session-end.test.ts boundary:out
+- ../../hosts/claude-code/vitest.config.ts boundary:out
+- ../../hosts/opencode/LICENSE boundary:out
+- ../../hosts/opencode/README.md boundary:out
+- ../../hosts/opencode/package.json boundary:out
+- ../../hosts/opencode/scripts/opencode-smoke.mjs boundary:out
+- ../../hosts/opencode/src/index.ts boundary:out
+- ../../hosts/opencode/src/leanharness-guardrails.ts boundary:out
+- ../../hosts/opencode/src/shared.ts boundary:out
+- ../../src/commands/opencode-agent-bundles/lh-builder-fix.md -> ../../hosts/opencode/templates/agents/lh-builder-fix.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-builder.md -> ../../hosts/opencode/templates/agents/lh-builder.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-compressor.md -> ../../hosts/opencode/templates/agents/lh-compressor.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-reviewer.md -> ../../hosts/opencode/templates/agents/lh-reviewer.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-scout.md -> ../../hosts/opencode/templates/agents/lh-scout.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-verifier.md -> ../../hosts/opencode/templates/agents/lh-verifier.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-build.md -> ../../hosts/opencode/templates/commands/lh-build.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-check.md -> ../../hosts/opencode/templates/commands/lh-check.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-discover.md -> ../../hosts/opencode/templates/commands/lh-discover.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-do.md -> ../../hosts/opencode/templates/commands/lh-do.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-plan.md -> ../../hosts/opencode/templates/commands/lh-plan.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-spec.md -> ../../hosts/opencode/templates/commands/lh-spec.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-status.md -> ../../hosts/opencode/templates/commands/lh-status.md boundary:unknown
+- ../../hosts/opencode/tests/frontmatter.test.ts boundary:out
+- ../../hosts/opencode/tests/guardrails-export.test.ts boundary:out
+- ../../hosts/opencode/tests/permission-ask.test.ts boundary:out
+- ../../hosts/opencode/tests/tool-execute-before.test.ts boundary:out
+- ../../hosts/opencode/tsconfig.json boundary:out
+- ../../hosts/opencode/vitest.config.ts boundary:out
+- ../../package-lock.json boundary:unknown
+- ../../package.json boundary:unknown
+- ../../.lh/policies/boundary.yml -> ../../packages/cli/.lh/policies/boundary.yml boundary:unknown
+- ../../.lh/policies/commands.yml -> ../../packages/cli/.lh/policies/commands.yml boundary:unknown
+- ../../.lh/policies/risk-gates.yml -> ../../packages/cli/.lh/policies/risk-gates.yml boundary:unknown
+- ../../.lh/protocols/cavebus.yml -> ../../packages/cli/.lh/protocols/cavebus.yml boundary:unknown
+- ../../.lh/templates/boundary.json -> ../../packages/cli/.lh/templates/boundary.json boundary:unknown
+- ../../.lh/templates/cavebus-message.md -> ../../packages/cli/.lh/templates/cavebus-message.md boundary:unknown
+- ../../.lh/templates/cavebus/discovery.cave -> ../../packages/cli/.lh/templates/cavebus/discovery.cave boundary:unknown
+- ../../.lh/templates/cavebus/error.cave -> ../../packages/cli/.lh/templates/cavebus/error.cave boundary:unknown
+- ../../.lh/templates/cavebus/review.cave -> ../../packages/cli/.lh/templates/cavebus/review.cave boundary:unknown
+- ../../.lh/templates/cavebus/summary.cave -> ../../packages/cli/.lh/templates/cavebus/summary.cave boundary:unknown
+- ../../.lh/templates/cavebus/task.cave -> ../../packages/cli/.lh/templates/cavebus/task.cave boundary:unknown
+- ../../.lh/templates/cavebus/verify.cave -> ../../packages/cli/.lh/templates/cavebus/verify.cave boundary:unknown
+- ../../.lh/templates/checks.md -> ../../packages/cli/.lh/templates/checks.md boundary:unknown
+- ../../.lh/templates/discovery.md -> ../../packages/cli/.lh/templates/discovery.md boundary:unknown
+- ../../.lh/templates/plan.md -> ../../packages/cli/.lh/templates/plan.md boundary:unknown
+- ../../.lh/templates/result.md -> ../../packages/cli/.lh/templates/result.md boundary:unknown
+- ../../.lh/templates/review.json -> ../../packages/cli/.lh/templates/review.json boundary:unknown
+- ../../.lh/templates/review.md -> ../../packages/cli/.lh/templates/review.md boundary:unknown
+- ../../.lh/templates/spec.md -> ../../packages/cli/.lh/templates/spec.md boundary:unknown
+- ../../.lh/templates/task-summary.md -> ../../packages/cli/.lh/templates/task-summary.md boundary:unknown
+- ../../.lh/templates/tasks.md -> ../../packages/cli/.lh/templates/tasks.md boundary:unknown
+- ../../CHANGELOG.md -> ../../packages/cli/CHANGELOG.md boundary:unknown
+- ../../packages/cli/LICENSE boundary:out
+- ../../packages/cli/README.md boundary:out
+- ../../packages/cli/package.json boundary:out
+- ../../packages/cli/scripts/copy-opencode-vendor.mjs boundary:out
+- ../../src/adapters/claude-code.ts -> ../../packages/cli/src/adapters/claude-code.ts boundary:unknown
+- ../../src/adapters/opencode.ts -> ../../packages/cli/src/adapters/opencode.ts boundary:unknown
+- ../../src/adapters/registry.ts -> ../../packages/cli/src/adapters/registry.ts boundary:unknown
+- ../../src/adapters/types.ts -> ../../packages/cli/src/adapters/types.ts boundary:unknown
+- ../../src/build/index.ts -> ../../packages/cli/src/build/index.ts boundary:unknown
+- ../../src/build/task-runner.ts -> ../../packages/cli/src/build/task-runner.ts boundary:unknown
+- ../../src/build/task-status.ts -> ../../packages/cli/src/build/task-status.ts boundary:unknown
+- ../../src/build/task-summary.ts -> ../../packages/cli/src/build/task-summary.ts boundary:unknown
+- ../../src/cavebus/compress.ts -> ../../packages/cli/src/cavebus/compress.ts boundary:unknown
+- ../../src/cavebus/index.ts -> ../../packages/cli/src/cavebus/index.ts boundary:unknown
+- ../../src/cavebus/protected.ts -> ../../packages/cli/src/cavebus/protected.ts boundary:unknown
+- ../../src/cavebus/schema.ts -> ../../packages/cli/src/cavebus/schema.ts boundary:unknown
+- ../../src/cavebus/validate.ts -> ../../packages/cli/src/cavebus/validate.ts boundary:unknown
+- ../../src/cli.ts -> ../../packages/cli/src/cli.ts boundary:unknown
+- ../../src/cli/banner.ts -> ../../packages/cli/src/cli/banner.ts boundary:unknown
+- ../../src/cli/init-hosts.ts -> ../../packages/cli/src/cli/init-hosts.ts boundary:unknown
+- ../../src/cli/options.ts -> ../../packages/cli/src/cli/options.ts boundary:unknown
+- ../../src/cli/program.ts -> ../../packages/cli/src/cli/program.ts boundary:unknown
+- ../../src/commands/archive.ts -> ../../packages/cli/src/commands/archive.ts boundary:unknown
+- ../../src/commands/boundary.ts -> ../../packages/cli/src/commands/boundary.ts boundary:unknown
+- ../../src/commands/build.ts -> ../../packages/cli/src/commands/build.ts boundary:unknown
+- ../../src/commands/cavebus.ts -> ../../packages/cli/src/commands/cavebus.ts boundary:unknown
+- ../../src/commands/check.ts -> ../../packages/cli/src/commands/check.ts boundary:unknown
+- ../../src/commands/command-enforcement.ts -> ../../packages/cli/src/commands/command-enforcement.ts boundary:unknown
+- ../../src/commands/compile-task.ts -> ../../packages/cli/src/commands/compile-task.ts boundary:unknown
+- ../../src/commands/completion.ts -> ../../packages/cli/src/commands/completion.ts boundary:unknown
+- ../../src/commands/compress.ts -> ../../packages/cli/src/commands/compress.ts boundary:unknown
+- ../../src/commands/config.ts -> ../../packages/cli/src/commands/config.ts boundary:unknown
+- ../../src/commands/detect-install.ts -> ../../packages/cli/src/commands/detect-install.ts boundary:unknown
+- ../../src/commands/discover.ts -> ../../packages/cli/src/commands/discover.ts boundary:unknown
+- ../../src/commands/doctor.ts -> ../../packages/cli/src/commands/doctor.ts boundary:unknown
+- ../../src/commands/init-claude-code.ts -> ../../packages/cli/src/commands/init-claude-code.ts boundary:unknown
+- ../../src/commands/init.ts -> ../../packages/cli/src/commands/init.ts boundary:unknown
+- ../../src/commands/legacy-footprint.ts -> ../../packages/cli/src/commands/legacy-footprint.ts boundary:unknown
+- ../../src/commands/list.ts -> ../../packages/cli/src/commands/list.ts boundary:unknown
+- ../../src/commands/load-opencode-agents.ts -> ../../packages/cli/src/commands/load-opencode-agents.ts boundary:unknown
+- ../../src/commands/load-opencode-commands.ts -> ../../packages/cli/src/commands/load-opencode-commands.ts boundary:unknown
+- ../../packages/cli/src/commands/load-opencode-plugins.ts boundary:out
+- ../../src/commands/memory.ts -> ../../packages/cli/src/commands/memory.ts boundary:unknown
+- ../../src/commands/migrate.ts -> ../../packages/cli/src/commands/migrate.ts boundary:unknown
+- ../../src/commands/new.ts -> ../../packages/cli/src/commands/new.ts boundary:unknown
+- ../../packages/cli/src/commands/opencode-vendor-resolve.ts boundary:out
+- ../../src/commands/plan.ts -> ../../packages/cli/src/commands/plan.ts boundary:unknown
+- ../../src/commands/review.ts -> ../../packages/cli/src/commands/review.ts boundary:unknown
+- ../../src/commands/run-task.ts -> ../../packages/cli/src/commands/run-task.ts boundary:unknown
+- ../../src/commands/show.ts -> ../../packages/cli/src/commands/show.ts boundary:unknown
+- ../../src/commands/spec.ts -> ../../packages/cli/src/commands/spec.ts boundary:unknown
+- ../../src/commands/status.ts -> ../../packages/cli/src/commands/status.ts boundary:unknown
+- ../../src/commands/uninstall.ts -> ../../packages/cli/src/commands/uninstall.ts boundary:unknown
+- ../../src/commands/update.ts -> ../../packages/cli/src/commands/update.ts boundary:unknown
+- ../../src/commands/watch.ts -> ../../packages/cli/src/commands/watch.ts boundary:unknown
+- ../../src/commands/worktree.ts -> ../../packages/cli/src/commands/worktree.ts boundary:unknown
+- ../../src/context/compiler.ts -> ../../packages/cli/src/context/compiler.ts boundary:unknown
+- ../../src/context/protected-tokens.ts -> ../../packages/cli/src/context/protected-tokens.ts boundary:unknown
+- ../../src/context/task-context.ts -> ../../packages/cli/src/context/task-context.ts boundary:unknown
+- ../../src/core/bundled-scaffold.ts -> ../../packages/cli/src/core/bundled-scaffold.ts boundary:unknown
+- ../../src/core/colors.ts -> ../../packages/cli/src/core/colors.ts boundary:unknown
+- ../../src/core/config-mutate.ts -> ../../packages/cli/src/core/config-mutate.ts boundary:unknown
+- ../../src/core/config.ts -> ../../packages/cli/src/core/config.ts boundary:unknown
+- ../../src/core/errors.ts -> ../../packages/cli/src/core/errors.ts boundary:unknown
+- ../../src/core/features.ts -> ../../packages/cli/src/core/features.ts boundary:unknown
+- ../../src/core/fs.ts -> ../../packages/cli/src/core/fs.ts boundary:unknown
+- ../../src/core/git.ts -> ../../packages/cli/src/core/git.ts boundary:unknown
+- ../../src/core/harness-root.ts -> ../../packages/cli/src/core/harness-root.ts boundary:unknown
+- ../../src/core/logger.ts -> ../../packages/cli/src/core/logger.ts boundary:unknown
+- ../../src/core/paths.ts -> ../../packages/cli/src/core/paths.ts boundary:unknown
+- ../../src/core/prompt.ts -> ../../packages/cli/src/core/prompt.ts boundary:unknown
+- ../../src/core/resolved-config.ts -> ../../packages/cli/src/core/resolved-config.ts boundary:unknown
+- ../../src/core/risk-gates.ts -> ../../packages/cli/src/core/risk-gates.ts boundary:unknown
+- ../../src/core/spinner.ts -> ../../packages/cli/src/core/spinner.ts boundary:unknown
+- ../../src/core/state.ts -> ../../packages/cli/src/core/state.ts boundary:unknown
+- ../../src/core/templates.ts -> ../../packages/cli/src/core/templates.ts boundary:unknown
+- ../../src/core/types.ts -> ../../packages/cli/src/core/types.ts boundary:unknown
+- ../../src/core/version.ts -> ../../packages/cli/src/core/version.ts boundary:unknown
+- ../../src/core/worktree.ts -> ../../packages/cli/src/core/worktree.ts boundary:unknown
+- ../../src/discovery/boundary.ts -> ../../packages/cli/src/discovery/boundary.ts boundary:unknown
+- ../../src/discovery/import-resolver.ts -> ../../packages/cli/src/discovery/import-resolver.ts boundary:unknown
+- ../../src/discovery/index.ts -> ../../packages/cli/src/discovery/index.ts boundary:unknown
+- ../../src/discovery/package-detector.ts -> ../../packages/cli/src/discovery/package-detector.ts boundary:unknown
+- ../../src/discovery/project-detector.ts -> ../../packages/cli/src/discovery/project-detector.ts boundary:unknown
+- ../../src/discovery/search.ts -> ../../packages/cli/src/discovery/search.ts boundary:unknown
+- ../../src/discovery/test-detector.ts -> ../../packages/cli/src/discovery/test-detector.ts boundary:unknown
+- ../../src/gates/index.ts -> ../../packages/cli/src/gates/index.ts boundary:unknown
+- ../../src/gates/run-gates.ts -> ../../packages/cli/src/gates/run-gates.ts boundary:unknown
+- ../../src/gates/types.ts -> ../../packages/cli/src/gates/types.ts boundary:unknown
+- ../../src/index.ts -> ../../packages/cli/src/index.ts boundary:unknown
+- ../../src/memory/index.ts -> ../../packages/cli/src/memory/index.ts boundary:unknown
+- ../../src/planning/acceptance.ts -> ../../packages/cli/src/planning/acceptance.ts boundary:unknown
+- ../../src/planning/index.ts -> ../../packages/cli/src/planning/index.ts boundary:unknown
+- ../../src/planning/plan-renderer.ts -> ../../packages/cli/src/planning/plan-renderer.ts boundary:unknown
+- ../../src/planning/task-generator.ts -> ../../packages/cli/src/planning/task-generator.ts boundary:unknown
+- ../../src/plugins/loader.ts -> ../../packages/cli/src/plugins/loader.ts boundary:unknown
+- ../../src/plugins/registry.ts -> ../../packages/cli/src/plugins/registry.ts boundary:unknown
+- ../../src/plugins/types.ts -> ../../packages/cli/src/plugins/types.ts boundary:unknown
+- ../../src/verification/acceptance.ts -> ../../packages/cli/src/verification/acceptance.ts boundary:unknown
+- ../../src/verification/changed-files.ts -> ../../packages/cli/src/verification/changed-files.ts boundary:unknown
+- ../../src/verification/commands.ts -> ../../packages/cli/src/verification/commands.ts boundary:unknown
+- ../../src/verification/index.ts -> ../../packages/cli/src/verification/index.ts boundary:unknown
+- ../../src/verification/review-artifact.ts -> ../../packages/cli/src/verification/review-artifact.ts boundary:unknown
+- ../../src/verification/review.ts -> ../../packages/cli/src/verification/review.ts boundary:unknown
+- ../../tests/adapters/claude-code.test.ts -> ../../packages/cli/tests/adapters/claude-code.test.ts boundary:unknown
+- ../../tests/adapters/opencode.test.ts -> ../../packages/cli/tests/adapters/opencode.test.ts boundary:unknown
+- ../../tests/adapters/registry.test.ts -> ../../packages/cli/tests/adapters/registry.test.ts boundary:unknown
+- ../../tests/adapters/working-dir.test.ts -> ../../packages/cli/tests/adapters/working-dir.test.ts boundary:unknown
+- ../../tests/build/build-flow.test.ts -> ../../packages/cli/tests/build/build-flow.test.ts boundary:unknown
+- ../../tests/build/require-worktree.test.ts -> ../../packages/cli/tests/build/require-worktree.test.ts boundary:unknown
+- ../../tests/build/task-status.test.ts -> ../../packages/cli/tests/build/task-status.test.ts boundary:unknown
+- ../../tests/cavebus/compress.test.ts -> ../../packages/cli/tests/cavebus/compress.test.ts boundary:unknown
+- ../../tests/cavebus/protected.test.ts -> ../../packages/cli/tests/cavebus/protected.test.ts boundary:unknown
+- ../../tests/cavebus/schema.test.ts -> ../../packages/cli/tests/cavebus/schema.test.ts boundary:unknown
+- ../../tests/cavebus/validate.test.ts -> ../../packages/cli/tests/cavebus/validate.test.ts boundary:unknown
+- ../../tests/cli/banner.test.ts -> ../../packages/cli/tests/cli/banner.test.ts boundary:unknown
+- ../../tests/cli/program.test.ts -> ../../packages/cli/tests/cli/program.test.ts boundary:unknown
+- ../../tests/cli/worktree-program.test.ts -> ../../packages/cli/tests/cli/worktree-program.test.ts boundary:unknown
+- ../../tests/commands/completion.test.ts -> ../../packages/cli/tests/commands/completion.test.ts boundary:unknown
+- ../../tests/commands/doctor.test.ts -> ../../packages/cli/tests/commands/doctor.test.ts boundary:unknown
+- ../../tests/commands/init-e2e.test.ts -> ../../packages/cli/tests/commands/init-e2e.test.ts boundary:unknown
+- ../../tests/commands/init-global.test.ts -> ../../packages/cli/tests/commands/init-global.test.ts boundary:unknown
+- ../../tests/commands/init-graphify.test.ts -> ../../packages/cli/tests/commands/init-graphify.test.ts boundary:unknown
+- ../../tests/commands/legacy-footprint.test.ts -> ../../packages/cli/tests/commands/legacy-footprint.test.ts boundary:unknown
+- ../../tests/commands/memory.test.ts -> ../../packages/cli/tests/commands/memory.test.ts boundary:unknown
+- ../../tests/commands/migrate.test.ts -> ../../packages/cli/tests/commands/migrate.test.ts boundary:unknown
+- ../../tests/commands/uninstall.test.ts -> ../../packages/cli/tests/commands/uninstall.test.ts boundary:unknown
+- ../../tests/commands/update.test.ts -> ../../packages/cli/tests/commands/update.test.ts boundary:unknown
+- ../../tests/commands/watch.test.ts -> ../../packages/cli/tests/commands/watch.test.ts boundary:unknown
+- ../../tests/commands/worktree-list-remove.test.ts -> ../../packages/cli/tests/commands/worktree-list-remove.test.ts boundary:unknown
+- ../../tests/context/compiler.test.ts -> ../../packages/cli/tests/context/compiler.test.ts boundary:unknown
+- ../../tests/context/protected-tokens.test.ts -> ../../packages/cli/tests/context/protected-tokens.test.ts boundary:unknown
+- ../../tests/core/bundled-scaffold.test.ts -> ../../packages/cli/tests/core/bundled-scaffold.test.ts boundary:unknown
+- ../../tests/core/colors.test.ts -> ../../packages/cli/tests/core/colors.test.ts boundary:unknown
+- ../../tests/core/config.test.ts -> ../../packages/cli/tests/core/config.test.ts boundary:unknown
+- ../../tests/core/errors.test.ts -> ../../packages/cli/tests/core/errors.test.ts boundary:unknown
+- ../../tests/core/features.test.ts -> ../../packages/cli/tests/core/features.test.ts boundary:unknown
+- ../../tests/core/fs.test.ts -> ../../packages/cli/tests/core/fs.test.ts boundary:unknown
+- ../../tests/core/git.test.ts -> ../../packages/cli/tests/core/git.test.ts boundary:unknown
+- ../../tests/core/harness-root.test.ts -> ../../packages/cli/tests/core/harness-root.test.ts boundary:unknown
+- ../../tests/core/logger.test.ts -> ../../packages/cli/tests/core/logger.test.ts boundary:unknown
+- ../../tests/core/paths.test.ts -> ../../packages/cli/tests/core/paths.test.ts boundary:unknown
+- ../../tests/core/prompt.test.ts -> ../../packages/cli/tests/core/prompt.test.ts boundary:unknown
+- ../../tests/core/resolved-config.test.ts -> ../../packages/cli/tests/core/resolved-config.test.ts boundary:unknown
+- ../../tests/core/risk-gates.test.ts -> ../../packages/cli/tests/core/risk-gates.test.ts boundary:unknown
+- ../../tests/core/spinner.test.ts -> ../../packages/cli/tests/core/spinner.test.ts boundary:unknown
+- ../../tests/core/state-worktree.test.ts -> ../../packages/cli/tests/core/state-worktree.test.ts boundary:unknown
+- ../../tests/core/state.test.ts -> ../../packages/cli/tests/core/state.test.ts boundary:unknown
+- ../../tests/core/templates.test.ts -> ../../packages/cli/tests/core/templates.test.ts boundary:unknown
+- ../../tests/core/worktree-paths.test.ts -> ../../packages/cli/tests/core/worktree-paths.test.ts boundary:unknown
+- ../../tests/discovery/boundary.test.ts -> ../../packages/cli/tests/discovery/boundary.test.ts boundary:unknown
+- ../../tests/discovery/discovery-flow.test.ts -> ../../packages/cli/tests/discovery/discovery-flow.test.ts boundary:unknown
+- ../../tests/discovery/import-resolver.test.ts -> ../../packages/cli/tests/discovery/import-resolver.test.ts boundary:unknown
+- ../../tests/discovery/project-detector.test.ts -> ../../packages/cli/tests/discovery/project-detector.test.ts boundary:unknown
+- ../../tests/discovery/search.test.ts -> ../../packages/cli/tests/discovery/search.test.ts boundary:unknown
+- ../../tests/e2e/helpers.ts -> ../../packages/cli/tests/e2e/helpers.ts boundary:unknown
+- ../../tests/e2e/workflow.test.ts -> ../../packages/cli/tests/e2e/workflow.test.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/simple-imports/src/a.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/a.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/simple-imports/src/b.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/b.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/simple-imports/src/c.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/c.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/symbols/src/types.ts -> ../../packages/cli/tests/fixtures/graph-projects/symbols/src/types.ts boundary:unknown
+- ../../tests/fixtures/sample-project/package.json -> ../../packages/cli/tests/fixtures/sample-project/package.json boundary:unknown
+- ../../tests/fixtures/sample-project/src/auth/password.ts -> ../../packages/cli/tests/fixtures/sample-project/src/auth/password.ts boundary:unknown
+- ../../tests/fixtures/sample-project/src/auth/session.ts -> ../../packages/cli/tests/fixtures/sample-project/src/auth/session.ts boundary:unknown
+- ../../tests/fixtures/sample-project/src/email/send.ts -> ../../packages/cli/tests/fixtures/sample-project/src/email/send.ts boundary:unknown
+- ../../tests/fixtures/sample-project/tests/auth/password.test.ts -> ../../packages/cli/tests/fixtures/sample-project/tests/auth/password.test.ts boundary:unknown
+- ../../tests/gates/run-gates.test.ts -> ../../packages/cli/tests/gates/run-gates.test.ts boundary:unknown
+- ../../tests/helpers/assertions.ts -> ../../packages/cli/tests/helpers/assertions.ts boundary:unknown
+- ../../tests/helpers/cli.ts -> ../../packages/cli/tests/helpers/cli.ts boundary:unknown
+- ../../tests/helpers/fixture.ts -> ../../packages/cli/tests/helpers/fixture.ts boundary:unknown
+- ../../tests/helpers/git.ts -> ../../packages/cli/tests/helpers/git.ts boundary:unknown
+- ../../tests/helpers/workspace.ts -> ../../packages/cli/tests/helpers/workspace.ts boundary:unknown
+- ../../packages/cli/tests/hooks/boundary-aliases.test.ts boundary:out
+- ../../tests/hooks/root-resolution.test.ts -> ../../packages/cli/tests/hooks/root-resolution.test.ts boundary:unknown
+- ../../tests/memory/memory.test.ts -> ../../packages/cli/tests/memory/memory.test.ts boundary:unknown
+- ../../tests/planning/acceptance.test.ts -> ../../packages/cli/tests/planning/acceptance.test.ts boundary:unknown
+- ../../tests/planning/plan-renderer.test.ts -> ../../packages/cli/tests/planning/plan-renderer.test.ts boundary:unknown
+- ../../tests/planning/planning-flow.test.ts -> ../../packages/cli/tests/planning/planning-flow.test.ts boundary:unknown
+- ../../tests/planning/task-generator.test.ts -> ../../packages/cli/tests/planning/task-generator.test.ts boundary:unknown
+- ../../tests/plugins/loader.test.ts -> ../../packages/cli/tests/plugins/loader.test.ts boundary:unknown
+- ../../tests/plugins/registry.test.ts -> ../../packages/cli/tests/plugins/registry.test.ts boundary:unknown
+- ../../tests/stress/concurrency.test.ts -> ../../packages/cli/tests/stress/concurrency.test.ts boundary:unknown
+- ../../tests/stress/corruption.test.ts -> ../../packages/cli/tests/stress/corruption.test.ts boundary:unknown
+- ../../tests/stress/scale.test.ts -> ../../packages/cli/tests/stress/scale.test.ts boundary:unknown
+- ../../tests/stress/workflow.test.ts -> ../../packages/cli/tests/stress/workflow.test.ts boundary:unknown
+- ../../tests/verification/boundary-aliases.test.ts -> ../../packages/cli/tests/verification/boundary-aliases.test.ts boundary:unknown
+- ../../tests/verification/check-flow.test.ts -> ../../packages/cli/tests/verification/check-flow.test.ts boundary:unknown
+- ../../tests/verification/commands.test.ts -> ../../packages/cli/tests/verification/commands.test.ts boundary:unknown
+- ../../tests/verification/require-flags.test.ts -> ../../packages/cli/tests/verification/require-flags.test.ts boundary:unknown
+- ../../packages/cli/tsconfig.json boundary:out
+- ../../vitest.config.ts -> ../../packages/cli/vitest.config.ts boundary:unknown
+- ../../pnpm-lock.yaml boundary:unknown
+- ../../pnpm-workspace.yaml boundary:unknown
+- ../../scripts/extract-changelog-entry.mjs boundary:unknown
+- ../../scripts/plugin-smoke.mjs boundary:unknown
+- ../../scripts/sync-plugin-version.mjs boundary:unknown
+- ../../scripts/sync-readme-version.mjs boundary:unknown
+- ../../src/commands/load-opencode-plugins.ts boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-builder-fix.md boundary:unknown
+- ../../src/commands/opencode-plugin-bundles/leanharness-guardrails.js boundary:unknown
+- ../../src/commands/opencode-plugin-bundles/shared.js boundary:unknown
+- ../../tests/hooks/boundary-aliases.test.ts boundary:unknown
+- ../../tests/plugins/opencode-guardrails-export.test.ts boundary:unknown
+- ../../tsconfig.json -> ../../tsconfig.base.json boundary:unknown
+- ./ boundary:unknown
+- ../../scripts/sync-example-hosts.mjs boundary:unknown
+boundary:
+- partial
+risk:
+- new_dependency status:approved
+miss:
+- 1 verification command(s) failed: pnpm run lint
+- 26 file(s) changed outside boundary.
+- Review is required but no independent review evidence was found.
+next:
+- fix failing checks; rerun lh check F001 --force
+
+VERIFY F001 verdict:needs-fix
+ac:
+- AC1 pass evidence:task summary task-summaries/T01.md mentions AC1
+- AC2 pass evidence:task summary task-summaries/T01.md mentions AC2
+- AC3 pass evidence:task summary task-summaries/T01.md mentions AC3
+- AC4 pass evidence:task summary task-summaries/T01.md mentions AC4
+- AC5 pass evidence:task summary task-summaries/T01.md mentions AC5
+cmd:
+- pnpm --dir web install result:skipped
+- pnpm --dir web run lint result:skipped
+- pnpm --dir web run build result:skipped
+- pnpm install result:skipped
+- pnpm run lint result:fail
+- pnpm run build result:skipped
+- Risk gate: new_dependency result:skipped
+- claude -p # LeanHarness Task Context result:skipped
+chg:
+- ../../.changeset/config.json boundary:unknown
+- ../../.changeset/opencode-plugin-initial-release.md boundary:unknown
+- ../../.changeset/pnpm-monorepo-and-real-opencode-plugin.md boundary:unknown
+- ../../.claude-plugin/marketplace.json boundary:unknown
+- ../../.github/workflows/ci.yml boundary:unknown
+- ../../.github/workflows/release.yml boundary:unknown
+- ../../.gitignore boundary:unknown
+- ../../.npmignore boundary:unknown
+- ../../CLAUDE.md boundary:unknown
+- ../../README.md boundary:unknown
+- ../../docs/configuration.md boundary:unknown
+- ../../docs/hosts/opencode.md boundary:unknown
+- ../../docs/migration.md boundary:unknown
+- ../../.claude-plugin/plugin.json -> ../../hosts/claude-code/.claude-plugin/plugin.json boundary:unknown
+- ../../agents/lh-builder-fix.md -> ../../hosts/claude-code/agents/lh-builder-fix.md boundary:unknown
+- ../../agents/lh-builder.md -> ../../hosts/claude-code/agents/lh-builder.md boundary:unknown
+- ../../agents/lh-compressor.md -> ../../hosts/claude-code/agents/lh-compressor.md boundary:unknown
+- ../../agents/lh-reviewer.md -> ../../hosts/claude-code/agents/lh-reviewer.md boundary:unknown
+- ../../agents/lh-scout.md -> ../../hosts/claude-code/agents/lh-scout.md boundary:unknown
+- ../../agents/lh-verifier.md -> ../../hosts/claude-code/agents/lh-verifier.md boundary:unknown
+- ../../hooks/hooks.json -> ../../hosts/claude-code/hooks/hooks.json boundary:unknown
+- ../../hooks/package.json -> ../../hosts/claude-code/hooks/package.json boundary:unknown
+- ../../hooks/post-tool-use.js -> ../../hosts/claude-code/hooks/post-tool-use.js boundary:unknown
+- ../../hooks/pre-tool-use.js -> ../../hosts/claude-code/hooks/pre-tool-use.js boundary:unknown
+- ../../hooks/session-end.js -> ../../hosts/claude-code/hooks/session-end.js boundary:unknown
+- ../../hooks/shared.js -> ../../hosts/claude-code/hooks/shared.js boundary:unknown
+- ../../hosts/claude-code/package.json boundary:out
+- ../../skills/lh-build/SKILL.md -> ../../hosts/claude-code/skills/lh-build/SKILL.md boundary:unknown
+- ../../skills/lh-check/SKILL.md -> ../../hosts/claude-code/skills/lh-check/SKILL.md boundary:unknown
+- ../../skills/lh-discover/SKILL.md -> ../../hosts/claude-code/skills/lh-discover/SKILL.md boundary:unknown
+- ../../skills/lh-do/SKILL.md -> ../../hosts/claude-code/skills/lh-do/SKILL.md boundary:unknown
+- ../../skills/lh-plan/SKILL.md -> ../../hosts/claude-code/skills/lh-plan/SKILL.md boundary:unknown
+- ../../skills/lh-spec/SKILL.md -> ../../hosts/claude-code/skills/lh-spec/SKILL.md boundary:unknown
+- ../../skills/lh-status/SKILL.md -> ../../hosts/claude-code/skills/lh-status/SKILL.md boundary:unknown
+- ../../skills/lh-worktree/SKILL.md -> ../../hosts/claude-code/skills/lh-worktree/SKILL.md boundary:unknown
+- ../../hosts/claude-code/tests/frontmatter.test.ts boundary:out
+- ../../hosts/claude-code/tests/post-tool-use.test.ts boundary:out
+- ../../hosts/claude-code/tests/session-end.test.ts boundary:out
+- ../../hosts/claude-code/vitest.config.ts boundary:out
+- ../../hosts/opencode/LICENSE boundary:out
+- ../../hosts/opencode/README.md boundary:out
+- ../../hosts/opencode/package.json boundary:out
+- ../../hosts/opencode/scripts/opencode-smoke.mjs boundary:out
+- ../../hosts/opencode/src/index.ts boundary:out
+- ../../hosts/opencode/src/leanharness-guardrails.ts boundary:out
+- ../../hosts/opencode/src/shared.ts boundary:out
+- ../../src/commands/opencode-agent-bundles/lh-builder-fix.md -> ../../hosts/opencode/templates/agents/lh-builder-fix.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-builder.md -> ../../hosts/opencode/templates/agents/lh-builder.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-compressor.md -> ../../hosts/opencode/templates/agents/lh-compressor.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-reviewer.md -> ../../hosts/opencode/templates/agents/lh-reviewer.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-scout.md -> ../../hosts/opencode/templates/agents/lh-scout.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-verifier.md -> ../../hosts/opencode/templates/agents/lh-verifier.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-build.md -> ../../hosts/opencode/templates/commands/lh-build.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-check.md -> ../../hosts/opencode/templates/commands/lh-check.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-discover.md -> ../../hosts/opencode/templates/commands/lh-discover.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-do.md -> ../../hosts/opencode/templates/commands/lh-do.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-plan.md -> ../../hosts/opencode/templates/commands/lh-plan.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-spec.md -> ../../hosts/opencode/templates/commands/lh-spec.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-status.md -> ../../hosts/opencode/templates/commands/lh-status.md boundary:unknown
+- ../../hosts/opencode/tests/frontmatter.test.ts boundary:out
+- ../../hosts/opencode/tests/guardrails-export.test.ts boundary:out
+- ../../hosts/opencode/tests/permission-ask.test.ts boundary:out
+- ../../hosts/opencode/tests/tool-execute-before.test.ts boundary:out
+- ../../hosts/opencode/tsconfig.json boundary:out
+- ../../hosts/opencode/vitest.config.ts boundary:out
+- ../../package-lock.json boundary:unknown
+- ../../package.json boundary:unknown
+- ../../.lh/policies/boundary.yml -> ../../packages/cli/.lh/policies/boundary.yml boundary:unknown
+- ../../.lh/policies/commands.yml -> ../../packages/cli/.lh/policies/commands.yml boundary:unknown
+- ../../.lh/policies/risk-gates.yml -> ../../packages/cli/.lh/policies/risk-gates.yml boundary:unknown
+- ../../.lh/protocols/cavebus.yml -> ../../packages/cli/.lh/protocols/cavebus.yml boundary:unknown
+- ../../.lh/templates/boundary.json -> ../../packages/cli/.lh/templates/boundary.json boundary:unknown
+- ../../.lh/templates/cavebus-message.md -> ../../packages/cli/.lh/templates/cavebus-message.md boundary:unknown
+- ../../.lh/templates/cavebus/discovery.cave -> ../../packages/cli/.lh/templates/cavebus/discovery.cave boundary:unknown
+- ../../.lh/templates/cavebus/error.cave -> ../../packages/cli/.lh/templates/cavebus/error.cave boundary:unknown
+- ../../.lh/templates/cavebus/review.cave -> ../../packages/cli/.lh/templates/cavebus/review.cave boundary:unknown
+- ../../.lh/templates/cavebus/summary.cave -> ../../packages/cli/.lh/templates/cavebus/summary.cave boundary:unknown
+- ../../.lh/templates/cavebus/task.cave -> ../../packages/cli/.lh/templates/cavebus/task.cave boundary:unknown
+- ../../.lh/templates/cavebus/verify.cave -> ../../packages/cli/.lh/templates/cavebus/verify.cave boundary:unknown
+- ../../.lh/templates/checks.md -> ../../packages/cli/.lh/templates/checks.md boundary:unknown
+- ../../.lh/templates/discovery.md -> ../../packages/cli/.lh/templates/discovery.md boundary:unknown
+- ../../.lh/templates/plan.md -> ../../packages/cli/.lh/templates/plan.md boundary:unknown
+- ../../.lh/templates/result.md -> ../../packages/cli/.lh/templates/result.md boundary:unknown
+- ../../.lh/templates/review.json -> ../../packages/cli/.lh/templates/review.json boundary:unknown
+- ../../.lh/templates/review.md -> ../../packages/cli/.lh/templates/review.md boundary:unknown
+- ../../.lh/templates/spec.md -> ../../packages/cli/.lh/templates/spec.md boundary:unknown
+- ../../.lh/templates/task-summary.md -> ../../packages/cli/.lh/templates/task-summary.md boundary:unknown
+- ../../.lh/templates/tasks.md -> ../../packages/cli/.lh/templates/tasks.md boundary:unknown
+- ../../CHANGELOG.md -> ../../packages/cli/CHANGELOG.md boundary:unknown
+- ../../packages/cli/LICENSE boundary:out
+- ../../packages/cli/README.md boundary:out
+- ../../packages/cli/package.json boundary:out
+- ../../packages/cli/scripts/copy-opencode-vendor.mjs boundary:out
+- ../../src/adapters/claude-code.ts -> ../../packages/cli/src/adapters/claude-code.ts boundary:unknown
+- ../../src/adapters/opencode.ts -> ../../packages/cli/src/adapters/opencode.ts boundary:unknown
+- ../../src/adapters/registry.ts -> ../../packages/cli/src/adapters/registry.ts boundary:unknown
+- ../../src/adapters/types.ts -> ../../packages/cli/src/adapters/types.ts boundary:unknown
+- ../../src/build/index.ts -> ../../packages/cli/src/build/index.ts boundary:unknown
+- ../../src/build/task-runner.ts -> ../../packages/cli/src/build/task-runner.ts boundary:unknown
+- ../../src/build/task-status.ts -> ../../packages/cli/src/build/task-status.ts boundary:unknown
+- ../../src/build/task-summary.ts -> ../../packages/cli/src/build/task-summary.ts boundary:unknown
+- ../../src/cavebus/compress.ts -> ../../packages/cli/src/cavebus/compress.ts boundary:unknown
+- ../../src/cavebus/index.ts -> ../../packages/cli/src/cavebus/index.ts boundary:unknown
+- ../../src/cavebus/protected.ts -> ../../packages/cli/src/cavebus/protected.ts boundary:unknown
+- ../../src/cavebus/schema.ts -> ../../packages/cli/src/cavebus/schema.ts boundary:unknown
+- ../../src/cavebus/validate.ts -> ../../packages/cli/src/cavebus/validate.ts boundary:unknown
+- ../../src/cli.ts -> ../../packages/cli/src/cli.ts boundary:unknown
+- ../../src/cli/banner.ts -> ../../packages/cli/src/cli/banner.ts boundary:unknown
+- ../../src/cli/init-hosts.ts -> ../../packages/cli/src/cli/init-hosts.ts boundary:unknown
+- ../../src/cli/options.ts -> ../../packages/cli/src/cli/options.ts boundary:unknown
+- ../../src/cli/program.ts -> ../../packages/cli/src/cli/program.ts boundary:unknown
+- ../../src/commands/archive.ts -> ../../packages/cli/src/commands/archive.ts boundary:unknown
+- ../../src/commands/boundary.ts -> ../../packages/cli/src/commands/boundary.ts boundary:unknown
+- ../../src/commands/build.ts -> ../../packages/cli/src/commands/build.ts boundary:unknown
+- ../../src/commands/cavebus.ts -> ../../packages/cli/src/commands/cavebus.ts boundary:unknown
+- ../../src/commands/check.ts -> ../../packages/cli/src/commands/check.ts boundary:unknown
+- ../../src/commands/command-enforcement.ts -> ../../packages/cli/src/commands/command-enforcement.ts boundary:unknown
+- ../../src/commands/compile-task.ts -> ../../packages/cli/src/commands/compile-task.ts boundary:unknown
+- ../../src/commands/completion.ts -> ../../packages/cli/src/commands/completion.ts boundary:unknown
+- ../../src/commands/compress.ts -> ../../packages/cli/src/commands/compress.ts boundary:unknown
+- ../../src/commands/config.ts -> ../../packages/cli/src/commands/config.ts boundary:unknown
+- ../../src/commands/detect-install.ts -> ../../packages/cli/src/commands/detect-install.ts boundary:unknown
+- ../../src/commands/discover.ts -> ../../packages/cli/src/commands/discover.ts boundary:unknown
+- ../../src/commands/doctor.ts -> ../../packages/cli/src/commands/doctor.ts boundary:unknown
+- ../../src/commands/init-claude-code.ts -> ../../packages/cli/src/commands/init-claude-code.ts boundary:unknown
+- ../../src/commands/init.ts -> ../../packages/cli/src/commands/init.ts boundary:unknown
+- ../../src/commands/legacy-footprint.ts -> ../../packages/cli/src/commands/legacy-footprint.ts boundary:unknown
+- ../../src/commands/list.ts -> ../../packages/cli/src/commands/list.ts boundary:unknown
+- ../../src/commands/load-opencode-agents.ts -> ../../packages/cli/src/commands/load-opencode-agents.ts boundary:unknown
+- ../../src/commands/load-opencode-commands.ts -> ../../packages/cli/src/commands/load-opencode-commands.ts boundary:unknown
+- ../../packages/cli/src/commands/load-opencode-plugins.ts boundary:out
+- ../../src/commands/memory.ts -> ../../packages/cli/src/commands/memory.ts boundary:unknown
+- ../../src/commands/migrate.ts -> ../../packages/cli/src/commands/migrate.ts boundary:unknown
+- ../../src/commands/new.ts -> ../../packages/cli/src/commands/new.ts boundary:unknown
+- ../../packages/cli/src/commands/opencode-vendor-resolve.ts boundary:out
+- ../../src/commands/plan.ts -> ../../packages/cli/src/commands/plan.ts boundary:unknown
+- ../../src/commands/review.ts -> ../../packages/cli/src/commands/review.ts boundary:unknown
+- ../../src/commands/run-task.ts -> ../../packages/cli/src/commands/run-task.ts boundary:unknown
+- ../../src/commands/show.ts -> ../../packages/cli/src/commands/show.ts boundary:unknown
+- ../../src/commands/spec.ts -> ../../packages/cli/src/commands/spec.ts boundary:unknown
+- ../../src/commands/status.ts -> ../../packages/cli/src/commands/status.ts boundary:unknown
+- ../../src/commands/uninstall.ts -> ../../packages/cli/src/commands/uninstall.ts boundary:unknown
+- ../../src/commands/update.ts -> ../../packages/cli/src/commands/update.ts boundary:unknown
+- ../../src/commands/watch.ts -> ../../packages/cli/src/commands/watch.ts boundary:unknown
+- ../../src/commands/worktree.ts -> ../../packages/cli/src/commands/worktree.ts boundary:unknown
+- ../../src/context/compiler.ts -> ../../packages/cli/src/context/compiler.ts boundary:unknown
+- ../../src/context/protected-tokens.ts -> ../../packages/cli/src/context/protected-tokens.ts boundary:unknown
+- ../../src/context/task-context.ts -> ../../packages/cli/src/context/task-context.ts boundary:unknown
+- ../../src/core/bundled-scaffold.ts -> ../../packages/cli/src/core/bundled-scaffold.ts boundary:unknown
+- ../../src/core/colors.ts -> ../../packages/cli/src/core/colors.ts boundary:unknown
+- ../../src/core/config-mutate.ts -> ../../packages/cli/src/core/config-mutate.ts boundary:unknown
+- ../../src/core/config.ts -> ../../packages/cli/src/core/config.ts boundary:unknown
+- ../../src/core/errors.ts -> ../../packages/cli/src/core/errors.ts boundary:unknown
+- ../../src/core/features.ts -> ../../packages/cli/src/core/features.ts boundary:unknown
+- ../../src/core/fs.ts -> ../../packages/cli/src/core/fs.ts boundary:unknown
+- ../../src/core/git.ts -> ../../packages/cli/src/core/git.ts boundary:unknown
+- ../../src/core/harness-root.ts -> ../../packages/cli/src/core/harness-root.ts boundary:unknown
+- ../../src/core/logger.ts -> ../../packages/cli/src/core/logger.ts boundary:unknown
+- ../../src/core/paths.ts -> ../../packages/cli/src/core/paths.ts boundary:unknown
+- ../../src/core/prompt.ts -> ../../packages/cli/src/core/prompt.ts boundary:unknown
+- ../../src/core/resolved-config.ts -> ../../packages/cli/src/core/resolved-config.ts boundary:unknown
+- ../../src/core/risk-gates.ts -> ../../packages/cli/src/core/risk-gates.ts boundary:unknown
+- ../../src/core/spinner.ts -> ../../packages/cli/src/core/spinner.ts boundary:unknown
+- ../../src/core/state.ts -> ../../packages/cli/src/core/state.ts boundary:unknown
+- ../../src/core/templates.ts -> ../../packages/cli/src/core/templates.ts boundary:unknown
+- ../../src/core/types.ts -> ../../packages/cli/src/core/types.ts boundary:unknown
+- ../../src/core/version.ts -> ../../packages/cli/src/core/version.ts boundary:unknown
+- ../../src/core/worktree.ts -> ../../packages/cli/src/core/worktree.ts boundary:unknown
+- ../../src/discovery/boundary.ts -> ../../packages/cli/src/discovery/boundary.ts boundary:unknown
+- ../../src/discovery/import-resolver.ts -> ../../packages/cli/src/discovery/import-resolver.ts boundary:unknown
+- ../../src/discovery/index.ts -> ../../packages/cli/src/discovery/index.ts boundary:unknown
+- ../../src/discovery/package-detector.ts -> ../../packages/cli/src/discovery/package-detector.ts boundary:unknown
+- ../../src/discovery/project-detector.ts -> ../../packages/cli/src/discovery/project-detector.ts boundary:unknown
+- ../../src/discovery/search.ts -> ../../packages/cli/src/discovery/search.ts boundary:unknown
+- ../../src/discovery/test-detector.ts -> ../../packages/cli/src/discovery/test-detector.ts boundary:unknown
+- ../../src/gates/index.ts -> ../../packages/cli/src/gates/index.ts boundary:unknown
+- ../../src/gates/run-gates.ts -> ../../packages/cli/src/gates/run-gates.ts boundary:unknown
+- ../../src/gates/types.ts -> ../../packages/cli/src/gates/types.ts boundary:unknown
+- ../../src/index.ts -> ../../packages/cli/src/index.ts boundary:unknown
+- ../../src/memory/index.ts -> ../../packages/cli/src/memory/index.ts boundary:unknown
+- ../../src/planning/acceptance.ts -> ../../packages/cli/src/planning/acceptance.ts boundary:unknown
+- ../../src/planning/index.ts -> ../../packages/cli/src/planning/index.ts boundary:unknown
+- ../../src/planning/plan-renderer.ts -> ../../packages/cli/src/planning/plan-renderer.ts boundary:unknown
+- ../../src/planning/task-generator.ts -> ../../packages/cli/src/planning/task-generator.ts boundary:unknown
+- ../../src/plugins/loader.ts -> ../../packages/cli/src/plugins/loader.ts boundary:unknown
+- ../../src/plugins/registry.ts -> ../../packages/cli/src/plugins/registry.ts boundary:unknown
+- ../../src/plugins/types.ts -> ../../packages/cli/src/plugins/types.ts boundary:unknown
+- ../../src/verification/acceptance.ts -> ../../packages/cli/src/verification/acceptance.ts boundary:unknown
+- ../../src/verification/changed-files.ts -> ../../packages/cli/src/verification/changed-files.ts boundary:unknown
+- ../../src/verification/commands.ts -> ../../packages/cli/src/verification/commands.ts boundary:unknown
+- ../../src/verification/index.ts -> ../../packages/cli/src/verification/index.ts boundary:unknown
+- ../../src/verification/review-artifact.ts -> ../../packages/cli/src/verification/review-artifact.ts boundary:unknown
+- ../../src/verification/review.ts -> ../../packages/cli/src/verification/review.ts boundary:unknown
+- ../../tests/adapters/claude-code.test.ts -> ../../packages/cli/tests/adapters/claude-code.test.ts boundary:unknown
+- ../../tests/adapters/opencode.test.ts -> ../../packages/cli/tests/adapters/opencode.test.ts boundary:unknown
+- ../../tests/adapters/registry.test.ts -> ../../packages/cli/tests/adapters/registry.test.ts boundary:unknown
+- ../../tests/adapters/working-dir.test.ts -> ../../packages/cli/tests/adapters/working-dir.test.ts boundary:unknown
+- ../../tests/build/build-flow.test.ts -> ../../packages/cli/tests/build/build-flow.test.ts boundary:unknown
+- ../../tests/build/require-worktree.test.ts -> ../../packages/cli/tests/build/require-worktree.test.ts boundary:unknown
+- ../../tests/build/task-status.test.ts -> ../../packages/cli/tests/build/task-status.test.ts boundary:unknown
+- ../../tests/cavebus/compress.test.ts -> ../../packages/cli/tests/cavebus/compress.test.ts boundary:unknown
+- ../../tests/cavebus/protected.test.ts -> ../../packages/cli/tests/cavebus/protected.test.ts boundary:unknown
+- ../../tests/cavebus/schema.test.ts -> ../../packages/cli/tests/cavebus/schema.test.ts boundary:unknown
+- ../../tests/cavebus/validate.test.ts -> ../../packages/cli/tests/cavebus/validate.test.ts boundary:unknown
+- ../../tests/cli/banner.test.ts -> ../../packages/cli/tests/cli/banner.test.ts boundary:unknown
+- ../../tests/cli/program.test.ts -> ../../packages/cli/tests/cli/program.test.ts boundary:unknown
+- ../../tests/cli/worktree-program.test.ts -> ../../packages/cli/tests/cli/worktree-program.test.ts boundary:unknown
+- ../../tests/commands/completion.test.ts -> ../../packages/cli/tests/commands/completion.test.ts boundary:unknown
+- ../../tests/commands/doctor.test.ts -> ../../packages/cli/tests/commands/doctor.test.ts boundary:unknown
+- ../../tests/commands/init-e2e.test.ts -> ../../packages/cli/tests/commands/init-e2e.test.ts boundary:unknown
+- ../../tests/commands/init-global.test.ts -> ../../packages/cli/tests/commands/init-global.test.ts boundary:unknown
+- ../../tests/commands/init-graphify.test.ts -> ../../packages/cli/tests/commands/init-graphify.test.ts boundary:unknown
+- ../../tests/commands/legacy-footprint.test.ts -> ../../packages/cli/tests/commands/legacy-footprint.test.ts boundary:unknown
+- ../../tests/commands/memory.test.ts -> ../../packages/cli/tests/commands/memory.test.ts boundary:unknown
+- ../../tests/commands/migrate.test.ts -> ../../packages/cli/tests/commands/migrate.test.ts boundary:unknown
+- ../../tests/commands/uninstall.test.ts -> ../../packages/cli/tests/commands/uninstall.test.ts boundary:unknown
+- ../../tests/commands/update.test.ts -> ../../packages/cli/tests/commands/update.test.ts boundary:unknown
+- ../../tests/commands/watch.test.ts -> ../../packages/cli/tests/commands/watch.test.ts boundary:unknown
+- ../../tests/commands/worktree-list-remove.test.ts -> ../../packages/cli/tests/commands/worktree-list-remove.test.ts boundary:unknown
+- ../../tests/context/compiler.test.ts -> ../../packages/cli/tests/context/compiler.test.ts boundary:unknown
+- ../../tests/context/protected-tokens.test.ts -> ../../packages/cli/tests/context/protected-tokens.test.ts boundary:unknown
+- ../../tests/core/bundled-scaffold.test.ts -> ../../packages/cli/tests/core/bundled-scaffold.test.ts boundary:unknown
+- ../../tests/core/colors.test.ts -> ../../packages/cli/tests/core/colors.test.ts boundary:unknown
+- ../../tests/core/config.test.ts -> ../../packages/cli/tests/core/config.test.ts boundary:unknown
+- ../../tests/core/errors.test.ts -> ../../packages/cli/tests/core/errors.test.ts boundary:unknown
+- ../../tests/core/features.test.ts -> ../../packages/cli/tests/core/features.test.ts boundary:unknown
+- ../../tests/core/fs.test.ts -> ../../packages/cli/tests/core/fs.test.ts boundary:unknown
+- ../../tests/core/git.test.ts -> ../../packages/cli/tests/core/git.test.ts boundary:unknown
+- ../../tests/core/harness-root.test.ts -> ../../packages/cli/tests/core/harness-root.test.ts boundary:unknown
+- ../../tests/core/logger.test.ts -> ../../packages/cli/tests/core/logger.test.ts boundary:unknown
+- ../../tests/core/paths.test.ts -> ../../packages/cli/tests/core/paths.test.ts boundary:unknown
+- ../../tests/core/prompt.test.ts -> ../../packages/cli/tests/core/prompt.test.ts boundary:unknown
+- ../../tests/core/resolved-config.test.ts -> ../../packages/cli/tests/core/resolved-config.test.ts boundary:unknown
+- ../../tests/core/risk-gates.test.ts -> ../../packages/cli/tests/core/risk-gates.test.ts boundary:unknown
+- ../../tests/core/spinner.test.ts -> ../../packages/cli/tests/core/spinner.test.ts boundary:unknown
+- ../../tests/core/state-worktree.test.ts -> ../../packages/cli/tests/core/state-worktree.test.ts boundary:unknown
+- ../../tests/core/state.test.ts -> ../../packages/cli/tests/core/state.test.ts boundary:unknown
+- ../../tests/core/templates.test.ts -> ../../packages/cli/tests/core/templates.test.ts boundary:unknown
+- ../../tests/core/worktree-paths.test.ts -> ../../packages/cli/tests/core/worktree-paths.test.ts boundary:unknown
+- ../../tests/discovery/boundary.test.ts -> ../../packages/cli/tests/discovery/boundary.test.ts boundary:unknown
+- ../../tests/discovery/discovery-flow.test.ts -> ../../packages/cli/tests/discovery/discovery-flow.test.ts boundary:unknown
+- ../../tests/discovery/import-resolver.test.ts -> ../../packages/cli/tests/discovery/import-resolver.test.ts boundary:unknown
+- ../../tests/discovery/project-detector.test.ts -> ../../packages/cli/tests/discovery/project-detector.test.ts boundary:unknown
+- ../../tests/discovery/search.test.ts -> ../../packages/cli/tests/discovery/search.test.ts boundary:unknown
+- ../../tests/e2e/helpers.ts -> ../../packages/cli/tests/e2e/helpers.ts boundary:unknown
+- ../../tests/e2e/workflow.test.ts -> ../../packages/cli/tests/e2e/workflow.test.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/simple-imports/src/a.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/a.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/simple-imports/src/b.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/b.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/simple-imports/src/c.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/c.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/symbols/src/types.ts -> ../../packages/cli/tests/fixtures/graph-projects/symbols/src/types.ts boundary:unknown
+- ../../tests/fixtures/sample-project/package.json -> ../../packages/cli/tests/fixtures/sample-project/package.json boundary:unknown
+- ../../tests/fixtures/sample-project/src/auth/password.ts -> ../../packages/cli/tests/fixtures/sample-project/src/auth/password.ts boundary:unknown
+- ../../tests/fixtures/sample-project/src/auth/session.ts -> ../../packages/cli/tests/fixtures/sample-project/src/auth/session.ts boundary:unknown
+- ../../tests/fixtures/sample-project/src/email/send.ts -> ../../packages/cli/tests/fixtures/sample-project/src/email/send.ts boundary:unknown
+- ../../tests/fixtures/sample-project/tests/auth/password.test.ts -> ../../packages/cli/tests/fixtures/sample-project/tests/auth/password.test.ts boundary:unknown
+- ../../tests/gates/run-gates.test.ts -> ../../packages/cli/tests/gates/run-gates.test.ts boundary:unknown
+- ../../tests/helpers/assertions.ts -> ../../packages/cli/tests/helpers/assertions.ts boundary:unknown
+- ../../tests/helpers/cli.ts -> ../../packages/cli/tests/helpers/cli.ts boundary:unknown
+- ../../tests/helpers/fixture.ts -> ../../packages/cli/tests/helpers/fixture.ts boundary:unknown
+- ../../tests/helpers/git.ts -> ../../packages/cli/tests/helpers/git.ts boundary:unknown
+- ../../tests/helpers/workspace.ts -> ../../packages/cli/tests/helpers/workspace.ts boundary:unknown
+- ../../packages/cli/tests/hooks/boundary-aliases.test.ts boundary:out
+- ../../tests/hooks/root-resolution.test.ts -> ../../packages/cli/tests/hooks/root-resolution.test.ts boundary:unknown
+- ../../tests/memory/memory.test.ts -> ../../packages/cli/tests/memory/memory.test.ts boundary:unknown
+- ../../tests/planning/acceptance.test.ts -> ../../packages/cli/tests/planning/acceptance.test.ts boundary:unknown
+- ../../tests/planning/plan-renderer.test.ts -> ../../packages/cli/tests/planning/plan-renderer.test.ts boundary:unknown
+- ../../tests/planning/planning-flow.test.ts -> ../../packages/cli/tests/planning/planning-flow.test.ts boundary:unknown
+- ../../tests/planning/task-generator.test.ts -> ../../packages/cli/tests/planning/task-generator.test.ts boundary:unknown
+- ../../tests/plugins/loader.test.ts -> ../../packages/cli/tests/plugins/loader.test.ts boundary:unknown
+- ../../tests/plugins/registry.test.ts -> ../../packages/cli/tests/plugins/registry.test.ts boundary:unknown
+- ../../tests/stress/concurrency.test.ts -> ../../packages/cli/tests/stress/concurrency.test.ts boundary:unknown
+- ../../tests/stress/corruption.test.ts -> ../../packages/cli/tests/stress/corruption.test.ts boundary:unknown
+- ../../tests/stress/scale.test.ts -> ../../packages/cli/tests/stress/scale.test.ts boundary:unknown
+- ../../tests/stress/workflow.test.ts -> ../../packages/cli/tests/stress/workflow.test.ts boundary:unknown
+- ../../tests/verification/boundary-aliases.test.ts -> ../../packages/cli/tests/verification/boundary-aliases.test.ts boundary:unknown
+- ../../tests/verification/check-flow.test.ts -> ../../packages/cli/tests/verification/check-flow.test.ts boundary:unknown
+- ../../tests/verification/commands.test.ts -> ../../packages/cli/tests/verification/commands.test.ts boundary:unknown
+- ../../tests/verification/require-flags.test.ts -> ../../packages/cli/tests/verification/require-flags.test.ts boundary:unknown
+- ../../packages/cli/tsconfig.json boundary:out
+- ../../vitest.config.ts -> ../../packages/cli/vitest.config.ts boundary:unknown
+- ../../pnpm-lock.yaml boundary:unknown
+- ../../pnpm-workspace.yaml boundary:unknown
+- ../../scripts/extract-changelog-entry.mjs boundary:unknown
+- ../../scripts/plugin-smoke.mjs boundary:unknown
+- ../../scripts/sync-plugin-version.mjs boundary:unknown
+- ../../scripts/sync-readme-version.mjs boundary:unknown
+- ../../src/commands/load-opencode-plugins.ts boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-builder-fix.md boundary:unknown
+- ../../src/commands/opencode-plugin-bundles/leanharness-guardrails.js boundary:unknown
+- ../../src/commands/opencode-plugin-bundles/shared.js boundary:unknown
+- ../../tests/hooks/boundary-aliases.test.ts boundary:unknown
+- ../../tests/plugins/opencode-guardrails-export.test.ts boundary:unknown
+- ../../tsconfig.json -> ../../tsconfig.base.json boundary:unknown
+- ./ boundary:unknown
+- ../../scripts/sync-example-hosts.mjs boundary:unknown
+boundary:
+- partial
+risk:
+- new_dependency status:approved
+miss:
+- 1 verification command(s) failed: pnpm run lint
+- 26 file(s) changed outside boundary.
+- Review is required but no independent review evidence was found.
+next:
+- fix failing checks; rerun lh check F001 --force
+
+VERIFY F001 verdict:needs-fix
+ac:
+- AC1 pass evidence:task summary task-summaries/T01.md mentions AC1
+- AC2 pass evidence:task summary task-summaries/T01.md mentions AC2
+- AC3 pass evidence:task summary task-summaries/T01.md mentions AC3
+- AC4 pass evidence:task summary task-summaries/T01.md mentions AC4
+- AC5 pass evidence:task summary task-summaries/T01.md mentions AC5
+cmd:
+- pnpm install result:skipped
+- pnpm run lint result:fail
+- pnpm run build result:skipped
+- pnpm --dir web run lint result:skipped
+- Risk gate: new_dependency result:skipped
+- pnpm --dir web run build result:skipped
+- claude -p # LeanHarness Task Context result:skipped
+chg:
+- ../../.changeset/config.json boundary:unknown
+- ../../.changeset/opencode-plugin-initial-release.md boundary:unknown
+- ../../.changeset/pnpm-monorepo-and-real-opencode-plugin.md boundary:unknown
+- ../../.claude-plugin/marketplace.json boundary:unknown
+- ../../.github/workflows/ci.yml boundary:unknown
+- ../../.github/workflows/release.yml boundary:unknown
+- ../../.gitignore boundary:unknown
+- ../../.npmignore boundary:unknown
+- ../../CLAUDE.md boundary:unknown
+- ../../README.md boundary:unknown
+- ../../docs/configuration.md boundary:unknown
+- ../../docs/hosts/opencode.md boundary:unknown
+- ../../docs/migration.md boundary:unknown
+- ../../.claude-plugin/plugin.json -> ../../hosts/claude-code/.claude-plugin/plugin.json boundary:unknown
+- ../../agents/lh-builder-fix.md -> ../../hosts/claude-code/agents/lh-builder-fix.md boundary:unknown
+- ../../agents/lh-builder.md -> ../../hosts/claude-code/agents/lh-builder.md boundary:unknown
+- ../../agents/lh-compressor.md -> ../../hosts/claude-code/agents/lh-compressor.md boundary:unknown
+- ../../agents/lh-reviewer.md -> ../../hosts/claude-code/agents/lh-reviewer.md boundary:unknown
+- ../../agents/lh-scout.md -> ../../hosts/claude-code/agents/lh-scout.md boundary:unknown
+- ../../agents/lh-verifier.md -> ../../hosts/claude-code/agents/lh-verifier.md boundary:unknown
+- ../../hooks/hooks.json -> ../../hosts/claude-code/hooks/hooks.json boundary:unknown
+- ../../hooks/package.json -> ../../hosts/claude-code/hooks/package.json boundary:unknown
+- ../../hooks/post-tool-use.js -> ../../hosts/claude-code/hooks/post-tool-use.js boundary:unknown
+- ../../hooks/pre-tool-use.js -> ../../hosts/claude-code/hooks/pre-tool-use.js boundary:unknown
+- ../../hooks/session-end.js -> ../../hosts/claude-code/hooks/session-end.js boundary:unknown
+- ../../hooks/shared.js -> ../../hosts/claude-code/hooks/shared.js boundary:unknown
+- ../../hosts/claude-code/package.json boundary:out
+- ../../skills/lh-build/SKILL.md -> ../../hosts/claude-code/skills/lh-build/SKILL.md boundary:unknown
+- ../../skills/lh-check/SKILL.md -> ../../hosts/claude-code/skills/lh-check/SKILL.md boundary:unknown
+- ../../skills/lh-discover/SKILL.md -> ../../hosts/claude-code/skills/lh-discover/SKILL.md boundary:unknown
+- ../../skills/lh-do/SKILL.md -> ../../hosts/claude-code/skills/lh-do/SKILL.md boundary:unknown
+- ../../skills/lh-plan/SKILL.md -> ../../hosts/claude-code/skills/lh-plan/SKILL.md boundary:unknown
+- ../../skills/lh-spec/SKILL.md -> ../../hosts/claude-code/skills/lh-spec/SKILL.md boundary:unknown
+- ../../skills/lh-status/SKILL.md -> ../../hosts/claude-code/skills/lh-status/SKILL.md boundary:unknown
+- ../../skills/lh-worktree/SKILL.md -> ../../hosts/claude-code/skills/lh-worktree/SKILL.md boundary:unknown
+- ../../hosts/claude-code/tests/frontmatter.test.ts boundary:out
+- ../../hosts/claude-code/tests/post-tool-use.test.ts boundary:out
+- ../../hosts/claude-code/tests/session-end.test.ts boundary:out
+- ../../hosts/claude-code/vitest.config.ts boundary:out
+- ../../hosts/opencode/LICENSE boundary:out
+- ../../hosts/opencode/README.md boundary:out
+- ../../hosts/opencode/package.json boundary:out
+- ../../hosts/opencode/scripts/opencode-smoke.mjs boundary:out
+- ../../hosts/opencode/src/index.ts boundary:out
+- ../../hosts/opencode/src/leanharness-guardrails.ts boundary:out
+- ../../hosts/opencode/src/shared.ts boundary:out
+- ../../src/commands/opencode-agent-bundles/lh-builder-fix.md -> ../../hosts/opencode/templates/agents/lh-builder-fix.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-builder.md -> ../../hosts/opencode/templates/agents/lh-builder.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-compressor.md -> ../../hosts/opencode/templates/agents/lh-compressor.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-reviewer.md -> ../../hosts/opencode/templates/agents/lh-reviewer.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-scout.md -> ../../hosts/opencode/templates/agents/lh-scout.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-verifier.md -> ../../hosts/opencode/templates/agents/lh-verifier.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-build.md -> ../../hosts/opencode/templates/commands/lh-build.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-check.md -> ../../hosts/opencode/templates/commands/lh-check.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-discover.md -> ../../hosts/opencode/templates/commands/lh-discover.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-do.md -> ../../hosts/opencode/templates/commands/lh-do.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-plan.md -> ../../hosts/opencode/templates/commands/lh-plan.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-spec.md -> ../../hosts/opencode/templates/commands/lh-spec.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-status.md -> ../../hosts/opencode/templates/commands/lh-status.md boundary:unknown
+- ../../hosts/opencode/tests/frontmatter.test.ts boundary:out
+- ../../hosts/opencode/tests/guardrails-export.test.ts boundary:out
+- ../../hosts/opencode/tests/permission-ask.test.ts boundary:out
+- ../../hosts/opencode/tests/tool-execute-before.test.ts boundary:out
+- ../../hosts/opencode/tsconfig.json boundary:out
+- ../../hosts/opencode/vitest.config.ts boundary:out
+- ../../package-lock.json boundary:unknown
+- ../../package.json boundary:unknown
+- ../../.lh/policies/boundary.yml -> ../../packages/cli/.lh/policies/boundary.yml boundary:unknown
+- ../../.lh/policies/commands.yml -> ../../packages/cli/.lh/policies/commands.yml boundary:unknown
+- ../../.lh/policies/risk-gates.yml -> ../../packages/cli/.lh/policies/risk-gates.yml boundary:unknown
+- ../../.lh/protocols/cavebus.yml -> ../../packages/cli/.lh/protocols/cavebus.yml boundary:unknown
+- ../../.lh/templates/boundary.json -> ../../packages/cli/.lh/templates/boundary.json boundary:unknown
+- ../../.lh/templates/cavebus-message.md -> ../../packages/cli/.lh/templates/cavebus-message.md boundary:unknown
+- ../../.lh/templates/cavebus/discovery.cave -> ../../packages/cli/.lh/templates/cavebus/discovery.cave boundary:unknown
+- ../../.lh/templates/cavebus/error.cave -> ../../packages/cli/.lh/templates/cavebus/error.cave boundary:unknown
+- ../../.lh/templates/cavebus/review.cave -> ../../packages/cli/.lh/templates/cavebus/review.cave boundary:unknown
+- ../../.lh/templates/cavebus/summary.cave -> ../../packages/cli/.lh/templates/cavebus/summary.cave boundary:unknown
+- ../../.lh/templates/cavebus/task.cave -> ../../packages/cli/.lh/templates/cavebus/task.cave boundary:unknown
+- ../../.lh/templates/cavebus/verify.cave -> ../../packages/cli/.lh/templates/cavebus/verify.cave boundary:unknown
+- ../../.lh/templates/checks.md -> ../../packages/cli/.lh/templates/checks.md boundary:unknown
+- ../../.lh/templates/discovery.md -> ../../packages/cli/.lh/templates/discovery.md boundary:unknown
+- ../../.lh/templates/plan.md -> ../../packages/cli/.lh/templates/plan.md boundary:unknown
+- ../../.lh/templates/result.md -> ../../packages/cli/.lh/templates/result.md boundary:unknown
+- ../../.lh/templates/review.json -> ../../packages/cli/.lh/templates/review.json boundary:unknown
+- ../../.lh/templates/review.md -> ../../packages/cli/.lh/templates/review.md boundary:unknown
+- ../../.lh/templates/spec.md -> ../../packages/cli/.lh/templates/spec.md boundary:unknown
+- ../../.lh/templates/task-summary.md -> ../../packages/cli/.lh/templates/task-summary.md boundary:unknown
+- ../../.lh/templates/tasks.md -> ../../packages/cli/.lh/templates/tasks.md boundary:unknown
+- ../../CHANGELOG.md -> ../../packages/cli/CHANGELOG.md boundary:unknown
+- ../../packages/cli/LICENSE boundary:out
+- ../../packages/cli/README.md boundary:out
+- ../../packages/cli/package.json boundary:out
+- ../../packages/cli/scripts/copy-opencode-vendor.mjs boundary:out
+- ../../src/adapters/claude-code.ts -> ../../packages/cli/src/adapters/claude-code.ts boundary:unknown
+- ../../src/adapters/opencode.ts -> ../../packages/cli/src/adapters/opencode.ts boundary:unknown
+- ../../src/adapters/registry.ts -> ../../packages/cli/src/adapters/registry.ts boundary:unknown
+- ../../src/adapters/types.ts -> ../../packages/cli/src/adapters/types.ts boundary:unknown
+- ../../src/build/index.ts -> ../../packages/cli/src/build/index.ts boundary:unknown
+- ../../src/build/task-runner.ts -> ../../packages/cli/src/build/task-runner.ts boundary:unknown
+- ../../src/build/task-status.ts -> ../../packages/cli/src/build/task-status.ts boundary:unknown
+- ../../src/build/task-summary.ts -> ../../packages/cli/src/build/task-summary.ts boundary:unknown
+- ../../src/cavebus/compress.ts -> ../../packages/cli/src/cavebus/compress.ts boundary:unknown
+- ../../src/cavebus/index.ts -> ../../packages/cli/src/cavebus/index.ts boundary:unknown
+- ../../src/cavebus/protected.ts -> ../../packages/cli/src/cavebus/protected.ts boundary:unknown
+- ../../src/cavebus/schema.ts -> ../../packages/cli/src/cavebus/schema.ts boundary:unknown
+- ../../src/cavebus/validate.ts -> ../../packages/cli/src/cavebus/validate.ts boundary:unknown
+- ../../src/cli.ts -> ../../packages/cli/src/cli.ts boundary:unknown
+- ../../src/cli/banner.ts -> ../../packages/cli/src/cli/banner.ts boundary:unknown
+- ../../src/cli/init-hosts.ts -> ../../packages/cli/src/cli/init-hosts.ts boundary:unknown
+- ../../src/cli/options.ts -> ../../packages/cli/src/cli/options.ts boundary:unknown
+- ../../src/cli/program.ts -> ../../packages/cli/src/cli/program.ts boundary:unknown
+- ../../src/commands/archive.ts -> ../../packages/cli/src/commands/archive.ts boundary:unknown
+- ../../src/commands/boundary.ts -> ../../packages/cli/src/commands/boundary.ts boundary:unknown
+- ../../src/commands/build.ts -> ../../packages/cli/src/commands/build.ts boundary:unknown
+- ../../src/commands/cavebus.ts -> ../../packages/cli/src/commands/cavebus.ts boundary:unknown
+- ../../src/commands/check.ts -> ../../packages/cli/src/commands/check.ts boundary:unknown
+- ../../src/commands/command-enforcement.ts -> ../../packages/cli/src/commands/command-enforcement.ts boundary:unknown
+- ../../src/commands/compile-task.ts -> ../../packages/cli/src/commands/compile-task.ts boundary:unknown
+- ../../src/commands/completion.ts -> ../../packages/cli/src/commands/completion.ts boundary:unknown
+- ../../src/commands/compress.ts -> ../../packages/cli/src/commands/compress.ts boundary:unknown
+- ../../src/commands/config.ts -> ../../packages/cli/src/commands/config.ts boundary:unknown
+- ../../src/commands/detect-install.ts -> ../../packages/cli/src/commands/detect-install.ts boundary:unknown
+- ../../src/commands/discover.ts -> ../../packages/cli/src/commands/discover.ts boundary:unknown
+- ../../src/commands/doctor.ts -> ../../packages/cli/src/commands/doctor.ts boundary:unknown
+- ../../src/commands/init-claude-code.ts -> ../../packages/cli/src/commands/init-claude-code.ts boundary:unknown
+- ../../src/commands/init.ts -> ../../packages/cli/src/commands/init.ts boundary:unknown
+- ../../src/commands/legacy-footprint.ts -> ../../packages/cli/src/commands/legacy-footprint.ts boundary:unknown
+- ../../src/commands/list.ts -> ../../packages/cli/src/commands/list.ts boundary:unknown
+- ../../src/commands/load-opencode-agents.ts -> ../../packages/cli/src/commands/load-opencode-agents.ts boundary:unknown
+- ../../src/commands/load-opencode-commands.ts -> ../../packages/cli/src/commands/load-opencode-commands.ts boundary:unknown
+- ../../packages/cli/src/commands/load-opencode-plugins.ts boundary:out
+- ../../src/commands/memory.ts -> ../../packages/cli/src/commands/memory.ts boundary:unknown
+- ../../src/commands/migrate.ts -> ../../packages/cli/src/commands/migrate.ts boundary:unknown
+- ../../src/commands/new.ts -> ../../packages/cli/src/commands/new.ts boundary:unknown
+- ../../packages/cli/src/commands/opencode-vendor-resolve.ts boundary:out
+- ../../src/commands/plan.ts -> ../../packages/cli/src/commands/plan.ts boundary:unknown
+- ../../src/commands/review.ts -> ../../packages/cli/src/commands/review.ts boundary:unknown
+- ../../src/commands/run-task.ts -> ../../packages/cli/src/commands/run-task.ts boundary:unknown
+- ../../src/commands/show.ts -> ../../packages/cli/src/commands/show.ts boundary:unknown
+- ../../src/commands/spec.ts -> ../../packages/cli/src/commands/spec.ts boundary:unknown
+- ../../src/commands/status.ts -> ../../packages/cli/src/commands/status.ts boundary:unknown
+- ../../src/commands/uninstall.ts -> ../../packages/cli/src/commands/uninstall.ts boundary:unknown
+- ../../src/commands/update.ts -> ../../packages/cli/src/commands/update.ts boundary:unknown
+- ../../src/commands/watch.ts -> ../../packages/cli/src/commands/watch.ts boundary:unknown
+- ../../src/commands/worktree.ts -> ../../packages/cli/src/commands/worktree.ts boundary:unknown
+- ../../src/context/compiler.ts -> ../../packages/cli/src/context/compiler.ts boundary:unknown
+- ../../src/context/protected-tokens.ts -> ../../packages/cli/src/context/protected-tokens.ts boundary:unknown
+- ../../src/context/task-context.ts -> ../../packages/cli/src/context/task-context.ts boundary:unknown
+- ../../src/core/bundled-scaffold.ts -> ../../packages/cli/src/core/bundled-scaffold.ts boundary:unknown
+- ../../src/core/colors.ts -> ../../packages/cli/src/core/colors.ts boundary:unknown
+- ../../src/core/config-mutate.ts -> ../../packages/cli/src/core/config-mutate.ts boundary:unknown
+- ../../src/core/config.ts -> ../../packages/cli/src/core/config.ts boundary:unknown
+- ../../src/core/errors.ts -> ../../packages/cli/src/core/errors.ts boundary:unknown
+- ../../src/core/features.ts -> ../../packages/cli/src/core/features.ts boundary:unknown
+- ../../src/core/fs.ts -> ../../packages/cli/src/core/fs.ts boundary:unknown
+- ../../src/core/git.ts -> ../../packages/cli/src/core/git.ts boundary:unknown
+- ../../src/core/harness-root.ts -> ../../packages/cli/src/core/harness-root.ts boundary:unknown
+- ../../src/core/logger.ts -> ../../packages/cli/src/core/logger.ts boundary:unknown
+- ../../src/core/paths.ts -> ../../packages/cli/src/core/paths.ts boundary:unknown
+- ../../src/core/prompt.ts -> ../../packages/cli/src/core/prompt.ts boundary:unknown
+- ../../src/core/resolved-config.ts -> ../../packages/cli/src/core/resolved-config.ts boundary:unknown
+- ../../src/core/risk-gates.ts -> ../../packages/cli/src/core/risk-gates.ts boundary:unknown
+- ../../src/core/spinner.ts -> ../../packages/cli/src/core/spinner.ts boundary:unknown
+- ../../src/core/state.ts -> ../../packages/cli/src/core/state.ts boundary:unknown
+- ../../src/core/templates.ts -> ../../packages/cli/src/core/templates.ts boundary:unknown
+- ../../src/core/types.ts -> ../../packages/cli/src/core/types.ts boundary:unknown
+- ../../src/core/version.ts -> ../../packages/cli/src/core/version.ts boundary:unknown
+- ../../src/core/worktree.ts -> ../../packages/cli/src/core/worktree.ts boundary:unknown
+- ../../src/discovery/boundary.ts -> ../../packages/cli/src/discovery/boundary.ts boundary:unknown
+- ../../src/discovery/import-resolver.ts -> ../../packages/cli/src/discovery/import-resolver.ts boundary:unknown
+- ../../src/discovery/index.ts -> ../../packages/cli/src/discovery/index.ts boundary:unknown
+- ../../src/discovery/package-detector.ts -> ../../packages/cli/src/discovery/package-detector.ts boundary:unknown
+- ../../src/discovery/project-detector.ts -> ../../packages/cli/src/discovery/project-detector.ts boundary:unknown
+- ../../src/discovery/search.ts -> ../../packages/cli/src/discovery/search.ts boundary:unknown
+- ../../src/discovery/test-detector.ts -> ../../packages/cli/src/discovery/test-detector.ts boundary:unknown
+- ../../src/gates/index.ts -> ../../packages/cli/src/gates/index.ts boundary:unknown
+- ../../src/gates/run-gates.ts -> ../../packages/cli/src/gates/run-gates.ts boundary:unknown
+- ../../src/gates/types.ts -> ../../packages/cli/src/gates/types.ts boundary:unknown
+- ../../src/index.ts -> ../../packages/cli/src/index.ts boundary:unknown
+- ../../src/memory/index.ts -> ../../packages/cli/src/memory/index.ts boundary:unknown
+- ../../src/planning/acceptance.ts -> ../../packages/cli/src/planning/acceptance.ts boundary:unknown
+- ../../src/planning/index.ts -> ../../packages/cli/src/planning/index.ts boundary:unknown
+- ../../src/planning/plan-renderer.ts -> ../../packages/cli/src/planning/plan-renderer.ts boundary:unknown
+- ../../src/planning/task-generator.ts -> ../../packages/cli/src/planning/task-generator.ts boundary:unknown
+- ../../src/plugins/loader.ts -> ../../packages/cli/src/plugins/loader.ts boundary:unknown
+- ../../src/plugins/registry.ts -> ../../packages/cli/src/plugins/registry.ts boundary:unknown
+- ../../src/plugins/types.ts -> ../../packages/cli/src/plugins/types.ts boundary:unknown
+- ../../src/verification/acceptance.ts -> ../../packages/cli/src/verification/acceptance.ts boundary:unknown
+- ../../src/verification/changed-files.ts -> ../../packages/cli/src/verification/changed-files.ts boundary:unknown
+- ../../src/verification/commands.ts -> ../../packages/cli/src/verification/commands.ts boundary:unknown
+- ../../src/verification/index.ts -> ../../packages/cli/src/verification/index.ts boundary:unknown
+- ../../src/verification/review-artifact.ts -> ../../packages/cli/src/verification/review-artifact.ts boundary:unknown
+- ../../src/verification/review.ts -> ../../packages/cli/src/verification/review.ts boundary:unknown
+- ../../tests/adapters/claude-code.test.ts -> ../../packages/cli/tests/adapters/claude-code.test.ts boundary:unknown
+- ../../tests/adapters/opencode.test.ts -> ../../packages/cli/tests/adapters/opencode.test.ts boundary:unknown
+- ../../tests/adapters/registry.test.ts -> ../../packages/cli/tests/adapters/registry.test.ts boundary:unknown
+- ../../tests/adapters/working-dir.test.ts -> ../../packages/cli/tests/adapters/working-dir.test.ts boundary:unknown
+- ../../tests/build/build-flow.test.ts -> ../../packages/cli/tests/build/build-flow.test.ts boundary:unknown
+- ../../tests/build/require-worktree.test.ts -> ../../packages/cli/tests/build/require-worktree.test.ts boundary:unknown
+- ../../tests/build/task-status.test.ts -> ../../packages/cli/tests/build/task-status.test.ts boundary:unknown
+- ../../tests/cavebus/compress.test.ts -> ../../packages/cli/tests/cavebus/compress.test.ts boundary:unknown
+- ../../tests/cavebus/protected.test.ts -> ../../packages/cli/tests/cavebus/protected.test.ts boundary:unknown
+- ../../tests/cavebus/schema.test.ts -> ../../packages/cli/tests/cavebus/schema.test.ts boundary:unknown
+- ../../tests/cavebus/validate.test.ts -> ../../packages/cli/tests/cavebus/validate.test.ts boundary:unknown
+- ../../tests/cli/banner.test.ts -> ../../packages/cli/tests/cli/banner.test.ts boundary:unknown
+- ../../tests/cli/program.test.ts -> ../../packages/cli/tests/cli/program.test.ts boundary:unknown
+- ../../tests/cli/worktree-program.test.ts -> ../../packages/cli/tests/cli/worktree-program.test.ts boundary:unknown
+- ../../tests/commands/completion.test.ts -> ../../packages/cli/tests/commands/completion.test.ts boundary:unknown
+- ../../tests/commands/doctor.test.ts -> ../../packages/cli/tests/commands/doctor.test.ts boundary:unknown
+- ../../tests/commands/init-e2e.test.ts -> ../../packages/cli/tests/commands/init-e2e.test.ts boundary:unknown
+- ../../tests/commands/init-global.test.ts -> ../../packages/cli/tests/commands/init-global.test.ts boundary:unknown
+- ../../tests/commands/init-graphify.test.ts -> ../../packages/cli/tests/commands/init-graphify.test.ts boundary:unknown
+- ../../tests/commands/legacy-footprint.test.ts -> ../../packages/cli/tests/commands/legacy-footprint.test.ts boundary:unknown
+- ../../tests/commands/memory.test.ts -> ../../packages/cli/tests/commands/memory.test.ts boundary:unknown
+- ../../tests/commands/migrate.test.ts -> ../../packages/cli/tests/commands/migrate.test.ts boundary:unknown
+- ../../tests/commands/uninstall.test.ts -> ../../packages/cli/tests/commands/uninstall.test.ts boundary:unknown
+- ../../tests/commands/update.test.ts -> ../../packages/cli/tests/commands/update.test.ts boundary:unknown
+- ../../tests/commands/watch.test.ts -> ../../packages/cli/tests/commands/watch.test.ts boundary:unknown
+- ../../tests/commands/worktree-list-remove.test.ts -> ../../packages/cli/tests/commands/worktree-list-remove.test.ts boundary:unknown
+- ../../tests/context/compiler.test.ts -> ../../packages/cli/tests/context/compiler.test.ts boundary:unknown
+- ../../tests/context/protected-tokens.test.ts -> ../../packages/cli/tests/context/protected-tokens.test.ts boundary:unknown
+- ../../tests/core/bundled-scaffold.test.ts -> ../../packages/cli/tests/core/bundled-scaffold.test.ts boundary:unknown
+- ../../tests/core/colors.test.ts -> ../../packages/cli/tests/core/colors.test.ts boundary:unknown
+- ../../tests/core/config.test.ts -> ../../packages/cli/tests/core/config.test.ts boundary:unknown
+- ../../tests/core/errors.test.ts -> ../../packages/cli/tests/core/errors.test.ts boundary:unknown
+- ../../tests/core/features.test.ts -> ../../packages/cli/tests/core/features.test.ts boundary:unknown
+- ../../tests/core/fs.test.ts -> ../../packages/cli/tests/core/fs.test.ts boundary:unknown
+- ../../tests/core/git.test.ts -> ../../packages/cli/tests/core/git.test.ts boundary:unknown
+- ../../tests/core/harness-root.test.ts -> ../../packages/cli/tests/core/harness-root.test.ts boundary:unknown
+- ../../tests/core/logger.test.ts -> ../../packages/cli/tests/core/logger.test.ts boundary:unknown
+- ../../tests/core/paths.test.ts -> ../../packages/cli/tests/core/paths.test.ts boundary:unknown
+- ../../tests/core/prompt.test.ts -> ../../packages/cli/tests/core/prompt.test.ts boundary:unknown
+- ../../tests/core/resolved-config.test.ts -> ../../packages/cli/tests/core/resolved-config.test.ts boundary:unknown
+- ../../tests/core/risk-gates.test.ts -> ../../packages/cli/tests/core/risk-gates.test.ts boundary:unknown
+- ../../tests/core/spinner.test.ts -> ../../packages/cli/tests/core/spinner.test.ts boundary:unknown
+- ../../tests/core/state-worktree.test.ts -> ../../packages/cli/tests/core/state-worktree.test.ts boundary:unknown
+- ../../tests/core/state.test.ts -> ../../packages/cli/tests/core/state.test.ts boundary:unknown
+- ../../tests/core/templates.test.ts -> ../../packages/cli/tests/core/templates.test.ts boundary:unknown
+- ../../tests/core/worktree-paths.test.ts -> ../../packages/cli/tests/core/worktree-paths.test.ts boundary:unknown
+- ../../tests/discovery/boundary.test.ts -> ../../packages/cli/tests/discovery/boundary.test.ts boundary:unknown
+- ../../tests/discovery/discovery-flow.test.ts -> ../../packages/cli/tests/discovery/discovery-flow.test.ts boundary:unknown
+- ../../tests/discovery/import-resolver.test.ts -> ../../packages/cli/tests/discovery/import-resolver.test.ts boundary:unknown
+- ../../tests/discovery/project-detector.test.ts -> ../../packages/cli/tests/discovery/project-detector.test.ts boundary:unknown
+- ../../tests/discovery/search.test.ts -> ../../packages/cli/tests/discovery/search.test.ts boundary:unknown
+- ../../tests/e2e/helpers.ts -> ../../packages/cli/tests/e2e/helpers.ts boundary:unknown
+- ../../tests/e2e/workflow.test.ts -> ../../packages/cli/tests/e2e/workflow.test.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/simple-imports/src/a.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/a.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/simple-imports/src/b.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/b.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/simple-imports/src/c.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/c.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/symbols/src/types.ts -> ../../packages/cli/tests/fixtures/graph-projects/symbols/src/types.ts boundary:unknown
+- ../../tests/fixtures/sample-project/package.json -> ../../packages/cli/tests/fixtures/sample-project/package.json boundary:unknown
+- ../../tests/fixtures/sample-project/src/auth/password.ts -> ../../packages/cli/tests/fixtures/sample-project/src/auth/password.ts boundary:unknown
+- ../../tests/fixtures/sample-project/src/auth/session.ts -> ../../packages/cli/tests/fixtures/sample-project/src/auth/session.ts boundary:unknown
+- ../../tests/fixtures/sample-project/src/email/send.ts -> ../../packages/cli/tests/fixtures/sample-project/src/email/send.ts boundary:unknown
+- ../../tests/fixtures/sample-project/tests/auth/password.test.ts -> ../../packages/cli/tests/fixtures/sample-project/tests/auth/password.test.ts boundary:unknown
+- ../../tests/gates/run-gates.test.ts -> ../../packages/cli/tests/gates/run-gates.test.ts boundary:unknown
+- ../../tests/helpers/assertions.ts -> ../../packages/cli/tests/helpers/assertions.ts boundary:unknown
+- ../../tests/helpers/cli.ts -> ../../packages/cli/tests/helpers/cli.ts boundary:unknown
+- ../../tests/helpers/fixture.ts -> ../../packages/cli/tests/helpers/fixture.ts boundary:unknown
+- ../../tests/helpers/git.ts -> ../../packages/cli/tests/helpers/git.ts boundary:unknown
+- ../../tests/helpers/workspace.ts -> ../../packages/cli/tests/helpers/workspace.ts boundary:unknown
+- ../../packages/cli/tests/hooks/boundary-aliases.test.ts boundary:out
+- ../../tests/hooks/root-resolution.test.ts -> ../../packages/cli/tests/hooks/root-resolution.test.ts boundary:unknown
+- ../../tests/memory/memory.test.ts -> ../../packages/cli/tests/memory/memory.test.ts boundary:unknown
+- ../../tests/planning/acceptance.test.ts -> ../../packages/cli/tests/planning/acceptance.test.ts boundary:unknown
+- ../../tests/planning/plan-renderer.test.ts -> ../../packages/cli/tests/planning/plan-renderer.test.ts boundary:unknown
+- ../../tests/planning/planning-flow.test.ts -> ../../packages/cli/tests/planning/planning-flow.test.ts boundary:unknown
+- ../../tests/planning/task-generator.test.ts -> ../../packages/cli/tests/planning/task-generator.test.ts boundary:unknown
+- ../../tests/plugins/loader.test.ts -> ../../packages/cli/tests/plugins/loader.test.ts boundary:unknown
+- ../../tests/plugins/registry.test.ts -> ../../packages/cli/tests/plugins/registry.test.ts boundary:unknown
+- ../../tests/stress/concurrency.test.ts -> ../../packages/cli/tests/stress/concurrency.test.ts boundary:unknown
+- ../../tests/stress/corruption.test.ts -> ../../packages/cli/tests/stress/corruption.test.ts boundary:unknown
+- ../../tests/stress/scale.test.ts -> ../../packages/cli/tests/stress/scale.test.ts boundary:unknown
+- ../../tests/stress/workflow.test.ts -> ../../packages/cli/tests/stress/workflow.test.ts boundary:unknown
+- ../../tests/verification/boundary-aliases.test.ts -> ../../packages/cli/tests/verification/boundary-aliases.test.ts boundary:unknown
+- ../../tests/verification/check-flow.test.ts -> ../../packages/cli/tests/verification/check-flow.test.ts boundary:unknown
+- ../../tests/verification/commands.test.ts -> ../../packages/cli/tests/verification/commands.test.ts boundary:unknown
+- ../../tests/verification/require-flags.test.ts -> ../../packages/cli/tests/verification/require-flags.test.ts boundary:unknown
+- ../../packages/cli/tsconfig.json boundary:out
+- ../../vitest.config.ts -> ../../packages/cli/vitest.config.ts boundary:unknown
+- ../../pnpm-lock.yaml boundary:unknown
+- ../../pnpm-workspace.yaml boundary:unknown
+- ../../scripts/extract-changelog-entry.mjs boundary:unknown
+- ../../scripts/plugin-smoke.mjs boundary:unknown
+- ../../scripts/sync-plugin-version.mjs boundary:unknown
+- ../../scripts/sync-readme-version.mjs boundary:unknown
+- ../../src/commands/load-opencode-plugins.ts boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-builder-fix.md boundary:unknown
+- ../../src/commands/opencode-plugin-bundles/leanharness-guardrails.js boundary:unknown
+- ../../src/commands/opencode-plugin-bundles/shared.js boundary:unknown
+- ../../tests/hooks/boundary-aliases.test.ts boundary:unknown
+- ../../tests/plugins/opencode-guardrails-export.test.ts boundary:unknown
+- ../../tsconfig.json -> ../../tsconfig.base.json boundary:unknown
+- ./ boundary:unknown
+- ../../scripts/sync-example-hosts.mjs boundary:unknown
+boundary:
+- partial
+risk:
+- new_dependency status:approved
+miss:
+- 1 verification command(s) failed: pnpm run lint
+- 26 file(s) changed outside boundary.
+- Review is required but no independent review evidence was found.
+next:
+- fix failing checks; rerun lh check F001 --force
+
+VERIFY F001 verdict:needs-fix
+ac:
+- AC1 pass evidence:task summary task-summaries/T01.md mentions AC1
+- AC2 pass evidence:task summary task-summaries/T01.md mentions AC2
+- AC3 pass evidence:task summary task-summaries/T01.md mentions AC3
+- AC4 pass evidence:task summary task-summaries/T01.md mentions AC4
+- AC5 pass evidence:task summary task-summaries/T01.md mentions AC5
+cmd:
+- pnpm install result:skipped
+- pnpm run lint result:fail
+- pnpm run build result:skipped
+- pnpm --dir web run lint result:skipped
+- Risk gate: new_dependency result:skipped
+- pnpm --dir web run build result:skipped
+- claude -p # LeanHarness Task Context result:skipped
+- cd web && pnpm run lint result:pass
+- cd web && pnpm run build result:pass
+chg:
+- ../../.changeset/config.json boundary:unknown
+- ../../.changeset/opencode-plugin-initial-release.md boundary:unknown
+- ../../.changeset/pnpm-monorepo-and-real-opencode-plugin.md boundary:unknown
+- ../../.claude-plugin/marketplace.json boundary:unknown
+- ../../.github/workflows/ci.yml boundary:unknown
+- ../../.github/workflows/release.yml boundary:unknown
+- ../../.gitignore boundary:unknown
+- ../../.npmignore boundary:unknown
+- ../../CLAUDE.md boundary:unknown
+- ../../README.md boundary:unknown
+- ../../docs/configuration.md boundary:unknown
+- ../../docs/hosts/opencode.md boundary:unknown
+- ../../docs/migration.md boundary:unknown
+- ../../.claude-plugin/plugin.json -> ../../hosts/claude-code/.claude-plugin/plugin.json boundary:unknown
+- ../../agents/lh-builder-fix.md -> ../../hosts/claude-code/agents/lh-builder-fix.md boundary:unknown
+- ../../agents/lh-builder.md -> ../../hosts/claude-code/agents/lh-builder.md boundary:unknown
+- ../../agents/lh-compressor.md -> ../../hosts/claude-code/agents/lh-compressor.md boundary:unknown
+- ../../agents/lh-reviewer.md -> ../../hosts/claude-code/agents/lh-reviewer.md boundary:unknown
+- ../../agents/lh-scout.md -> ../../hosts/claude-code/agents/lh-scout.md boundary:unknown
+- ../../agents/lh-verifier.md -> ../../hosts/claude-code/agents/lh-verifier.md boundary:unknown
+- ../../hooks/hooks.json -> ../../hosts/claude-code/hooks/hooks.json boundary:unknown
+- ../../hooks/package.json -> ../../hosts/claude-code/hooks/package.json boundary:unknown
+- ../../hooks/post-tool-use.js -> ../../hosts/claude-code/hooks/post-tool-use.js boundary:unknown
+- ../../hooks/pre-tool-use.js -> ../../hosts/claude-code/hooks/pre-tool-use.js boundary:unknown
+- ../../hooks/session-end.js -> ../../hosts/claude-code/hooks/session-end.js boundary:unknown
+- ../../hooks/shared.js -> ../../hosts/claude-code/hooks/shared.js boundary:unknown
+- ../../hosts/claude-code/package.json boundary:out
+- ../../skills/lh-build/SKILL.md -> ../../hosts/claude-code/skills/lh-build/SKILL.md boundary:unknown
+- ../../skills/lh-check/SKILL.md -> ../../hosts/claude-code/skills/lh-check/SKILL.md boundary:unknown
+- ../../skills/lh-discover/SKILL.md -> ../../hosts/claude-code/skills/lh-discover/SKILL.md boundary:unknown
+- ../../skills/lh-do/SKILL.md -> ../../hosts/claude-code/skills/lh-do/SKILL.md boundary:unknown
+- ../../skills/lh-plan/SKILL.md -> ../../hosts/claude-code/skills/lh-plan/SKILL.md boundary:unknown
+- ../../skills/lh-spec/SKILL.md -> ../../hosts/claude-code/skills/lh-spec/SKILL.md boundary:unknown
+- ../../skills/lh-status/SKILL.md -> ../../hosts/claude-code/skills/lh-status/SKILL.md boundary:unknown
+- ../../skills/lh-worktree/SKILL.md -> ../../hosts/claude-code/skills/lh-worktree/SKILL.md boundary:unknown
+- ../../hosts/claude-code/tests/frontmatter.test.ts boundary:out
+- ../../hosts/claude-code/tests/post-tool-use.test.ts boundary:out
+- ../../hosts/claude-code/tests/session-end.test.ts boundary:out
+- ../../hosts/claude-code/vitest.config.ts boundary:out
+- ../../hosts/opencode/LICENSE boundary:out
+- ../../hosts/opencode/README.md boundary:out
+- ../../hosts/opencode/package.json boundary:out
+- ../../hosts/opencode/scripts/opencode-smoke.mjs boundary:out
+- ../../hosts/opencode/src/index.ts boundary:out
+- ../../hosts/opencode/src/leanharness-guardrails.ts boundary:out
+- ../../hosts/opencode/src/shared.ts boundary:out
+- ../../src/commands/opencode-agent-bundles/lh-builder-fix.md -> ../../hosts/opencode/templates/agents/lh-builder-fix.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-builder.md -> ../../hosts/opencode/templates/agents/lh-builder.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-compressor.md -> ../../hosts/opencode/templates/agents/lh-compressor.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-reviewer.md -> ../../hosts/opencode/templates/agents/lh-reviewer.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-scout.md -> ../../hosts/opencode/templates/agents/lh-scout.md boundary:unknown
+- ../../src/commands/opencode-agent-bundles/lh-verifier.md -> ../../hosts/opencode/templates/agents/lh-verifier.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-build.md -> ../../hosts/opencode/templates/commands/lh-build.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-check.md -> ../../hosts/opencode/templates/commands/lh-check.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-discover.md -> ../../hosts/opencode/templates/commands/lh-discover.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-do.md -> ../../hosts/opencode/templates/commands/lh-do.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-plan.md -> ../../hosts/opencode/templates/commands/lh-plan.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-spec.md -> ../../hosts/opencode/templates/commands/lh-spec.md boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-status.md -> ../../hosts/opencode/templates/commands/lh-status.md boundary:unknown
+- ../../hosts/opencode/tests/frontmatter.test.ts boundary:out
+- ../../hosts/opencode/tests/guardrails-export.test.ts boundary:out
+- ../../hosts/opencode/tests/permission-ask.test.ts boundary:out
+- ../../hosts/opencode/tests/tool-execute-before.test.ts boundary:out
+- ../../hosts/opencode/tsconfig.json boundary:out
+- ../../hosts/opencode/vitest.config.ts boundary:out
+- ../../package-lock.json boundary:unknown
+- ../../package.json boundary:unknown
+- ../../.lh/policies/boundary.yml -> ../../packages/cli/.lh/policies/boundary.yml boundary:unknown
+- ../../.lh/policies/commands.yml -> ../../packages/cli/.lh/policies/commands.yml boundary:unknown
+- ../../.lh/policies/risk-gates.yml -> ../../packages/cli/.lh/policies/risk-gates.yml boundary:unknown
+- ../../.lh/protocols/cavebus.yml -> ../../packages/cli/.lh/protocols/cavebus.yml boundary:unknown
+- ../../.lh/templates/boundary.json -> ../../packages/cli/.lh/templates/boundary.json boundary:unknown
+- ../../.lh/templates/cavebus-message.md -> ../../packages/cli/.lh/templates/cavebus-message.md boundary:unknown
+- ../../.lh/templates/cavebus/discovery.cave -> ../../packages/cli/.lh/templates/cavebus/discovery.cave boundary:unknown
+- ../../.lh/templates/cavebus/error.cave -> ../../packages/cli/.lh/templates/cavebus/error.cave boundary:unknown
+- ../../.lh/templates/cavebus/review.cave -> ../../packages/cli/.lh/templates/cavebus/review.cave boundary:unknown
+- ../../.lh/templates/cavebus/summary.cave -> ../../packages/cli/.lh/templates/cavebus/summary.cave boundary:unknown
+- ../../.lh/templates/cavebus/task.cave -> ../../packages/cli/.lh/templates/cavebus/task.cave boundary:unknown
+- ../../.lh/templates/cavebus/verify.cave -> ../../packages/cli/.lh/templates/cavebus/verify.cave boundary:unknown
+- ../../.lh/templates/checks.md -> ../../packages/cli/.lh/templates/checks.md boundary:unknown
+- ../../.lh/templates/discovery.md -> ../../packages/cli/.lh/templates/discovery.md boundary:unknown
+- ../../.lh/templates/plan.md -> ../../packages/cli/.lh/templates/plan.md boundary:unknown
+- ../../.lh/templates/result.md -> ../../packages/cli/.lh/templates/result.md boundary:unknown
+- ../../.lh/templates/review.json -> ../../packages/cli/.lh/templates/review.json boundary:unknown
+- ../../.lh/templates/review.md -> ../../packages/cli/.lh/templates/review.md boundary:unknown
+- ../../.lh/templates/spec.md -> ../../packages/cli/.lh/templates/spec.md boundary:unknown
+- ../../.lh/templates/task-summary.md -> ../../packages/cli/.lh/templates/task-summary.md boundary:unknown
+- ../../.lh/templates/tasks.md -> ../../packages/cli/.lh/templates/tasks.md boundary:unknown
+- ../../CHANGELOG.md -> ../../packages/cli/CHANGELOG.md boundary:unknown
+- ../../packages/cli/LICENSE boundary:out
+- ../../packages/cli/README.md boundary:out
+- ../../packages/cli/package.json boundary:out
+- ../../packages/cli/scripts/copy-opencode-vendor.mjs boundary:out
+- ../../src/adapters/claude-code.ts -> ../../packages/cli/src/adapters/claude-code.ts boundary:unknown
+- ../../src/adapters/opencode.ts -> ../../packages/cli/src/adapters/opencode.ts boundary:unknown
+- ../../src/adapters/registry.ts -> ../../packages/cli/src/adapters/registry.ts boundary:unknown
+- ../../src/adapters/types.ts -> ../../packages/cli/src/adapters/types.ts boundary:unknown
+- ../../src/build/index.ts -> ../../packages/cli/src/build/index.ts boundary:unknown
+- ../../src/build/task-runner.ts -> ../../packages/cli/src/build/task-runner.ts boundary:unknown
+- ../../src/build/task-status.ts -> ../../packages/cli/src/build/task-status.ts boundary:unknown
+- ../../src/build/task-summary.ts -> ../../packages/cli/src/build/task-summary.ts boundary:unknown
+- ../../src/cavebus/compress.ts -> ../../packages/cli/src/cavebus/compress.ts boundary:unknown
+- ../../src/cavebus/index.ts -> ../../packages/cli/src/cavebus/index.ts boundary:unknown
+- ../../src/cavebus/protected.ts -> ../../packages/cli/src/cavebus/protected.ts boundary:unknown
+- ../../src/cavebus/schema.ts -> ../../packages/cli/src/cavebus/schema.ts boundary:unknown
+- ../../src/cavebus/validate.ts -> ../../packages/cli/src/cavebus/validate.ts boundary:unknown
+- ../../src/cli.ts -> ../../packages/cli/src/cli.ts boundary:unknown
+- ../../src/cli/banner.ts -> ../../packages/cli/src/cli/banner.ts boundary:unknown
+- ../../src/cli/init-hosts.ts -> ../../packages/cli/src/cli/init-hosts.ts boundary:unknown
+- ../../src/cli/options.ts -> ../../packages/cli/src/cli/options.ts boundary:unknown
+- ../../src/cli/program.ts -> ../../packages/cli/src/cli/program.ts boundary:unknown
+- ../../src/commands/archive.ts -> ../../packages/cli/src/commands/archive.ts boundary:unknown
+- ../../src/commands/boundary.ts -> ../../packages/cli/src/commands/boundary.ts boundary:unknown
+- ../../src/commands/build.ts -> ../../packages/cli/src/commands/build.ts boundary:unknown
+- ../../src/commands/cavebus.ts -> ../../packages/cli/src/commands/cavebus.ts boundary:unknown
+- ../../src/commands/check.ts -> ../../packages/cli/src/commands/check.ts boundary:unknown
+- ../../src/commands/command-enforcement.ts -> ../../packages/cli/src/commands/command-enforcement.ts boundary:unknown
+- ../../src/commands/compile-task.ts -> ../../packages/cli/src/commands/compile-task.ts boundary:unknown
+- ../../src/commands/completion.ts -> ../../packages/cli/src/commands/completion.ts boundary:unknown
+- ../../src/commands/compress.ts -> ../../packages/cli/src/commands/compress.ts boundary:unknown
+- ../../src/commands/config.ts -> ../../packages/cli/src/commands/config.ts boundary:unknown
+- ../../src/commands/detect-install.ts -> ../../packages/cli/src/commands/detect-install.ts boundary:unknown
+- ../../src/commands/discover.ts -> ../../packages/cli/src/commands/discover.ts boundary:unknown
+- ../../src/commands/doctor.ts -> ../../packages/cli/src/commands/doctor.ts boundary:unknown
+- ../../src/commands/init-claude-code.ts -> ../../packages/cli/src/commands/init-claude-code.ts boundary:unknown
+- ../../src/commands/init.ts -> ../../packages/cli/src/commands/init.ts boundary:unknown
+- ../../src/commands/legacy-footprint.ts -> ../../packages/cli/src/commands/legacy-footprint.ts boundary:unknown
+- ../../src/commands/list.ts -> ../../packages/cli/src/commands/list.ts boundary:unknown
+- ../../src/commands/load-opencode-agents.ts -> ../../packages/cli/src/commands/load-opencode-agents.ts boundary:unknown
+- ../../src/commands/load-opencode-commands.ts -> ../../packages/cli/src/commands/load-opencode-commands.ts boundary:unknown
+- ../../packages/cli/src/commands/load-opencode-plugins.ts boundary:out
+- ../../src/commands/memory.ts -> ../../packages/cli/src/commands/memory.ts boundary:unknown
+- ../../src/commands/migrate.ts -> ../../packages/cli/src/commands/migrate.ts boundary:unknown
+- ../../src/commands/new.ts -> ../../packages/cli/src/commands/new.ts boundary:unknown
+- ../../packages/cli/src/commands/opencode-vendor-resolve.ts boundary:out
+- ../../src/commands/plan.ts -> ../../packages/cli/src/commands/plan.ts boundary:unknown
+- ../../src/commands/review.ts -> ../../packages/cli/src/commands/review.ts boundary:unknown
+- ../../src/commands/run-task.ts -> ../../packages/cli/src/commands/run-task.ts boundary:unknown
+- ../../src/commands/show.ts -> ../../packages/cli/src/commands/show.ts boundary:unknown
+- ../../src/commands/spec.ts -> ../../packages/cli/src/commands/spec.ts boundary:unknown
+- ../../src/commands/status.ts -> ../../packages/cli/src/commands/status.ts boundary:unknown
+- ../../src/commands/uninstall.ts -> ../../packages/cli/src/commands/uninstall.ts boundary:unknown
+- ../../src/commands/update.ts -> ../../packages/cli/src/commands/update.ts boundary:unknown
+- ../../src/commands/watch.ts -> ../../packages/cli/src/commands/watch.ts boundary:unknown
+- ../../src/commands/worktree.ts -> ../../packages/cli/src/commands/worktree.ts boundary:unknown
+- ../../src/context/compiler.ts -> ../../packages/cli/src/context/compiler.ts boundary:unknown
+- ../../src/context/protected-tokens.ts -> ../../packages/cli/src/context/protected-tokens.ts boundary:unknown
+- ../../src/context/task-context.ts -> ../../packages/cli/src/context/task-context.ts boundary:unknown
+- ../../src/core/bundled-scaffold.ts -> ../../packages/cli/src/core/bundled-scaffold.ts boundary:unknown
+- ../../src/core/colors.ts -> ../../packages/cli/src/core/colors.ts boundary:unknown
+- ../../src/core/config-mutate.ts -> ../../packages/cli/src/core/config-mutate.ts boundary:unknown
+- ../../src/core/config.ts -> ../../packages/cli/src/core/config.ts boundary:unknown
+- ../../src/core/errors.ts -> ../../packages/cli/src/core/errors.ts boundary:unknown
+- ../../src/core/features.ts -> ../../packages/cli/src/core/features.ts boundary:unknown
+- ../../src/core/fs.ts -> ../../packages/cli/src/core/fs.ts boundary:unknown
+- ../../src/core/git.ts -> ../../packages/cli/src/core/git.ts boundary:unknown
+- ../../src/core/harness-root.ts -> ../../packages/cli/src/core/harness-root.ts boundary:unknown
+- ../../src/core/logger.ts -> ../../packages/cli/src/core/logger.ts boundary:unknown
+- ../../src/core/paths.ts -> ../../packages/cli/src/core/paths.ts boundary:unknown
+- ../../src/core/prompt.ts -> ../../packages/cli/src/core/prompt.ts boundary:unknown
+- ../../src/core/resolved-config.ts -> ../../packages/cli/src/core/resolved-config.ts boundary:unknown
+- ../../src/core/risk-gates.ts -> ../../packages/cli/src/core/risk-gates.ts boundary:unknown
+- ../../src/core/spinner.ts -> ../../packages/cli/src/core/spinner.ts boundary:unknown
+- ../../src/core/state.ts -> ../../packages/cli/src/core/state.ts boundary:unknown
+- ../../src/core/templates.ts -> ../../packages/cli/src/core/templates.ts boundary:unknown
+- ../../src/core/types.ts -> ../../packages/cli/src/core/types.ts boundary:unknown
+- ../../src/core/version.ts -> ../../packages/cli/src/core/version.ts boundary:unknown
+- ../../src/core/worktree.ts -> ../../packages/cli/src/core/worktree.ts boundary:unknown
+- ../../src/discovery/boundary.ts -> ../../packages/cli/src/discovery/boundary.ts boundary:unknown
+- ../../src/discovery/import-resolver.ts -> ../../packages/cli/src/discovery/import-resolver.ts boundary:unknown
+- ../../src/discovery/index.ts -> ../../packages/cli/src/discovery/index.ts boundary:unknown
+- ../../src/discovery/package-detector.ts -> ../../packages/cli/src/discovery/package-detector.ts boundary:unknown
+- ../../src/discovery/project-detector.ts -> ../../packages/cli/src/discovery/project-detector.ts boundary:unknown
+- ../../src/discovery/search.ts -> ../../packages/cli/src/discovery/search.ts boundary:unknown
+- ../../src/discovery/test-detector.ts -> ../../packages/cli/src/discovery/test-detector.ts boundary:unknown
+- ../../src/gates/index.ts -> ../../packages/cli/src/gates/index.ts boundary:unknown
+- ../../src/gates/run-gates.ts -> ../../packages/cli/src/gates/run-gates.ts boundary:unknown
+- ../../src/gates/types.ts -> ../../packages/cli/src/gates/types.ts boundary:unknown
+- ../../src/index.ts -> ../../packages/cli/src/index.ts boundary:unknown
+- ../../src/memory/index.ts -> ../../packages/cli/src/memory/index.ts boundary:unknown
+- ../../src/planning/acceptance.ts -> ../../packages/cli/src/planning/acceptance.ts boundary:unknown
+- ../../src/planning/index.ts -> ../../packages/cli/src/planning/index.ts boundary:unknown
+- ../../src/planning/plan-renderer.ts -> ../../packages/cli/src/planning/plan-renderer.ts boundary:unknown
+- ../../src/planning/task-generator.ts -> ../../packages/cli/src/planning/task-generator.ts boundary:unknown
+- ../../src/plugins/loader.ts -> ../../packages/cli/src/plugins/loader.ts boundary:unknown
+- ../../src/plugins/registry.ts -> ../../packages/cli/src/plugins/registry.ts boundary:unknown
+- ../../src/plugins/types.ts -> ../../packages/cli/src/plugins/types.ts boundary:unknown
+- ../../src/verification/acceptance.ts -> ../../packages/cli/src/verification/acceptance.ts boundary:unknown
+- ../../src/verification/changed-files.ts -> ../../packages/cli/src/verification/changed-files.ts boundary:unknown
+- ../../src/verification/commands.ts -> ../../packages/cli/src/verification/commands.ts boundary:unknown
+- ../../src/verification/index.ts -> ../../packages/cli/src/verification/index.ts boundary:unknown
+- ../../src/verification/review-artifact.ts -> ../../packages/cli/src/verification/review-artifact.ts boundary:unknown
+- ../../src/verification/review.ts -> ../../packages/cli/src/verification/review.ts boundary:unknown
+- ../../tests/adapters/claude-code.test.ts -> ../../packages/cli/tests/adapters/claude-code.test.ts boundary:unknown
+- ../../tests/adapters/opencode.test.ts -> ../../packages/cli/tests/adapters/opencode.test.ts boundary:unknown
+- ../../tests/adapters/registry.test.ts -> ../../packages/cli/tests/adapters/registry.test.ts boundary:unknown
+- ../../tests/adapters/working-dir.test.ts -> ../../packages/cli/tests/adapters/working-dir.test.ts boundary:unknown
+- ../../tests/build/build-flow.test.ts -> ../../packages/cli/tests/build/build-flow.test.ts boundary:unknown
+- ../../tests/build/require-worktree.test.ts -> ../../packages/cli/tests/build/require-worktree.test.ts boundary:unknown
+- ../../tests/build/task-status.test.ts -> ../../packages/cli/tests/build/task-status.test.ts boundary:unknown
+- ../../tests/cavebus/compress.test.ts -> ../../packages/cli/tests/cavebus/compress.test.ts boundary:unknown
+- ../../tests/cavebus/protected.test.ts -> ../../packages/cli/tests/cavebus/protected.test.ts boundary:unknown
+- ../../tests/cavebus/schema.test.ts -> ../../packages/cli/tests/cavebus/schema.test.ts boundary:unknown
+- ../../tests/cavebus/validate.test.ts -> ../../packages/cli/tests/cavebus/validate.test.ts boundary:unknown
+- ../../tests/cli/banner.test.ts -> ../../packages/cli/tests/cli/banner.test.ts boundary:unknown
+- ../../tests/cli/program.test.ts -> ../../packages/cli/tests/cli/program.test.ts boundary:unknown
+- ../../tests/cli/worktree-program.test.ts -> ../../packages/cli/tests/cli/worktree-program.test.ts boundary:unknown
+- ../../tests/commands/completion.test.ts -> ../../packages/cli/tests/commands/completion.test.ts boundary:unknown
+- ../../tests/commands/doctor.test.ts -> ../../packages/cli/tests/commands/doctor.test.ts boundary:unknown
+- ../../tests/commands/init-e2e.test.ts -> ../../packages/cli/tests/commands/init-e2e.test.ts boundary:unknown
+- ../../tests/commands/init-global.test.ts -> ../../packages/cli/tests/commands/init-global.test.ts boundary:unknown
+- ../../tests/commands/init-graphify.test.ts -> ../../packages/cli/tests/commands/init-graphify.test.ts boundary:unknown
+- ../../tests/commands/legacy-footprint.test.ts -> ../../packages/cli/tests/commands/legacy-footprint.test.ts boundary:unknown
+- ../../tests/commands/memory.test.ts -> ../../packages/cli/tests/commands/memory.test.ts boundary:unknown
+- ../../tests/commands/migrate.test.ts -> ../../packages/cli/tests/commands/migrate.test.ts boundary:unknown
+- ../../tests/commands/uninstall.test.ts -> ../../packages/cli/tests/commands/uninstall.test.ts boundary:unknown
+- ../../tests/commands/update.test.ts -> ../../packages/cli/tests/commands/update.test.ts boundary:unknown
+- ../../tests/commands/watch.test.ts -> ../../packages/cli/tests/commands/watch.test.ts boundary:unknown
+- ../../tests/commands/worktree-list-remove.test.ts -> ../../packages/cli/tests/commands/worktree-list-remove.test.ts boundary:unknown
+- ../../tests/context/compiler.test.ts -> ../../packages/cli/tests/context/compiler.test.ts boundary:unknown
+- ../../tests/context/protected-tokens.test.ts -> ../../packages/cli/tests/context/protected-tokens.test.ts boundary:unknown
+- ../../tests/core/bundled-scaffold.test.ts -> ../../packages/cli/tests/core/bundled-scaffold.test.ts boundary:unknown
+- ../../tests/core/colors.test.ts -> ../../packages/cli/tests/core/colors.test.ts boundary:unknown
+- ../../tests/core/config.test.ts -> ../../packages/cli/tests/core/config.test.ts boundary:unknown
+- ../../tests/core/errors.test.ts -> ../../packages/cli/tests/core/errors.test.ts boundary:unknown
+- ../../tests/core/features.test.ts -> ../../packages/cli/tests/core/features.test.ts boundary:unknown
+- ../../tests/core/fs.test.ts -> ../../packages/cli/tests/core/fs.test.ts boundary:unknown
+- ../../tests/core/git.test.ts -> ../../packages/cli/tests/core/git.test.ts boundary:unknown
+- ../../tests/core/harness-root.test.ts -> ../../packages/cli/tests/core/harness-root.test.ts boundary:unknown
+- ../../tests/core/logger.test.ts -> ../../packages/cli/tests/core/logger.test.ts boundary:unknown
+- ../../tests/core/paths.test.ts -> ../../packages/cli/tests/core/paths.test.ts boundary:unknown
+- ../../tests/core/prompt.test.ts -> ../../packages/cli/tests/core/prompt.test.ts boundary:unknown
+- ../../tests/core/resolved-config.test.ts -> ../../packages/cli/tests/core/resolved-config.test.ts boundary:unknown
+- ../../tests/core/risk-gates.test.ts -> ../../packages/cli/tests/core/risk-gates.test.ts boundary:unknown
+- ../../tests/core/spinner.test.ts -> ../../packages/cli/tests/core/spinner.test.ts boundary:unknown
+- ../../tests/core/state-worktree.test.ts -> ../../packages/cli/tests/core/state-worktree.test.ts boundary:unknown
+- ../../tests/core/state.test.ts -> ../../packages/cli/tests/core/state.test.ts boundary:unknown
+- ../../tests/core/templates.test.ts -> ../../packages/cli/tests/core/templates.test.ts boundary:unknown
+- ../../tests/core/worktree-paths.test.ts -> ../../packages/cli/tests/core/worktree-paths.test.ts boundary:unknown
+- ../../tests/discovery/boundary.test.ts -> ../../packages/cli/tests/discovery/boundary.test.ts boundary:unknown
+- ../../tests/discovery/discovery-flow.test.ts -> ../../packages/cli/tests/discovery/discovery-flow.test.ts boundary:unknown
+- ../../tests/discovery/import-resolver.test.ts -> ../../packages/cli/tests/discovery/import-resolver.test.ts boundary:unknown
+- ../../tests/discovery/project-detector.test.ts -> ../../packages/cli/tests/discovery/project-detector.test.ts boundary:unknown
+- ../../tests/discovery/search.test.ts -> ../../packages/cli/tests/discovery/search.test.ts boundary:unknown
+- ../../tests/e2e/helpers.ts -> ../../packages/cli/tests/e2e/helpers.ts boundary:unknown
+- ../../tests/e2e/workflow.test.ts -> ../../packages/cli/tests/e2e/workflow.test.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/simple-imports/src/a.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/a.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/simple-imports/src/b.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/b.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/simple-imports/src/c.ts -> ../../packages/cli/tests/fixtures/graph-projects/simple-imports/src/c.ts boundary:unknown
+- ../../tests/fixtures/graph-projects/symbols/src/types.ts -> ../../packages/cli/tests/fixtures/graph-projects/symbols/src/types.ts boundary:unknown
+- ../../tests/fixtures/sample-project/package.json -> ../../packages/cli/tests/fixtures/sample-project/package.json boundary:unknown
+- ../../tests/fixtures/sample-project/src/auth/password.ts -> ../../packages/cli/tests/fixtures/sample-project/src/auth/password.ts boundary:unknown
+- ../../tests/fixtures/sample-project/src/auth/session.ts -> ../../packages/cli/tests/fixtures/sample-project/src/auth/session.ts boundary:unknown
+- ../../tests/fixtures/sample-project/src/email/send.ts -> ../../packages/cli/tests/fixtures/sample-project/src/email/send.ts boundary:unknown
+- ../../tests/fixtures/sample-project/tests/auth/password.test.ts -> ../../packages/cli/tests/fixtures/sample-project/tests/auth/password.test.ts boundary:unknown
+- ../../tests/gates/run-gates.test.ts -> ../../packages/cli/tests/gates/run-gates.test.ts boundary:unknown
+- ../../tests/helpers/assertions.ts -> ../../packages/cli/tests/helpers/assertions.ts boundary:unknown
+- ../../tests/helpers/cli.ts -> ../../packages/cli/tests/helpers/cli.ts boundary:unknown
+- ../../tests/helpers/fixture.ts -> ../../packages/cli/tests/helpers/fixture.ts boundary:unknown
+- ../../tests/helpers/git.ts -> ../../packages/cli/tests/helpers/git.ts boundary:unknown
+- ../../tests/helpers/workspace.ts -> ../../packages/cli/tests/helpers/workspace.ts boundary:unknown
+- ../../packages/cli/tests/hooks/boundary-aliases.test.ts boundary:out
+- ../../tests/hooks/root-resolution.test.ts -> ../../packages/cli/tests/hooks/root-resolution.test.ts boundary:unknown
+- ../../tests/memory/memory.test.ts -> ../../packages/cli/tests/memory/memory.test.ts boundary:unknown
+- ../../tests/planning/acceptance.test.ts -> ../../packages/cli/tests/planning/acceptance.test.ts boundary:unknown
+- ../../tests/planning/plan-renderer.test.ts -> ../../packages/cli/tests/planning/plan-renderer.test.ts boundary:unknown
+- ../../tests/planning/planning-flow.test.ts -> ../../packages/cli/tests/planning/planning-flow.test.ts boundary:unknown
+- ../../tests/planning/task-generator.test.ts -> ../../packages/cli/tests/planning/task-generator.test.ts boundary:unknown
+- ../../tests/plugins/loader.test.ts -> ../../packages/cli/tests/plugins/loader.test.ts boundary:unknown
+- ../../tests/plugins/registry.test.ts -> ../../packages/cli/tests/plugins/registry.test.ts boundary:unknown
+- ../../tests/stress/concurrency.test.ts -> ../../packages/cli/tests/stress/concurrency.test.ts boundary:unknown
+- ../../tests/stress/corruption.test.ts -> ../../packages/cli/tests/stress/corruption.test.ts boundary:unknown
+- ../../tests/stress/scale.test.ts -> ../../packages/cli/tests/stress/scale.test.ts boundary:unknown
+- ../../tests/stress/workflow.test.ts -> ../../packages/cli/tests/stress/workflow.test.ts boundary:unknown
+- ../../tests/verification/boundary-aliases.test.ts -> ../../packages/cli/tests/verification/boundary-aliases.test.ts boundary:unknown
+- ../../tests/verification/check-flow.test.ts -> ../../packages/cli/tests/verification/check-flow.test.ts boundary:unknown
+- ../../tests/verification/commands.test.ts -> ../../packages/cli/tests/verification/commands.test.ts boundary:unknown
+- ../../tests/verification/require-flags.test.ts -> ../../packages/cli/tests/verification/require-flags.test.ts boundary:unknown
+- ../../packages/cli/tsconfig.json boundary:out
+- ../../vitest.config.ts -> ../../packages/cli/vitest.config.ts boundary:unknown
+- ../../pnpm-lock.yaml boundary:unknown
+- ../../pnpm-workspace.yaml boundary:unknown
+- ../../scripts/extract-changelog-entry.mjs boundary:unknown
+- ../../scripts/plugin-smoke.mjs boundary:unknown
+- ../../scripts/sync-plugin-version.mjs boundary:unknown
+- ../../scripts/sync-readme-version.mjs boundary:unknown
+- ../../src/commands/load-opencode-plugins.ts boundary:unknown
+- ../../src/commands/opencode-command-bundles/lh-builder-fix.md boundary:unknown
+- ../../src/commands/opencode-plugin-bundles/leanharness-guardrails.js boundary:unknown
+- ../../src/commands/opencode-plugin-bundles/shared.js boundary:unknown
+- ../../tests/hooks/boundary-aliases.test.ts boundary:unknown
+- ../../tests/plugins/opencode-guardrails-export.test.ts boundary:unknown
+- ../../tsconfig.json -> ../../tsconfig.base.json boundary:unknown
+- ./ boundary:unknown
+- ../../scripts/sync-example-hosts.mjs boundary:unknown
+boundary:
+- partial
+risk:
+- new_dependency status:approved
+miss:
+- 1 verification command(s) failed: pnpm run lint
+- 26 file(s) changed outside boundary.
+- Review is required but no independent review evidence was found.
+next:
+- fix failing checks; rerun lh check F001 --force
+
+# LH-COMPRESS-BEGIN source:all mode:full generated:2026-07-29T15:22:10.507Z
+REQ F001 status:draft
+goal:
+- F001
+constraints:
+- Must use Next.js App Router with TypeScript (per the original request).
+next:
+- discover or plan
+
+DISC F001 conf:unknown. depth:D2
+unknown:
+- No likely touch files found. Add --hint paths or refine the spec.
+next:
+- plan F001
+
+BOUNDARY F001 status:unchanged
+add:
+- web/package.json reason:touch file
+- web/tsconfig.json reason:touch file
+- web/next.config.ts reason:touch file
+- web/app/layout.tsx reason:touch file
+- web/app/page.tsx reason:touch file
+- web/app/add/page.tsx reason:touch file
+- web/app/api/items/route.ts reason:touch file
+- web/lib/store.ts reason:touch file
+- web/lib/types.ts reason:touch file
+- web/data/reading-list.json reason:touch file
+avoid:
+- README.md reason:read-only
+- opencode.json reason:read-only
+- .opencode/README.md reason:read-only
+next:
+- stay inside boundary
+
+PLAN F001 status:planned
+tasks:T01,T02,T03
+risk:
+- new_dependency
+next:
+- compile-task F001 T01
+
+SUM F001 T01 status:done
+next:
+- check F001
+
+SUM F001 T02 status:done
+next:
+- check F001
+
+SUM F001 T03 status:done
+next:
+- check F001
+
+VERIFY F001 verdict:needs-fix
+next:
+- fix issues; rerun check F001 --force
+
+MEM decisions
+fact:
+- Verdict: needs-fix
+- AC pass: 5/5
+- Changed files: 295
+- Verdict: needs-fix
+- AC pass: 5/5
+- Changed files: 295
+- Verdict: needs-fix
+- AC pass: 5/5
+- Changed files: 295
+- Verdict: needs-fix
+- AC pass: 5/5
+- Changed files: 295
+src:
+- .lh/memory/decisions.md
+# LH-COMPRESS-END

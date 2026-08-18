@@ -1,0 +1,14 @@
+{
+  "approvals": [
+    {
+      "gate": "new_dependency",
+      "approvedAt": "2026-07-29T15:03:08.420Z",
+      "approvedBy": "cli"
+    },
+    {
+      "gate": "public_api_break",
+      "approvedAt": "2026-07-29T15:03:08.421Z",
+      "approvedBy": "cli"
+    }
+  ]
+}
