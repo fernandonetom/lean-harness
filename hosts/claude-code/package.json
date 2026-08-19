@@ -1,6 +1,6 @@
 {
   "name": "@feneto/lh-claude-code-plugin",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "description": "LeanHarness Claude Code plugin — skills, agents, and guardrail hooks, distributed via git + /plugin marketplace add. Never published to npm.",
   "repository": "https://github.com/fernandonetom/lean-harness",
