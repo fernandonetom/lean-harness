@@ -132,6 +132,11 @@ async function installClaudeCodeSettingsLocal(
     return { status: "skipped", warnings: [msg] };
   }
 
+  // settings.local.json always points at the shared ~/.claude/statusline.sh, but nothing else
+  // guarantees that script exists for a plain (non---global) `lh init --host claude-code` — only
+  // create it if missing; never overwrite a script the user may have customized.
+  await ensureGlobalStatuslineScript(homeDir, false, log, json);
+
   const statusLine = {
     type: "command",
     command: `bash ${homeDir}/.claude/statusline.sh`,
@@ -545,12 +550,17 @@ printf '%s\\n' "$out"
 `;
 }
 
-export async function installGlobalClaudeCodeStatusLine(
+/**
+ * Writes the shared ~/.claude/statusline.sh script itself, independent of which settings file
+ * (project-local settings.local.json, or global settings.json under --global) ends up
+ * referencing it — both need the script to actually exist on disk.
+ */
+export async function ensureGlobalStatuslineScript(
   homeDir: string,
   force: boolean,
   log: ReturnType<typeof createLogger>,
   json: boolean,
-): Promise<{ scriptStatus: "created" | "updated" | "skipped"; settingsStatus: "created" | "updated" | "skipped" }> {
+): Promise<"created" | "updated" | "skipped"> {
   const pathMod = await import("node:path");
   const fsp = await import("node:fs/promises");
 
@@ -570,6 +580,18 @@ export async function installGlobalClaudeCodeStatusLine(
           : "  ~/.claude/statusline.sh (exists, skipped)",
     );
   }
+  return scriptStatus;
+}
+
+export async function installGlobalClaudeCodeStatusLine(
+  homeDir: string,
+  force: boolean,
+  log: ReturnType<typeof createLogger>,
+  json: boolean,
+): Promise<{ scriptStatus: "created" | "updated" | "skipped"; settingsStatus: "created" | "updated" | "skipped" }> {
+  const pathMod = await import("node:path");
+
+  const scriptStatus = await ensureGlobalStatuslineScript(homeDir, force, log, json);
 
   const settingsPath = pathMod.join(homeDir, ".claude", "settings.json");
   const lhStatusLine = {

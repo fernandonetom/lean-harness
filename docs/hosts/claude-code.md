@@ -19,7 +19,7 @@ lh init --host claude-code
 | File | Purpose |
 |------|---------|
 | `.claude/settings.json` | Project-level permissions (allow, ask, deny), plus `extraKnownMarketplaces` and `enabledPlugins` entries that auto-prompt collaborators to install the plugin |
-| `.claude/settings.local.json` | Per-developer statusline override |
+| `.claude/settings.local.json` | Per-developer statusline override — points at the shared `~/.claude/statusline.sh` script, which `lh init` creates the first time if it doesn't already exist |
 | `.lh/policies/claude-code.yml` | Human/agent-facing reference doc describing the guardrail model (not read at runtime) |
 
 Then, one time per Claude Code session (auto-prompted via `.claude/settings.json`, or run manually):
