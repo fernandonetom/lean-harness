@@ -8,7 +8,7 @@
     {
       "name": "lh",
       "description": "LeanHarness — bounded-context AI harness for brownfield feature work.",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "source": "./hosts/claude-code",
       "author": {
         "name": "Fernando Neto"
