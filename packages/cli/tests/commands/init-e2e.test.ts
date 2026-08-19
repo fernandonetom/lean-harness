@@ -19,13 +19,26 @@ vi.mock("node:child_process", () => ({
 }));
 
 let tmpDir: string;
+let fakeHome: string;
+let savedHome: string;
 
 beforeEach(async () => {
   tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "lh-init-e2e-"));
+  // Isolate from the real home directory — installClaudeCodePack writes a shared
+  // ~/.claude/statusline.sh as a side effect and must never touch the developer's actual home.
+  fakeHome = await fs.mkdtemp(path.join(os.tmpdir(), "lh-init-e2e-home-"));
+  savedHome = process.env["HOME"] ?? "";
+  process.env["HOME"] = fakeHome;
+  (os as any)._realHomedir = os.homedir;
+  (os as any).homedir = () => fakeHome;
 });
 
 afterEach(async () => {
+  process.env["HOME"] = savedHome;
+  (os as any).homedir = (os as any)._realHomedir;
+  delete (os as any)._realHomedir;
   await fs.rm(tmpDir, { recursive: true, force: true });
+  await fs.rm(fakeHome, { recursive: true, force: true });
   vi.restoreAllMocks();
 });
 
@@ -292,6 +305,35 @@ describe("lh init --host claude-code — Claude Code integration", () => {
       await fs.readFile(path.join(tmpDir, ".claude", "settings.json"), "utf-8"),
     );
     expect(mainSettings.statusLine).toBeUndefined();
+  });
+
+  it("creates the shared ~/.claude/statusline.sh script that settings.local.json points at, even without --global", async () => {
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir, host: "claude-code" });
+    spy.mockRestore();
+
+    const scriptPath = path.join(fakeHome, ".claude", "statusline.sh");
+    expect(await exists(scriptPath)).toBe(true);
+
+    const stat = await fs.stat(scriptPath);
+    expect(stat.mode & 0o111).not.toBe(0);
+
+    const settings = JSON.parse(
+      await fs.readFile(path.join(tmpDir, ".claude", "settings.local.json"), "utf-8"),
+    );
+    expect(settings.statusLine.command).toBe(`bash ${scriptPath}`);
+  });
+
+  it("does not overwrite an existing ~/.claude/statusline.sh the user may have customized", async () => {
+    await fs.mkdir(path.join(fakeHome, ".claude"), { recursive: true });
+    const scriptPath = path.join(fakeHome, ".claude", "statusline.sh");
+    await fs.writeFile(scriptPath, "#!/usr/bin/env bash\necho custom\n");
+
+    const spy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
+    await runInitCommand({ cwd: tmpDir, host: "claude-code" });
+    spy.mockRestore();
+
+    expect(await fs.readFile(scriptPath, "utf-8")).toBe("#!/usr/bin/env bash\necho custom\n");
   });
 });
 
